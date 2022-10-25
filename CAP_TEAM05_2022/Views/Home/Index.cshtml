@@ -1,0 +1,175 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
+}
+<section class="pcoded-main-container">
+    <div class="pcoded-content">
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">Quản lý danh mục</h5>
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="https://tancool.net">
+                                    <i class="feather icon-home"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="javascript:void(0)">Quản lý danh mục</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-v-3f82150e="">
+            <div data-v-3f82150e="" class="row">
+                <div data-v-3f82150e="" class="col-md-12">
+                    <div data-v-3f82150e="" class="card card-create">
+                        <div data-v-3f82150e="" class="card-header"><h4 data-v-3f82150e="">Tạo mới danh mục</h4></div> <div data-v-3f82150e="" class="card-body">
+                            <form data-v-3f82150e="">
+                                <div data-v-3f82150e="" class="row">
+                                    <div data-v-3f82150e="" class="col-md-10"><div data-v-3f82150e="" class="form-group"><label data-v-3f82150e="">Tên danh mục<span data-v-3f82150e="" class="text-danger">*</span></label> <div data-v-3f82150e="" class="position-relative"><input data-v-3f82150e="" type="text" placeholder="Nhập tên danh mục" id="first-name-icon" class="form-control"></div> <!----></div></div> <div data-v-3f82150e="" class="col-md-2">
+                                        <button data-v-3f82150e="" type="submit" class="btn btn-primary btn-block">Tạo mới</button> <button data-v-3f82150e="" type="button" class="btn btn-info btn-block">
+                                            Làm mới
+                                        </button> <button data-v-3f82150e="" type="button" class="btn btn-danger btn-block" style="display: none;">
+                                            Huỷ bỏ
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div> <hr data-v-3f82150e=""> <div data-v-3f82150e="" class="row">
+                <div data-v-3f82150e="" class="col-md-12">
+                    <div data-v-3f82150e="" class="card">
+                        <div data-v-3f82150e="" class="card-header">
+                            <div data-v-3f82150e="" class="row">
+                                <div data-v-3f82150e="" class="col-md-9">
+                                    <input data-v-3f82150e="" type="text" id="search" placeholder="Tìm kiếm..." class="form-control form-search">
+                                </div>
+                                <div data-v-3f82150e="" class="col-md-3">
+                                    <select data-v-3f82150e="" name="filter" id="filter" class="form-control">
+                                        <option data-v-3f82150e="" value="">Xem tất cả</option>
+                                        <option data-v-3f82150e="" value="0">Đang hiển thị</option>
+                                        <option data-v-3f82150e="" value="1">Đang bị ẩn</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div data-v-3f82150e="" class="card-body table-border-style">
+                            <div data-v-3f82150e="" class="table-responsive">
+                                <table data-v-3f82150e="" class="table table-hover">
+                                    <thead data-v-3f82150e="">
+                                        <tr data-v-3f82150e="">
+                                            <th data-v-3f82150e="">Mã danh mục</th>
+                                            <th data-v-3f82150e="">Tên danh mục</th>
+                                            <th data-v-3f82150e="" width="15%">Trạng thái</th>
+                                            <th data-v-3f82150e="" width="15%"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody data-v-3f82150e="">
+                                        <tr data-v-3f82150e="">
+                                            <td data-v-3f82150e="">NH098f27b4f</td>
+                                            <td data-v-3f82150e="">test</td>
+                                            <td data-v-3f82150e="">
+                                                <div data-v-3f82150e="" class="custom-control custom-switch">
+                                                    <input data-v-3f82150e="" type="checkbox" class="custom-control-input">
+                                                    <label data-v-3f82150e="" class="custom-control-label"></label>
+                                                </div>
+                                            </td>
+                                            <td data-v-3f82150e="">
+                                                <button data-v-3f82150e="" class="btn btn-success">
+                                                    <i data-v-3f82150e="" class="feather icon-edit"></i>
+                                                </button>
+                                                <button data-v-3f82150e="" class="btn btn-danger">
+                                                    <i data-v-3f82150e="" class="feather icon-trash-2"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr data-v-3f82150e="">
+                                            <td data-v-3f82150e="">NH7aac55187</td>
+                                            <td data-v-3f82150e="">Thuốc diệt cỏ</td>
+                                            <td data-v-3f82150e="">
+                                                <div data-v-3f82150e="" class="custom-control custom-switch">
+                                                    <input data-v-3f82150e="" type="checkbox" class="custom-control-input">
+                                                    <label data-v-3f82150e="" class="custom-control-label"></label>
+                                                </div>
+                                            </td>
+                                            <td data-v-3f82150e="">
+                                                <button data-v-3f82150e="" class="btn btn-success">
+                                                    <i data-v-3f82150e="" class="feather icon-edit"></i>
+                                                </button>
+                                                <button data-v-3f82150e="" class="btn btn-danger">
+                                                    <i data-v-3f82150e="" class="feather icon-trash-2"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr data-v-3f82150e="">
+                                            <td data-v-3f82150e="">NH6b310d5b1</td>
+                                            <td data-v-3f82150e="">Thuốc trừ sâu</td>
+                                            <td data-v-3f82150e="">
+                                                <div data-v-3f82150e="" class="custom-control custom-switch">
+                                                    <input data-v-3f82150e="" type="checkbox" class="custom-control-input">
+                                                    <label data-v-3f82150e="" class="custom-control-label"></label>
+                                                </div>
+                                            </td>
+                                            <td data-v-3f82150e="">
+                                                <button data-v-3f82150e="" class="btn btn-success">
+                                                    <i data-v-3f82150e="" class="feather icon-edit"></i>
+                                                </button>
+                                                <button data-v-3f82150e="" class="btn btn-danger">
+                                                    <i data-v-3f82150e="" class="feather icon-trash-2"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table> <div data-v-3f82150e="" class="between:flex bottom:margin-3 ml-2">
+                                    <div data-v-3f82150e="" class="center:flex-items">
+                                        <span data-v-3f82150e="" class="right:marign-1">Hiển thị</span>
+                                        <select data-v-3f82150e="" id="form-select" class="select form-control select-entities">
+                                            <option data-v-3f82150e="" value="5">
+                                                5
+                                            </option>
+                                            <option data-v-3f82150e="" value="10">
+                                                10
+                                            </option>
+                                            <option data-v-3f82150e="" value="25">
+                                                25
+                                            </option>
+                                            <option data-v-3f82150e="" value="50">
+                                                50
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div> <nav data-v-3f82150e="" aria-label="...">
+                                    <ul class="pagination justify-content-center">
+                                        <li class="page-item disabled"><a class="page-link"> &lt;&lt; </a></li>
+                                        <li class="page-item disabled"><a class="page-link"> &lt; </a></li>
+                                        <li class="page-item active">
+                                            <a class="page-link">
+                                                1
+                                                <span class="sr-only"></span>
+                                            </a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link">
+                                                2
+                                                <!---->
+                                            </a>
+                                        </li>
+                                        <li class="page-item"><a class="page-link"> &gt; </a></li>
+                                        <li class="page-item"><a class="page-link"> &gt;&gt; </a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

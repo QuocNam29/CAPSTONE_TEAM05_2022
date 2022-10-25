@@ -1,0 +1,1506 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="QuyThanhModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="ContextKey" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="Model" Type="varbinary(max)" Nullable="false" />
+          <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetRoles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaims">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ClaimType" Type="nvarchar(max)" />
+          <Property Name="ClaimValue" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogins">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" />
+          <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="carts">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="product_id" Type="int" Nullable="false" />
+          <Property Name="customer_id" Type="int" Nullable="false" />
+          <Property Name="quantity" Type="int" Nullable="false" />
+          <Property Name="price" Type="int" Nullable="false" />
+          <Property Name="discount" Type="int" Nullable="false" />
+          <Property Name="note" Type="varchar(max)" />
+          <Property Name="created_at" Type="datetime2" Precision="0" />
+          <Property Name="updated_at" Type="datetime2" Precision="0" />
+        </EntityType>
+        <EntityType Name="categories">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="code" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="created_by" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="slug" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="status" Type="int" Nullable="false" />
+          <Property Name="created_at" Type="datetime2" Precision="0" />
+          <Property Name="updated_at" Type="datetime2" Precision="0" />
+          <Property Name="deleted_at" Type="datetime2" Precision="0" />
+        </EntityType>
+        <EntityType Name="customers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="created_by" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="255" />
+          <Property Name="phone" Type="varchar" MaxLength="11" Nullable="false" />
+          <Property Name="address" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="type" Type="int" Nullable="false" />
+          <Property Name="status" Type="int" Nullable="false" />
+          <Property Name="account_number" Type="varchar" MaxLength="20" />
+          <Property Name="bank" Type="varchar" MaxLength="255" />
+          <Property Name="note" Type="varchar(max)" />
+          <Property Name="birthday" Type="datetime2" Precision="0" />
+          <Property Name="price_level" Type="int" Nullable="false" />
+          <Property Name="created_at" Type="datetime2" Precision="0" />
+          <Property Name="updated_at" Type="datetime2" Precision="0" />
+          <Property Name="deleted_at" Type="datetime2" Precision="0" />
+        </EntityType>
+        <EntityType Name="debts">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="sale_id" Type="int" Nullable="false" />
+          <Property Name="paid" Type="int" Nullable="false" />
+          <Property Name="total" Type="int" Nullable="false" />
+          <Property Name="created_by" Type="int" Nullable="false" />
+          <Property Name="created_at" Type="datetime2" Precision="0" />
+          <Property Name="updated_at" Type="datetime2" Precision="0" />
+          <Property Name="deleted_at" Type="datetime2" Precision="0" />
+        </EntityType>
+        <EntityType Name="groups">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="code" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="created_by" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="slug" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="status" Type="int" Nullable="false" />
+          <Property Name="created_at" Type="datetime2" Precision="0" />
+          <Property Name="updated_at" Type="datetime2" Precision="0" />
+          <Property Name="deleted_at" Type="datetime2" Precision="0" />
+        </EntityType>
+        <EntityType Name="import_inventory">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="product_id" Type="int" Nullable="false" />
+          <Property Name="quantity" Type="int" Nullable="false" />
+          <Property Name="sold" Type="int" Nullable="false" />
+          <Property Name="discount" Type="int" Nullable="false" />
+          <Property Name="price" Type="int" Nullable="false" />
+          <Property Name="created_by" Type="int" Nullable="false" />
+          <Property Name="created_at" Type="datetime2" Precision="0" />
+          <Property Name="updated_at" Type="datetime2" Precision="0" />
+          <Property Name="deleted_at" Type="datetime2" Precision="0" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="password_resets">
+          <Key>
+            <PropertyRef Name="email" />
+            <PropertyRef Name="token" />
+          </Key>
+          <Property Name="email" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="token" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="created_at" Type="datetime2" Precision="0" />
+        </EntityType>
+        <EntityType Name="personal_access_tokens">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" Nullable="false" />
+          <Property Name="tokenable_type" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="tokenable_id" Type="bigint" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="token" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="abilities" Type="varchar(max)" />
+          <Property Name="last_used_at" Type="datetime2" Precision="0" />
+          <Property Name="created_at" Type="datetime2" Precision="0" />
+          <Property Name="updated_at" Type="datetime2" Precision="0" />
+        </EntityType>
+        <EntityType Name="products">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="code" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="slug" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="group_id" Type="int" Nullable="false" />
+          <Property Name="category_id" Type="int" Nullable="false" />
+          <Property Name="unit" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="price_1" Type="int" Nullable="false" />
+          <Property Name="price_2" Type="int" />
+          <Property Name="price_3" Type="int" />
+          <Property Name="price_4" Type="int" />
+          <Property Name="discount" Type="int" Nullable="false" />
+          <Property Name="status" Type="int" Nullable="false" />
+          <Property Name="note" Type="nvarchar(max)" />
+          <Property Name="created_by" Type="int" Nullable="false" />
+          <Property Name="created_at" Type="datetime2" Precision="0" />
+          <Property Name="updated_at" Type="datetime2" Precision="0" />
+          <Property Name="deleted_at" Type="datetime2" Precision="0" />
+        </EntityType>
+        <EntityType Name="sale_details">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="sale_id" Type="int" Nullable="false" />
+          <Property Name="product_id" Type="int" Nullable="false" />
+          <Property Name="price" Type="int" Nullable="false" />
+          <Property Name="discount" Type="int" Nullable="false" />
+          <Property Name="sold" Type="int" Nullable="false" />
+          <Property Name="created_at" Type="date" />
+          <Property Name="updated_at" Type="date" />
+          <Property Name="deleted_at" Type="datetime2" Precision="0" />
+        </EntityType>
+        <EntityType Name="sales">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="code" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="customer_id" Type="int" Nullable="false" />
+          <Property Name="method" Type="int" Nullable="false" />
+          <Property Name="total" Type="int" Nullable="false" />
+          <Property Name="discount" Type="int" Nullable="false" />
+          <Property Name="vat" Type="int" Nullable="false" />
+          <Property Name="note" Type="nvarchar(max)" />
+          <Property Name="status" Type="int" Nullable="false" />
+          <Property Name="created_by" Type="int" Nullable="false" />
+          <Property Name="created_at" Type="datetime2" Precision="0" />
+          <Property Name="updated_at" Type="datetime2" Precision="0" />
+          <Property Name="deleted_at" Type="datetime2" Precision="0" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="250" />
+          <Property Name="email" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="email_verified_at" Type="datetime2" Precision="0" />
+          <Property Name="password" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="avatar" Type="varchar(max)" />
+          <Property Name="phone" Type="varchar" MaxLength="11" />
+          <Property Name="address" Type="varchar(max)" />
+          <Property Name="role" Type="smallint" Nullable="false" />
+          <Property Name="status" Type="int" Nullable="false" />
+          <Property Name="remember_token" Type="varchar" MaxLength="100" />
+          <Property Name="created_at" Type="datetime2" Precision="0" />
+          <Property Name="updated_at" Type="datetime2" Precision="0" />
+          <Property Name="deleted_at" Type="datetime2" Precision="0" />
+        </EntityType>
+        <Association Name="carts_ibfk_1">
+          <End Role="products" Type="Self.products" Multiplicity="1" />
+          <End Role="carts" Type="Self.carts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="products">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="carts">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="carts_ibfk_2">
+          <End Role="customers" Type="Self.customers" Multiplicity="1" />
+          <End Role="carts" Type="Self.carts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="carts">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="debts_ibfk_1">
+          <End Role="sales" Type="Self.sales" Multiplicity="1" />
+          <End Role="debts" Type="Self.debts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sales">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="debts">
+              <PropertyRef Name="sale_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="debts_ibfk_2">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="debts" Type="Self.debts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="debts">
+              <PropertyRef Name="created_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_categories_users">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="categories" Type="Self.categories" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="categories">
+              <PropertyRef Name="created_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaims" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaims">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetRoles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_groups_users">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="groups" Type="Self.groups" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="groups">
+              <PropertyRef Name="created_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_import_inventory_users">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="import_inventory" Type="Self.import_inventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="import_inventory">
+              <PropertyRef Name="created_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_products_users">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="products" Type="Self.products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="products">
+              <PropertyRef Name="created_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sales_customers">
+          <End Role="customers" Type="Self.customers" Multiplicity="1" />
+          <End Role="sales" Type="Self.sales" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sales">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sales_users">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="sales" Type="Self.sales" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sales">
+              <PropertyRef Name="created_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="import_inventory_ibfk_2">
+          <End Role="products" Type="Self.products" Multiplicity="1" />
+          <End Role="import_inventory" Type="Self.import_inventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="products">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="import_inventory">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="products_ibfk_4">
+          <End Role="categories" Type="Self.categories" Multiplicity="1" />
+          <End Role="products" Type="Self.products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="categories">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="products">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="products_ibfk_5">
+          <End Role="groups" Type="Self.groups" Multiplicity="1" />
+          <End Role="products" Type="Self.products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="groups">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="products">
+              <PropertyRef Name="group_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="sale_details_ibfk_1">
+          <End Role="products" Type="Self.products" Multiplicity="1" />
+          <End Role="sale_details" Type="Self.sale_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="products">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sale_details">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="sale_details_ibfk_2">
+          <End Role="sales" Type="Self.sales" Multiplicity="1" />
+          <End Role="sale_details" Type="Self.sale_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sales">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sale_details">
+              <PropertyRef Name="sale_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QuyThanhModelStoreContainer">
+          <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="carts" EntityType="Self.carts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="categories" EntityType="Self.categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="customers" EntityType="Self.customers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="debts" EntityType="Self.debts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="groups" EntityType="Self.groups" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="import_inventory" EntityType="Self.import_inventory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="personal_access_tokens" EntityType="Self.personal_access_tokens" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="products" EntityType="Self.products" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sale_details" EntityType="Self.sale_details" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sales" EntityType="Self.sales" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="password_resets" EntityType="Self.password_resets" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [password_resets].[email] AS [email], 
+    [password_resets].[token] AS [token], 
+    [password_resets].[created_at] AS [created_at]
+    FROM [dbo].[password_resets] AS [password_resets]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="carts_ibfk_1" Association="Self.carts_ibfk_1">
+            <End Role="products" EntitySet="products" />
+            <End Role="carts" EntitySet="carts" />
+          </AssociationSet>
+          <AssociationSet Name="carts_ibfk_2" Association="Self.carts_ibfk_2">
+            <End Role="customers" EntitySet="customers" />
+            <End Role="carts" EntitySet="carts" />
+          </AssociationSet>
+          <AssociationSet Name="debts_ibfk_1" Association="Self.debts_ibfk_1">
+            <End Role="sales" EntitySet="sales" />
+            <End Role="debts" EntitySet="debts" />
+          </AssociationSet>
+          <AssociationSet Name="debts_ibfk_2" Association="Self.debts_ibfk_2">
+            <End Role="users" EntitySet="users" />
+            <End Role="debts" EntitySet="debts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_categories_users" Association="Self.FK_categories_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="categories" EntitySet="categories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_groups_users" Association="Self.FK_groups_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="groups" EntitySet="groups" />
+          </AssociationSet>
+          <AssociationSet Name="FK_import_inventory_users" Association="Self.FK_import_inventory_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="import_inventory" EntitySet="import_inventory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_products_users" Association="Self.FK_products_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="products" EntitySet="products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sales_customers" Association="Self.FK_sales_customers">
+            <End Role="customers" EntitySet="customers" />
+            <End Role="sales" EntitySet="sales" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sales_users" Association="Self.FK_sales_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="sales" EntitySet="sales" />
+          </AssociationSet>
+          <AssociationSet Name="import_inventory_ibfk_2" Association="Self.import_inventory_ibfk_2">
+            <End Role="products" EntitySet="products" />
+            <End Role="import_inventory" EntitySet="import_inventory" />
+          </AssociationSet>
+          <AssociationSet Name="products_ibfk_4" Association="Self.products_ibfk_4">
+            <End Role="categories" EntitySet="categories" />
+            <End Role="products" EntitySet="products" />
+          </AssociationSet>
+          <AssociationSet Name="products_ibfk_5" Association="Self.products_ibfk_5">
+            <End Role="groups" EntitySet="groups" />
+            <End Role="products" EntitySet="products" />
+          </AssociationSet>
+          <AssociationSet Name="sale_details_ibfk_1" Association="Self.sale_details_ibfk_1">
+            <End Role="products" EntitySet="products" />
+            <End Role="sale_details" EntitySet="sale_details" />
+          </AssociationSet>
+          <AssociationSet Name="sale_details_ibfk_2" Association="Self.sale_details_ibfk_2">
+            <End Role="sales" EntitySet="sales" />
+            <End Role="sale_details" EntitySet="sale_details" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QuyThanhModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="C__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ContextKey" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Model" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaim">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogin">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProviderKey" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="AspNetUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
+          <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
+          <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+        </EntityType>
+        <EntityType Name="cart">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="product_id" Type="Int32" Nullable="false" />
+          <Property Name="customer_id" Type="Int32" Nullable="false" />
+          <Property Name="quantity" Type="Int32" Nullable="false" />
+          <Property Name="price" Type="Int32" Nullable="false" />
+          <Property Name="discount" Type="Int32" Nullable="false" />
+          <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="created_at" Type="DateTime" Precision="0" />
+          <Property Name="updated_at" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="product" Relationship="Self.carts_ibfk_1" FromRole="carts" ToRole="products" />
+          <NavigationProperty Name="customer" Relationship="Self.carts_ibfk_2" FromRole="carts" ToRole="customers" />
+        </EntityType>
+        <EntityType Name="category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="created_by" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="slug" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="status" Type="Int32" Nullable="false" />
+          <Property Name="created_at" Type="DateTime" Precision="0" />
+          <Property Name="updated_at" Type="DateTime" Precision="0" />
+          <Property Name="deleted_at" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="user" Relationship="Self.FK_categories_users" FromRole="categories" ToRole="users" />
+          <NavigationProperty Name="products" Relationship="Self.products_ibfk_4" FromRole="categories" ToRole="products" />
+        </EntityType>
+        <EntityType Name="customer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="created_by" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="phone" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="type" Type="Int32" Nullable="false" />
+          <Property Name="status" Type="Int32" Nullable="false" />
+          <Property Name="account_number" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="bank" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="birthday" Type="DateTime" Precision="0" />
+          <Property Name="price_level" Type="Int32" Nullable="false" />
+          <Property Name="created_at" Type="DateTime" Precision="0" />
+          <Property Name="updated_at" Type="DateTime" Precision="0" />
+          <Property Name="deleted_at" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="carts" Relationship="Self.carts_ibfk_2" FromRole="customers" ToRole="carts" />
+          <NavigationProperty Name="sales" Relationship="Self.FK_sales_customers" FromRole="customers" ToRole="sales" />
+        </EntityType>
+        <EntityType Name="debt">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="sale_id" Type="Int32" Nullable="false" />
+          <Property Name="paid" Type="Int32" Nullable="false" />
+          <Property Name="total" Type="Int32" Nullable="false" />
+          <Property Name="created_by" Type="Int32" Nullable="false" />
+          <Property Name="created_at" Type="DateTime" Precision="0" />
+          <Property Name="updated_at" Type="DateTime" Precision="0" />
+          <Property Name="deleted_at" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="sale" Relationship="Self.debts_ibfk_1" FromRole="debts" ToRole="sales" />
+          <NavigationProperty Name="user" Relationship="Self.debts_ibfk_2" FromRole="debts" ToRole="users" />
+        </EntityType>
+        <EntityType Name="group">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="created_by" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="slug" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="status" Type="Int32" Nullable="false" />
+          <Property Name="created_at" Type="DateTime" Precision="0" />
+          <Property Name="updated_at" Type="DateTime" Precision="0" />
+          <Property Name="deleted_at" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="user" Relationship="Self.FK_groups_users" FromRole="groups" ToRole="users" />
+          <NavigationProperty Name="products" Relationship="Self.products_ibfk_5" FromRole="groups" ToRole="products" />
+        </EntityType>
+        <EntityType Name="import_inventory">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="product_id" Type="Int32" Nullable="false" />
+          <Property Name="quantity" Type="Int32" Nullable="false" />
+          <Property Name="sold" Type="Int32" Nullable="false" />
+          <Property Name="discount" Type="Int32" Nullable="false" />
+          <Property Name="price" Type="Int32" Nullable="false" />
+          <Property Name="created_by" Type="Int32" Nullable="false" />
+          <Property Name="created_at" Type="DateTime" Precision="0" />
+          <Property Name="updated_at" Type="DateTime" Precision="0" />
+          <Property Name="deleted_at" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="user" Relationship="Self.FK_import_inventory_users" FromRole="import_inventory" ToRole="users" />
+          <NavigationProperty Name="product" Relationship="Self.import_inventory_ibfk_2" FromRole="import_inventory" ToRole="products" />
+        </EntityType>
+        <EntityType Name="personal_access_tokens">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="tokenable_type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="tokenable_id" Type="Int64" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="token" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="abilities" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="last_used_at" Type="DateTime" Precision="0" />
+          <Property Name="created_at" Type="DateTime" Precision="0" />
+          <Property Name="updated_at" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="product">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="code" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="slug" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="group_id" Type="Int32" Nullable="false" />
+          <Property Name="category_id" Type="Int32" Nullable="false" />
+          <Property Name="unit" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="price_1" Type="Int32" Nullable="false" />
+          <Property Name="price_2" Type="Int32" />
+          <Property Name="price_3" Type="Int32" />
+          <Property Name="price_4" Type="Int32" />
+          <Property Name="discount" Type="Int32" Nullable="false" />
+          <Property Name="status" Type="Int32" Nullable="false" />
+          <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="created_by" Type="Int32" Nullable="false" />
+          <Property Name="created_at" Type="DateTime" Precision="0" />
+          <Property Name="updated_at" Type="DateTime" Precision="0" />
+          <Property Name="deleted_at" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="carts" Relationship="Self.carts_ibfk_1" FromRole="products" ToRole="carts" />
+          <NavigationProperty Name="category" Relationship="Self.products_ibfk_4" FromRole="products" ToRole="categories" />
+          <NavigationProperty Name="group" Relationship="Self.products_ibfk_5" FromRole="products" ToRole="groups" />
+          <NavigationProperty Name="import_inventory" Relationship="Self.import_inventory_ibfk_2" FromRole="products" ToRole="import_inventory" />
+          <NavigationProperty Name="user" Relationship="Self.FK_products_users" FromRole="products" ToRole="users" />
+          <NavigationProperty Name="sale_details" Relationship="Self.sale_details_ibfk_1" FromRole="products" ToRole="sale_details" />
+        </EntityType>
+        <EntityType Name="sale_details">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="sale_id" Type="Int32" Nullable="false" />
+          <Property Name="product_id" Type="Int32" Nullable="false" />
+          <Property Name="price" Type="Int32" Nullable="false" />
+          <Property Name="discount" Type="Int32" Nullable="false" />
+          <Property Name="sold" Type="Int32" Nullable="false" />
+          <Property Name="created_at" Type="DateTime" Precision="0" />
+          <Property Name="updated_at" Type="DateTime" Precision="0" />
+          <Property Name="deleted_at" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="product" Relationship="Self.sale_details_ibfk_1" FromRole="sale_details" ToRole="products" />
+          <NavigationProperty Name="sale" Relationship="Self.sale_details_ibfk_2" FromRole="sale_details" ToRole="sales" />
+        </EntityType>
+        <EntityType Name="sale">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="customer_id" Type="Int32" Nullable="false" />
+          <Property Name="method" Type="Int32" Nullable="false" />
+          <Property Name="total" Type="Int32" Nullable="false" />
+          <Property Name="discount" Type="Int32" Nullable="false" />
+          <Property Name="vat" Type="Int32" Nullable="false" />
+          <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="status" Type="Int32" Nullable="false" />
+          <Property Name="created_by" Type="Int32" Nullable="false" />
+          <Property Name="created_at" Type="DateTime" Precision="0" />
+          <Property Name="updated_at" Type="DateTime" Precision="0" />
+          <Property Name="deleted_at" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="customer" Relationship="Self.FK_sales_customers" FromRole="sales" ToRole="customers" />
+          <NavigationProperty Name="debts" Relationship="Self.debts_ibfk_1" FromRole="sales" ToRole="debts" />
+          <NavigationProperty Name="sale_details" Relationship="Self.sale_details_ibfk_2" FromRole="sales" ToRole="sale_details" />
+          <NavigationProperty Name="user" Relationship="Self.FK_sales_users" FromRole="sales" ToRole="users" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email_verified_at" Type="DateTime" Precision="0" />
+          <Property Name="password" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="avatar" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="phone" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="role" Type="Int16" Nullable="false" />
+          <Property Name="status" Type="Int32" Nullable="false" />
+          <Property Name="remember_token" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="created_at" Type="DateTime" Precision="0" />
+          <Property Name="updated_at" Type="DateTime" Precision="0" />
+          <Property Name="deleted_at" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="categories" Relationship="Self.FK_categories_users" FromRole="users" ToRole="categories" />
+          <NavigationProperty Name="debts" Relationship="Self.debts_ibfk_2" FromRole="users" ToRole="debts" />
+          <NavigationProperty Name="groups" Relationship="Self.FK_groups_users" FromRole="users" ToRole="groups" />
+          <NavigationProperty Name="import_inventory" Relationship="Self.FK_import_inventory_users" FromRole="users" ToRole="import_inventory" />
+          <NavigationProperty Name="products" Relationship="Self.FK_products_users" FromRole="users" ToRole="products" />
+          <NavigationProperty Name="sales" Relationship="Self.FK_sales_users" FromRole="users" ToRole="sales" />
+        </EntityType>
+        <EntityType Name="password_resets">
+          <Key>
+            <PropertyRef Name="email" />
+            <PropertyRef Name="token" />
+          </Key>
+          <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="token" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="created_at" Type="DateTime" Precision="0" />
+        </EntityType>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaims">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="carts_ibfk_1">
+          <End Role="products" Type="Self.product" Multiplicity="1" />
+          <End Role="carts" Type="Self.cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="products">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="carts">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="carts_ibfk_2">
+          <End Role="customers" Type="Self.customer" Multiplicity="1" />
+          <End Role="carts" Type="Self.cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="carts">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_categories_users">
+          <End Role="users" Type="Self.user" Multiplicity="1" />
+          <End Role="categories" Type="Self.category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="categories">
+              <PropertyRef Name="created_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="products_ibfk_4">
+          <End Role="categories" Type="Self.category" Multiplicity="1" />
+          <End Role="products" Type="Self.product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="categories">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="products">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sales_customers">
+          <End Role="customers" Type="Self.customer" Multiplicity="1" />
+          <End Role="sales" Type="Self.sale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sales">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="debts_ibfk_1">
+          <End Role="sales" Type="Self.sale" Multiplicity="1" />
+          <End Role="debts" Type="Self.debt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sales">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="debts">
+              <PropertyRef Name="sale_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="debts_ibfk_2">
+          <End Role="users" Type="Self.user" Multiplicity="1" />
+          <End Role="debts" Type="Self.debt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="debts">
+              <PropertyRef Name="created_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_groups_users">
+          <End Role="users" Type="Self.user" Multiplicity="1" />
+          <End Role="groups" Type="Self.group" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="groups">
+              <PropertyRef Name="created_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="products_ibfk_5">
+          <End Role="groups" Type="Self.group" Multiplicity="1" />
+          <End Role="products" Type="Self.product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="groups">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="products">
+              <PropertyRef Name="group_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_import_inventory_users">
+          <End Role="users" Type="Self.user" Multiplicity="1" />
+          <End Role="import_inventory" Type="Self.import_inventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="import_inventory">
+              <PropertyRef Name="created_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="import_inventory_ibfk_2">
+          <End Role="products" Type="Self.product" Multiplicity="1" />
+          <End Role="import_inventory" Type="Self.import_inventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="products">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="import_inventory">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_products_users">
+          <End Role="users" Type="Self.user" Multiplicity="1" />
+          <End Role="products" Type="Self.product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="products">
+              <PropertyRef Name="created_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="sale_details_ibfk_1">
+          <End Role="products" Type="Self.product" Multiplicity="1" />
+          <End Role="sale_details" Type="Self.sale_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="products">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sale_details">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="sale_details_ibfk_2">
+          <End Role="sales" Type="Self.sale" Multiplicity="1" />
+          <End Role="sale_details" Type="Self.sale_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sales">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sale_details">
+              <PropertyRef Name="sale_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sales_users">
+          <End Role="users" Type="Self.user" Multiplicity="1" />
+          <End Role="sales" Type="Self.sale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sales">
+              <PropertyRef Name="created_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AspNetUserRoles">
+          <End Role="AspNetRoles" Type="Self.AspNetRole" Multiplicity="*" />
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="QuyThanhEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
+          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
+          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
+          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogin" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
+          <EntitySet Name="carts" EntityType="Self.cart" />
+          <EntitySet Name="categories" EntityType="Self.category" />
+          <EntitySet Name="customers" EntityType="Self.customer" />
+          <EntitySet Name="debts" EntityType="Self.debt" />
+          <EntitySet Name="groups" EntityType="Self.group" />
+          <EntitySet Name="import_inventory" EntityType="Self.import_inventory" />
+          <EntitySet Name="personal_access_tokens" EntityType="Self.personal_access_tokens" />
+          <EntitySet Name="products" EntityType="Self.product" />
+          <EntitySet Name="sale_details" EntityType="Self.sale_details" />
+          <EntitySet Name="sales" EntityType="Self.sale" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="users" EntityType="Self.user" />
+          <EntitySet Name="password_resets" EntityType="Self.password_resets" />
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="carts_ibfk_1" Association="Self.carts_ibfk_1">
+            <End Role="products" EntitySet="products" />
+            <End Role="carts" EntitySet="carts" />
+          </AssociationSet>
+          <AssociationSet Name="carts_ibfk_2" Association="Self.carts_ibfk_2">
+            <End Role="customers" EntitySet="customers" />
+            <End Role="carts" EntitySet="carts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_categories_users" Association="Self.FK_categories_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="categories" EntitySet="categories" />
+          </AssociationSet>
+          <AssociationSet Name="products_ibfk_4" Association="Self.products_ibfk_4">
+            <End Role="categories" EntitySet="categories" />
+            <End Role="products" EntitySet="products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sales_customers" Association="Self.FK_sales_customers">
+            <End Role="customers" EntitySet="customers" />
+            <End Role="sales" EntitySet="sales" />
+          </AssociationSet>
+          <AssociationSet Name="debts_ibfk_1" Association="Self.debts_ibfk_1">
+            <End Role="sales" EntitySet="sales" />
+            <End Role="debts" EntitySet="debts" />
+          </AssociationSet>
+          <AssociationSet Name="debts_ibfk_2" Association="Self.debts_ibfk_2">
+            <End Role="users" EntitySet="users" />
+            <End Role="debts" EntitySet="debts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_groups_users" Association="Self.FK_groups_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="groups" EntitySet="groups" />
+          </AssociationSet>
+          <AssociationSet Name="products_ibfk_5" Association="Self.products_ibfk_5">
+            <End Role="groups" EntitySet="groups" />
+            <End Role="products" EntitySet="products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_import_inventory_users" Association="Self.FK_import_inventory_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="import_inventory" EntitySet="import_inventory" />
+          </AssociationSet>
+          <AssociationSet Name="import_inventory_ibfk_2" Association="Self.import_inventory_ibfk_2">
+            <End Role="products" EntitySet="products" />
+            <End Role="import_inventory" EntitySet="import_inventory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_products_users" Association="Self.FK_products_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="products" EntitySet="products" />
+          </AssociationSet>
+          <AssociationSet Name="sale_details_ibfk_1" Association="Self.sale_details_ibfk_1">
+            <End Role="products" EntitySet="products" />
+            <End Role="sale_details" EntitySet="sale_details" />
+          </AssociationSet>
+          <AssociationSet Name="sale_details_ibfk_2" Association="Self.sale_details_ibfk_2">
+            <End Role="sales" EntitySet="sales" />
+            <End Role="sale_details" EntitySet="sale_details" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sales_users" Association="Self.FK_sales_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="sales" EntitySet="sales" />
+          </AssociationSet>
+          <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QuyThanhModelStoreContainer" CdmEntityContainer="QuyThanhEntities">
+          <EntitySetMapping Name="C__MigrationHistory">
+            <EntityTypeMapping TypeName="QuyThanhModel.C__MigrationHistory">
+              <MappingFragment StoreEntitySet="__MigrationHistory">
+                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetRoles">
+            <EntityTypeMapping TypeName="QuyThanhModel.AspNetRole">
+              <MappingFragment StoreEntitySet="AspNetRoles">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserClaims">
+            <EntityTypeMapping TypeName="QuyThanhModel.AspNetUserClaim">
+              <MappingFragment StoreEntitySet="AspNetUserClaims">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserLogins">
+            <EntityTypeMapping TypeName="QuyThanhModel.AspNetUserLogin">
+              <MappingFragment StoreEntitySet="AspNetUserLogins">
+                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="QuyThanhModel.AspNetUser">
+              <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="carts">
+            <EntityTypeMapping TypeName="QuyThanhModel.cart">
+              <MappingFragment StoreEntitySet="carts">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="discount" ColumnName="discount" />
+                <ScalarProperty Name="note" ColumnName="note" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="categories">
+            <EntityTypeMapping TypeName="QuyThanhModel.category">
+              <MappingFragment StoreEntitySet="categories">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="slug" ColumnName="slug" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="customers">
+            <EntityTypeMapping TypeName="QuyThanhModel.customer">
+              <MappingFragment StoreEntitySet="customers">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="account_number" ColumnName="account_number" />
+                <ScalarProperty Name="bank" ColumnName="bank" />
+                <ScalarProperty Name="note" ColumnName="note" />
+                <ScalarProperty Name="birthday" ColumnName="birthday" />
+                <ScalarProperty Name="price_level" ColumnName="price_level" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="debts">
+            <EntityTypeMapping TypeName="QuyThanhModel.debt">
+              <MappingFragment StoreEntitySet="debts">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="sale_id" ColumnName="sale_id" />
+                <ScalarProperty Name="paid" ColumnName="paid" />
+                <ScalarProperty Name="total" ColumnName="total" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="groups">
+            <EntityTypeMapping TypeName="QuyThanhModel.group">
+              <MappingFragment StoreEntitySet="groups">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="slug" ColumnName="slug" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="import_inventory">
+            <EntityTypeMapping TypeName="QuyThanhModel.import_inventory">
+              <MappingFragment StoreEntitySet="import_inventory">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+                <ScalarProperty Name="sold" ColumnName="sold" />
+                <ScalarProperty Name="discount" ColumnName="discount" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="personal_access_tokens">
+            <EntityTypeMapping TypeName="QuyThanhModel.personal_access_tokens">
+              <MappingFragment StoreEntitySet="personal_access_tokens">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="tokenable_type" ColumnName="tokenable_type" />
+                <ScalarProperty Name="tokenable_id" ColumnName="tokenable_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="token" ColumnName="token" />
+                <ScalarProperty Name="abilities" ColumnName="abilities" />
+                <ScalarProperty Name="last_used_at" ColumnName="last_used_at" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="products">
+            <EntityTypeMapping TypeName="QuyThanhModel.product">
+              <MappingFragment StoreEntitySet="products">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="slug" ColumnName="slug" />
+                <ScalarProperty Name="group_id" ColumnName="group_id" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="unit" ColumnName="unit" />
+                <ScalarProperty Name="price_1" ColumnName="price_1" />
+                <ScalarProperty Name="price_2" ColumnName="price_2" />
+                <ScalarProperty Name="price_3" ColumnName="price_3" />
+                <ScalarProperty Name="price_4" ColumnName="price_4" />
+                <ScalarProperty Name="discount" ColumnName="discount" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="note" ColumnName="note" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sale_details">
+            <EntityTypeMapping TypeName="QuyThanhModel.sale_details">
+              <MappingFragment StoreEntitySet="sale_details">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="sale_id" ColumnName="sale_id" />
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="discount" ColumnName="discount" />
+                <ScalarProperty Name="sold" ColumnName="sold" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sales">
+            <EntityTypeMapping TypeName="QuyThanhModel.sale">
+              <MappingFragment StoreEntitySet="sales">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="method" ColumnName="method" />
+                <ScalarProperty Name="total" ColumnName="total" />
+                <ScalarProperty Name="discount" ColumnName="discount" />
+                <ScalarProperty Name="vat" ColumnName="vat" />
+                <ScalarProperty Name="note" ColumnName="note" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="QuyThanhModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="QuyThanhModel.user">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="email_verified_at" ColumnName="email_verified_at" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="avatar" ColumnName="avatar" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="role" ColumnName="role" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="remember_token" ColumnName="remember_token" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+                <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="password_resets">
+            <EntityTypeMapping TypeName="QuyThanhModel.password_resets">
+              <MappingFragment StoreEntitySet="password_resets">
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="token" ColumnName="token" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="QuyThanhModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+            <EndProperty Name="AspNetRoles">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+            <EndProperty Name="AspNetUsers">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

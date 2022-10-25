@@ -1,0 +1,104 @@
+﻿@using CAP_TEAM05_2022.Models
+@model LoginViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Flat Able - Premium Admin Template by Phoenixcoded</title>
+    <!-- HTML5 Shim and Respond.js IE11 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 11]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="">
+    <meta name="author" content="Phoenixcoded" />
+    <!-- Favicon icon -->
+    <link rel="icon" href="~/Template/assets/images/favicon.ico" type="image/x-icon">
+
+    <!-- vendor css -->
+    <link rel="stylesheet" href="~/Template/assets/css/style.css">
+
+
+
+
+</head>
+
+<!-- [ auth-signin ] start -->
+<div class="auth-wrapper">
+    <div class="auth-content text-center">
+        <img src="~/Template/assets/images/logo.png" alt="" class="img-fluid mb-4">
+        <div class="card borderless">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="card-body">
+                        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <form method="POST">
+                                <input type="hidden" name="_token" value="MfyT7W8QZWslWGuGrQ6V5aSbjGfO0b0khQ7Ag37g"> <h4 class="mb-3 f-w-400">Đăng nhập</h4>
+                                <hr>
+                                <div class="form-group mb-3">
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+
+                                   
+                                </div>
+                                <div class="form-group mb-4">
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+
+                                    
+                                </div>
+                                <div class="custom-control custom-checkbox text-left mb-4 mt-2 form-check">
+                                    <input type="checkbox" name="remember" id="remember" class="form-check-input custom-control-input"> <label for="remember" class="custom-control-label form-check-label">
+                                        Ghi nhớ đăng nhập.
+                                    </label>
+                                </div> <button type="submit" class="btn btn-block btn-primary mb-4">Đăng nhập</button> <hr> <p class="mb-2 text-muted">
+                                    Quên mật khẩu?
+                                    <a href="https://tancool.net/password/reset" class="f-w-400">
+                                        Tạo mật khẩu mới
+                                    </a>
+                                </p> <p class="mb-0 text-muted">
+                                    Chưa có tài khoản?
+                                    <a href="https://tancool.net/register" class="f-w-400">
+                                        Đăng ký
+                                    </a>
+                                </p>
+                            </form>
+                        }
+                        <hr> <h5>Dành cho khách hàng</h5> <span class="mb-0 text-muted">
+                            Tra cứu dơn hàng tại
+                            <a href="https://tancool.net/tra-cuu-lich-su-don-hang" class="f-w-400">
+                                đây
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- [ auth-signin ] end -->
+<!-- Required Js -->
+<script src="~/Template/assets/js/vendor-all.min.js"></script>
+<script src="~/Template/assets/js/plugins/bootstrap.min.js"></script>
+
+<script src="~/Template/assets/js/pcoded.min.js"></script>
+
+
+
+</body>
+
+</html>
