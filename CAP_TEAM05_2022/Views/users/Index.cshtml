@@ -1,0 +1,228 @@
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.user>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
+}
+<section class="pcoded-main-container">
+    <div class="pcoded-content">
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">Quản lý nhân viên</h5>
+                        </div> <ul class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="https://tancool.net">
+                                    <i class="feather icon-home">
+                                    </i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="javascript:void(0)">Quản lý nhân viên</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div> <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div data-v-976ea668="" class="card-header">
+                        <button data-v-976ea668="" type="button" class="btn btn-primary float-right ml-2">Tạo mới</button>
+                        <input data-v-976ea668="" type="text" id="search" placeholder="Tìm kiếm..." class="form-control form-search">
+                    </div>
+                    <div class="card-body table-border-style">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Họ và tên</th>
+                                        <th>Email</th>
+                                        <th>Điện thoại</th>
+                                        <th>Vai trò</th>
+                                        <th>Trạng thái</th>
+                                        <th>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tblData">
+                              
+
+                                    <tr style="display: none;">
+                                        <td colspan="7">
+                                            <div class="alert alert-danger">
+                                                <p class="text-center">Không tìm thấy dữ liệu</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table> <div class="between:flex bottom:margin-3 ml-2">
+                            <div id="paged">
+
+                            </div>  
+                            
+                            </div> <!---->
+                        </div>
+                    </div>
+                </div>
+            </div> <div id="customModal" tabindex="-1" aria-labelledby="customModalTitle" class="modal fade" aria-hidden="true" style="display: none;">
+                <div role="document" class="modal-dialog modal-lg">
+                    <form>
+                        <div class="modal-content">
+                            <div class="modal-header bg-primary">
+                                <h5 id="customModalTitle" class="modal-title white">Thêm mới nhân viên</h5> <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div> <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="first-name-icon">
+                                                Họ và tên<span class="text-danger">*</span>
+                                            </label> <div class="position-relative">
+                                                <input type="text" placeholder="Nhập tên nhân viên" id="first-name-icon" class="form-control">
+                                            </div> <!---->
+                                        </div>
+                                    </div> <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="first-name-icon">
+                                                Địa chỉ Email<span class="text-danger">*</span>
+                                            </label> <div class="position-relative">
+                                                <input type="email" placeholder="Nhập địa chỉ Email" id="first-name-icon" class="form-control">
+                                            </div> <!---->
+                                        </div>
+                                    </div> <div class="col-4">
+                                        <div class="form-group">
+                                            <label for="first-name-icon">
+                                                Mật khẩu<span class="text-danger">*</span>
+                                            </label> <div class="position-relative">
+                                                <input type="password" placeholder="********" id="first-name-icon" class="form-control">
+                                            </div> <!---->
+                                        </div>
+                                    </div> <div class="col-4">
+                                        <div class="form-group">
+                                            <label for="first-name-icon"> Số điện thoại </label> <div class="position-relative">
+                                                <input type="number" placeholder="Nhập số điện thoại" id="first-name-icon" class="form-control">
+                                            </div> <!----> <!---->
+                                        </div>
+                                    </div> <div class="col-4">
+                                        <div class="form-group">
+                                            <label for="first-name-icon">
+                                                Chức vụ<span class="text-danger">*</span>
+                                            </label> <div class="position-relative">
+                                                <select name="role" id="role" class="form-control">
+                                                    <option value="" selected="selected" disabled="disabled">Chọn chức vụ</option>
+                                                    <option value="1">Quản trị viên</option>
+                                                    <option value="0">Nhân viên</option>
+                                                </select>
+                                            </div> <!---->
+                                        </div>
+                                    </div> <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="first-name-icon"> Địa chỉ </label> <div class="position-relative">
+<textarea placeholder="Nhập địa chỉ" id="first-name-icon" class="form-control">
+</textarea>
+                                            </div> <!---->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary me-1 mb-1">Thêm mới</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        function Contains(text_one, text_two) {
+            if (text_one.indexOf(text_two) != -1) 
+                return true;          
+        }
+        $("#search").keyup(function () {
+            var searchText = $("#search").val().toLowerCase();
+            $(".search").each(function () {
+                if (!Contains($(this).text().toLowerCase(), searchText)) {
+                    $(this).hide();
+
+                }
+                else {
+                    $(this).show();
+                }
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        //Initially load pagenumber=1
+        GetPageData(1);
+    });
+    function GetPageData(pageNum, pageSize) {
+        //After every trigger remove previous data and paging
+        $("#tblData").empty();
+        $("#paged").empty();
+        $.getJSON("/users/GetPaggedData", { pageNumber: pageNum, pageSize: pageSize }, function (response) {
+            var rowData = "";
+            for (var i = 0; i < response.Data.length; i++) {
+                rowData = rowData + '<tr class="search"><td>' + response.Data[i].name + '</td><td>' + response.Data[i].email + '</td><td>'
+                    + response.Data[i].phone + '</td><td>'
+                    + response.Data[i].role + '</td><td>'
+                    + response.Data[i].status
+                    + '<td ><button class="btn btn-success"><i  class="feather icon-edit"></i></button></td></tr>';
+            }
+            $("#tblData").append(rowData);
+            PaggingTemplate(response.TotalPages, response.CurrentPage);
+        });
+    }
+    //This is paging temlpate ,you should just copy paste
+    function PaggingTemplate(totalPage, currentPage) {
+        var template = "";
+        var TotalPages = totalPage;
+        var CurrentPage = currentPage;
+        var PageNumberArray = Array();
+
+
+        var countIncr = 1;
+        for (var i = currentPage; i <= totalPage; i++) {
+            PageNumberArray[0] = currentPage;
+            if (totalPage != currentPage && PageNumberArray[countIncr - 1] != totalPage) {
+                PageNumberArray[countIncr] = i + 1;
+            }
+            countIncr++;
+        };
+        PageNumberArray = PageNumberArray.slice(0, 5);
+        var FirstPage = 1;
+        var LastPage = totalPage;
+        if (totalPage != currentPage) {
+            var ForwardOne = currentPage + 1;
+        }
+        var BackwardOne = 1;
+        if (currentPage > 1) {
+            BackwardOne = currentPage - 1;
+        }
+
+        template = "<p>" + CurrentPage + " of " + TotalPages + " pages</p>"
+        template = template + '<ul class="pager">' +
+            '<li class="previous"><a href="#" onclick="GetPageData(' + FirstPage + ')"><i class="fa fa-fast-backward"></i>&nbsp;First</a></li>' +
+            '<li><select ng-model="pageSize" id="selectedId"><option value="5">5</option><option value="10">10</option><option value="25">25</option><option value="50">50</option></select> </li>' +
+            '<li><a href="#" onclick="GetPageData(' + BackwardOne + ')"><i class="glyphicon glyphicon-backward"></i></a>';
+
+        var numberingLoop = "";
+        for (var i = 0; i < PageNumberArray.length; i++) {
+            numberingLoop = numberingLoop + '<a class="page-number active" onclick="GetPageData(' + PageNumberArray[i] + ')" href="#">' + PageNumberArray[i] + ' &nbsp;&nbsp;</a>'
+        }
+        template = template + numberingLoop + '<a href="#" onclick="GetPageData(' + ForwardOne + ')" ><i class="glyphicon glyphicon-forward"></i></a></li>' +
+            '<li class="next"><a href="#" onclick="GetPageData(' + LastPage + ')">Last&nbsp;<i class="fa fa-fast-forward"></i></a></li></ul>';
+        $("#paged").append(template);
+        $('#selectedId').change(function () {
+            GetPageData(1, $(this).val());
+        });
+    }
+</script>

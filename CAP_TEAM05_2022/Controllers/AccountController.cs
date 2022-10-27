@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using CAP_TEAM05_2022.Models;
+using System.Data.Entity;
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -83,6 +84,12 @@ namespace CAP_TEAM05_2022.Controllers
                 case SignInStatus.Success:
                     user user = db.users.Where(u => u.email == model.Email).FirstOrDefault();
                     Session["user_email"] = user.email;
+                    if (user.email_verified_at == null)
+                    {
+                        user.email_verified_at = DateTime.Now;
+                        db.Entry(user).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
