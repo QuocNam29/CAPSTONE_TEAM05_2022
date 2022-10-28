@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using CAP_TEAM05_2022.Helper;
 using CAP_TEAM05_2022.Models;
 
 namespace CAP_TEAM05_2022.Controllers
@@ -19,6 +20,20 @@ namespace CAP_TEAM05_2022.Controllers
         {
             var categories = db.categories.Include(c => c.user);
             return View(categories.ToList());
+        }
+        public ActionResult Create_Category(string name_category)
+        {
+            string email =  Session["user_email"].ToString();
+            user user = db.users.Where(u => u.email == email).FirstOrDefault();
+            category category = new category();
+            category.name = name_category;
+            category.created_by = user.id;
+            category.created_at = DateTime.Now;
+            category.slug = name_category;
+            category.code = "DM" + CodeRandom.RandomCode();
+            db.categories.Add(category);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         // GET: categories/Details/5

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="QuyThanhModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="QuyThanhModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -70,7 +70,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="product_id" Type="int" Nullable="false" />
           <Property Name="customer_id" Type="int" Nullable="false" />
           <Property Name="quantity" Type="int" Nullable="false" />
@@ -84,7 +84,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="code" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="created_by" Type="int" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
@@ -98,7 +98,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="created_by" Type="int" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="email" Type="varchar" MaxLength="255" />
@@ -119,7 +119,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="sale_id" Type="int" Nullable="false" />
           <Property Name="paid" Type="int" Nullable="false" />
           <Property Name="total" Type="int" Nullable="false" />
@@ -132,7 +132,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="code" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="created_by" Type="int" Nullable="false" />
           <Property Name="name" Type="varchar" MaxLength="255" Nullable="false" />
@@ -146,7 +146,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="product_id" Type="int" Nullable="false" />
           <Property Name="quantity" Type="int" Nullable="false" />
           <Property Name="sold" Type="int" Nullable="false" />
@@ -172,7 +172,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="bigint" Nullable="false" />
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="tokenable_type" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="tokenable_id" Type="bigint" Nullable="false" />
           <Property Name="name" Type="varchar" MaxLength="255" Nullable="false" />
@@ -186,7 +186,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="code" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="slug" Type="varchar" MaxLength="255" Nullable="false" />
@@ -209,7 +209,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="sale_id" Type="int" Nullable="false" />
           <Property Name="product_id" Type="int" Nullable="false" />
           <Property Name="price" Type="int" Nullable="false" />
@@ -223,7 +223,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="code" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="customer_id" Type="int" Nullable="false" />
           <Property Name="method" Type="int" Nullable="false" />
@@ -251,7 +251,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="250" />
           <Property Name="email" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="email_verified_at" Type="datetime2" Precision="0" />
@@ -605,8 +605,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
             <End Role="sale_details" EntitySet="sale_details" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="QuyThanhModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">

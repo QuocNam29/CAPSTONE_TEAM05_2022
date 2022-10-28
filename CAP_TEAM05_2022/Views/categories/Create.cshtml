@@ -1,16 +1,38 @@
-﻿@model CAP_TEAM05_2022.Models.categories
+﻿@model CAP_TEAM05_2022.Models.category
 
 @{
-    ViewBag.Title = "Create";
+    Layout = null;
 }
 
-<h2>Create</h2>
+<form>
+    <div class="row">
+        <div class="col-md-10">
+            <div class="form-group">
+                <label>
+                    Tên danh mục<span class="text-danger">*</span>
+                </label>
+                <div class="position-relative">
+                    <input type="text" placeholder="Nhập tên danh mục" id="first-name-icon" class="form-control">
+                </div> <!---->
+            </div>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary btn-block">Tạo mới</button>
+            <button type="button" class="btn btn-info btn-block">
+                Làm mới
+            </button>
+            <button type="button" class="btn btn-danger btn-block" style="display: none;">
+                Huỷ bỏ
+            </button>
+        </div>
+    </div>
+</form>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>categories</h4>
         <hr />

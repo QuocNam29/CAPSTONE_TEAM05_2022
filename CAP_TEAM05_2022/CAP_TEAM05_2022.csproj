@@ -177,6 +177,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\CodeRandom.cs" />
     <Compile Include="Helper\PagedData.cs" />
     <Compile Include="Helper\Pagination.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -429,8 +430,10 @@
     <Content Include="Template\assets\json\file-upload.php" />
     <Content Include="Template\assets\js\analytics.js" />
     <Content Include="Template\assets\js\analytics.min.js" />
-    <Content Include="Template\assets\js\app.js" />
     <Content Include="Template\assets\js\horizontal-menu.js" />
+    <Content Include="Template\assets\js\jquery-3.5.1.js" />
+    <Content Include="Template\assets\js\jquery.dataTables.min.css" />
+    <Content Include="Template\assets\js\jquery.dataTables.min.js" />
     <Content Include="Template\assets\js\pages\chart-apex.js" />
     <Content Include="Template\assets\js\pages\dashboard-main.js" />
     <Content Include="Template\assets\js\pages\google-maps.js" />
@@ -528,6 +531,7 @@
     <Content Include="Views\users\Details.cshtml" />
     <Content Include="Views\users\Edit.cshtml" />
     <Content Include="Views\users\Index.cshtml" />
+    <Content Include="Views\users\Index2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

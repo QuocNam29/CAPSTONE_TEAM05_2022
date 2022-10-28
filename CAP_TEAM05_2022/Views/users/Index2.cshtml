@@ -1,0 +1,161 @@
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.user>
+
+@{
+    ViewBag.Title = "Index2";
+    Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
+}
+<section class="pcoded-main-container">
+    <div class="pcoded-content">
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">Quản lý nhân viên</h5>
+                        </div> <ul class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="https://tancool.net">
+                                    <i class="feather icon-home">
+                                    </i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="javascript:void(0)">Quản lý nhân viên</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div> <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div data-v-976ea668="" class="card-header">
+                        <button data-v-976ea668="" type="button" class="btn btn-primary float-right ml-2">Tạo mới</button>
+                        <input data-v-976ea668="" type="text" id="search" placeholder="Tìm kiếm..." class="form-control form-search">
+                    </div>
+                    <div class="card-body table-border-style">
+                        <div class="table-responsive">
+                            <table id="example" class="display table table-hover" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Họ và tên</th>
+                                        <th>Email</th>
+                                        <th>Điện thoại</th>
+                                        <th>Vai trò</th>
+                                        <th>Trạng thái</th>
+                                        <th>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.name</td>
+                                            <td>@item.email</td>
+                                            <td>@item.phone</td>
+
+                                            @if (item.role == 1)
+                                            {
+                                                <td>Quản trị viên</td>
+                                            }
+                                            else
+                                            {
+                                                <td>Nhân viên</td>
+                                            }
+                                            <td>@item.status</td>
+                                            <td><button class="btn btn-success"><i class="feather icon-edit"></i></button></td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+
+                            </table>
+                            <div class="between:flex bottom:margin-3 ml-2">
+                                <div id="paged">
+
+                                </div>
+
+                            </div> <!---->
+                        </div>
+                    </div>
+                </div>
+            </div> <div id="customModal" tabindex="-1" aria-labelledby="customModalTitle" class="modal fade" aria-hidden="true" style="display: none;">
+                <div role="document" class="modal-dialog modal-lg">
+                    <form>
+                        <div class="modal-content">
+                            <div class="modal-header bg-primary">
+                                <h5 id="customModalTitle" class="modal-title white">Thêm mới nhân viên</h5> <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div> <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="first-name-icon">
+                                                Họ và tên<span class="text-danger">*</span>
+                                            </label> <div class="position-relative">
+                                                <input type="text" placeholder="Nhập tên nhân viên" id="first-name-icon" class="form-control">
+                                            </div> <!---->
+                                        </div>
+                                    </div> <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="first-name-icon">
+                                                Địa chỉ Email<span class="text-danger">*</span>
+                                            </label> <div class="position-relative">
+                                                <input type="email" placeholder="Nhập địa chỉ Email" id="first-name-icon" class="form-control">
+                                            </div> <!---->
+                                        </div>
+                                    </div> <div class="col-4">
+                                        <div class="form-group">
+                                            <label for="first-name-icon">
+                                                Mật khẩu<span class="text-danger">*</span>
+                                            </label> <div class="position-relative">
+                                                <input type="password" placeholder="********" id="first-name-icon" class="form-control">
+                                            </div> <!---->
+                                        </div>
+                                    </div> <div class="col-4">
+                                        <div class="form-group">
+                                            <label for="first-name-icon"> Số điện thoại </label> <div class="position-relative">
+                                                <input type="number" placeholder="Nhập số điện thoại" id="first-name-icon" class="form-control">
+                                            </div> <!----> <!---->
+                                        </div>
+                                    </div> <div class="col-4">
+                                        <div class="form-group">
+                                            <label for="first-name-icon">
+                                                Chức vụ<span class="text-danger">*</span>
+                                            </label> <div class="position-relative">
+                                                <select name="role" id="role" class="form-control">
+                                                    <option value="" selected="selected" disabled="disabled">Chọn chức vụ</option>
+                                                    <option value="1">Quản trị viên</option>
+                                                    <option value="0">Nhân viên</option>
+                                                </select>
+                                            </div> <!---->
+                                        </div>
+                                    </div> <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="first-name-icon"> Địa chỉ </label> <div class="position-relative">
+<textarea placeholder="Nhập địa chỉ" id="first-name-icon" class="form-control">
+</textarea>
+                                            </div> <!---->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary me-1 mb-1">Thêm mới</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            pagingType: 'full_numbers',
+        });
+    });
+</script>

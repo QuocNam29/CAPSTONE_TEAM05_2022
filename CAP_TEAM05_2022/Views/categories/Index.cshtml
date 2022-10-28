@@ -1,75 +1,172 @@
-﻿@model IEnumerable<CAP_TEAM05_2022.Models.categories>
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.category>
 
 @{
     ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
+
 }
+<section class="pcoded-main-container">
+    <div class="pcoded-content">
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">Quản lý danh mục</h5>
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="https://tancool.net">
+                                    <i class="feather icon-home">
+                                    </i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="javascript:void(0)">Quản lý danh mục</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-create">
+                        <div class="card-header">
+                            <h4>Tạo mới danh mục</h4>
+                        </div> 
+                        <div class="card-body">
+                            @using (Html.BeginForm("Create_Category", "categories", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                <form>
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <div class="form-group">
+                                                <label>
+                                                    Tên danh mục<span class="text-danger">*</span>
+                                                </label>
+                                                <div class="position-relative">
+                                                    <input type="text" placeholder="Nhập tên danh mục" id="first-name-icon" class="form-control" name="name_category">
+                                                </div> <!---->
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="submit" class="btn btn-primary btn-block">Tạo mới</button>
+                                            <button type="button" class="btn btn-info btn-block">
+                                                Làm mới
+                                            </button>
+                                            <button type="button" class="btn btn-danger btn-block" style="display: none;">
+                                                Huỷ bỏ
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            }
+                            </div>
+                    </div>
+                </div>
+            </div> <hr> <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <input type="text" id="search" placeholder="Tìm kiếm..." class="form-control form-search">
+                                </div>
+                                <div class="col-md-3">
+                                    <select name="filter" id="filter" class="form-control">
+                                        <option value="">Xem tất cả</option>
+                                        <option value="0">Đang hiển thị</option>
+                                        <option value="1">Đang bị ẩn</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body table-border-style">
+                            <div class="table-responsive">
+                                <table id="example" class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Mã danh mục</th>
+                                            <th>Tên danh mục</th>
+                                            <th width="15%">Trạng thái</th>
+                                            <th width="15%">
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>@item.code</td>
+                                                <td>@item.name</td>
+                                                <td>
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input">
+                                                        <label class="custom-control-label">
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-success">
+                                                        <i class="feather icon-edit">
+                                                        </i>
+                                                    </button>
+                                                    <button class="btn btn-danger">
+                                                        <i class="feather icon-trash-2">
+                                                        </i>
+                                                    </button>
+                                                </td>
+                                            </tr>
 
-<h2>Index</h2>
+                                        }
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.code)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.slug)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.status)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.created_at)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.updated_at)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.deleted_at)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.users.name)
-        </th>
-        <th></th>
-    </tr>
+                                    </tbody>
+                                </table>
+                                <nav aria-label="...">
+                                    <ul class="pagination justify-content-center">
+                                        <li class="page-item disabled">
+                                            <a class="page-link"> &lt;&lt; </a>
+                                        </li>
+                                        <li class="page-item disabled">
+                                            <a class="page-link"> &lt; </a>
+                                        </li>
+                                        <li class="page-item active">
+                                            <a class="page-link">
+                                                1
+                                                <span class="sr-only">
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link">
+                                                2
+                                                <!---->
+                                            </a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link"> &gt; </a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link"> &gt;&gt; </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.code)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.slug)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.status)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.created_at)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.updated_at)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.deleted_at)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.users.name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id })
-        </td>
-    </tr>
-}
-
-</table>
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            pagingType: 'full_numbers',
+        });
+    });
+</script>

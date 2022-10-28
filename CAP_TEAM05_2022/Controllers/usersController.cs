@@ -20,6 +20,10 @@ namespace CAP_TEAM05_2022.Controllers
         {
             return View(db.users.ToList());
         }
+        public ActionResult Index2()
+        {
+            return View(db.users.ToList());
+        }
         public ActionResult GetPaggedData(int pageNumber = 1, int pageSize = 5)
         {
             db.Configuration.ProxyCreationEnabled = false;
