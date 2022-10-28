@@ -30174,3 +30174,39 @@ new-task label input[type=checkbox] {
 }
 
 /**====== user card css end ======**/
+
+
+.dataTables_paginate{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 24px 0;
+}
+.paginate_button {
+border-radius: 50%;
+padding: 6px 12px;
+margin: 0 6px;
+
+}
+.paginate_button.disabled {
+    color: var(--gray);
+}
+.paginate_button.current{
+        background: var(--primary);
+        color: #fff;
+
+}
+    .paginate_button:hover:not(.current):not(.disabled) {
+        background: rgba(0,0,0,0.05);
+    }
+
+.dataTables_wrapper .dataTables_length {
+    float: right;
+    text-align: right;
+}
+.dataTables_wrapper .dataTables_filter {
+    float: left;
+}
+.dataTables_length label{
+    text-align: left;
+}
