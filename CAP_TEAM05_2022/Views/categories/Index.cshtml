@@ -32,55 +32,14 @@
         <div>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card card-create">
-                        <div class="card-header">
-                            <h4>Tạo mới danh mục</h4>
-                        </div> 
-                        <div class="card-body">
-                            @using (Html.BeginForm("Create_Category", "categories", FormMethod.Post))
-                            {
-                                @Html.AntiForgeryToken()
-                                <form>
-                                    <div class="row">
-                                        <div class="col-md-10">
-                                            <div class="form-group">
-                                                <label>
-                                                    Tên danh mục<span class="text-danger">*</span>
-                                                </label>
-                                                <div class="position-relative">
-                                                    <input type="text" placeholder="Nhập tên danh mục" id="first-name-icon" class="form-control" name="name_category">
-                                                </div> <!---->
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <button type="submit" class="btn btn-primary btn-block">Tạo mới</button>
-                                            <button type="button" class="btn btn-info btn-block">
-                                                Làm mới
-                                            </button>
-                                            <button type="button" class="btn btn-danger btn-block" style="display: none;">
-                                                Huỷ bỏ
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            }
-                            </div>
-                    </div>
-                </div>
-            </div> <hr> <div class="row">
-                <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-md-9">
-                                    <input type="text" id="search" placeholder="Tìm kiếm..." class="form-control form-search">
+                                <div class="col-md-10">
+                                    <h4>Danh mục sản phẩm</h4>
                                 </div>
-                                <div class="col-md-3">
-                                    <select name="filter" id="filter" class="form-control">
-                                        <option value="">Xem tất cả</option>
-                                        <option value="0">Đang hiển thị</option>
-                                        <option value="1">Đang bị ẩn</option>
-                                    </select>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn  btn-primary btn-block" data-toggle="modal" data-target="#exampleModalLive">Thêm mới</button>
                                 </div>
                             </div>
                         </div>
@@ -114,10 +73,11 @@
                                                         <i class="feather icon-edit">
                                                         </i>
                                                     </button>
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-danger" onclick="deleteAlert('@item.id')" id="Delete">
                                                         <i class="feather icon-trash-2">
                                                         </i>
                                                     </button>
+                                                
                                                 </td>
                                             </tr>
 
@@ -125,35 +85,7 @@
 
                                     </tbody>
                                 </table>
-                                <nav aria-label="...">
-                                    <ul class="pagination justify-content-center">
-                                        <li class="page-item disabled">
-                                            <a class="page-link"> &lt;&lt; </a>
-                                        </li>
-                                        <li class="page-item disabled">
-                                            <a class="page-link"> &lt; </a>
-                                        </li>
-                                        <li class="page-item active">
-                                            <a class="page-link">
-                                                1
-                                                <span class="sr-only">
-                                                </span>
-                                            </a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link">
-                                                2
-                                                <!---->
-                                            </a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link"> &gt; </a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link"> &gt;&gt; </a>
-                                        </li>
-                                    </ul>
-                                </nav>
+
                             </div>
                         </div>
                     </div>
@@ -163,10 +95,82 @@
     </div>
 </section>
 
+<div id="exampleModalLive" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form class="needs-validation" method="post" action="@Url.Action("Create_Category", "categories")" novalidate>
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title" id="exampleModalLiveLabel">Thêm mới danh mục</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>
+                                    Tên danh mục<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <input type="text" placeholder="Nhập tên danh mục" id="first-name-icon" class="form-control" name="name_category" required>
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập tên danh mục !
+                                    </div>
+                                </div> <!---->
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-primary">Thêm mới</button>
+                    </div>
+                </div>
+        </form>
+    </div>
+</div>
+
+
 <script>
     $(document).ready(function () {
         $('#example').DataTable({
             pagingType: 'full_numbers',
         });
     });
+</script>
+<script type="text/javascript">
+    function deleteAlert(category_id) {
+        console.log("hihi")
+        swal({
+            title: "Bạn chắn chắn muốn xóa ?",
+            type: "warning",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            confirmButtonText: "Xác nhận",
+            confirmButtonColor: "#ec6c62",
+        },
+            function () {
+                $.ajax({
+                    url: "/categories/Delete_Category/",
+                    data: { "category_id": category_id },
+                    type: "POST"
+                })
+                    .done(function (data) 
+                        {
+                            sweetAlert
+                                ({
+                                    title: "Đã xóa!",
+                                    type: "success"
+                                },
+                                    function () {
+                                        window.location.href = '/categories/Index'
+                                    })
+                        })
+                    .error(function (data) {
+                        swal("OOps", "Chúng tôi không thể kết nối đến server!", "error");
+                    })
+            })
+    }
 </script>

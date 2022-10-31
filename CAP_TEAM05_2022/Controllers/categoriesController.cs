@@ -36,6 +36,15 @@ namespace CAP_TEAM05_2022.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult Delete_Category(int category_id)
+        {
+            category categories = db.categories.Find(category_id);
+            db.categories.Remove(categories);
+            db.SaveChanges();
+            return Json("Delete_Category", JsonRequestBehavior.AllowGet);
+        }
+
+
         // GET: categories/Details/5
         public ActionResult Details(int? id)
         {

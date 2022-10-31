@@ -15,11 +15,13 @@
     <!-- Favicon icon -->
     <link rel="icon" href="~/Template/assets/images/favicon.ico" type="image/x-icon">
     <!-- vendor css -->
+    <link href="~/Content/sweetalert/sweet-alert.css" rel="stylesheet" />
 
     <link href="~/Template/assets/css/style.css" rel="stylesheet" />
 
     <link href="~/Template/assets/css/plugins/animate.min.css" rel="stylesheet" />
-   
+
+
     @Scripts.Render("~/bundles/jquery")
 
 </head>
@@ -150,7 +152,43 @@
     <script src="~/Template/assets/js/plugins/bootstrap.min.js"></script>
     <script src="~/Template/assets/js/pcoded.min.js"></script>
 
+    <!-- Data Table -->
     <script src="~/Template/assets/js/jquery-3.5.1.js"></script>
     <script src="~/Template/assets/js/jquery.dataTables.min.js"></script>
+    <!-- Sweet Alert -->
+    <script src="~/Template/assets/js/SweetAlert/sweetalert.js"></script>
+    <!-- Validation -->
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+
+    <script type="text/javascript">
+        $(document).on('show.bs.modal', '#exampleModal', function (event) {
+            alert('here I am!');
+            var button = $(event.relatedTarget)
+            var recipient = button.data('whatever')
+            console.log(recipient)
+            var modal = $(this)
+            modal.find('.modal-title').text('New message to ' + recipient)
+            modal.find('.modal-body input').val(recipient)
+        })
+    </script>
 </body>
 </html>

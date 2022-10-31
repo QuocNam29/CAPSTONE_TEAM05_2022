@@ -30210,3 +30210,23 @@ margin: 0 6px;
 .dataTables_length label{
     text-align: left;
 }
+.form-search{
+    width: 100%;
+}
+
+.btn-lg {
+    border-radius: 5px;
+    margin: 0 6px;
+    padding: 4px 12px;
+}
+.btn-confirm {
+    background: #7066e0;
+    border: 3px solid #b5b1ec;
+    color: #fff;
+    font-weight: 500;
+}
+    .btn-confirm:hover {
+        background: #7066e0;
+        filter: brightness(93%);
+        color: #fff;
+    }
