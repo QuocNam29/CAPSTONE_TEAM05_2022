@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
+    int no = 0;
 
 }
 <section class="pcoded-main-container">
@@ -39,7 +40,7 @@
                                     <h4>Danh mục sản phẩm</h4>
                                 </div>
                                 <div class="col-md-2">
-                                    <button type="button" class="btn  btn-primary btn-block" data-toggle="modal" data-target="#exampleModalLive">Thêm mới</button>
+                                    <button type="button" class="btn  btn-primary btn-block" data-toggle="modal" data-target="#AddCategory">Thêm mới</button>
                                 </div>
                             </div>
                         </div>
@@ -48,6 +49,7 @@
                                 <table id="example" class="table table-hover">
                                     <thead>
                                         <tr>
+                                            <th>#</th>
                                             <th>Mã danh mục</th>
                                             <th>Tên danh mục</th>
                                             <th width="15%">Trạng thái</th>
@@ -58,7 +60,9 @@
                                     <tbody>
                                         @foreach (var item in Model)
                                         {
+                                            no++;
                                             <tr>
+                                                <td>@no</td>
                                                 <td>@item.code</td>
                                                 <td>@item.name</td>
                                                 <td>
@@ -69,7 +73,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <button class="btn btn-success">
+                                                    <button class="btn btn-success EditCategory" data-toggle="modal" data-target="#EditCategory"  data-id="@item.id">
                                                         <i class="feather icon-edit">
                                                         </i>
                                                     </button>
@@ -77,7 +81,7 @@
                                                         <i class="feather icon-trash-2">
                                                         </i>
                                                     </button>
-                                                
+
                                                 </td>
                                             </tr>
 
@@ -95,12 +99,12 @@
     </div>
 </section>
 
-<div id="exampleModalLive" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+<div id="AddCategory" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="AddCategoryLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <form class="needs-validation" method="post" action="@Url.Action("Create_Category", "categories")" novalidate>
             <div class="modal-content">
                 <div class="modal-header bg-primary">
-                    <h5 class="modal-title" id="exampleModalLiveLabel">Thêm mới danh mục</h5>
+                    <h5 class="modal-title" id="AddCategoryLabel">Thêm mới danh mục</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
 
@@ -125,13 +129,50 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
-                        <button type="submit" class="btn btn-primary">Thêm mới</button>
-                    </div>
+                    <button type="submit" class="btn btn-primary">Thêm mới</button>
                 </div>
+            </div>
         </form>
     </div>
 </div>
+<div id="EditCategory" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="EditCategoryLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form class="needs-validation" method="post" action="@Url.Action("Edit_Category", "categories")" novalidate>
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title" id="EditCategoryLabel">Chỉnh sửa danh mục</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
 
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>
+                                    Tên danh mục<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                <input hidden id="edit_id_category" name="category_id"/>
+                                    <input type="text" placeholder="Nhập tên danh mục" id="edit_name_category" class="form-control" name="name_category" required>
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập tên danh mục !
+                                    </div>
+                                </div> <!---->
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Chỉnh sửa</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
 <script>
     $(document).ready(function () {
@@ -142,7 +183,6 @@
 </script>
 <script type="text/javascript">
     function deleteAlert(category_id) {
-        console.log("hihi")
         swal({
             title: "Bạn chắn chắn muốn xóa ?",
             type: "warning",
@@ -157,20 +197,37 @@
                     data: { "category_id": category_id },
                     type: "POST"
                 })
-                    .done(function (data) 
-                        {
-                            sweetAlert
-                                ({
-                                    title: "Đã xóa!",
-                                    type: "success"
-                                },
-                                    function () {
-                                        window.location.href = '/categories/Index'
-                                    })
-                        })
+                    .done(function (data) {
+                        sweetAlert
+                            ({
+                                title: "Đã xóa!",
+                                type: "success"
+                            },
+                                function () {
+                                    window.location.href = '/categories/Index'
+                                })
+                    })
                     .error(function (data) {
                         swal("OOps", "Chúng tôi không thể kết nối đến server!", "error");
                     })
             })
     }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('.EditCategory').on('click', function () {
+            var id = $(this).data("id");
+            console.log("hihi")
+            $.ajax({
+                type: 'POST',
+                url: '/categories/FindCategory/',
+                data: { "category_id": id },
+                success: function (response) {
+                    $('#edit_id_category').val(response.id);
+                    $('#edit_name_category').val(response.name);
+                }
+            })
+        });
+    });
 </script>

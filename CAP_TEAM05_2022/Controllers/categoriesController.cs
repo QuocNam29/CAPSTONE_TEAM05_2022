@@ -18,7 +18,7 @@ namespace CAP_TEAM05_2022.Controllers
         // GET: categories
         public ActionResult Index()
         {
-            var categories = db.categories.Include(c => c.user);
+            var categories = db.categories.Include(c => c.user).Where(c => c.status != 3).OrderByDescending(c => c.id);
             return View(categories.ToList());
         }
         public ActionResult Create_Category(string name_category)
@@ -39,11 +39,31 @@ namespace CAP_TEAM05_2022.Controllers
         public ActionResult Delete_Category(int category_id)
         {
             category categories = db.categories.Find(category_id);
-            db.categories.Remove(categories);
+            categories.status = 3;
+            categories.deleted_at = DateTime.Now;
+            db.Entry(categories).State = EntityState.Modified;
             db.SaveChanges();
             return Json("Delete_Category", JsonRequestBehavior.AllowGet);
         }
-
+        [HttpPost]
+        public JsonResult FindCategory(int category_id)
+        {
+            category categories = db.categories.Find(category_id);
+            var emp = new category();
+            emp.id = category_id;
+            emp.name = categories.name;       
+            return Json(emp);
+        }
+        public ActionResult Edit_Category(int category_id, string name_category)
+        {
+            category categories = db.categories.Find(category_id);
+            categories.name = name_category;
+            categories.status = 2;
+            categories.updated_at = DateTime.Now;
+            db.Entry(categories).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
 
         // GET: categories/Details/5
         public ActionResult Details(int? id)

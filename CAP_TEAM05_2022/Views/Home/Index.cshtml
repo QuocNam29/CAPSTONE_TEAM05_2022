@@ -1,175 +1,189 @@
-﻿@{
-    Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
+﻿@{ 
+    Layout = null;
 }
-<section class="pcoded-main-container">
-    <div class="pcoded-content">
-        <div class="page-header">
-            <div class="page-block">
-                <div class="row align-items-center">
-                    <div class="col-md-12">
-                        <div class="page-header-title">
-                            <h5 class="m-b-10">Quản lý danh mục</h5>
-                        </div>
-                        <ul class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <a href="https://tancool.net">
-                                    <i class="feather icon-home"></i>
-                                </a>
-                            </li>
-                            <li class="breadcrumb-item">
-                                <a href="javascript:void(0)">Quản lý danh mục</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div data-v-3f82150e="">
-            <div data-v-3f82150e="" class="row">
-                <div data-v-3f82150e="" class="col-md-12">
-                    <div data-v-3f82150e="" class="card card-create">
-                        <div data-v-3f82150e="" class="card-header"><h4 data-v-3f82150e="">Tạo mới danh mục</h4></div> <div data-v-3f82150e="" class="card-body">
-                            <form data-v-3f82150e="">
-                                <div data-v-3f82150e="" class="row">
-                                    <div data-v-3f82150e="" class="col-md-10"><div data-v-3f82150e="" class="form-group"><label data-v-3f82150e="">Tên danh mục<span data-v-3f82150e="" class="text-danger">*</span></label> <div data-v-3f82150e="" class="position-relative"><input data-v-3f82150e="" type="text" placeholder="Nhập tên danh mục" id="first-name-icon" class="form-control"></div> <!----></div></div> <div data-v-3f82150e="" class="col-md-2">
-                                        <button data-v-3f82150e="" type="submit" class="btn btn-primary btn-block">Tạo mới</button> <button data-v-3f82150e="" type="button" class="btn btn-info btn-block">
-                                            Làm mới
-                                        </button> <button data-v-3f82150e="" type="button" class="btn btn-danger btn-block" style="display: none;">
-                                            Huỷ bỏ
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div> <hr data-v-3f82150e=""> <div data-v-3f82150e="" class="row">
-                <div data-v-3f82150e="" class="col-md-12">
-                    <div data-v-3f82150e="" class="card">
-                        <div data-v-3f82150e="" class="card-header">
-                            <div data-v-3f82150e="" class="row">
-                                <div data-v-3f82150e="" class="col-md-9">
-                                    <input data-v-3f82150e="" type="text" id="search" placeholder="Tìm kiếm..." class="form-control form-search">
-                                </div>
-                                <div data-v-3f82150e="" class="col-md-3">
-                                    <select data-v-3f82150e="" name="filter" id="filter" class="form-control">
-                                        <option data-v-3f82150e="" value="">Xem tất cả</option>
-                                        <option data-v-3f82150e="" value="0">Đang hiển thị</option>
-                                        <option data-v-3f82150e="" value="1">Đang bị ẩn</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div data-v-3f82150e="" class="card-body table-border-style">
-                            <div data-v-3f82150e="" class="table-responsive">
-                                <table data-v-3f82150e="" class="table table-hover">
-                                    <thead data-v-3f82150e="">
-                                        <tr data-v-3f82150e="">
-                                            <th data-v-3f82150e="">Mã danh mục</th>
-                                            <th data-v-3f82150e="">Tên danh mục</th>
-                                            <th data-v-3f82150e="" width="15%">Trạng thái</th>
-                                            <th data-v-3f82150e="" width="15%"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody data-v-3f82150e="">
-                                        <tr data-v-3f82150e="">
-                                            <td data-v-3f82150e="">NH098f27b4f</td>
-                                            <td data-v-3f82150e="">test</td>
-                                            <td data-v-3f82150e="">
-                                                <div data-v-3f82150e="" class="custom-control custom-switch">
-                                                    <input data-v-3f82150e="" type="checkbox" class="custom-control-input">
-                                                    <label data-v-3f82150e="" class="custom-control-label"></label>
-                                                </div>
-                                            </td>
-                                            <td data-v-3f82150e="">
-                                                <button data-v-3f82150e="" class="btn btn-success">
-                                                    <i data-v-3f82150e="" class="feather icon-edit"></i>
-                                                </button>
-                                                <button data-v-3f82150e="" class="btn btn-danger">
-                                                    <i data-v-3f82150e="" class="feather icon-trash-2"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr data-v-3f82150e="">
-                                            <td data-v-3f82150e="">NH7aac55187</td>
-                                            <td data-v-3f82150e="">Thuốc diệt cỏ</td>
-                                            <td data-v-3f82150e="">
-                                                <div data-v-3f82150e="" class="custom-control custom-switch">
-                                                    <input data-v-3f82150e="" type="checkbox" class="custom-control-input">
-                                                    <label data-v-3f82150e="" class="custom-control-label"></label>
-                                                </div>
-                                            </td>
-                                            <td data-v-3f82150e="">
-                                                <button data-v-3f82150e="" class="btn btn-success">
-                                                    <i data-v-3f82150e="" class="feather icon-edit"></i>
-                                                </button>
-                                                <button data-v-3f82150e="" class="btn btn-danger">
-                                                    <i data-v-3f82150e="" class="feather icon-trash-2"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr data-v-3f82150e="">
-                                            <td data-v-3f82150e="">NH6b310d5b1</td>
-                                            <td data-v-3f82150e="">Thuốc trừ sâu</td>
-                                            <td data-v-3f82150e="">
-                                                <div data-v-3f82150e="" class="custom-control custom-switch">
-                                                    <input data-v-3f82150e="" type="checkbox" class="custom-control-input">
-                                                    <label data-v-3f82150e="" class="custom-control-label"></label>
-                                                </div>
-                                            </td>
-                                            <td data-v-3f82150e="">
-                                                <button data-v-3f82150e="" class="btn btn-success">
-                                                    <i data-v-3f82150e="" class="feather icon-edit"></i>
-                                                </button>
-                                                <button data-v-3f82150e="" class="btn btn-danger">
-                                                    <i data-v-3f82150e="" class="feather icon-trash-2"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table> <div data-v-3f82150e="" class="between:flex bottom:margin-3 ml-2">
-                                    <div data-v-3f82150e="" class="center:flex-items">
-                                        <span data-v-3f82150e="" class="right:marign-1">Hiển thị</span>
-                                        <select data-v-3f82150e="" id="form-select" class="select form-control select-entities">
-                                            <option data-v-3f82150e="" value="5">
-                                                5
-                                            </option>
-                                            <option data-v-3f82150e="" value="10">
-                                                10
-                                            </option>
-                                            <option data-v-3f82150e="" value="25">
-                                                25
-                                            </option>
-                                            <option data-v-3f82150e="" value="50">
-                                                50
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div> <nav data-v-3f82150e="" aria-label="...">
-                                    <ul class="pagination justify-content-center">
-                                        <li class="page-item disabled"><a class="page-link"> &lt;&lt; </a></li>
-                                        <li class="page-item disabled"><a class="page-link"> &lt; </a></li>
-                                        <li class="page-item active">
-                                            <a class="page-link">
-                                                1
-                                                <span class="sr-only"></span>
-                                            </a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link">
-                                                2
-                                                <!---->
-                                            </a>
-                                        </li>
-                                        <li class="page-item"><a class="page-link"> &gt; </a></li>
-                                        <li class="page-item"><a class="page-link"> &gt;&gt; </a></li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Flat Able - Premium Admin Template by Phoenixcoded</title>
+  
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="">
+    <meta name="author" content="Phoenixcoded" />
+    <!-- Favicon icon -->
+    <link rel="icon" href="~/Template/assets/images/favicon.ico" type="image/x-icon">
+    <!-- vendor css -->
+    <link href="~/Content/sweetalert/sweet-alert.css" rel="stylesheet" />
+    <link href="~/Template/assets/css/style.css" rel="stylesheet" />
+    <link href="~/Template/assets/css/plugins/animate.min.css" rel="stylesheet" />
+
+
+
+</head>
+<body class="">
+    <!-- [ Pre-loader ] start -->
+    <div class="loader-bg">
+        <div class="loader-track">
+            <div class="loader-fill"></div>
         </div>
     </div>
-</section>
+    <!-- [ Pre-loader ] End -->
+    <!-- [ navigation menu ] start -->
+    <nav class="pcoded-navbar">
+        <div class="navbar-wrapper  ">
+            <div class="navbar-content scroll-div ">
+                <div class="">
+                    <div class="main-menu-header">
+                        <img src="~/Template/assets/images/default-avatar.png" alt="User-Profile-Image" class="img-radius"> 
+                        <div class="user-details">
+                            <span>@Session["user_email"].ToString()</span> 
+                            <div id="more-details">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="nav pcoded-inner-navbar">
+                    <li class="nav-item pcoded-menu-caption">
+                        <label>Quản lý</label>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://tancool.net/quan-ly-nhan-vien" class="nav-link">
+                            <span class="pcoded-micon"><i class="feather icon-user"></i></span>
+                            <span class="pcoded-mtext">Nhân viên</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://tancool.net/quan-ly-khach-hang" class="nav-link">
+                            <span class="pcoded-micon"><i class="feather icon-users"></i></span>
+                            <span class="pcoded-mtext">Khách hàng</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://tancool.net/quan-ly-nhom-hang" class="nav-link">
+                            <span class="pcoded-micon"><i class="feather icon-grid"></i></span>
+                            <span class="pcoded-mtext">Nhóm hàng</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="@Url.Action("Index","categories")" class="nav-link">
+                            <span class="pcoded-micon"><i class="feather icon-layout"></i></span>
+                            <span class="pcoded-mtext">Danh mục</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://tancool.net/quan-ly-san-pham" class="nav-link">
+                            <span class="pcoded-micon"><i class="feather icon-wind"></i></span>
+                            <span class="pcoded-mtext">Sản phẩm</span>
+                        </a>
+                    </li>
+                    <li class="nav-item pcoded-menu-caption">
+                        <label>Kho</label>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://tancool.net/nhap-kho" class="nav-link">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-box"></i>
+                            </span>
+                            <span class="pcoded-mtext">Nhập kho</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://tancool.net/ton-kho" class="nav-link">
+                            <span class="pcoded-micon"><i class="feather icon-package"></i></span>
+                            <span class="pcoded-mtext">Tồn kho</span>
+                        </a>
+                    </li>
+                    <li class="nav-item pcoded-menu-caption">
+                        <label>Hàng hoá</label>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://tancool.net/quan-ly-ban-hang" class="nav-link">
+                            <span class="pcoded-micon"><i class="feather icon-target"></i></span> <span class="pcoded-mtext">Bán hàng</span>
+                        </a>
+                    </li>
+                    <li class="nav-item"><a href="https://tancool.net/doanh-thu" class="nav-link"><span class="pcoded-micon"><i class="feather icon-clipboard"></i></span> <span class="pcoded-mtext">Doanh thu</span></a></li>
+                    <li class="nav-item"><a href="https://tancool.net/quan-ly-cong-no" class="nav-link"><span class="pcoded-micon"><i class="feather icon-file-text"></i></span> <span class="pcoded-mtext">Công nợ</span></a></li>
+                    <li class="nav-item"><a href="https://tancool.net/don-hang" class="nav-link"><span class="pcoded-micon"><i class="feather icon-inbox"></i></span> <span class="pcoded-mtext">Đơn hàng</span></a></li>
+                    <li class="nav-item pcoded-menu-caption"><label>Tín năng</label></li>
+                    <li class="nav-item"><a href="https://tancool.net/doi-tra" class="nav-link"><span class="pcoded-micon"><i class="feather icon-repeat"></i></span> <span class="pcoded-mtext">Đổi trả</span></a></li>
+                    <li class="nav-item"><a href="https://tancool.net/thu-chi" class="nav-link"><span class="pcoded-micon"><i class="feather icon-percent"></i></span> <span class="pcoded-mtext">Thu chi</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- [ navigation menu ] end -->
+    <!-- [ Header ] start -->
+    <header class="navbar pcoded-header navbar-expand-lg navbar-light header-dark">
+
+
+        <div class="m-header">
+            <a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
+            <a href="#!" class="b-brand">
+                <!-- ========   change your logo hear   ============ -->
+                <img src="~/Template/assets/images/logo.png" alt="" class="logo">
+                <img src="~/Template/assets/images/logo-icon.png" alt="" class="logo-thumb">
+            </a>
+            <a href="#!" class="mob-toggler">
+                <i class="feather icon-more-vertical"></i>
+            </a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li>
+                    <div class="dropdown drp-user">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                            <img src="~/Template/assets/images/default-avatar.png" alt="User-Profile-Image" class="img-radius mr-2" style="width: 2.5vw;">
+                            <span class="mr-3">@Session["user_email"].ToString()</span>
+                        </a>
+                        <a href="javascript:document.getElementById('logoutForm').submit()" title="Log out" class="dud-logout"> <i class="feather icon-log-out"></i></a>
+                     
+                        <div class="dropdown-menu dropdown-menu-right profile-notification">
+                            <ul class="pro-body">
+                                <li>
+                                    <a href="https://tancool.net/thong-tin-ca-nhan" class="dropdown-item">
+                                        <i class="feather icon-user"></i>
+                                        Thông tin cá nhân
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://tancool.net/thay-doi-mat-khau" class="dropdown-item">
+                                        <i class="feather icon-lock"></i>
+                                        Đổi mật khẩu
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+
+    </header>
+    <!-- [ Header ] end -->
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-content">
+            <!-- [ breadcrumb ] start -->
+       
+            <!-- [ breadcrumb ] end -->
+            <!-- [ Main Content ] start -->
+            
+            <!-- [ Main Content ] end -->
+        </div>
+    </div>
+   
+    <!-- Warning Section Ends -->
+    <!-- Required Js -->
+    <script src="~/Template/assets/js/vendor-all.min.js"></script>
+    <script src="~/Template/assets/js/plugins/bootstrap.min.js"></script>
+    <script src="~/Template/assets/js/pcoded.min.js"></script>
+
+
+
+</body>
+</html>
