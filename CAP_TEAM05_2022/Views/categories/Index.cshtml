@@ -62,7 +62,8 @@
                                         {
                                             no++;
                                             <tr>
-                                                <td>@no</td>
+                                                <td>@no <input hidden type="text" name="record" value="@item.code"></td>
+                                               
                                                 <td>@item.code</td>
                                                 <td>@item.name</td>
                                                 <td>
@@ -73,11 +74,12 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <button class="btn btn-success EditCategory" data-toggle="modal" data-target="#EditCategory"  data-id="@item.id">
+                                                    <button class="btn btn-success EditCategory" data-toggle="modal" data-target="#EditCategory" data-id="@item.id">
                                                         <i class="feather icon-edit">
                                                         </i>
                                                     </button>
-                                                    <button class="btn btn-danger" onclick="deleteAlert('@item.id')" id="Delete">
+                                                    <input hidden type="text" id="URLDelete" value="@Url.Action("Delete_Category", "categories")">
+                                                    <button class="btn btn-danger" onclick="deleteAlert('@item.id', '@item.code')" id="Delete">
                                                         <i class="feather icon-trash-2">
                                                         </i>
                                                     </button>
@@ -181,38 +183,7 @@
         });
     });
 </script>
-<script type="text/javascript">
-    function deleteAlert(category_id) {
-        swal({
-            title: "Bạn chắn chắn muốn xóa ?",
-            type: "warning",
-            showCancelButton: true,
-            closeOnConfirm: false,
-            confirmButtonText: "Xác nhận",
-            confirmButtonColor: "#ec6c62",
-        },
-            function () {
-                $.ajax({
-                    url: "/categories/Delete_Category/",
-                    data: { "category_id": category_id },
-                    type: "POST"
-                })
-                    .done(function (data) {
-                        sweetAlert
-                            ({
-                                title: "Đã xóa!",
-                                type: "success"
-                            },
-                                function () {
-                                    window.location.href = '/categories/Index'
-                                })
-                    })
-                    .error(function (data) {
-                        swal("OOps", "Chúng tôi không thể kết nối đến server!", "error");
-                    })
-            })
-    }
-</script>
+
 
 <script>
     $(document).ready(function () {

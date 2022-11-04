@@ -196,17 +196,6 @@
             }, false);
         })();
     </script>
-
-    <script type="text/javascript">
-        $(document).on('show.bs.modal', '#exampleModal', function (event) {
-            alert('here I am!');
-            var button = $(event.relatedTarget)
-            var recipient = button.data('whatever')
-            console.log(recipient)
-            var modal = $(this)
-            modal.find('.modal-title').text('New message to ' + recipient)
-            modal.find('.modal-body input').val(recipient)
-        })
-    </script>
+    
 </body>
 </html>

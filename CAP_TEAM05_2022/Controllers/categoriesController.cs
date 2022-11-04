@@ -36,9 +36,9 @@ namespace CAP_TEAM05_2022.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Delete_Category(int category_id)
+        public ActionResult Delete_Category(category categorys)
         {
-            category categories = db.categories.Find(category_id);
+            category categories = db.categories.Find(categorys.id);
             categories.status = 3;
             categories.deleted_at = DateTime.Now;
             db.Entry(categories).State = EntityState.Modified;
