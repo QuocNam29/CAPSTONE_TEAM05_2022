@@ -1,10 +1,9 @@
-﻿@model IEnumerable<CAP_TEAM05_2022.Models.category>
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.group>
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
     int no = 0;
-
 }
 <section class="pcoded-main-container">
     <div class="pcoded-content">
@@ -13,7 +12,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Quản lý danh mục</h5>
+                            <h5 class="m-b-10">Quản lý nhóm hàng</h5>
                         </div>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item">
@@ -23,7 +22,7 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="javascript:void(0)">Quản lý danh mục</a>
+                                <a href="javascript:void(0)">Quản lý nhóm hàng</a>
                             </li>
                         </ul>
                     </div>
@@ -37,10 +36,10 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-md-10">
-                                    <h4>DANH MỤC SẢN PHẨM</h4>
+                                    <h4>NHÓM SẢN PHẨM</h4>
                                 </div>
                                 <div class="col-md-2">
-                                    <button type="button" class="btn  btn-primary btn-block" data-toggle="modal" data-target="#AddCategory">Thêm mới</button>
+                                    <button type="button" class="btn  btn-primary btn-block" data-toggle="modal" data-target="#AddGroupProduct">Thêm mới</button>
                                 </div>
                             </div>
                         </div>
@@ -50,8 +49,8 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Mã danh mục</th>
-                                            <th>Tên danh mục</th>
+                                            <th>Mã nhóm hàng</th>
+                                            <th>Tên nhóm hàng</th>
                                             <th width="15%">Trạng thái</th>
                                             <th width="15%">
                                             </th>
@@ -60,35 +59,25 @@
                                     <tbody>
                                         @foreach (var item in Model)
                                         {
-                                            string customswitch_DM = "customswitch" + item.id;
                                             no++;
                                             <tr>
                                                 <td>@no <input hidden type="text" name="record" value="@item.code"></td>
-                                               
+
                                                 <td>@item.code</td>
                                                 <td>@item.name</td>
                                                 <td>
                                                     <div class="custom-control custom-switch">
-                                                        <input type="checkbox" class="custom-control-input" id="@customswitch_DM">
-                                                        <label class="custom-control-label" for="@customswitch_DM"></label>
+                                                        <input type="checkbox" class="custom-control-input">
+                                                        <label class="custom-control-label">
+                                                        </label>
                                                     </div>
-                                                    <script language="javascript">
-                                                        document.getElementById('@customswitch_DM').onclick = function (e) {
-                                                            if (this.checked) {
-                                                                alert("Bạn vừa thích freetuts.net");
-                                                            }
-                                                            else {
-                                                                alert("Bạn vừa bỏ thích freetuts.net");
-                                                            }
-                                                        };
-                                                    </script>
                                                 </td>
                                                 <td>
-                                                    <button class="btn btn-success EditCategory" data-toggle="modal" data-target="#EditCategory" data-id="@item.id">
+                                                    <button class="btn btn-success EditGroupProduct" data-toggle="modal" data-target="#EditGroupProduct" data-id="@item.id">
                                                         <i class="feather icon-edit">
                                                         </i>
                                                     </button>
-                                                    <input hidden type="text" id="URLDelete" value="@Url.Action("Delete_Category", "categories")">
+                                                    <input hidden type="text" id="URLDelete" value="@Url.Action("Delete_GroupProduct", "groups")">
                                                     <button class="btn btn-danger" onclick="deleteAlert('@item.id', '@item.code')" id="Delete">
                                                         <i class="feather icon-trash-2">
                                                         </i>
@@ -111,12 +100,12 @@
     </div>
 </section>
 
-<div id="AddCategory" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="AddCategoryLabel" aria-hidden="true">
+<div id="AddGroupProduct" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="AddGroupProductLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form class="needs-validation" method="post" action="@Url.Action("Create_Category", "categories")" novalidate>
+        <form class="needs-validation" method="post" action="@Url.Action("Create_GroupProduct", "groups")" novalidate>
             <div class="modal-content">
                 <div class="modal-header bg-primary">
-                    <h5 class="modal-title" id="AddCategoryLabel">Thêm mới danh mục</h5>
+                    <h5 class="modal-title" id="AddGroupProductLabel">Thêm mới nhóm hàng</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
 
@@ -125,12 +114,12 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>
-                                    Tên danh mục<span class="text-danger">*</span>
+                                    Tên nhóm hàng<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input type="text" placeholder="Nhập tên danh mục" id="first-name-icon" class="form-control" name="name_category" required>
+                                    <input type="text" placeholder="Nhập tên nhóm hàng" id="first-name-icon" class="form-control" name="name_GroupProduct" required>
                                     <div class="invalid-feedback">
-                                        Vui lòng nhập tên danh mục !
+                                        Vui lòng nhập tên nhóm hàng !
                                     </div>
                                 </div> <!---->
                             </div>
@@ -147,12 +136,12 @@
         </form>
     </div>
 </div>
-<div id="EditCategory" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="EditCategoryLabel" aria-hidden="true">
+<div id="EditGroupProduct" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="EditGroupProductLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form class="needs-validation" method="post" action="@Url.Action("Edit_Category", "categories")" novalidate>
+        <form class="needs-validation" method="post" action="@Url.Action("Edit_GroupProduct", "groups")" novalidate>
             <div class="modal-content">
                 <div class="modal-header bg-primary">
-                    <h5 class="modal-title" id="EditCategoryLabel">Chỉnh sửa danh mục</h5>
+                    <h5 class="modal-title" id="EditGroupProductLabel">Chỉnh sửa nhóm hàng</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
 
@@ -161,13 +150,13 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>
-                                    Tên danh mục<span class="text-danger">*</span>
+                                    Tên nhóm hàng<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                <input hidden id="edit_id_category" name="category_id"/>
-                                    <input type="text" placeholder="Nhập tên danh mục" id="edit_name_category" class="form-control" name="name_category" required>
+                                    <input hidden id="edit_id_GroupProduct" name="GroupProduct_id" />
+                                    <input type="text" placeholder="Nhập tên nhóm hàng" id="edit_name_GroupProduct" class="form-control" name="name_GroupProduct" required>
                                     <div class="invalid-feedback">
-                                        Vui lòng nhập tên danh mục !
+                                        Vui lòng nhập tên nhóm hàng !
                                     </div>
                                 </div> <!---->
                             </div>
@@ -197,18 +186,19 @@
 
 <script>
     $(document).ready(function () {
-        $('.EditCategory').on('click', function () {
+        $('.EditGroupProduct').on('click', function () {
             var id = $(this).data("id");
             console.log("hihi")
             $.ajax({
                 type: 'POST',
-                url: '/categories/FindCategory/',
-                data: { "category_id": id },
+                url: '/groups/FindGroupProduct/',
+                data: { "GroupProduct_id": id },
                 success: function (response) {
-                    $('#edit_id_category').val(response.id);
-                    $('#edit_name_category').val(response.name);
+                    $('#edit_id_GroupProduct').val(response.id);
+                    $('#edit_name_GroupProduct').val(response.name);
                 }
             })
         });
     });
+
 </script>

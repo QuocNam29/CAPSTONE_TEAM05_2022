@@ -171,6 +171,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\categoriesController.cs" />
+    <Compile Include="Controllers\groupsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\SweetController.cs" />
@@ -544,6 +545,11 @@
     <Content Include="Views\users\Index.cshtml" />
     <Content Include="Views\users\Index2.cshtml" />
     <Content Include="Views\Sweet\Alert.cshtml" />
+    <Content Include="Views\groups\Create.cshtml" />
+    <Content Include="Views\groups\Delete.cshtml" />
+    <Content Include="Views\groups\Details.cshtml" />
+    <Content Include="Views\groups\Edit.cshtml" />
+    <Content Include="Views\groups\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
