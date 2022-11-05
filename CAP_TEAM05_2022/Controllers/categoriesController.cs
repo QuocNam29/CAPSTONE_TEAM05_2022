@@ -11,6 +11,7 @@ using CAP_TEAM05_2022.Models;
 
 namespace CAP_TEAM05_2022.Controllers
 {
+    [LoginVerification]
     public class categoriesController : Controller
     {
         private QuyThanhEntities db = new QuyThanhEntities();

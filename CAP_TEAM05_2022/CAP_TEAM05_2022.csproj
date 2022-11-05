@@ -180,6 +180,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\CodeRandom.cs" />
+    <Compile Include="Helper\LoginVerification.cs" />
     <Compile Include="Helper\PagedData.cs" />
     <Compile Include="Helper\Pagination.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
