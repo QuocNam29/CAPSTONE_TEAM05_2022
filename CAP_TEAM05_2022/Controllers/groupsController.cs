@@ -28,6 +28,7 @@ namespace CAP_TEAM05_2022.Controllers
             group GroupProduct = new group();
             GroupProduct.name = name_GroupProduct;
             GroupProduct.created_by = user.id;
+            GroupProduct.status = 1;
             GroupProduct.created_at = DateTime.Now;
             GroupProduct.slug = name_GroupProduct;
             GroupProduct.code = "NH" + CodeRandom.RandomCode();
@@ -44,6 +45,22 @@ namespace CAP_TEAM05_2022.Controllers
             db.Entry(group).State = EntityState.Modified;
             db.SaveChanges();
             return Json("Delete_GroupProduct", JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult EditStatus_GroupProduct(group GroupProducts)
+        {
+            group group = db.groups.Find(GroupProducts.id);
+            if (group.status == 1)
+            {
+                group.status = 2;
+            }
+            else
+            {
+                group.status = 1;
+            }
+            group.updated_at = DateTime.Now;
+            db.Entry(group).State = EntityState.Modified;
+            db.SaveChanges();
+            return Json("EditStatus_GroupProduct", JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public JsonResult FindGroupProduct(int GroupProduct_id)

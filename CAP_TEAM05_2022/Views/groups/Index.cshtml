@@ -59,6 +59,7 @@
                                     <tbody>
                                         @foreach (var item in Model)
                                         {
+                                            string customswitch_NH = "customswitch" + item.id;
                                             no++;
                                             <tr>
                                                 <td>@no <input hidden type="text" name="record" value="@item.code"></td>
@@ -66,11 +67,26 @@
                                                 <td>@item.code</td>
                                                 <td>@item.name</td>
                                                 <td>
-                                                    <div class="custom-control custom-switch">
-                                                        <input type="checkbox" class="custom-control-input">
-                                                        <label class="custom-control-label">
-                                                        </label>
-                                                    </div>
+                                                    @if (item.status == 1)
+                                                    {
+                                                        <div class="custom-control custom-switch">
+                                                            <input type="checkbox" checked class="custom-control-input" id="@customswitch_NH">
+                                                            <label class="custom-control-label" for="@customswitch_NH"></label>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="custom-control custom-switch">
+                                                            <input type="checkbox" class="custom-control-input" id="@customswitch_NH">
+                                                            <label class="custom-control-label" for="@customswitch_NH"></label>
+                                                        </div>
+                                                    }
+                                                    <input hidden type="text" id="URDEditStatus" value="@Url.Action("EditStatus_GroupProduct", "groups")">
+                                                    <script language="javascript">
+                                                        document.getElementById('@customswitch_NH').onclick = function (e) {                                                         
+                                                                EditStatus(@item.id);                                                          
+                                                        };
+                                                    </script>
                                                 </td>
                                                 <td>
                                                     <button class="btn btn-success EditGroupProduct" data-toggle="modal" data-target="#EditGroupProduct" data-id="@item.id">

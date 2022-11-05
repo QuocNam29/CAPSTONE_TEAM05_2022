@@ -68,18 +68,24 @@
                                                 <td>@item.code</td>
                                                 <td>@item.name</td>
                                                 <td>
-                                                    <div class="custom-control custom-switch">
-                                                        <input type="checkbox" class="custom-control-input" id="@customswitch_DM">
-                                                        <label class="custom-control-label" for="@customswitch_DM"></label>
-                                                    </div>
+                                                    @if (item.status == 1)
+                                                    {
+                                                        <div class="custom-control custom-switch">
+                                                            <input type="checkbox" checked class="custom-control-input" id="@customswitch_DM">
+                                                            <label class="custom-control-label" for="@customswitch_DM"></label>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="custom-control custom-switch">
+                                                            <input type="checkbox"  class="custom-control-input" id="@customswitch_DM">
+                                                            <label class="custom-control-label" for="@customswitch_DM"></label>
+                                                        </div>
+                                                    }
+                                                    <input hidden type="text" id="URDEditStatus" value="@Url.Action("EditStatus_Category", "categories")">
                                                     <script language="javascript">
-                                                        document.getElementById('@customswitch_DM').onclick = function (e) {
-                                                            if (this.checked) {
-                                                                alert("Bạn vừa thích freetuts.net");
-                                                            }
-                                                            else {
-                                                                alert("Bạn vừa bỏ thích freetuts.net");
-                                                            }
+                                                        document.getElementById('@customswitch_DM').onclick = function (e) {                                                         
+                                                                EditStatus(@item.id);                                                          
                                                         };
                                                     </script>
                                                 </td>

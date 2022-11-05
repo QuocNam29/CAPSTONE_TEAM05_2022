@@ -27,6 +27,7 @@ namespace CAP_TEAM05_2022.Controllers
             user user = db.users.Where(u => u.email == email).FirstOrDefault();
             category category = new category();
             category.name = name_category;
+            category.status = 1;
             category.created_by = user.id;
             category.created_at = DateTime.Now;
             category.slug = name_category;
@@ -45,6 +46,22 @@ namespace CAP_TEAM05_2022.Controllers
             db.SaveChanges();
             return Json("Delete_Category", JsonRequestBehavior.AllowGet);
         }
+        public ActionResult EditStatus_Category(category categorys)
+        {
+            category categories = db.categories.Find(categorys.id);
+            if (categories.status == 1)
+            {
+                categories.status = 2;
+            }
+            else
+            {
+                categories.status = 1;
+            }         
+            categories.updated_at = DateTime.Now;
+            db.Entry(categories).State = EntityState.Modified;
+            db.SaveChanges();
+            return Json("EditStatus_Category", JsonRequestBehavior.AllowGet);
+        }
         [HttpPost]
         public JsonResult FindCategory(int category_id)
         {
@@ -58,7 +75,6 @@ namespace CAP_TEAM05_2022.Controllers
         {
             category categories = db.categories.Find(category_id);
             categories.name = name_category;
-            categories.status = 2;
             categories.updated_at = DateTime.Now;
             db.Entry(categories).State = EntityState.Modified;
             db.SaveChanges();

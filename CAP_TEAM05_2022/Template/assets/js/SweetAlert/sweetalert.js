@@ -706,17 +706,12 @@
 })(window, document);
 
 var URLDelete = "";
-var Name_id = "";
 $('#URLDelete')
     .keypress(function () {
         URLDelete = $(this).val();
     })
     .keypress();
-$('#Name_id')
-    .keypress(function () {
-        Name_id = $(this).val();
-    })
-    .keypress();
+
 function Contains(text_one, text_two) {
     if (text_one.indexOf(text_two) != -1)
         return true;
@@ -759,4 +754,29 @@ function Contains(text_one, text_two) {
                         swal("OOps", "Chúng tôi không thể kết nối đến server!", "error");
                     })*/
             })
-    }
+}
+var URDEditStatus = "";
+$('#URDEditStatus')
+    .keypress(function () {
+        URDEditStatus = $(this).val();
+    })
+    .keypress();
+function EditStatus(id) {
+    sweetAlert
+        ({
+            title: "Cập nhật trạng thái thành công!",
+            type: "success"
+        },
+            function () {
+                var categorys = {};
+                categorys.id = id;
+                $.ajax({
+                    url: URDEditStatus,
+                    data: JSON.stringify(categorys),
+                    type: "POST",
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json'
+                })
+            });
+  
+}
