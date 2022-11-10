@@ -16,7 +16,7 @@ namespace CAP_TEAM05_2022
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "categories", action = "Index", id = UrlParameter.Optional }
             );
         }
     }
