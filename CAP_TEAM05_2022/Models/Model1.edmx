@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="QuyThanhModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="CP25Team05Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -158,7 +158,7 @@
           <Property Name="deleted_at" Type="datetime2" Precision="0" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="password_resets">
           <Key>
             <PropertyRef Name="email" />
@@ -502,7 +502,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="QuyThanhModelStoreContainer">
+        <EntityContainer Name="CP25Team05ModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
@@ -605,10 +605,11 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
             <End Role="sale_details" EntitySet="sale_details" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="QuyThanhModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="CP25Team05Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="C__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -672,7 +673,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="product_id" Type="Int32" Nullable="false" />
           <Property Name="customer_id" Type="Int32" Nullable="false" />
           <Property Name="quantity" Type="Int32" Nullable="false" />
@@ -688,7 +689,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="created_by" Type="Int32" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
@@ -704,7 +705,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="created_by" Type="Int32" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
@@ -727,7 +728,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="sale_id" Type="Int32" Nullable="false" />
           <Property Name="paid" Type="Int32" Nullable="false" />
           <Property Name="total" Type="Int32" Nullable="false" />
@@ -742,7 +743,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="created_by" Type="Int32" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
@@ -758,7 +759,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="product_id" Type="Int32" Nullable="false" />
           <Property Name="quantity" Type="Int32" Nullable="false" />
           <Property Name="sold" Type="Int32" Nullable="false" />
@@ -775,7 +776,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="tokenable_type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="tokenable_id" Type="Int64" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
@@ -789,7 +790,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="code" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="slug" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
@@ -818,7 +819,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="sale_id" Type="Int32" Nullable="false" />
           <Property Name="product_id" Type="Int32" Nullable="false" />
           <Property Name="price" Type="Int32" Nullable="false" />
@@ -834,7 +835,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="customer_id" Type="Int32" Nullable="false" />
           <Property Name="method" Type="Int32" Nullable="false" />
@@ -866,7 +867,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="email_verified_at" Type="DateTime" Precision="0" />
@@ -1108,7 +1109,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
           <End Role="AspNetRoles" Type="Self.AspNetRole" Multiplicity="*" />
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="QuyThanhEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="CP25Team05Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
@@ -1205,9 +1206,9 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="QuyThanhModelStoreContainer" CdmEntityContainer="QuyThanhEntities">
+        <EntityContainerMapping StorageEntityContainer="CP25Team05ModelStoreContainer" CdmEntityContainer="CP25Team05Entities">
           <EntitySetMapping Name="C__MigrationHistory">
-            <EntityTypeMapping TypeName="QuyThanhModel.C__MigrationHistory">
+            <EntityTypeMapping TypeName="CP25Team05Model.C__MigrationHistory">
               <MappingFragment StoreEntitySet="__MigrationHistory">
                 <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
                 <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
@@ -1217,7 +1218,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetRoles">
-            <EntityTypeMapping TypeName="QuyThanhModel.AspNetRole">
+            <EntityTypeMapping TypeName="CP25Team05Model.AspNetRole">
               <MappingFragment StoreEntitySet="AspNetRoles">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -1225,7 +1226,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserClaims">
-            <EntityTypeMapping TypeName="QuyThanhModel.AspNetUserClaim">
+            <EntityTypeMapping TypeName="CP25Team05Model.AspNetUserClaim">
               <MappingFragment StoreEntitySet="AspNetUserClaims">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -1235,7 +1236,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserLogins">
-            <EntityTypeMapping TypeName="QuyThanhModel.AspNetUserLogin">
+            <EntityTypeMapping TypeName="CP25Team05Model.AspNetUserLogin">
               <MappingFragment StoreEntitySet="AspNetUserLogins">
                 <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
                 <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
@@ -1244,7 +1245,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUsers">
-            <EntityTypeMapping TypeName="QuyThanhModel.AspNetUser">
+            <EntityTypeMapping TypeName="CP25Team05Model.AspNetUser">
               <MappingFragment StoreEntitySet="AspNetUsers">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
@@ -1262,7 +1263,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="carts">
-            <EntityTypeMapping TypeName="QuyThanhModel.cart">
+            <EntityTypeMapping TypeName="CP25Team05Model.cart">
               <MappingFragment StoreEntitySet="carts">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="product_id" ColumnName="product_id" />
@@ -1277,7 +1278,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="categories">
-            <EntityTypeMapping TypeName="QuyThanhModel.category">
+            <EntityTypeMapping TypeName="CP25Team05Model.category">
               <MappingFragment StoreEntitySet="categories">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="code" ColumnName="code" />
@@ -1292,7 +1293,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="customers">
-            <EntityTypeMapping TypeName="QuyThanhModel.customer">
+            <EntityTypeMapping TypeName="CP25Team05Model.customer">
               <MappingFragment StoreEntitySet="customers">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="created_by" ColumnName="created_by" />
@@ -1314,7 +1315,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="debts">
-            <EntityTypeMapping TypeName="QuyThanhModel.debt">
+            <EntityTypeMapping TypeName="CP25Team05Model.debt">
               <MappingFragment StoreEntitySet="debts">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="sale_id" ColumnName="sale_id" />
@@ -1328,7 +1329,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="groups">
-            <EntityTypeMapping TypeName="QuyThanhModel.group">
+            <EntityTypeMapping TypeName="CP25Team05Model.group">
               <MappingFragment StoreEntitySet="groups">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="code" ColumnName="code" />
@@ -1343,7 +1344,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="import_inventory">
-            <EntityTypeMapping TypeName="QuyThanhModel.import_inventory">
+            <EntityTypeMapping TypeName="CP25Team05Model.import_inventory">
               <MappingFragment StoreEntitySet="import_inventory">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="product_id" ColumnName="product_id" />
@@ -1359,7 +1360,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="personal_access_tokens">
-            <EntityTypeMapping TypeName="QuyThanhModel.personal_access_tokens">
+            <EntityTypeMapping TypeName="CP25Team05Model.personal_access_tokens">
               <MappingFragment StoreEntitySet="personal_access_tokens">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="tokenable_type" ColumnName="tokenable_type" />
@@ -1374,7 +1375,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="products">
-            <EntityTypeMapping TypeName="QuyThanhModel.product">
+            <EntityTypeMapping TypeName="CP25Team05Model.product">
               <MappingFragment StoreEntitySet="products">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="code" ColumnName="code" />
@@ -1398,7 +1399,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="sale_details">
-            <EntityTypeMapping TypeName="QuyThanhModel.sale_details">
+            <EntityTypeMapping TypeName="CP25Team05Model.sale_details">
               <MappingFragment StoreEntitySet="sale_details">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="sale_id" ColumnName="sale_id" />
@@ -1413,7 +1414,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="sales">
-            <EntityTypeMapping TypeName="QuyThanhModel.sale">
+            <EntityTypeMapping TypeName="CP25Team05Model.sale">
               <MappingFragment StoreEntitySet="sales">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="code" ColumnName="code" />
@@ -1432,7 +1433,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="QuyThanhModel.sysdiagram">
+            <EntityTypeMapping TypeName="CP25Team05Model.sysdiagram">
               <MappingFragment StoreEntitySet="sysdiagrams">
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="principal_id" ColumnName="principal_id" />
@@ -1443,7 +1444,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="users">
-            <EntityTypeMapping TypeName="QuyThanhModel.user">
+            <EntityTypeMapping TypeName="CP25Team05Model.user">
               <MappingFragment StoreEntitySet="users">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -1463,7 +1464,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="password_resets">
-            <EntityTypeMapping TypeName="QuyThanhModel.password_resets">
+            <EntityTypeMapping TypeName="CP25Team05Model.password_resets">
               <MappingFragment StoreEntitySet="password_resets">
                 <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="token" ColumnName="token" />
@@ -1471,7 +1472,7 @@ warning 6002: The table/view 'QuyThanh.dbo.password_resets' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="AspNetUserRoles" TypeName="QuyThanhModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="CP25Team05Model.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
             <EndProperty Name="AspNetRoles">
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>

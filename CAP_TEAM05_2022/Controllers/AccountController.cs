@@ -17,7 +17,7 @@ namespace CAP_TEAM05_2022.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private QuyThanhEntities db = new QuyThanhEntities();
+        private CP25Team05Entities db = new CP25Team05Entities();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 

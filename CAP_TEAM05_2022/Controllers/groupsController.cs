@@ -14,7 +14,7 @@ namespace CAP_TEAM05_2022.Controllers
     [LoginVerification]
     public class groupsController : Controller
     {
-        private QuyThanhEntities db = new QuyThanhEntities();
+        private CP25Team05Entities db = new CP25Team05Entities();
 
         // GET: groups
         public ActionResult Index()

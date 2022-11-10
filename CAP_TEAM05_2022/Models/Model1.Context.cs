@@ -13,10 +13,10 @@ namespace CAP_TEAM05_2022.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class QuyThanhEntities : DbContext
+    public partial class CP25Team05Entities : DbContext
     {
-        public QuyThanhEntities()
-            : base("name=QuyThanhEntities")
+        public CP25Team05Entities()
+            : base("name=CP25Team05Entities")
         {
         }
     
