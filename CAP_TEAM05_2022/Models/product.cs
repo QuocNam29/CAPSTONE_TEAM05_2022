@@ -25,15 +25,10 @@ namespace CAP_TEAM05_2022.Models
         public int id { get; set; }
         public string code { get; set; }
         public string name { get; set; }
-        public string slug { get; set; }
         public int group_id { get; set; }
         public int category_id { get; set; }
         public string unit { get; set; }
-        public int price_1 { get; set; }
-        public Nullable<int> price_2 { get; set; }
-        public Nullable<int> price_3 { get; set; }
-        public Nullable<int> price_4 { get; set; }
-        public int discount { get; set; }
+        public int price { get; set; }
         public int status { get; set; }
         public string note { get; set; }
         public int created_by { get; set; }

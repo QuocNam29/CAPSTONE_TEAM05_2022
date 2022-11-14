@@ -1,0 +1,436 @@
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.product>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
+}
+
+<section class="pcoded-main-container">
+    <div class="pcoded-content">
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">Quản lý sản phảm</h5>
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="https://tancool.net">
+                                    <i class="feather icon-home">
+                                    </i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="javascript:void(0)">Quản lý sản phảm</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-md-12 mb-3">  
+                                    <button type="button" class="btn btn-primary float-right ml-2">Tạo mới</button>
+                                    <button type="button" class="btn btn-secondary">Xuất tệp Excel</button>
+                                    <button type="button" class="btn btn-dark">Nhập tệp Excel</button>
+                                    <button type="button" class="btn btn-success">Mẫu tệp Excel</button>
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="text" id="search" placeholder="Tìm kiếm..." class="form-control form-search">
+                                </div>
+                                <div class="col-md-3">
+                                    <select name="filter" id="filter" class="form-control">
+                                        <option value="null">Xem tất cả nhóm hàng</option>
+                                        <option value="41">
+                                            Phân bón Arrow
+                                        </option>
+                                        <option value="40">
+                                            ty Tân thành
+                                        </option>
+                                        <option value="39">
+                                            Công ty Adama
+                                        </option>
+                                        <option value="38">
+                                            Công ty Corteva
+                                        </option>
+                                        <option value="37">
+                                            Công ty TNHH Arysta
+                                        </option>
+                                        <option value="36">
+                                            Công ty VFC
+                                        </option>
+                                        <option value="35">
+                                            Phân bón Đầu Ngựa
+                                        </option>
+                                        <option value="34">
+                                            Phân bón Song Mã
+                                        </option>
+                                        <option value="33">
+                                            Phân bón Đất xanh
+                                        </option>
+                                        <option value="32">
+                                            VIPESCO
+                                        </option>
+                                        <option value="31">
+                                            CT PHÂN BÓN VIỆT NHẬT
+                                        </option>
+                                        <option value="30">
+                                            Phân bón miền Nam
+                                        </option>
+                                        <option value="29">
+                                            Cty CP Thuốc sát trùng VN
+                                        </option>
+                                        <option value="28">
+                                            Vườn sinh thái
+                                        </option>
+                                        <option value="27">
+                                            OEM
+                                        </option>
+                                        <option value="26">
+                                            AGRIA SA
+                                        </option>
+                                        <option value="25">
+                                            SAIPORA
+                                        </option>
+                                        <option value="24">
+                                            Handelsgesellscharft
+                                        </option>
+                                        <option value="23">
+                                            Phú Mỹ
+                                        </option>
+                                        <option value="22">
+                                            Seven
+                                        </option>
+                                        <option value="21">
+                                            Humax Rong Biển
+                                        </option>
+                                        <option value="20">
+                                            BigOne
+                                        </option>
+                                        <option value="19">
+                                            Amazon
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <select name="filter" id="filter" class="form-control">
+                                        <option value="null">Xem tất cả danh mục</option>
+                                        <option value="23">
+                                            Thuốc Bảo vệ thực vật
+                                        </option>
+                                        <option value="22">
+                                            Phân bón
+                                        </option>
+                                    </select>
+                                </div> 
+                                <div class="col-md-1">
+                                    <button type="button" class="btn btn-warning btn-block">Xem</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body table-border-style">
+                            <div class="table-responsive">
+                                <table id="example"  class="table table-hover card-scroll">
+                                    <thead>
+                                        <tr>
+                                            <th class="sticky-col first-col">Mã sản phẩm</th>
+                                            <th class="sticky-col second-col">Tên sản phẩm</th>
+                                            <th>Nhóm hàng</th>
+                                            <th>Danh mục</th>
+                                            <th class="text-center">Đơn vị</th>
+                                            <th class="text-center">Giá tiền bán</th>
+                                            <th class="text-center">Giá tiền nhập</th>
+                                            <th class="text-center">Số lượng nhập</th>
+                                            <th class="text-center">Đã bán</th>
+                                            <th class="text-center">Trạng thái</th>
+                                            <th>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="sticky-col first-col">SP60002c1f5</td>
+                                            <td class="sticky-col second-col">Thuốc trừ sâu sinh học - neem nano</td>
+                                            <td>Vườn sinh thái</td>
+                                            <td>Thuốc Bảo vệ thực vật</td>
+                                            <td class="text-center"> 50KG</td>
+                                            <td class="text-center">946,000</td>
+                                            <td class="text-center">890,000</td>
+                                            <td class="text-center">57</td>
+                                            <td class="text-center">0</td>
+                                            <td class="text-center">
+                                                <div class="custom-control custom-switch">
+                                                    <input type="checkbox" class="custom-control-input">
+                                                    <label class="custom-control-label">
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button title="Sao chép" class="btn btn-primary">
+                                                    <i class="feather icon-copy">
+                                                    </i>
+                                                </button>
+                                                <button title="Cập nhật" class="btn btn-success">
+                                                    <i class="feather icon-edit">
+                                                    </i>
+                                                </button>
+                                                <button title="Xoá" class="btn btn-danger">
+                                                    <i class="feather icon-trash-2">
+                                                    </i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td class="sticky-col first-col">@item.code</td>
+                                                <td class="sticky-col second-col">@item.name</td>
+                                                <td>@item.group.name</td>
+                                                <td>@item.category.name</td>
+                                                <td class="text-center">@item.unit</td>
+                                                <td class="text-center">@item.price</td>
+                                                <td class="text-center">890,000</td>
+                                                <td class="text-center">@item.import_inventory.Where(i => i.product_id == item.id).FirstOrDefault()</td>
+                                                <td class="text-center">0</td>
+                                                <td class="text-center">
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input">
+                                                        <label class="custom-control-label">
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button title="Sao chép" class="btn btn-primary">
+                                                        <i class="feather icon-copy">
+                                                        </i>
+                                                    </button>
+                                                    <button title="Cập nhật" class="btn btn-success">
+                                                        <i class="feather icon-edit">
+                                                        </i>
+                                                    </button>
+                                                    <button title="Xoá" class="btn btn-danger">
+                                                        <i class="feather icon-trash-2">
+                                                        </i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                              
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="ImportModal" tabindex="-1" role="dialog" aria-labelledby="ImportModalTitle" aria-hidden="true" class="modal fade">
+                <div role="document" class="modal-dialog">
+                    <form>
+                        <div class="modal-content">
+                            <div class="modal-header styling-modal-header-update">
+                                <h5 id="ImportModalTitle" class="modal-title">Nhập tệp Excel</h5>
+                                <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <label>
+                                    Tệp Excel <span class="text-danger">(*)</span>
+                                </label>
+                                <input type="file" id="fileImport" name="fileImport" class="form-control">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary btn-3d">Tải lại</button>
+                                <button type="submit" class="btn btn-primary btn-3d">Import</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div id="customModal" tabindex="-1" role="dialog" aria-labelledby="customModalTitle" aria-hidden="true" class="modal fade">
+                <div role="document" class="modal-dialog modal-lg">
+                    <form>
+                        <div class="modal-content">
+                            <div class="modal-header bg-primary">
+                                <h5 id="customModalTitle" class="modal-title white">
+                                    Thêm mới sản phẩm
+                                </h5>
+                                <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="product-name">
+                                                Tên sản phẩm<span class="text-danger">*</span>
+                                            </label>
+                                            <input type="text" placeholder="Nhập tên sản phẩm" id="product-name" class="form-control">
+                                            <!---->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="product-unit">
+                                                Đơn vị tính<span class="text-danger">*</span>
+                                            </label>
+                                            <input type="text" placeholder="Nhập đơn vị tính" id="product-unit" class="form-control">
+                                            <!---->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="product-quantity">
+                                                Số lượng sản phẩm<span class="text-danger">*</span>
+                                            </label>
+                                            <div class="position-relative">
+                                                <input type="number" placeholder="Nhập số lượng" id="product-quantity" max="999999999999" class="form-control">
+                                            </div>
+                                            <!---->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="product-group">
+                                                Nhóm sản phẩm<span class="text-danger">*</span>
+                                            </label>
+                                            <select id="product-group" class="form-control">
+                                                <option value="" disabled="disabled" selected="selected">Chọn nhóm hàng</option>
+                                                <option value="41">
+                                                    Phân bón Arrow
+                                                </option>
+                                                <option value="40">
+                                                    ty Tân thành
+                                                </option>
+                                                <option value="39">
+                                                    Công ty Adama
+                                                </option>
+                                                <option value="38">
+                                                    Công ty Corteva
+                                                </option>
+                                                <option value="37">
+                                                    Công ty TNHH Arysta
+                                                </option>
+                                                <option value="36">
+                                                    Công ty VFC
+                                                </option>
+                                                <option value="35">
+                                                    Phân bón Đầu Ngựa
+                                                </option>
+                                                <option value="34">
+                                                    Phân bón Song Mã
+                                                </option>
+                                                <option value="33">
+                                                    Phân bón Đất xanh
+                                                </option>
+                                                <option value="32">
+                                                    VIPESCO
+                                                </option>
+                                                <option value="31">
+                                                    CT PHÂN BÓN VIỆT NHẬT
+                                                </option>
+                                                <option value="30">
+                                                    Phân bón miền Nam
+                                                </option>
+                                                <option value="29">
+                                                    Cty CP Thuốc sát trùng VN
+                                                </option>
+                                                <option value="28">
+                                                    Vườn sinh thái
+                                                </option>
+                                                <option value="27">
+                                                    OEM
+                                                </option>
+                                                <option value="26">
+                                                    AGRIA SA
+                                                </option>
+                                                <option value="25">
+                                                    SAIPORA
+                                                </option>
+                                                <option value="24">
+                                                    Handelsgesellscharft
+                                                </option>
+                                                <option value="23">
+                                                    Phú Mỹ
+                                                </option>
+                                                <option value="22">
+                                                    Seven
+                                                </option>
+                                                <option value="21">
+                                                    Humax Rong Biển
+                                                </option>
+                                                <option value="20">
+                                                    BigOne
+                                                </option>
+                                                <option value="19">
+                                                    Amazon
+                                                </option>
+                                            </select>
+                                            <!---->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="product-category">
+                                                Danh mục sản phẩm<span class="text-danger">*</span>
+                                            </label>
+                                            <select id="product-category" class="form-control">
+                                                <option value="" disabled="disabled" selected="selected">Chọn danh mục</option>
+                                                <option value="23">
+                                                    Thuốc Bảo vệ thực vật
+                                                </option>
+                                                <option value="22">
+                                                    Phân bón
+                                                </option>
+                                            </select>
+                                            <!---->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="product-price-sold">
+                                                Đơn giá bán<span class="text-danger">*</span>
+                                            </label>
+                                            <input type="text" placeholder="Nhập giá tiền" id="product-price-sold" max="999999999999" class="form-control">
+                                            <!---->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="product-price-import">
+                                                Đơn giá nhập<span class="text-danger">*</span>
+                                            </label>
+                                            <div class="position-relative">
+                                                <input type="text" placeholder="Nhập giá tiền" id="product-price-buy" max="999999999999" class="form-control">
+                                            </div>
+                                            <!---->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Thêm mới</button>
+                                <button type="button" class="btn btn-secondary">Huỷ bỏ</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            pagingType: 'full_numbers',
+        });
+    });
+</script>

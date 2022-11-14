@@ -2094,6 +2094,34 @@ pre code {
     background-color: rgba(255, 255, 255, 0.075);
 }
 
+.card-scroll {
+    width: 100%;
+    display: block;
+    overflow-x: scroll;
+}
+
+.card-scroll::-webkit-scrollbar {
+        height: 8px; 
+        
+}
+
+.dataTables_filter {
+    width: 90%;
+}
+
+.dataTables_filter label {
+    width: 100%;
+}
+
+.card-scroll::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 5px;
+}
+
+    .card-scroll::-webkit-scrollbar-track {
+        background: #fff;
+    }
+
 @media (max-width: 575.98px) {
     .table-responsive-sm {
         display: block;
@@ -30230,3 +30258,23 @@ margin: 0 6px;
         filter: brightness(93%);
         color: #fff;
     }
+
+.second-col {
+    left: 100px;
+    box-shadow: inset -8px 0 8px -8px rgb(0 0 0 / 30%);
+}
+
+.first-col{
+    width: 100px;
+    min-width: 100px;
+    max-width: 100px;
+    left: 0px;
+}
+.sticky-col {
+    position: sticky;
+    background-color: #e4f4f1;
+}
+
+body {
+    overflow-x: hidden;
+}

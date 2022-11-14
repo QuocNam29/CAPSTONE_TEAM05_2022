@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="4007a424bc9040f4a0c205f77ac66771" Name="Diagram1">
+      <Diagram DiagramId="5a4896bad3774a6dae95058e1f2d7a5b" Name="Diagram1">
         <EntityTypeShape EntityType="CP25Team05Model.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CP25Team05Model.AspNetRole" Width="1.5" PointX="0.75" PointY="2.5" IsExpanded="true" />
         <EntityTypeShape EntityType="CP25Team05Model.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
@@ -13,16 +13,16 @@
         <EntityTypeShape EntityType="CP25Team05Model.cart" Width="1.5" PointX="10.5" PointY="14.125" IsExpanded="true" />
         <EntityTypeShape EntityType="CP25Team05Model.category" Width="1.5" PointX="3" PointY="10.375" IsExpanded="true" />
         <EntityTypeShape EntityType="CP25Team05Model.customer" Width="1.5" PointX="5.75" PointY="19.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="CP25Team05Model.debt" Width="1.5" PointX="6" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CP25Team05Model.debt" Width="1.5" PointX="6" PointY="9.375" IsExpanded="true" />
         <EntityTypeShape EntityType="CP25Team05Model.group" Width="1.5" PointX="3" PointY="17.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="CP25Team05Model.import_inventory" Width="1.5" PointX="10.5" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CP25Team05Model.import_inventory" Width="1.5" PointX="10.5" PointY="10.125" IsExpanded="true" />
         <EntityTypeShape EntityType="CP25Team05Model.personal_access_tokens" Width="1.5" PointX="2.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CP25Team05Model.product" Width="1.5" PointX="5.25" PointY="12.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="CP25Team05Model.sale_details" Width="1.5" PointX="13.25" PointY="14" IsExpanded="true" />
-        <EntityTypeShape EntityType="CP25Team05Model.sale" Width="1.5" PointX="8" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CP25Team05Model.product" Width="1.5" PointX="5.25" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CP25Team05Model.sale_details" Width="1.5" PointX="13.25" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CP25Team05Model.sale" Width="1.5" PointX="8" PointY="13.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CP25Team05Model.sysdiagram" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CP25Team05Model.user" Width="1.5" PointX="0.75" PointY="11.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="CP25Team05Model.password_resets" Width="1.5" PointX="7.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CP25Team05Model.password_resets" Width="1.5" PointX="4.75" PointY="6.75" IsExpanded="true" />
         <AssociationConnector Association="CP25Team05Model.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.carts_ibfk_1" ManuallyRouted="false" />

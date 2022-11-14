@@ -1,0 +1,161 @@
+﻿@model CAP_TEAM05_2022.Models.product
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>product</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.code)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.code)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.slug)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.slug)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.unit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.unit)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.price_1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.price_1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.price_2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.price_2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.price_3)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.price_3)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.price_4)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.price_4)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.discount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.discount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.note)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.note)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.created_at)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.created_at)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updated_at)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.updated_at)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.deleted_at)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.deleted_at)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.category.code)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.category.code)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.group.code)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.group.code)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.user.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.user.name)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
