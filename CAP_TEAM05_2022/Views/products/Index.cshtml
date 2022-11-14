@@ -36,7 +36,7 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-md-12 mb-3">  
-                                    <button type="button" class="btn btn-primary float-right ml-2">Tạo mới</button>
+                                    <button type="button" class="btn btn-primary float-right ml-2"  data-toggle="modal" data-target="#AddProduct">Tạo mới</button>
                                     <button type="button" class="btn btn-secondary">Xuất tệp Excel</button>
                                     <button type="button" class="btn btn-dark">Nhập tệp Excel</button>
                                     <button type="button" class="btn btn-success">Mẫu tệp Excel</button>
@@ -154,38 +154,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td class="sticky-col first-col">SP60002c1f5</td>
-                                            <td class="sticky-col second-col">Thuốc trừ sâu sinh học - neem nano</td>
-                                            <td>Vườn sinh thái</td>
-                                            <td>Thuốc Bảo vệ thực vật</td>
-                                            <td class="text-center"> 50KG</td>
-                                            <td class="text-center">946,000</td>
-                                            <td class="text-center">890,000</td>
-                                            <td class="text-center">57</td>
-                                            <td class="text-center">0</td>
-                                            <td class="text-center">
-                                                <div class="custom-control custom-switch">
-                                                    <input type="checkbox" class="custom-control-input">
-                                                    <label class="custom-control-label">
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <button title="Sao chép" class="btn btn-primary">
-                                                    <i class="feather icon-copy">
-                                                    </i>
-                                                </button>
-                                                <button title="Cập nhật" class="btn btn-success">
-                                                    <i class="feather icon-edit">
-                                                    </i>
-                                                </button>
-                                                <button title="Xoá" class="btn btn-danger">
-                                                    <i class="feather icon-trash-2">
-                                                    </i>
-                                                </button>
-                                            </td>
-                                        </tr>
+                                     
                                         @foreach (var item in Model)
                                         {
                                             <tr>
@@ -196,8 +165,8 @@
                                                 <td class="text-center">@item.unit</td>
                                                 <td class="text-center">@item.price</td>
                                                 <td class="text-center">890,000</td>
-                                                <td class="text-center">@item.import_inventory.Where(i => i.product_id == item.id).FirstOrDefault()</td>
-                                                <td class="text-center">0</td>
+                                                <td class="text-center">@item.import_inventory.Where(i => i.product_id == item.id).Count()</td>
+                                                <td class="text-center">@item.sale_details.Where(i => i.product_id == item.id).Sum(s => s.sold)</td>
                                                 <td class="text-center">
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input">
@@ -254,153 +223,104 @@
                     </form>
                 </div>
             </div>
-            <div id="customModal" tabindex="-1" role="dialog" aria-labelledby="customModalTitle" aria-hidden="true" class="modal fade">
-                <div role="document" class="modal-dialog modal-lg">
-                    <form>
+            <div id="AddProduct" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="AddProductLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <form class="needs-validation" method="post" action="@Url.Action("Create_Category", "categories")" novalidate>
                         <div class="modal-content">
                             <div class="modal-header bg-primary">
-                                <h5 id="customModalTitle" class="modal-title white">
-                                    Thêm mới sản phẩm
-                                </h5>
-                                <button type="button" data-dismiss="modal" aria-label="Close" class="close">
-                                    <span aria-hidden="true">×</span>
-                                </button>
+                                <h5 class="modal-title" id="AddProductLabel">Thêm mới sản phẩm</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             </div>
-                            <div class="modal-body">
+
+                            <div class="modal-body ">
+
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="product-name">
+                                            <label>
                                                 Tên sản phẩm<span class="text-danger">*</span>
                                             </label>
-                                            <input type="text" placeholder="Nhập tên sản phẩm" id="product-name" class="form-control">
-                                            <!---->
+                                            <div class="position-relative">
+                                                <input type="text" placeholder="Nhập tên sản phẩm" id="first-name-icon" class="form-control" name="name_category" required>
+                                                <div class="invalid-feedback">
+                                                    Vui lòng nhập tên sản phẩm !
+                                                </div>
+                                            </div> <!---->
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label for="product-unit">
+                                            <label>
                                                 Đơn vị tính<span class="text-danger">*</span>
                                             </label>
-                                            <input type="text" placeholder="Nhập đơn vị tính" id="product-unit" class="form-control">
-                                            <!---->
+                                            <div class="position-relative">
+                                                <input type="text" placeholder="Nhập đơn vị tính " id="first-name-icon" class="form-control" name="name_category" required>
+                                                <div class="invalid-feedback">
+                                                    Vui lòng nhập tên đơn vị tính !
+                                                </div>
+                                            </div> <!---->
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label for="product-quantity">
+                                            <label>
                                                 Số lượng sản phẩm<span class="text-danger">*</span>
                                             </label>
                                             <div class="position-relative">
-                                                <input type="number" placeholder="Nhập số lượng" id="product-quantity" max="999999999999" class="form-control">
-                                            </div>
-                                            <!---->
+                                                <input type="number" placeholder="Nhập số lượng sản phẩm" id="first-name-icon" class="form-control" name="name_category" required>
+                                                <div class="invalid-feedback">
+                                                    Vui lòng nhập số lượng sản phẩm !
+                                                </div>
+                                            </div> <!---->
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="product-group">
-                                                Nhóm sản phẩm<span class="text-danger">*</span>
+                                            <label>
+                                                Nhóm hàng<span class="text-danger">*</span>
                                             </label>
-                                            <select id="product-group" class="form-control">
-                                                <option value="" disabled="disabled" selected="selected">Chọn nhóm hàng</option>
-                                                <option value="41">
-                                                    Phân bón Arrow
-                                                </option>
-                                                <option value="40">
-                                                    ty Tân thành
-                                                </option>
-                                                <option value="39">
-                                                    Công ty Adama
-                                                </option>
-                                                <option value="38">
-                                                    Công ty Corteva
-                                                </option>
-                                                <option value="37">
-                                                    Công ty TNHH Arysta
-                                                </option>
-                                                <option value="36">
-                                                    Công ty VFC
-                                                </option>
-                                                <option value="35">
-                                                    Phân bón Đầu Ngựa
-                                                </option>
-                                                <option value="34">
-                                                    Phân bón Song Mã
-                                                </option>
-                                                <option value="33">
-                                                    Phân bón Đất xanh
-                                                </option>
-                                                <option value="32">
-                                                    VIPESCO
-                                                </option>
-                                                <option value="31">
-                                                    CT PHÂN BÓN VIỆT NHẬT
-                                                </option>
-                                                <option value="30">
-                                                    Phân bón miền Nam
-                                                </option>
-                                                <option value="29">
-                                                    Cty CP Thuốc sát trùng VN
-                                                </option>
-                                                <option value="28">
-                                                    Vườn sinh thái
-                                                </option>
-                                                <option value="27">
-                                                    OEM
-                                                </option>
-                                                <option value="26">
-                                                    AGRIA SA
-                                                </option>
-                                                <option value="25">
-                                                    SAIPORA
-                                                </option>
-                                                <option value="24">
-                                                    Handelsgesellscharft
-                                                </option>
-                                                <option value="23">
-                                                    Phú Mỹ
-                                                </option>
-                                                <option value="22">
-                                                    Seven
-                                                </option>
-                                                <option value="21">
-                                                    Humax Rong Biển
-                                                </option>
-                                                <option value="20">
-                                                    BigOne
-                                                </option>
-                                                <option value="19">
-                                                    Amazon
-                                                </option>
-                                            </select>
-                                            <!---->
+                                            <div class="position-relative">
+                                                <select class="custom-select" required>
+                                                    <option value="" disabled="disabled" selected="selected">Chọn nhóm hàng</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </select>
+                                                <div class="invalid-feedback">Vui lòng chọn nhóm hàng</div>
+                                            </div> <!---->
+                                           
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="product-category">
+                                            <label>
                                                 Danh mục sản phẩm<span class="text-danger">*</span>
                                             </label>
-                                            <select id="product-category" class="form-control">
-                                                <option value="" disabled="disabled" selected="selected">Chọn danh mục</option>
-                                                <option value="23">
-                                                    Thuốc Bảo vệ thực vật
-                                                </option>
-                                                <option value="22">
-                                                    Phân bón
-                                                </option>
-                                            </select>
-                                            <!---->
+                                            <div class="position-relative">
+                                                <select class="custom-select" required>
+                                                    <option value="" disabled="disabled" selected="selected">Chọn danh mục</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </select>
+                                                <div class="invalid-feedback">Vui lòng chọn danh mục</div>
+                                            </div> <!---->
+                                           
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="product-price-sold">
+                                            <label>
                                                 Đơn giá bán<span class="text-danger">*</span>
                                             </label>
-                                            <input type="text" placeholder="Nhập giá tiền" id="product-price-sold" max="999999999999" class="form-control">
-                                            <!---->
+                                            <div class="position-relative">
+                                                <input type="text" placeholder="Nhập giá tiền" id="product-price-sold" max="999999999999" class="form-control "
+                                                      pattern="[0-9.,]+" data-type="number"  required>
+                                                <div class="invalid-feedback">
+                                                    Giá tiền bán không được để trống !
+                                                </div>
+                                            </div> <!---->
+                                           
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -409,16 +329,22 @@
                                                 Đơn giá nhập<span class="text-danger">*</span>
                                             </label>
                                             <div class="position-relative">
-                                                <input type="text" placeholder="Nhập giá tiền" id="product-price-buy" max="999999999999" class="form-control">
+                                                <input type="text" placeholder="Nhập giá tiền" id="product-price-buy" max="999999999999" class="form-control"
+                                                          pattern="[0-9.,]+" data-type="number"  required>
+                                                <div class="invalid-feedback">
+                                                    Giá tiền nhập không được để trống !
+                                                </div>
                                             </div>
                                             <!---->
                                         </div>
                                     </div>
                                 </div>
+
+
                             </div>
                             <div class="modal-footer">
+                                <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
                                 <button type="submit" class="btn btn-primary">Thêm mới</button>
-                                <button type="button" class="btn btn-secondary">Huỷ bỏ</button>
                             </div>
                         </div>
                     </form>
@@ -433,4 +359,30 @@
             pagingType: 'full_numbers',
         });
     });
+    $('#product-price-sold').keydown(function (e) {
+        setTimeout(() => {
+            let parts = $(this).val().split(".");
+            let v = parts[0].replace(/\D/g, ""),
+                dec = parts[1]
+            let calc_num = Number((dec !== undefined ? v + "." + dec : v));
+            // use this for numeric calculations
+            // console.log('number for calculations: ', calc_num);
+            let n = new Intl.NumberFormat('en-EN').format(v);
+            n = dec !== undefined ? n + "." + dec : n;
+            $(this).val(n);
+        })
+    })
+    $('#product-price-buy').keydown(function (e) {
+        setTimeout(() => {
+            let parts = $(this).val().split(".");
+            let v = parts[0].replace(/\D/g, ""),
+                dec = parts[1]
+            let calc_num = Number((dec !== undefined ? v + "." + dec : v));
+            // use this for numeric calculations
+            // console.log('number for calculations: ', calc_num);
+            let n = new Intl.NumberFormat('en-EN').format(v);
+            n = dec !== undefined ? n + "." + dec : n;
+            $(this).val(n);
+        })
+    })
 </script>
