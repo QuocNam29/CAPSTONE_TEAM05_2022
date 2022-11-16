@@ -47,41 +47,46 @@
                         {
                             @Html.AntiForgeryToken()
 
-                            <form method="POST">
-                                <hr>
-                                <div class="form-group mb-3">
-                                    @Html.TextBoxFor(m => m.Email, new {  @class = "form-control", @placeholder = "Địa chỉ email" })
-                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        <form method="POST">
 
-                                   
-                                </div>
-                                <div class="form-group mb-4">
-                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Mật khẩu" })
-                                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                            <span class="help-block">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            </span>
+                            <hr>
 
-                                    
-                                </div>
-                                <div class="custom-control custom-checkbox text-left mb-4 mt-2 form-check">
-                                    <input type="checkbox" name="remember" placeholder="" id="remember" class="form-check-input custom-control-input"> 
+                            <div class="form-group mb-3">
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Địa chỉ email" })
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+
+
+                            </div>
+                            <div class="form-group mb-4">
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Mật khẩu" })
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="custom-control custom-checkbox text-left mb-4 mt-2 form-check">
+                                <input type="checkbox" name="remember" placeholder="" id="remember" class="form-check-input custom-control-input">
                                 <label for="remember" class="custom-control-label form-check-label">
-                                        Ghi nhớ đăng nhập.
-                                    </label>
-                                </div> <button type="submit" class="btn btn-block btn-primary mb-4">Đăng nhập</button> <hr> 
-                                <p class="mb-2 text-muted">
-                                    Quên mật khẩu?
-                                    <a href="#" class="f-w-400">
-                                        Tạo mật khẩu mới
-                                    </a>
-                                </p> <p class="mb-0 text-muted">
-                                    Chưa có tài khoản?
-                                    <a href="#" class="f-w-400">
-                                        Đăng ký
-                                    </a>
-                                </p>
-                            </form>
+                                    Ghi nhớ đăng nhập.
+                                </label>
+                            </div>
+                            <button type="submit" class="btn btn-block btn-primary mb-4">Đăng nhập</button> <hr>
+                            <p class="mb-2 text-muted">
+                                Quên mật khẩu?
+                                <a href="#" class="f-w-400">
+                                    Tạo mật khẩu mới
+                                </a>
+                            </p> <p class="mb-0 text-muted">
+                                Chưa có tài khoản?
+                                <a href="#" class="f-w-400">
+                                    Đăng ký
+                                </a>
+                            </p>
+                        </form>
                         }
-                        <hr> 
-                        <h5>Dành cho khách hàng</h5> 
+                        <hr>
+                        <h5>Dành cho khách hàng</h5>
                         <span class="mb-0 text-muted">
                             Tra cứu dơn hàng tại
                             <a href="#" class="f-w-400">

@@ -30278,3 +30278,7 @@ margin: 0 6px;
 body {
     overflow-x: hidden;
 }
+.help-block ul {
+    list-style-type: none;
+    margin-left: -40px
+}

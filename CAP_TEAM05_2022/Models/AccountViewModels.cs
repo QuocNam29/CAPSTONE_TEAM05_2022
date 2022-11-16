@@ -48,12 +48,12 @@ namespace CAP_TEAM05_2022.Models
 
     public class LoginViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Vui lòng nhập Email để đăng nhập !")]
         [Display(Name = "Email")]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "Email sai định dạng !")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Vui lòng nhập mật khẩu để đăng nhập !")]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
