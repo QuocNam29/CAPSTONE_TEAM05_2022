@@ -204,10 +204,10 @@
     $(document).ready(function () {
         $('.EditGroupProduct').on('click', function () {
             var id = $(this).data("id");
-            console.log("hihi")
+            console.log(id)
             $.ajax({
                 type: 'POST',
-                url: '/groups/FindGroupProduct/',
+                url: "@Url.Action("FindGroupProduct", "groups")/",
                 data: { "GroupProduct_id": id },
                 success: function (response) {
                     $('#edit_id_GroupProduct').val(response.id);

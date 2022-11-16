@@ -206,7 +206,7 @@
             console.log("hihi")
             $.ajax({
                 type: 'POST',
-                url: '/categories/FindCategory/',
+                url: "@Url.Action("FindCategory", "categories")/",
                 data: { "category_id": id },
                 success: function (response) {
                     $('#edit_id_category').val(response.id);
