@@ -72,11 +72,19 @@ namespace CAP_TEAM05_2022.Controllers
             emp.name = group.name;
             return Json(emp);
         }
+        public ActionResult getGroupProduct()
+        {
+           
+            return Json(db.groups.Select(x => new
+            {
+                groupID = x.id,
+                groupName = x.name
+            }).ToList(), JsonRequestBehavior.AllowGet);
+        }
         public ActionResult Edit_GroupProduct(int GroupProduct_id, string name_GroupProduct)
         {
             group group = db.groups.Find(GroupProduct_id);
             group.name = name_GroupProduct;
-            group.status = 2;
             group.updated_at = DateTime.Now;
             db.Entry(group).State = EntityState.Modified;
             db.SaveChanges();

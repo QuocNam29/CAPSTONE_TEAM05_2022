@@ -225,7 +225,7 @@
             </div>
             <div id="AddProduct" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="AddProductLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
-                    <form class="needs-validation" method="post" action="@Url.Action("Create_Category", "categories")" novalidate>
+                    <form class="needs-validation" method="post" action="@Url.Action("Create_Product", "products")" novalidate>
                         <div class="modal-content">
                             <div class="modal-header bg-primary">
                                 <h5 class="modal-title" id="AddProductLabel">Thêm mới sản phẩm</h5>
@@ -241,7 +241,7 @@
                                                 Tên sản phẩm<span class="text-danger">*</span>
                                             </label>
                                             <div class="position-relative">
-                                                <input type="text" placeholder="Nhập tên sản phẩm" id="first-name-icon" class="form-control" name="name_category" required>
+                                                <input type="text" placeholder="Nhập tên sản phẩm" id="first-name-icon" class="form-control" name="name_category" pattern="\S+.*" required>
                                                 <div class="invalid-feedback">
                                                     Vui lòng nhập tên sản phẩm !
                                                 </div>
@@ -254,7 +254,7 @@
                                                 Đơn vị tính<span class="text-danger">*</span>
                                             </label>
                                             <div class="position-relative">
-                                                <input type="text" placeholder="Nhập đơn vị tính " id="first-name-icon" class="form-control" name="name_category" required>
+                                                <input type="text" placeholder="Nhập đơn vị tính " id="first-name-icon" class="form-control" name="name_category" pattern="\S+.*" required>
                                                 <div class="invalid-feedback">
                                                     Vui lòng nhập tên đơn vị tính !
                                                 </div>
@@ -280,11 +280,8 @@
                                                 Nhóm hàng<span class="text-danger">*</span>
                                             </label>
                                             <div class="position-relative">
-                                                <select class="custom-select" required>
-                                                    <option value="" disabled="disabled" selected="selected">Chọn nhóm hàng</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
+                                                <select class="custom-select" id="GroupProductDropdown" name="GroupProductDropdown" required>
+                                                    
                                                 </select>
                                                 <div class="invalid-feedback">Vui lòng chọn nhóm hàng</div>
                                             </div> <!---->
@@ -297,11 +294,8 @@
                                                 Danh mục sản phẩm<span class="text-danger">*</span>
                                             </label>
                                             <div class="position-relative">
-                                                <select class="custom-select" required>
-                                                    <option value="" disabled="disabled" selected="selected">Chọn danh mục</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
+                                                <select class="custom-select" id="CategoryDropdown" name="CategoryDropdown" required>
+                                                   
                                                 </select>
                                                 <div class="invalid-feedback">Vui lòng chọn danh mục</div>
                                             </div> <!---->
@@ -385,4 +379,33 @@
             $(this).val(n);
         })
     })
+
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "/groups/getGroupProduct",
+            data: "{}",
+            success: function (data) {
+                var s = 'option value="" disabled="disabled" selected="selected">Chọn nhóm hàng</option>';
+                for (var i = 0; i < data.length; i++) {
+                    s += '<option value="' + data[i].groupID + '">' + data[i].groupName + '</option>';
+                }
+                $("#GroupProductDropdown").html(s);
+            }
+        });
+        $.ajax({
+            type: "GET",
+            url: "/categories/getCategory",
+            data: "{}",
+            success: function (data) {
+                var s = 'option value="" disabled="disabled" selected="selected">Chọn danh mục</option>';
+                for (var i = 0; i < data.length; i++) {
+                    s += '<option value="' + data[i].categoryID + '">' + data[i].categoryName + '</option>';
+                }
+                $("#CategoryDropdown").html(s);
+            }
+        });
+    });
+
+    
 </script>

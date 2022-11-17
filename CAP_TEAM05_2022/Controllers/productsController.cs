@@ -6,10 +6,12 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using CAP_TEAM05_2022.Helper;
 using CAP_TEAM05_2022.Models;
 
 namespace CAP_TEAM05_2022.Controllers
 {
+    [LoginVerification]
     public class productsController : Controller
     {
         private CP25Team05Entities db = new CP25Team05Entities();
@@ -19,6 +21,21 @@ namespace CAP_TEAM05_2022.Controllers
         {
             var products = db.products.Include(p => p.category).Include(p => p.group).Include(p => p.user);
             return View(products.ToList());
+        }
+        public ActionResult Create_Product(string name_category)
+        {
+            string email = Session["user_email"].ToString();
+            user user = db.users.Where(u => u.email == email).FirstOrDefault();
+            category category = new category();
+            category.name = name_category;
+            category.status = 1;
+            category.created_by = user.id;
+            category.created_at = DateTime.Now;
+            category.slug = name_category;
+            category.code = "DM" + CodeRandom.RandomCode();
+            db.categories.Add(category);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         // GET: products/Details/5

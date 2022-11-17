@@ -72,6 +72,15 @@ namespace CAP_TEAM05_2022.Controllers
             emp.name = categories.name;       
             return Json(emp);
         }
+        public ActionResult getCategory()
+        {
+
+            return Json(db.categories.Select(x => new
+            {
+                categoryID = x.id,
+                categoryName = x.name
+            }).ToList(), JsonRequestBehavior.AllowGet);
+        }
         public ActionResult Edit_Category(int category_id, string name_category)
         {
             category categories = db.categories.Find(category_id);
