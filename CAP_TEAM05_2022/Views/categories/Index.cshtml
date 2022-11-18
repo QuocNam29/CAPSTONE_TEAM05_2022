@@ -6,6 +6,7 @@
     int no = 0;
 
 }
+
 <section class="pcoded-main-container">
     <div class="pcoded-content">
         <div class="page-header">
@@ -64,7 +65,7 @@
                                             no++;
                                             <tr>
                                                 <td>@no <input hidden type="text" name="record" value="@item.code"></td>
-                                               
+
                                                 <td>@item.code</td>
                                                 <td>@item.name</td>
                                                 <td>
@@ -78,19 +79,19 @@
                                                     else
                                                     {
                                                         <div class="custom-control custom-switch">
-                                                            <input type="checkbox"  class="custom-control-input" id="@customswitch_DM">
+                                                            <input type="checkbox" class="custom-control-input" id="@customswitch_DM">
                                                             <label class="custom-control-label" for="@customswitch_DM"></label>
                                                         </div>
                                                     }
                                                     <input hidden type="text" id="URDEditStatus" value="@Url.Action("EditStatus_Category", "categories")">
                                                     <script language="javascript">
-                                                        document.getElementById('@customswitch_DM').onclick = function (e) {                                                         
-                                                                EditStatus(@item.id);                                                          
+                                                        document.getElementById('@customswitch_DM').onclick = function (e) {
+                                                                EditStatus(@item.id);
                                                         };
                                                     </script>
                                                 </td>
                                                 <td>
-                                                    <button class="btn btn-success "  onclick="GetProduct(this, @item.id)">
+                                                    <button class="btn btn-success " onclick="GetProduct(this, @item.id)">
                                                         <i class="feather icon-edit">
                                                         </i>
                                                     </button>
@@ -170,7 +171,7 @@
                                     Tên danh mục<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                <input hidden id="edit_id" name="category_id"/>
+                                    <input hidden id="edit_id" name="category_id" />
                                     <input type="text" placeholder="Nhập tên danh mục" id="Editedit_name" class="form-control" name="name_category" pattern="\S+.*" required>
                                     <div class="invalid-feedback">
                                         Vui lòng nhập tên danh mục !
@@ -184,7 +185,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary"  onclick="Update()">Chỉnh sửa</button>
+                    <button type="button" class="btn btn-primary" onclick="Update()">Chỉnh sửa</button>
                 </div>
             </div>
         </form>
@@ -214,7 +215,7 @@
                 }
             })
     }
-    
+
     function Update() {
         var table = $('#example').DataTable();
         var group = {};

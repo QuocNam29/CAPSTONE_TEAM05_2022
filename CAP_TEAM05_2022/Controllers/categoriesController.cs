@@ -36,6 +36,7 @@ namespace CAP_TEAM05_2022.Controllers
             category.code = "DM" + CodeRandom.RandomCode();
             db.categories.Add(category);
             db.SaveChanges();
+            Session["notification"] = "Thêm mới thành công!";
             return RedirectToAction("Index");
         }
 

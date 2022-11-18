@@ -35,6 +35,7 @@ namespace CAP_TEAM05_2022.Controllers
             GroupProduct.code = "NH" + CodeRandom.RandomCode();
             db.groups.Add(GroupProduct);
             db.SaveChanges();
+            Session["notification"] = "Thêm mới thành công!";
             return RedirectToAction("Index");
         }
        

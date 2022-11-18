@@ -160,6 +160,23 @@
             </ul>
         </div>
     </header>
+    @if (Session["notification"] != null)
+{
+    <button type="button" hidden class="btn btn-lg btn-block btn-outline-success mb-2" id="type-success" onclick="test()">Success</button>
+    <script>
+            function test() {
+                sweetAlert
+                    ({
+                        title: "Thêm mới thành công !",
+                        type: "success"
+                    },)
+            }
+            window.onload = function () {
+                document.getElementById('type-success').click();
+            }
+    </script>
+    Session["notification"] = null;
+}
     @RenderBody()
 
     <!-- Required Js -->
