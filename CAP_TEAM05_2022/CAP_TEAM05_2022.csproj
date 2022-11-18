@@ -444,6 +444,7 @@
     <Content Include="Template\assets\json\file-upload.php" />
     <Content Include="Template\assets\js\analytics.js" />
     <Content Include="Template\assets\js\analytics.min.js" />
+    <Content Include="Template\assets\js\Function.js" />
     <Content Include="Template\assets\js\horizontal-menu.js" />
     <Content Include="Template\assets\js\jquery-3.5.1.js" />
     <Content Include="Template\assets\js\jquery.dataTables.min.css" />

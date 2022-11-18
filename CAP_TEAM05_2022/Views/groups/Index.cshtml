@@ -36,7 +36,7 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-md-10">
-                                    <h4>NHÓM SẢN PHẨM</h4>
+                                    <h4>NHÓM HÀNG</h4>
                                 </div>
                                 <div class="col-md-2">
                                     <button type="button" class="btn  btn-primary btn-block" data-toggle="modal" data-target="#AddGroupProduct">Thêm mới</button>
@@ -47,8 +47,7 @@
                             <div class="table-responsive">
                                 <table id="example" class="table table-hover">
                                     <thead>
-                                        <tr>
-                                            <th>#</th>
+                                        <tr>                                         
                                             <th>Mã nhóm hàng</th>
                                             <th>Tên nhóm hàng</th>
                                             <th width="15%">Trạng thái</th>
@@ -61,9 +60,7 @@
                                         {
                                             string customswitch_NH = "customswitch" + item.id;
                                             no++;
-                                            <tr>
-                                                <td>@no <input hidden type="text" name="record" value="@item.code"></td>
-
+                                            <tr>                                              
                                                 <td>@item.code</td>
                                                 <td>@item.name</td>
                                                 <td>
@@ -89,7 +86,7 @@
                                                     </script>
                                                 </td>
                                                 <td>
-                                                    <button class="btn btn-success EditGroupProduct" data-toggle="modal" data-target="#EditGroupProduct" data-id="@item.id">
+                                                    <button class="btn btn-success " onclick="GetProduct(this, @item.id)">
                                                         <i class="feather icon-edit">
                                                         </i>
                                                     </button>
@@ -133,7 +130,7 @@
                                     Tên nhóm hàng<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input type="text" placeholder="Nhập tên nhóm hàng" id="first-name-icon" class="form-control" name="name_GroupProduct" pattern="\S+.*" required>
+                                    <input type="text" placeholder="Nhập tên nhóm hàng" id="name_GroupProduct" class="form-control" name="name_GroupProduct" pattern="\S+.*" required>
                                     <div class="invalid-feedback">
                                         Vui lòng nhập tên nhóm hàng !
                                     </div>
@@ -146,7 +143,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
-                    <button type="submit" class="btn btn-primary">Thêm mới</button>
+                    <button type="submit" class="btn btn-primary" onclick="Add()">Thêm mới</button>
                 </div>
             </div>
         </form>
@@ -154,7 +151,7 @@
 </div>
 <div id="EditGroupProduct" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="EditGroupProductLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form class="needs-validation" method="post" action="@Url.Action("Edit_GroupProduct", "groups")" novalidate>
+        <form class="needs-validation" method="post"@* action="@Url.Action("Edit_GroupProduct", "groups")"*@ novalidate>
             <div class="modal-content">
                 <div class="modal-header bg-primary">
                     <h5 class="modal-title" id="EditGroupProductLabel">Chỉnh sửa nhóm hàng</h5>
@@ -183,7 +180,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
-                    <button type="submit" class="btn btn-primary">Chỉnh sửa</button>
+                    <button type="button" class="btn btn-primary" onclick="UpdateCustomer()" >Chỉnh sửa</button>
                 </div>
             </div>
         </form>
@@ -191,30 +188,53 @@
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
-<script>
+<script type="text/javascript">
+    var row;
     $(document).ready(function () {
         $('#example').DataTable({
             pagingType: 'full_numbers',
         });
     });
-</script>
-
-
-<script>
-    $(document).ready(function () {
-        $('.EditGroupProduct').on('click', function () {
-            var id = $(this).data("id");
-            console.log(id)
-            $.ajax({
+    function GetProduct(ele, id) {
+        row = $(ele).closest('tr');
+         $.ajax({
                 type: 'POST',
                 url: "@Url.Action("FindGroupProduct", "groups")/",
                 data: { "GroupProduct_id": id },
                 success: function (response) {
                     $('#edit_id_GroupProduct').val(response.id);
                     $('#edit_name_GroupProduct').val(response.name);
+
+                    $('#EditGroupProduct .close').css('display', 'none');
+                    $('#EditGroupProduct').modal('show');
                 }
             })
-        });
-    });
+    }
+    function UpdateCustomer() {
+        var table = $('#example').DataTable();
+        var group = {};
+        group.id = $('#edit_id_GroupProduct').val();
+        group.name = $('#edit_name_GroupProduct').val();
 
+        $.ajax({
+            url: "@Url.Action("UpdateGroupProduct", "groups")",
+            type: "Post",
+            data: JSON.stringify(group),
+            contentType: "application/json; charset=UTF-8",
+            dataType: "json",
+            success: function (response) {
+                $('#EditGroupProduct .close').css('display', 'none');
+                $('#EditGroupProduct').modal('hide');
+                table.cell(row, 2).data($('#edit_name_GroupProduct').val());
+                table.draw();
+                sweetAlert
+                    ({
+                        title: "Cập nhật thành công !",
+                        type: "success"
+                    },)
+            }
+        });
+    }
+  
 </script>
+

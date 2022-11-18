@@ -37,6 +37,7 @@ namespace CAP_TEAM05_2022.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+       
 
         public ActionResult Delete_GroupProduct(group GroupProducts)
         {
@@ -72,7 +73,13 @@ namespace CAP_TEAM05_2022.Controllers
             emp.name = group.name;
             return Json(emp);
         }
-        public ActionResult getGroupProduct()
+       /* public JsonResult GetGroupProduct(int Id)
+        {
+            group group = db.groups.Find(Id);
+            return Json(new { success = true, data = group }, JsonRequestBehavior.AllowGet);
+        }*/
+
+        /*public ActionResult getGroupProduct()
         {
            
             return Json(db.groups.Select(x => new
@@ -80,8 +87,8 @@ namespace CAP_TEAM05_2022.Controllers
                 groupID = x.id,
                 groupName = x.name
             }).ToList(), JsonRequestBehavior.AllowGet);
-        }
-        public ActionResult Edit_GroupProduct(int GroupProduct_id, string name_GroupProduct)
+        }*/
+        /*public ActionResult Edit_GroupProduct(int GroupProduct_id, string name_GroupProduct)
         {
             group group = db.groups.Find(GroupProduct_id);
             group.name = name_GroupProduct;
@@ -89,6 +96,17 @@ namespace CAP_TEAM05_2022.Controllers
             db.Entry(group).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Index");
+        }*/
+        public JsonResult UpdateGroupProduct(group GroupProducts)
+        {
+            group group = db.groups.Find(GroupProducts.id);
+            group.name = GroupProducts.name;
+            group.updated_at = DateTime.Now;
+            db.Entry(group).State = EntityState.Modified;
+            db.SaveChanges();
+            string message = "Record Saved Successfully ";
+            bool status = true;
+            return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
         }
 
         // GET: groups/Details/5

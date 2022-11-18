@@ -22,6 +22,7 @@ namespace CAP_TEAM05_2022.Controllers
             var categories = db.categories.Include(c => c.user).Where(c => c.status != 3).OrderByDescending(c => c.id);
             return View(categories.ToList());
         }
+        
         public ActionResult Create_Category(string name_category)
         {
             string email =  Session["user_email"].ToString();
@@ -62,6 +63,17 @@ namespace CAP_TEAM05_2022.Controllers
             db.Entry(categories).State = EntityState.Modified;
             db.SaveChanges();
             return Json("EditStatus_Category", JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult UpdateCustomer(category categorys)
+        {
+            category categories = db.categories.Find(categorys.id);
+            categories.name = categorys.name;
+            categories.updated_at = DateTime.Now;
+            db.Entry(categories).State = EntityState.Modified;
+            db.SaveChanges();
+            string message = "Record Saved Successfully ";
+            bool status = true;
+            return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public JsonResult FindCategory(int category_id)
