@@ -64,7 +64,7 @@ namespace CAP_TEAM05_2022.Controllers
             db.SaveChanges();
             return Json("EditStatus_Category", JsonRequestBehavior.AllowGet);
         }
-        public JsonResult UpdateCustomer(category categorys)
+        public JsonResult UpdateCategory(category categorys)
         {
             category categories = db.categories.Find(categorys.id);
             categories.name = categorys.name;

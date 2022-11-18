@@ -47,7 +47,8 @@
                             <div class="table-responsive">
                                 <table id="example" class="table table-hover">
                                     <thead>
-                                        <tr>                                         
+                                        <tr>           
+                                            <th>#</th>
                                             <th>Mã nhóm hàng</th>
                                             <th>Tên nhóm hàng</th>
                                             <th width="15%">Trạng thái</th>
@@ -60,44 +61,45 @@
                                         {
                                             string customswitch_NH = "customswitch" + item.id;
                                             no++;
-                                            <tr>                                              
-                                                <td>@item.code</td>
-                                                <td>@item.name</td>
-                                                <td>
-                                                    @if (item.status == 1)
-                                                    {
-                                                        <div class="custom-control custom-switch">
-                                                            <input type="checkbox" checked class="custom-control-input" id="@customswitch_NH">
-                                                            <label class="custom-control-label" for="@customswitch_NH"></label>
-                                                        </div>
-                                                    }
-                                                    else
-                                                    {
-                                                        <div class="custom-control custom-switch">
-                                                            <input type="checkbox" class="custom-control-input" id="@customswitch_NH">
-                                                            <label class="custom-control-label" for="@customswitch_NH"></label>
-                                                        </div>
-                                                    }
-                                                    <input hidden type="text" id="URDEditStatus" value="@Url.Action("EditStatus_GroupProduct", "groups")">
-                                                    <script language="javascript">
-                                                        document.getElementById('@customswitch_NH').onclick = function (e) {                                                         
-                                                                EditStatus(@item.id);                                                          
+                                        <tr>
+                                            <td>@no</td>
+                                            <td>@item.code</td>
+                                            <td>@item.name</td>
+                                            <td>
+                                                @if (item.status == 1)
+                                                {
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" checked class="custom-control-input" id="@customswitch_NH">
+                                                        <label class="custom-control-label" for="@customswitch_NH"></label>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input" id="@customswitch_NH">
+                                                        <label class="custom-control-label" for="@customswitch_NH"></label>
+                                                    </div>
+                                                }
+                                                <input hidden type="text" id="URDEditStatus" value="@Url.Action("EditStatus_GroupProduct", "groups")">
+                                                <script language="javascript">
+                                                        document.getElementById('@customswitch_NH').onclick = function (e) {
+                                                                EditStatus(@item.id);
                                                         };
-                                                    </script>
-                                                </td>
-                                                <td>
-                                                    <button class="btn btn-success " onclick="GetProduct(this, @item.id)">
-                                                        <i class="feather icon-edit">
-                                                        </i>
-                                                    </button>
-                                                    <input hidden type="text" id="URLDelete" value="@Url.Action("Delete_GroupProduct", "groups")">
-                                                    <button class="btn btn-danger" onclick="deleteAlert('@item.id', '@item.code')" id="Delete">
-                                                        <i class="feather icon-trash-2">
-                                                        </i>
-                                                    </button>
+                                                </script>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-success " onclick="GetProduct(this, @item.id)">
+                                                    <i class="feather icon-edit">
+                                                    </i>
+                                                </button>
+                                                <input hidden type="text" id="URLDelete" value="@Url.Action("Delete_GroupProduct", "groups")">
+                                                <button class="btn btn-danger" onclick="deleteAlert('@item.id', '@item.code')" id="Delete">
+                                                    <i class="feather icon-trash-2">
+                                                    </i>
+                                                </button>
 
-                                                </td>
-                                            </tr>
+                                            </td>
+                                        </tr>
 
                                         }
 
@@ -149,12 +151,12 @@
         </form>
     </div>
 </div>
-<div id="EditGroupProduct" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="EditGroupProductLabel" aria-hidden="true">
+<div id="Edit_Modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Edit_ModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <form class="needs-validation" method="post"@* action="@Url.Action("Edit_GroupProduct", "groups")"*@ novalidate>
             <div class="modal-content">
                 <div class="modal-header bg-primary">
-                    <h5 class="modal-title" id="EditGroupProductLabel">Chỉnh sửa nhóm hàng</h5>
+                    <h5 class="modal-title" id="Edit_ModalLabel">Chỉnh sửa nhóm hàng</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
 
@@ -166,8 +168,8 @@
                                     Tên nhóm hàng<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input hidden id="edit_id_GroupProduct" name="GroupProduct_id" />
-                                    <input type="text" placeholder="Nhập tên nhóm hàng" id="edit_name_GroupProduct" class="form-control" name="name_GroupProduct" pattern="\S+.*" required>
+                                    <input hidden id="edit_id" name="GroupProduct_id" />
+                                    <input type="text" placeholder="Nhập tên nhóm hàng" id="Editedit_name" class="form-control" name="name_GroupProduct" pattern="\S+.*" required>
                                     <div class="invalid-feedback">
                                         Vui lòng nhập tên nhóm hàng !
                                     </div>
@@ -180,7 +182,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" onclick="UpdateCustomer()" >Chỉnh sửa</button>
+                    <button type="button" class="btn btn-primary" onclick="Update()" >Chỉnh sửa</button>
                 </div>
             </div>
         </form>
@@ -202,19 +204,19 @@
                 url: "@Url.Action("FindGroupProduct", "groups")/",
                 data: { "GroupProduct_id": id },
                 success: function (response) {
-                    $('#edit_id_GroupProduct').val(response.id);
-                    $('#edit_name_GroupProduct').val(response.name);
+                    $('#edit_id').val(response.id);
+                    $('#Editedit_name').val(response.name);
 
-                    $('#EditGroupProduct .close').css('display', 'none');
-                    $('#EditGroupProduct').modal('show');
+                    $('#Edit_Modal .close').css('display', 'none');
+                    $('#Edit_Modal').modal('show');
                 }
             })
     }
-    function UpdateCustomer() {
+    function Update() {
         var table = $('#example').DataTable();
         var group = {};
-        group.id = $('#edit_id_GroupProduct').val();
-        group.name = $('#edit_name_GroupProduct').val();
+        group.id = $('#edit_id').val();
+        group.name = $('#Editedit_name').val();
 
         $.ajax({
             url: "@Url.Action("UpdateGroupProduct", "groups")",
@@ -223,9 +225,9 @@
             contentType: "application/json; charset=UTF-8",
             dataType: "json",
             success: function (response) {
-                $('#EditGroupProduct .close').css('display', 'none');
-                $('#EditGroupProduct').modal('hide');
-                table.cell(row, 2).data($('#edit_name_GroupProduct').val());
+                $('#Edit_Modal .close').css('display', 'none');
+                $('#Edit_Modal').modal('hide');
+                table.cell(row, 2).data($('#Editedit_name').val());
                 table.draw();
                 sweetAlert
                     ({

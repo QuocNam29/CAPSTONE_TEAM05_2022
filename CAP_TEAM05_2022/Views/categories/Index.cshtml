@@ -90,7 +90,7 @@
                                                     </script>
                                                 </td>
                                                 <td>
-                                                    <button class="btn btn-success EditCategory" data-toggle="modal" data-target="#EditCategory" data-id="@item.id">
+                                                    <button class="btn btn-success "  onclick="GetProduct(this, @item.id)">
                                                         <i class="feather icon-edit">
                                                         </i>
                                                     </button>
@@ -153,12 +153,12 @@
         </form>
     </div>
 </div>
-<div id="EditCategory" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="EditCategoryLabel" aria-hidden="true">
+<div id="Edit_Modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Edit_ModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form class="needs-validation" method="post" action="@Url.Action("Edit_Category", "categories")" novalidate>
+        <form class="needs-validation" method="post" @*action="@Url.Action("Edit_Category", "categories")"*@ novalidate>
             <div class="modal-content">
                 <div class="modal-header bg-primary">
-                    <h5 class="modal-title" id="EditCategoryLabel">Chỉnh sửa danh mục</h5>
+                    <h5 class="modal-title" id="Edit_ModalLabel">Chỉnh sửa danh mục</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
 
@@ -170,8 +170,8 @@
                                     Tên danh mục<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                <input hidden id="edit_id_category" name="category_id"/>
-                                    <input type="text" placeholder="Nhập tên danh mục" id="edit_name_category" class="form-control" name="name_category" pattern="\S+.*" required>
+                                <input hidden id="edit_id" name="category_id"/>
+                                    <input type="text" placeholder="Nhập tên danh mục" id="Editedit_name" class="form-control" name="name_category" pattern="\S+.*" required>
                                     <div class="invalid-feedback">
                                         Vui lòng nhập tên danh mục !
                                     </div>
@@ -184,7 +184,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
-                    <button type="submit" class="btn btn-primary">Chỉnh sửa</button>
+                    <button type="button" class="btn btn-primary"  onclick="Update()">Chỉnh sửa</button>
                 </div>
             </div>
         </form>
@@ -193,26 +193,52 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
 <script>
+    var row;
     $(document).ready(function () {
         $('#example').DataTable({
             pagingType: 'full_numbers',
         });
     });
-</script>
-<script>
-    $(document).ready(function () {
-        $('.EditCategory').on('click', function () {
-            var id = $(this).data("id");
-            console.log("hihi")
-            $.ajax({
+     function GetProduct(ele, id) {
+        row = $(ele).closest('tr');
+         $.ajax({
                 type: 'POST',
                 url: "@Url.Action("FindCategory", "categories")/",
-                data: { "category_id": id },
+             data: { "category_id": id },
                 success: function (response) {
-                    $('#edit_id_category').val(response.id);
-                    $('#edit_name_category').val(response.name);
+                    $('#edit_id').val(response.id);
+                    $('#Editedit_name').val(response.name);
+
+                    $('#Edit_Modal .close').css('display', 'none');
+                    $('#Edit_Modal').modal('show');
                 }
             })
+    }
+    
+    function Update() {
+        var table = $('#example').DataTable();
+        var group = {};
+        group.id = $('#edit_id').val();
+        group.name = $('#Editedit_name').val();
+
+        $.ajax({
+            url: "@Url.Action("UpdateCategory", "categories")",
+            type: "Post",
+            data: JSON.stringify(group),
+            contentType: "application/json; charset=UTF-8",
+            dataType: "json",
+            success: function (response) {
+                $('#Edit_Modal .close').css('display', 'none');
+                $('#Edit_Modal').modal('hide');
+                table.cell(row, 2).data($('#Editedit_name').val());
+                table.draw();
+                sweetAlert
+                    ({
+                        title: "Cập nhật thành công !",
+                        type: "success"
+                    },)
+            }
         });
-    });
+    }
 </script>
+
