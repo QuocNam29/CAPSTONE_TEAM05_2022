@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
+    int no = 0;
 }
 
 <section class="pcoded-main-container">
@@ -139,6 +140,7 @@
                                 <table id="example"  class="table table-hover card-scroll">
                                     <thead>
                                         <tr>
+                                            <th class="sticky-col first-col">#</th>
                                             <th class="sticky-col first-col">Mã sản phẩm</th>
                                             <th class="sticky-col second-col">Tên sản phẩm</th>
                                             <th>Nhóm hàng</th>
@@ -157,38 +159,40 @@
                                      
                                         @foreach (var item in Model)
                                         {
-                                            <tr>
-                                                <td class="sticky-col first-col">@item.code</td>
-                                                <td class="sticky-col second-col">@item.name</td>
-                                                <td>@item.group.name</td>
-                                                <td>@item.category.name</td>
-                                                <td class="text-center">@item.unit</td>
-                                                <td class="text-center">@item.price</td>
-                                                <td class="text-center">890,000</td>
-                                                <td class="text-center">@item.import_inventory.Where(i => i.product_id == item.id).Count()</td>
-                                                <td class="text-center">@item.sale_details.Where(i => i.product_id == item.id).Sum(s => s.sold)</td>
-                                                <td class="text-center">
-                                                    <div class="custom-control custom-switch">
-                                                        <input type="checkbox" class="custom-control-input">
-                                                        <label class="custom-control-label">
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <button title="Sao chép" class="btn btn-primary">
-                                                        <i class="feather icon-copy">
-                                                        </i>
-                                                    </button>
-                                                    <button title="Cập nhật" class="btn btn-success">
-                                                        <i class="feather icon-edit">
-                                                        </i>
-                                                    </button>
-                                                    <button title="Xoá" class="btn btn-danger">
-                                                        <i class="feather icon-trash-2">
-                                                        </i>
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                            no++;
+                                        <tr>
+                                            <td class="sticky-col first-col">@no</td>
+                                            <td class="sticky-col first-col">@item.code</td>
+                                            <td class="sticky-col second-col">@item.name</td>
+                                            <td>@item.group.name</td>
+                                            <td>@item.category.name</td>
+                                            <td class="text-center">@item.unit</td>
+                                            <td class="text-center">@item.price</td>
+                                            <td class="text-center">@item.import_inventory.Where(i => i.product_id == item.id).FirstOrDefault().price_import</td>
+                                            <td class="text-center">@item.import_inventory.Where(i => i.product_id == item.id).Sum(i => i.quantity)</td>
+                                            <td class="text-center">@item.sale_details.Where(i => i.product_id == item.id).Sum(s => s.sold)</td>
+                                            <td class="text-center">
+                                                <div class="custom-control custom-switch">
+                                                    <input type="checkbox" class="custom-control-input">
+                                                    <label class="custom-control-label">
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button title="Sao chép" class="btn btn-primary">
+                                                    <i class="feather icon-copy">
+                                                    </i>
+                                                </button>
+                                                <button title="Cập nhật" class="btn btn-success">
+                                                    <i class="feather icon-edit">
+                                                    </i>
+                                                </button>
+                                                <button title="Xoá" class="btn btn-danger">
+                                                    <i class="feather icon-trash-2">
+                                                    </i>
+                                                </button>
+                                            </td>
+                                        </tr>
                                         }
 
                                     </tbody>
@@ -241,7 +245,7 @@
                                                 Tên sản phẩm<span class="text-danger">*</span>
                                             </label>
                                             <div class="position-relative">
-                                                <input type="text" placeholder="Nhập tên sản phẩm" id="first-name-icon" class="form-control" name="name_category" pattern="\S+.*" required>
+                                                <input type="text" placeholder="Nhập tên sản phẩm" id="first-name-icon" class="form-control" name="name_product" pattern="\S+.*" required>
                                                 <div class="invalid-feedback">
                                                     Vui lòng nhập tên sản phẩm !
                                                 </div>
@@ -254,7 +258,7 @@
                                                 Đơn vị tính<span class="text-danger">*</span>
                                             </label>
                                             <div class="position-relative">
-                                                <input type="text" placeholder="Nhập đơn vị tính " id="first-name-icon" class="form-control" name="name_category" pattern="\S+.*" required>
+                                                <input type="text" placeholder="Nhập đơn vị tính " id="first-name-icon" class="form-control" name="unit" pattern="\S+.*" required>
                                                 <div class="invalid-feedback">
                                                     Vui lòng nhập tên đơn vị tính !
                                                 </div>
@@ -267,7 +271,7 @@
                                                 Số lượng sản phẩm<span class="text-danger">*</span>
                                             </label>
                                             <div class="position-relative">
-                                                <input type="number" placeholder="Nhập số lượng sản phẩm" id="first-name-icon" class="form-control" name="name_category" required>
+                                                <input type="number" placeholder="Nhập số lượng sản phẩm" id="first-name-icon" class="form-control" name="quantity" required>
                                                 <div class="invalid-feedback">
                                                     Vui lòng nhập số lượng sản phẩm !
                                                 </div>
@@ -309,7 +313,7 @@
                                             </label>
                                             <div class="position-relative">
                                                 <input type="text" placeholder="Nhập giá tiền" id="product-price-sold" max="999999999999" class="form-control "
-                                                      pattern="[0-9.,]+" data-type="number"  required>
+                                                      pattern="[0-9.,]+" data-type="number" name="sell_price"  required>
                                                 <div class="invalid-feedback">
                                                     Giá tiền bán không được để trống !
                                                 </div>
@@ -324,7 +328,7 @@
                                             </label>
                                             <div class="position-relative">
                                                 <input type="text" placeholder="Nhập giá tiền" id="product-price-buy" max="999999999999" class="form-control"
-                                                          pattern="[0-9.,]+" data-type="number"  required>
+                                                          pattern="[0-9.,]+" data-type="number"  name="purchase_price" required>
                                                 <div class="invalid-feedback">
                                                     Giá tiền nhập không được để trống !
                                                 </div>
@@ -386,7 +390,7 @@
             url: "/groups/getGroupProduct",
             data: "{}",
             success: function (data) {
-                var s = 'option value="" disabled="disabled" selected="selected">Chọn nhóm hàng</option>';
+                var s = '<option value="" disabled="disabled" selected="selected">Chọn nhóm hàng</option>';
                 for (var i = 0; i < data.length; i++) {
                     s += '<option value="' + data[i].groupID + '">' + data[i].groupName + '</option>';
                 }
@@ -398,7 +402,7 @@
             url: "/categories/getCategory",
             data: "{}",
             success: function (data) {
-                var s = 'option value="" disabled="disabled" selected="selected">Chọn danh mục</option>';
+                var s = '<option value="" disabled="disabled" selected="selected">Chọn danh mục</option>';
                 for (var i = 0; i < data.length; i++) {
                     s += '<option value="' + data[i].categoryID + '">' + data[i].categoryName + '</option>';
                 }

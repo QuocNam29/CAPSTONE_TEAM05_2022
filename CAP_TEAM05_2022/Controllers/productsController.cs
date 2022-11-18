@@ -19,25 +19,40 @@ namespace CAP_TEAM05_2022.Controllers
         // GET: products
         public ActionResult Index()
         {
-            var products = db.products.Include(p => p.category).Include(p => p.group).Include(p => p.user);
+            var products = db.products.Include(p => p.category).Include(p => p.group).Include(p => p.user).Where(c => c.status != 3).OrderByDescending(c => c.id);
             return View(products.ToList());
         }
-        public ActionResult Create_Product(string name_category)
+        public ActionResult Create_Product(string name_product, string unit,
+            int quantity, int GroupProductDropdown, int CategoryDropdown,
+            string sell_price,  string purchase_price
+            )
         {
             string email = Session["user_email"].ToString();
             user user = db.users.Where(u => u.email == email).FirstOrDefault();
-            category category = new category();
-            category.name = name_category;
-            category.status = 1;
-            category.created_by = user.id;
-            category.created_at = DateTime.Now;
-            category.slug = name_category;
-            category.code = "DM" + CodeRandom.RandomCode();
-            db.categories.Add(category);
+            product product = new product();
+            product.name = name_product;
+            product.status = 1;
+            product.unit = unit;
+            product.category_id = CategoryDropdown;
+            product.group_id = GroupProductDropdown;
+            product.created_by = user.id;
+            product.price = int.Parse(sell_price.Replace(",",""));
+            product.created_at = DateTime.Now;
+            product.code = "SP" + CodeRandom.RandomCode();
+            db.products.Add(product);
+            import_inventory inventory = new import_inventory();
+            inventory.product_id = product.id;
+            inventory.quantity = quantity;
+            inventory.price_import = int.Parse(purchase_price.Replace(",", ""));
+            inventory.sold = 0;
+            inventory.created_by = user.id;
+            inventory.created_at = DateTime.Now;
+            db.import_inventory.Add(inventory);
             db.SaveChanges();
+            Session["notification"] = "Thêm mới thành công!";
             return RedirectToAction("Index");
         }
-
+/*
         // GET: products/Details/5
         public ActionResult Details(int? id)
         {
@@ -143,7 +158,7 @@ namespace CAP_TEAM05_2022.Controllers
             db.products.Remove(product);
             db.SaveChanges();
             return RedirectToAction("Index");
-        }
+        }*/
 
         protected override void Dispose(bool disposing)
         {

@@ -80,7 +80,7 @@ namespace CAP_TEAM05_2022.Controllers
             return Json(new { success = true, data = group }, JsonRequestBehavior.AllowGet);
         }*/
 
-        /*public ActionResult getGroupProduct()
+        public ActionResult getGroupProduct()
         {
            
             return Json(db.groups.Select(x => new
@@ -88,7 +88,7 @@ namespace CAP_TEAM05_2022.Controllers
                 groupID = x.id,
                 groupName = x.name
             }).ToList(), JsonRequestBehavior.AllowGet);
-        }*/
+        }
         /*public ActionResult Edit_GroupProduct(int GroupProduct_id, string name_GroupProduct)
         {
             group group = db.groups.Find(GroupProduct_id);
@@ -109,7 +109,7 @@ namespace CAP_TEAM05_2022.Controllers
             bool status = true;
             return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
         }
-
+/*
         // GET: groups/Details/5
         public ActionResult Details(int? id)
         {
@@ -207,7 +207,7 @@ namespace CAP_TEAM05_2022.Controllers
             db.groups.Remove(group);
             db.SaveChanges();
             return RedirectToAction("Index");
-        }
+        }*/
 
         protected override void Dispose(bool disposing)
         {

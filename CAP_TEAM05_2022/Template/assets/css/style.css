@@ -30265,9 +30265,8 @@ margin: 0 6px;
 }
 
 .first-col{
-    width: 100px;
-    min-width: 100px;
-    max-width: 100px;
+    width: 150px;
+    max-width: 150px;
     left: 0px;
 }
 .sticky-col {

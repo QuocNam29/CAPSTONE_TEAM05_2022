@@ -150,8 +150,7 @@
           <Property Name="product_id" Type="int" Nullable="false" />
           <Property Name="quantity" Type="int" Nullable="false" />
           <Property Name="price_import" Type="int" Nullable="false" />
-          <Property Name="sold" Type="int" Nullable="false" />
-          <Property Name="discount" Type="int" Nullable="false" />
+          <Property Name="sold" Type="int" />
           <Property Name="created_by" Type="int" Nullable="false" />
           <Property Name="created_at" Type="datetime2" Precision="0" />
           <Property Name="updated_at" Type="datetime2" Precision="0" />
@@ -757,8 +756,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="product_id" Type="Int32" Nullable="false" />
           <Property Name="quantity" Type="Int32" Nullable="false" />
           <Property Name="price_import" Type="Int32" Nullable="false" />
-          <Property Name="sold" Type="Int32" Nullable="false" />
-          <Property Name="discount" Type="Int32" Nullable="false" />
+          <Property Name="sold" Type="Int32" />
           <Property Name="created_by" Type="Int32" Nullable="false" />
           <Property Name="created_at" Type="DateTime" Precision="0" />
           <Property Name="updated_at" Type="DateTime" Precision="0" />
@@ -1340,7 +1338,6 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
                 <ScalarProperty Name="quantity" ColumnName="quantity" />
                 <ScalarProperty Name="price_import" ColumnName="price_import" />
                 <ScalarProperty Name="sold" ColumnName="sold" />
-                <ScalarProperty Name="discount" ColumnName="discount" />
                 <ScalarProperty Name="created_by" ColumnName="created_by" />
                 <ScalarProperty Name="created_at" ColumnName="created_at" />
                 <ScalarProperty Name="updated_at" ColumnName="updated_at" />
