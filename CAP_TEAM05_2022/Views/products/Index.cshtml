@@ -36,102 +36,30 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-md-12 mb-3">  
-                                    <button type="button" class="btn btn-primary float-right ml-2"  data-toggle="modal" data-target="#AddProduct">Tạo mới</button>
+                                <div class="col-md-12 mb-3">
                                     <button type="button" class="btn btn-secondary">Xuất tệp Excel</button>
                                     <button type="button" class="btn btn-dark">Nhập tệp Excel</button>
                                     <button type="button" class="btn btn-success">Mẫu tệp Excel</button>
                                 </div>
-                                <div class="col-md-5">
-                                    <input type="text" id="search" placeholder="Tìm kiếm..." class="form-control form-search">
-                                </div>
+
                                 <div class="col-md-3">
-                                    <select name="filter" id="filter" class="form-control">
-                                        <option value="null">Xem tất cả nhóm hàng</option>
-                                        <option value="41">
-                                            Phân bón Arrow
-                                        </option>
-                                        <option value="40">
-                                            ty Tân thành
-                                        </option>
-                                        <option value="39">
-                                            Công ty Adama
-                                        </option>
-                                        <option value="38">
-                                            Công ty Corteva
-                                        </option>
-                                        <option value="37">
-                                            Công ty TNHH Arysta
-                                        </option>
-                                        <option value="36">
-                                            Công ty VFC
-                                        </option>
-                                        <option value="35">
-                                            Phân bón Đầu Ngựa
-                                        </option>
-                                        <option value="34">
-                                            Phân bón Song Mã
-                                        </option>
-                                        <option value="33">
-                                            Phân bón Đất xanh
-                                        </option>
-                                        <option value="32">
-                                            VIPESCO
-                                        </option>
-                                        <option value="31">
-                                            CT PHÂN BÓN VIỆT NHẬT
-                                        </option>
-                                        <option value="30">
-                                            Phân bón miền Nam
-                                        </option>
-                                        <option value="29">
-                                            Cty CP Thuốc sát trùng VN
-                                        </option>
-                                        <option value="28">
-                                            Vườn sinh thái
-                                        </option>
-                                        <option value="27">
-                                            OEM
-                                        </option>
-                                        <option value="26">
-                                            AGRIA SA
-                                        </option>
-                                        <option value="25">
-                                            SAIPORA
-                                        </option>
-                                        <option value="24">
-                                            Handelsgesellscharft
-                                        </option>
-                                        <option value="23">
-                                            Phú Mỹ
-                                        </option>
-                                        <option value="22">
-                                            Seven
-                                        </option>
-                                        <option value="21">
-                                            Humax Rong Biển
-                                        </option>
-                                        <option value="20">
-                                            BigOne
-                                        </option>
-                                        <option value="19">
-                                            Amazon
-                                        </option>
+                                    <select class="custom-select" id="filter_GroupProduct" name="filter_GroupProduct" required>
+                                        <option value="" disabled="disabled" selected="selected">Xem tất cả nhóm hàng</option>
+
                                     </select>
                                 </div>
                                 <div class="col-md-3">
-                                    <select name="filter" id="filter" class="form-control">
-                                        <option value="null">Xem tất cả danh mục</option>
-                                        <option value="23">
-                                            Thuốc Bảo vệ thực vật
-                                        </option>
-                                        <option value="22">
-                                            Phân bón
-                                        </option>
+                                    <select class="custom-select" id="filter_Category" name="filter_Category" required>
+                                        <option value="" disabled="disabled" selected="selected">Xem tất cả danh mục</option>
+
                                     </select>
-                                </div> 
+                                </div>
                                 <div class="col-md-1">
                                     <button type="button" class="btn btn-warning btn-block">Xem</button>
+                                </div>
+                                <div class="col-md-5">
+                                    <button type="button" class="btn btn-primary float-right ml-2" data-toggle="modal" data-target="#AddProduct">Tạo mới</button>
+                                   
                                 </div>
                             </div>
                         </div>
@@ -352,10 +280,82 @@
     </div>
 </section>
 <script>
+        $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("getGroupProduct", "groups")",
+            data: "{}",
+            success: function (data) {
+                var s = '<option value="" disabled="disabled" selected="selected">Chọn nhóm hàng</option>';
+                for (var i = 0; i < data.length; i++) {
+                    s += '<option value="' + data[i].groupID + '">' + data[i].groupName + '</option>';
+                }
+                $("#GroupProductDropdown").html(s);
+            }
+        });
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("getCategory", "categories")",
+            data: "{}",
+            success: function (data) {
+                var s = '<option value="" disabled="disabled" selected="selected">Chọn danh mục</option>';
+                for (var i = 0; i < data.length; i++) {
+                    s += '<option value="' + data[i].categoryID + '">' + data[i].categoryName + '</option>';
+                }
+                $("#CategoryDropdown").html(s);
+            }
+        });
+                    $.ajax({
+            type: "GET",
+            url: "@Url.Action("getGroupProduct", "groups")",
+            data: "{}",
+            success: function (data) {
+                var s = '<option value="" disabled="disabled" selected="selected">Xem tất cả nhóm hàng</option>';
+                for (var i = 0; i < data.length; i++) {
+                    s += '<option value="' + data[i].groupID + '">' + data[i].groupName + '</option>';
+                }
+                $("#filter_GroupProduct").html(s);
+            }
+        });
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("getCategory", "categories")",
+            data: "{}",
+            success: function (data) {
+                var s = '<option value="" disabled="disabled" selected="selected">Xem tất cả danh mục</option>';
+                for (var i = 0; i < data.length; i++) {
+                    s += '<option value="' + data[i].categoryID + '">' + data[i].categoryName + '</option>';
+                }
+                $("#filter_Category").html(s);
+            }
+        });
+    });
+
+
     $(document).ready(function () {
         $('#example').DataTable({
             pagingType: 'full_numbers',
         });
+         $("#filter_GroupProduct").change(function () {
+            GetList()
+        });
+
+       function GetList() {
+           var month = $("#filter_GroupProduct").val();
+             $.ajax({
+                 url: '@Url.Action("ProductList", "products")',
+                 data: {
+                     month: month,
+                 }
+                }).done(function(result) {
+                     $('#example').DataTable()
+                    console.log(result)
+                 }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                     console.log(textStatus)
+                     console.log(errorThrown)
+                     alert("Something Went Wrong, Try Later");
+                 });
+        }
     });
     $('#product-price-sold').keydown(function (e) {
         setTimeout(() => {
@@ -384,32 +384,6 @@
         })
     })
 
-    $(document).ready(function () {
-        $.ajax({
-            type: "GET",
-            url: "/groups/getGroupProduct",
-            data: "{}",
-            success: function (data) {
-                var s = '<option value="" disabled="disabled" selected="selected">Chọn nhóm hàng</option>';
-                for (var i = 0; i < data.length; i++) {
-                    s += '<option value="' + data[i].groupID + '">' + data[i].groupName + '</option>';
-                }
-                $("#GroupProductDropdown").html(s);
-            }
-        });
-        $.ajax({
-            type: "GET",
-            url: "/categories/getCategory",
-            data: "{}",
-            success: function (data) {
-                var s = '<option value="" disabled="disabled" selected="selected">Chọn danh mục</option>';
-                for (var i = 0; i < data.length; i++) {
-                    s += '<option value="' + data[i].categoryID + '">' + data[i].categoryName + '</option>';
-                }
-                $("#CategoryDropdown").html(s);
-            }
-        });
-    });
 
-    
+
 </script>

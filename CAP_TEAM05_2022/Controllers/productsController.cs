@@ -22,6 +22,11 @@ namespace CAP_TEAM05_2022.Controllers
             var products = db.products.Include(p => p.category).Include(p => p.group).Include(p => p.user).Where(c => c.status != 3).OrderByDescending(c => c.id);
             return View(products.ToList());
         }
+        public ActionResult ProductList(int month)
+        { 
+                var mylist = db.products.Where(p => p.group_id == month).ToList();
+                return PartialView(mylist);
+        }
         public ActionResult Create_Product(string name_product, string unit,
             int quantity, int GroupProductDropdown, int CategoryDropdown,
             string sell_price,  string purchase_price
