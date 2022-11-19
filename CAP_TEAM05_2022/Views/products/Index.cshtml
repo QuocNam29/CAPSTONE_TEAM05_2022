@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
-    int no = 0;
+   
 }
 
 <section class="pcoded-main-container">
@@ -64,68 +64,9 @@
                             </div>
                         </div>
                         <div class="card-body table-border-style">
-                            <div class="table-responsive">
-                                <table id="example"  class="table table-hover card-scroll">
-                                    <thead>
-                                        <tr>
-                                            <th class="sticky-col first-col">#</th>
-                                            <th class="sticky-col first-col">Mã sản phẩm</th>
-                                            <th class="sticky-col second-col">Tên sản phẩm</th>
-                                            <th>Nhóm hàng</th>
-                                            <th>Danh mục</th>
-                                            <th class="text-center">Đơn vị</th>
-                                            <th class="text-center">Giá tiền bán</th>
-                                            <th class="text-center">Giá tiền nhập</th>
-                                            <th class="text-center">Số lượng nhập</th>
-                                            <th class="text-center">Đã bán</th>
-                                            <th class="text-center">Trạng thái</th>
-                                            <th>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                     
-                                        @foreach (var item in Model)
-                                        {
-                                            no++;
-                                        <tr>
-                                            <td class="sticky-col first-col">@no</td>
-                                            <td class="sticky-col first-col">@item.code</td>
-                                            <td class="sticky-col second-col">@item.name</td>
-                                            <td>@item.group.name</td>
-                                            <td>@item.category.name</td>
-                                            <td class="text-center">@item.unit</td>
-                                            <td class="text-center">@item.price</td>
-                                            <td class="text-center">@item.import_inventory.Where(i => i.product_id == item.id).FirstOrDefault().price_import</td>
-                                            <td class="text-center">@item.import_inventory.Where(i => i.product_id == item.id).Sum(i => i.quantity)</td>
-                                            <td class="text-center">@item.sale_details.Where(i => i.product_id == item.id).Sum(s => s.sold)</td>
-                                            <td class="text-center">
-                                                <div class="custom-control custom-switch">
-                                                    <input type="checkbox" class="custom-control-input">
-                                                    <label class="custom-control-label">
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <button title="Sao chép" class="btn btn-primary">
-                                                    <i class="feather icon-copy">
-                                                    </i>
-                                                </button>
-                                                <button title="Cập nhật" class="btn btn-success">
-                                                    <i class="feather icon-edit">
-                                                    </i>
-                                                </button>
-                                                <button title="Xoá" class="btn btn-danger">
-                                                    <i class="feather icon-trash-2">
-                                                    </i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        }
+                            <div class="table-responsive" id="dataContainer">
+                                @{ Html.RenderAction("ProductList", "products", new { group_id = -1, category_id = -1 });}
 
-                                    </tbody>
-                                </table>
-                              
                             </div>
                         </div>
                     </div>
@@ -310,7 +251,7 @@
             url: "@Url.Action("getGroupProduct", "groups")",
             data: "{}",
             success: function (data) {
-                var s = '<option value="" disabled="disabled" selected="selected">Xem tất cả nhóm hàng</option>';
+                var s = '<option value="-1" >Xem tất cả nhóm hàng</option>';
                 for (var i = 0; i < data.length; i++) {
                     s += '<option value="' + data[i].groupID + '">' + data[i].groupName + '</option>';
                 }
@@ -322,7 +263,7 @@
             url: "@Url.Action("getCategory", "categories")",
             data: "{}",
             success: function (data) {
-                var s = '<option value="" disabled="disabled" selected="selected">Xem tất cả danh mục</option>';
+                var s = '<option value="-1" >Xem tất cả danh mục</option>';
                 for (var i = 0; i < data.length; i++) {
                     s += '<option value="' + data[i].categoryID + '">' + data[i].categoryName + '</option>';
                 }
@@ -336,18 +277,27 @@
         $('#example').DataTable({
             pagingType: 'full_numbers',
         });
-         $("#filter_GroupProduct").change(function () {
-            GetList()
+        $("#filter_GroupProduct").change(function () {
+            var group_id = $("#filter_GroupProduct").val();
+            var category_id = $("#filter_Category").val();
+            GetList(group_id, category_id)
         });
-
-       function GetList() {
-           var month = $("#filter_GroupProduct").val();
+        $("#filter_Category").change(function () {
+            var group_id = $("#filter_GroupProduct").val();
+            var category_id = $("#filter_Category").val();
+            GetList(group_id, category_id)
+        });
+       
+        function GetList(group_id, category_id ) {
+         
              $.ajax({
                  url: '@Url.Action("ProductList", "products")',
                  data: {
-                     month: month,
+                     group_id: group_id,
+                     category_id: category_id,
                  }
-                }).done(function(result) {
+             }).done(function (result) {
+                 $('#dataContainer').html(result);
                      $('#example').DataTable()
                     console.log(result)
                  }).fail(function (XMLHttpRequest, textStatus, errorThrown) {

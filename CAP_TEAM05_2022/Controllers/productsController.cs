@@ -19,13 +19,24 @@ namespace CAP_TEAM05_2022.Controllers
         // GET: products
         public ActionResult Index()
         {
-            var products = db.products.Include(p => p.category).Include(p => p.group).Include(p => p.user).Where(c => c.status != 3).OrderByDescending(c => c.id);
-            return View(products.ToList());
+            return View();
+         
         }
-        public ActionResult ProductList(int month)
-        { 
-                var mylist = db.products.Where(p => p.group_id == month).ToList();
-                return PartialView(mylist);
+      
+        public ActionResult ProductList(int group_id , int category_id)
+        {
+            var links = from l in db.products
+                        select l;
+            if (group_id != -1)
+                {
+                links = links.Where(p => p.group_id == group_id);
+            }
+             if (category_id != -1)
+            {
+                links = links.Where(p => p.category_id == category_id);
+            }                                        
+            return PartialView(links);
+
         }
         public ActionResult Create_Product(string name_product, string unit,
             int quantity, int GroupProductDropdown, int CategoryDropdown,

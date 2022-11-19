@@ -1,0 +1,64 @@
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.product>
+@{ 
+    int no = 0;
+}
+<table id="example" class="table table-hover card-scroll">
+    <thead>
+        <tr>
+            <th class="sticky-col first-col">#</th>
+            <th class="sticky-col first-col">Mã sản phẩm</th>
+            <th class="sticky-col second-col">Tên sản phẩm</th>
+            <th>Nhóm hàng</th>
+            <th>Danh mục</th>
+            <th class="text-center">Đơn vị</th>
+            <th class="text-center">Giá tiền bán</th>
+            <th class="text-center">Giá tiền nhập</th>
+            <th class="text-center">Số lượng nhập</th>
+            <th class="text-center">Đã bán</th>
+            <th class="text-center">Trạng thái</th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            no++;
+            <tr>
+                <td class="sticky-col first-col">@no</td>
+                <td class="sticky-col first-col">@item.code</td>
+                <td class="sticky-col second-col">@item.name</td>
+                <td>@item.group.name</td>
+                <td>@item.category.name</td>
+                <td class="text-center">@item.unit</td>
+                <td class="text-center">@item.price</td>
+                <td class="text-center">@item.import_inventory.Where(i => i.product_id == item.id).FirstOrDefault().price_import</td>
+                <td class="text-center">@item.import_inventory.Where(i => i.product_id == item.id).Sum(i => i.quantity)</td>
+                <td class="text-center">@item.sale_details.Where(i => i.product_id == item.id).Sum(s => s.sold)</td>
+                <td class="text-center">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input">
+                        <label class="custom-control-label">
+                        </label>
+                    </div>
+                </td>
+                <td>
+                    <button title="Sao chép" class="btn btn-primary">
+                        <i class="feather icon-copy">
+                        </i>
+                    </button>
+                    <button title="Cập nhật" class="btn btn-success">
+                        <i class="feather icon-edit">
+                        </i>
+                    </button>
+                    <button title="Xoá" class="btn btn-danger">
+                        <i class="feather icon-trash-2">
+                        </i>
+                    </button>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
