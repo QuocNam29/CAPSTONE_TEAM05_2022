@@ -21,7 +21,7 @@ function deleteAlert(id, code) {
         function () {
             var categorys = {};
             categorys.id = id;
-
+            
             $.ajax({
                 url: URLDelete,
                 data: JSON.stringify(categorys),

@@ -68,113 +68,138 @@ namespace CAP_TEAM05_2022.Controllers
             Session["notification"] = "Thêm mới thành công!";
             return RedirectToAction("Index");
         }
-/*
-        // GET: products/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Delete_Product(product product)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            product product = db.products.Find(id);
-            if (product == null)
-            {
-                return HttpNotFound();
-            }
-            return View(product);
-        }
-
-        // GET: products/Create
-        public ActionResult Create()
-        {
-            ViewBag.category_id = new SelectList(db.categories, "id", "code");
-            ViewBag.group_id = new SelectList(db.groups, "id", "code");
-            ViewBag.created_by = new SelectList(db.users, "id", "name");
-            return View();
-        }
-
-        // POST: products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,code,name,slug,group_id,category_id,unit,price_1,price_2,price_3,price_4,discount,status,note,created_by,created_at,updated_at,deleted_at")] product product)
-        {
-            if (ModelState.IsValid)
-            {
-                db.products.Add(product);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.category_id = new SelectList(db.categories, "id", "code", product.category_id);
-            ViewBag.group_id = new SelectList(db.groups, "id", "code", product.group_id);
-            ViewBag.created_by = new SelectList(db.users, "id", "name", product.created_by);
-            return View(product);
-        }
-
-        // GET: products/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            product product = db.products.Find(id);
-            if (product == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.category_id = new SelectList(db.categories, "id", "code", product.category_id);
-            ViewBag.group_id = new SelectList(db.groups, "id", "code", product.group_id);
-            ViewBag.created_by = new SelectList(db.users, "id", "name", product.created_by);
-            return View(product);
-        }
-
-        // POST: products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,code,name,slug,group_id,category_id,unit,price_1,price_2,price_3,price_4,discount,status,note,created_by,created_at,updated_at,deleted_at")] product product)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(product).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.category_id = new SelectList(db.categories, "id", "code", product.category_id);
-            ViewBag.group_id = new SelectList(db.groups, "id", "code", product.group_id);
-            ViewBag.created_by = new SelectList(db.users, "id", "name", product.created_by);
-            return View(product);
-        }
-
-        // GET: products/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            product product = db.products.Find(id);
-            if (product == null)
-            {
-                return HttpNotFound();
-            }
-            return View(product);
-        }
-
-        // POST: products/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            product product = db.products.Find(id);
-            db.products.Remove(product);
+            product product1 = db.products.Find(product.id);
+            product1.status = 3;
+            product1.deleted_at = DateTime.Now;
+            db.Entry(product1).State = EntityState.Modified;
             db.SaveChanges();
-            return RedirectToAction("Index");
-        }*/
+            return Json("Delete_Product", JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult EditStatus_Product(product products)
+        {
+            product product = db.products.Find(products.id);
+            if (product.status == 1)
+            {
+                product.status = 2;
+            }
+            else
+            {
+                product.status = 1;
+            }
+            product.updated_at = DateTime.Now;
+            db.Entry(product).State = EntityState.Modified;
+            db.SaveChanges();
+            return Json("EditStatus_Product", JsonRequestBehavior.AllowGet);
+        }
+        /*
+                // GET: products/Details/5
+                public ActionResult Details(int? id)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    product product = db.products.Find(id);
+                    if (product == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(product);
+                }
+
+                // GET: products/Create
+                public ActionResult Create()
+                {
+                    ViewBag.category_id = new SelectList(db.categories, "id", "code");
+                    ViewBag.group_id = new SelectList(db.groups, "id", "code");
+                    ViewBag.created_by = new SelectList(db.users, "id", "name");
+                    return View();
+                }
+
+                // POST: products/Create
+                // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+                // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+                [HttpPost]
+                [ValidateAntiForgeryToken]
+                public ActionResult Create([Bind(Include = "id,code,name,slug,group_id,category_id,unit,price_1,price_2,price_3,price_4,discount,status,note,created_by,created_at,updated_at,deleted_at")] product product)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        db.products.Add(product);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+
+                    ViewBag.category_id = new SelectList(db.categories, "id", "code", product.category_id);
+                    ViewBag.group_id = new SelectList(db.groups, "id", "code", product.group_id);
+                    ViewBag.created_by = new SelectList(db.users, "id", "name", product.created_by);
+                    return View(product);
+                }
+
+                // GET: products/Edit/5
+                public ActionResult Edit(int? id)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    product product = db.products.Find(id);
+                    if (product == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    ViewBag.category_id = new SelectList(db.categories, "id", "code", product.category_id);
+                    ViewBag.group_id = new SelectList(db.groups, "id", "code", product.group_id);
+                    ViewBag.created_by = new SelectList(db.users, "id", "name", product.created_by);
+                    return View(product);
+                }
+
+                // POST: products/Edit/5
+                // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+                // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+                [HttpPost]
+                [ValidateAntiForgeryToken]
+                public ActionResult Edit([Bind(Include = "id,code,name,slug,group_id,category_id,unit,price_1,price_2,price_3,price_4,discount,status,note,created_by,created_at,updated_at,deleted_at")] product product)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        db.Entry(product).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    ViewBag.category_id = new SelectList(db.categories, "id", "code", product.category_id);
+                    ViewBag.group_id = new SelectList(db.groups, "id", "code", product.group_id);
+                    ViewBag.created_by = new SelectList(db.users, "id", "name", product.created_by);
+                    return View(product);
+                }
+
+                // GET: products/Delete/5
+                public ActionResult Delete(int? id)
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    product product = db.products.Find(id);
+                    if (product == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(product);
+                }
+
+                // POST: products/Delete/5
+                [HttpPost, ActionName("Delete")]
+                [ValidateAntiForgeryToken]
+                public ActionResult DeleteConfirmed(int id)
+                {
+                    product product = db.products.Find(id);
+                    db.products.Remove(product);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }*/
 
         protected override void Dispose(bool disposing)
         {
