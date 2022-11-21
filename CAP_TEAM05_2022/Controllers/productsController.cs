@@ -111,6 +111,24 @@ namespace CAP_TEAM05_2022.Controllers
             emp.category_id = product.category_id;
             return Json(emp);
         }
+        public JsonResult UpdateProduct(product Products)
+        {
+            product product = db.products.Find(Products.id);
+            product.name = Products.name;
+           
+            product.unit = Products.unit;
+            product.category_id = Products.category_id;
+            product.group_id = Products.group_id;     
+            product.sell_price = Products.sell_price;
+            product.purchase_price = Products.purchase_price;
+            product.quantity = Products.quantity;
+            product.updated_at = DateTime.Now;
+            db.Entry(product).State = EntityState.Modified;
+            db.SaveChanges();
+            string message = "Record Saved Successfully ";
+            bool status = true;
+            return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
+        }
         /*   public ActionResult getProduct()
            {
 

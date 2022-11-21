@@ -210,8 +210,14 @@
                         form.classList.add('was-validated');
                     }, false);
                 });
+               
             }, false);
         })();
+                $(document).ready(function () {
+                    $('#submit_edit').on('click', function () {
+                        var form = new FormData("#EditProduct");
+                    })
+                })
     </script>
 
 </body>

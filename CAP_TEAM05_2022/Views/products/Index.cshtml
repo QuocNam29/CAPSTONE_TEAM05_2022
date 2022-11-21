@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
-   
+
 }
 
 <section class="pcoded-main-container">
@@ -215,10 +215,10 @@
             </div>
             <div id="EditProduct" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="EditProductLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
-                    <form class="needs-validation" method="post" action="@Url.Action("Create_Product", "products")" novalidate>
+                    <form class="needs-validation" method="post" id="EditProduct" novalidate>
                         <div class="modal-content">
                             <div class="modal-header bg-primary">
-                                <h5 class="modal-title" id="EditProductLabel">Thêm mới sản phẩm</h5>
+                                <h5 class="modal-title" id="EditProductLabel">Chỉnh sửa th sản phẩm</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             </div>
 
@@ -258,7 +258,7 @@
                                                 Số lượng sản phẩm<span class="text-danger">*</span>
                                             </label>
                                             <div class="position-relative">
-                                                <input type="number" placeholder="Nhập số lượng sản phẩm" id="edit_quatity" class="form-control" name="quantity" required>
+                                                <input type="number" placeholder="Nhập số lượng sản phẩm" id="edit_quantity" class="form-control" name="quantity" required>
                                                 <div class="invalid-feedback">
                                                     Vui lòng nhập số lượng sản phẩm !
                                                 </div>
@@ -271,7 +271,7 @@
                                                 Nhóm hàng<span class="text-danger">*</span>
                                             </label>
                                             <div class="position-relative">
-                                                <select class="custom-select" id="GroupProductDropdown" name="GroupProductDropdown" required>
+                                                <select class="custom-select" id="edit_GroupProduct" name="GroupProductDropdown" required>
                                                 </select>
                                                 <div class="invalid-feedback">Vui lòng chọn nhóm hàng</div>
                                             </div> <!---->
@@ -284,7 +284,7 @@
                                                 Danh mục sản phẩm<span class="text-danger">*</span>
                                             </label>
                                             <div class="position-relative">
-                                                <select class="custom-select" id="CategoryDropdown" name="CategoryDropdown" required>
+                                                <select class="custom-select" id="edit_Category" name="CategoryDropdown" required>
                                                 </select>
                                                 <div class="invalid-feedback">Vui lòng chọn danh mục</div>
                                             </div> <!---->
@@ -327,7 +327,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
-                                <button type="submit" class="btn btn-primary">Thêm mới</button>
+                                <button type="button" class="btn btn-primary" onclick="Update()">thay đổi</button>
                             </div>
                         </div>
                     </form>
@@ -337,6 +337,7 @@
     </div>
 </section>
 <script type="text/javascript">
+
         $(document).ready(function () {
         $.ajax({
             type: "GET",
@@ -362,7 +363,7 @@
                 $("#CategoryDropdown").html(s);
             }
         });
-                    $.ajax({
+        $.ajax({
             type: "GET",
             url: "@Url.Action("getGroupProduct", "groups")",
             data: "{}",
@@ -388,7 +389,7 @@
         });
     });
 
-
+   
     $(document).ready(function () {
         $('#example').DataTable({
             pagingType: 'full_numbers',
@@ -475,6 +476,7 @@
             $(this).val(n);
         })
     })
+    var row;
 function GetProduct(ele, id) {
         row = $(ele).closest('tr');
          $.ajax({
@@ -484,16 +486,97 @@ function GetProduct(ele, id) {
                 success: function (response) {
                     $('#edit_id').val(response.id);
                     $('#edit_unit').val(response.unit);
-                    $('#edit_quatity').val(response.quatity);
+                    $('#edit_quantity').val(response.quantity);
                     $('#edit_sell_price').val(response.sell_price);
                     $('#edit_purchase_price').val(response.purchase_price);
                     $('#edit_name').val(response.name);
+                    var group_id = response.group_id;
+                    var category_id = response.category_id;
+                    $.ajax({
+            type: "GET",
+            url: "@Url.Action("getGroupProduct", "groups")",
+            data: "{}",
+            success: function (data) {
+                var s = '<option value="" disabled="disabled" >Chọn nhóm hàng</option>';
+                for (var i = 0; i < data.length; i++) {
+                    if (group_id == data[i].groupID ) {
+                        s += '<option value="' + data[i].groupID + '" selected="selected">' + data[i].groupName + '</option>';
+                    } else {
+                        s += '<option value="' + data[i].groupID + '">' + data[i].groupName + '</option>';
+                    }
+                }
+                $("#edit_GroupProduct").html(s);
+            }
+                    });
+                     $.ajax({
+            type: "GET",
+            url: "@Url.Action("getCategory", "categories")",
+            data: "{}",
+            success: function (data) {
+                var s = '<option value="" disabled="disabled">Chọn danh mục</option>';
+                for (var i = 0; i < data.length; i++) {
+                    if (category_id == data[i].categoryID) {
+                        s += '<option value="' + data[i].categoryID + '"  selected="selected">' + data[i].categoryName + '</option>';
+                    } else {
+                        s += '<option value="' + data[i].categoryID + '" >' + data[i].categoryName + '</option>';
 
+                    }
+                }
+                $("#edit_Category").html(s);
+            }
+        });
                     $('#EditProduct .close').css('display', 'none');
                     $('#EditProduct').modal('show');
                 }
             })
     }
+    function Update() {
 
+        var table = $('#example').DataTable();
+        var product = {};
+     product.id = $('#edit_id').val();
+     product.name = $('#edit_name').val();
+     product.unit = $('#edit_unit').val();
+     product.quantity = $('#edit_quantity').val();
+        product.sell_price = Number($('#edit_sell_price').val().replace(',', ''));
+        product.purchase_price = Number($('#edit_purchase_price').val().replace(',', '')); 
+     product.group_id = $('#edit_GroupProduct').val();
+        product.category_id = $('#edit_Category').val();
+        console.log($('#edit_sell_price').val().replace(',', ''));
+        console.log(product);
+        $.ajax({
+            url: "@Url.Action("UpdateProduct", "products")",
+            type: "Post",
+            data: JSON.stringify(product),
+            contentType: "application/json; charset=UTF-8",
+            dataType: "json",
+            success: function (response) {
+                var group_id = $("#filter_GroupProduct").val();
+                var category_id = $("#filter_Category").val();
+                $.ajax({
+                 url: '@Url.Action("ProductList", "products")',
+                 data: {
+                     group_id: group_id,
+                     category_id: category_id,
+                 }
+             }).done(function (result) {
+                 $('#dataContainer').html(result);
+                     $('#example').DataTable()
+                 $('#EditProduct .close').css('display', 'none');
+                 $('#EditProduct').modal('hide');
+
+                 sweetAlert
+                     ({
+                         title: "Cập nhật thành công !",
+                         type: "success"
+                     })
+                 }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                     console.log(textStatus)
+                     console.log(errorThrown)
+                     alert("Something Went Wrong, Try Later");
+                 });
+            }
+        });
+    }
 
 </script>
