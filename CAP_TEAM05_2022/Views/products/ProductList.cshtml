@@ -34,9 +34,9 @@
                 <td>@item.group.name</td>
                 <td>@item.category.name</td>
                 <td class="text-center">@item.unit</td>
-                <td class="text-center">@item.price</td>
-                <td class="text-center">@item.import_inventory.Where(i => i.product_id == item.id).FirstOrDefault().price_import</td>
-                <td class="text-center">@item.import_inventory.Where(i => i.product_id == item.id).Sum(i => i.quantity)</td>
+                <td class="text-center">@item.sell_price</td>
+                <td class="text-center"> @item.purchase_price</td>
+                <td class="text-center">@item.quantity</td>
                 <td class="text-center">@item.sale_details.Where(i => i.product_id == item.id).Sum(s => s.sold)</td>
                 <td class="text-center">
                     @if (item.status == 1)
@@ -65,7 +65,7 @@
                         <i class="feather icon-copy">
                         </i>
                     </button>
-                    <button title="Cập nhật" class="btn btn-success">
+                    <button title="Cập nhật" class="btn btn-success" onclick="GetProduct(this, @item.id)">
                         <i class="feather icon-edit">
                         </i>
                     </button>

@@ -35,7 +35,7 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 links = links.Where(p => p.category_id == category_id);
             }                                        
-            return PartialView(links);
+            return PartialView(links.Where(c => c.status != 3).OrderByDescending(c => c.id));
 
         }
         public ActionResult Create_Product(string name_product, string unit,
@@ -52,7 +52,9 @@ namespace CAP_TEAM05_2022.Controllers
             product.category_id = CategoryDropdown;
             product.group_id = GroupProductDropdown;
             product.created_by = user.id;
-            product.price = int.Parse(sell_price.Replace(",",""));
+            product.sell_price = int.Parse(sell_price.Replace(",",""));
+            product.purchase_price = int.Parse(purchase_price.Replace(",", ""));
+            product.quantity = quantity;
             product.created_at = DateTime.Now;
             product.code = "SP" + CodeRandom.RandomCode();
             db.products.Add(product);
@@ -93,6 +95,37 @@ namespace CAP_TEAM05_2022.Controllers
             db.SaveChanges();
             return Json("EditStatus_Product", JsonRequestBehavior.AllowGet);
         }
+      
+        [HttpPost]
+        public JsonResult FindProduct(int Product_id)
+        {
+            product product = db.products.Find(Product_id);
+            var emp = new product();
+            emp.id = Product_id;
+            emp.name = product.name;
+            emp.unit = product.unit;
+            emp.quantity = product.quantity;
+            emp.sell_price = product.sell_price;
+            emp.purchase_price = product.purchase_price;
+            emp.group_id = product.group_id;
+            emp.category_id = product.category_id;
+            return Json(emp);
+        }
+        /*   public ActionResult getProduct()
+           {
+
+               return Json(db.products.Select(x => new
+               {
+                   productID = x.id,
+                   productName = x.name,
+                   productUnit = x.unit,
+                   productQuatity = x.quantity,
+                   productSell_price = x.sell_price,
+                   productPurchase_price = x.purchase_price,
+                   productGroup_id = x.group_id,
+                   productCategory_id = x.category_id,
+               }).ToList(), JsonRequestBehavior.AllowGet) ;
+           }*/
         /*
                 // GET: products/Details/5
                 public ActionResult Details(int? id)

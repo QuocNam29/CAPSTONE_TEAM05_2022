@@ -169,7 +169,7 @@
                                 </label>
                                 <div class="position-relative">
                                     <input hidden id="edit_id" name="GroupProduct_id" />
-                                    <input type="text" placeholder="Nhập tên nhóm hàng" id="Editedit_name" class="form-control" name="name_GroupProduct" pattern="\S+.*" required>
+                                    <input type="text" placeholder="Nhập tên nhóm hàng" id="Edit_name" class="form-control" name="name_GroupProduct" pattern="\S+.*" required>
                                     <div class="invalid-feedback">
                                         Vui lòng nhập tên nhóm hàng !
                                     </div>
@@ -205,7 +205,7 @@
                 data: { "GroupProduct_id": id },
                 success: function (response) {
                     $('#edit_id').val(response.id);
-                    $('#Editedit_name').val(response.name);
+                    $('#Edit_name').val(response.name);
 
                     $('#Edit_Modal .close').css('display', 'none');
                     $('#Edit_Modal').modal('show');
@@ -216,7 +216,7 @@
         var table = $('#example').DataTable();
         var group = {};
         group.id = $('#edit_id').val();
-        group.name = $('#Editedit_name').val();
+        group.name = $('#Edit_name').val();
 
         $.ajax({
             url: "@Url.Action("UpdateGroupProduct", "groups")",
@@ -227,7 +227,7 @@
             success: function (response) {
                 $('#Edit_Modal .close').css('display', 'none');
                 $('#Edit_Modal').modal('hide');
-                table.cell(row, 2).data($('#Editedit_name').val());
+                table.cell(row, 2).data($('#Edit_name').val());
                 table.draw();
                 sweetAlert
                     ({

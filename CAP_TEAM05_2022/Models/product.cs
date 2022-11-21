@@ -28,7 +28,9 @@ namespace CAP_TEAM05_2022.Models
         public int group_id { get; set; }
         public int category_id { get; set; }
         public string unit { get; set; }
-        public int price { get; set; }
+        public int purchase_price { get; set; }
+        public Nullable<int> sell_price { get; set; }
+        public Nullable<int> quantity { get; set; }
         public int status { get; set; }
         public string note { get; set; }
         public int created_by { get; set; }

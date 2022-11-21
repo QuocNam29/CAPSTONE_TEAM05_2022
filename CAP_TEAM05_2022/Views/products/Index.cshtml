@@ -54,10 +54,10 @@
 
                                     </select>
                                 </div>
-                                
+
                                 <div class="col-md-6">
                                     <button type="button" class="btn btn-primary float-right ml-2" data-toggle="modal" data-target="#AddProduct">Tạo mới</button>
-                                   
+
                                 </div>
                             </div>
                         </div>
@@ -152,11 +152,10 @@
                                             </label>
                                             <div class="position-relative">
                                                 <select class="custom-select" id="GroupProductDropdown" name="GroupProductDropdown" required>
-                                                    
                                                 </select>
                                                 <div class="invalid-feedback">Vui lòng chọn nhóm hàng</div>
                                             </div> <!---->
-                                           
+
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -166,11 +165,10 @@
                                             </label>
                                             <div class="position-relative">
                                                 <select class="custom-select" id="CategoryDropdown" name="CategoryDropdown" required>
-                                                   
                                                 </select>
                                                 <div class="invalid-feedback">Vui lòng chọn danh mục</div>
                                             </div> <!---->
-                                           
+
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -180,12 +178,12 @@
                                             </label>
                                             <div class="position-relative">
                                                 <input type="text" placeholder="Nhập giá tiền" id="product-price-sold" max="999999999999" class="form-control "
-                                                      pattern="[0-9.,]+" data-type="number" name="sell_price"  required>
+                                                       pattern="[0-9.,]+" data-type="number" name="sell_price" required>
                                                 <div class="invalid-feedback">
                                                     Giá tiền bán không được để trống !
                                                 </div>
                                             </div> <!---->
-                                           
+
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -195,7 +193,127 @@
                                             </label>
                                             <div class="position-relative">
                                                 <input type="text" placeholder="Nhập giá tiền" id="product-price-buy" max="999999999999" class="form-control"
-                                                          pattern="[0-9.,]+" data-type="number"  name="purchase_price" required>
+                                                       pattern="[0-9.,]+" data-type="number" name="purchase_price" required>
+                                                <div class="invalid-feedback">
+                                                    Giá tiền nhập không được để trống !
+                                                </div>
+                                            </div>
+                                            <!---->
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
+                                <button type="submit" class="btn btn-primary">Thêm mới</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div id="EditProduct" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="EditProductLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <form class="needs-validation" method="post" action="@Url.Action("Create_Product", "products")" novalidate>
+                        <div class="modal-content">
+                            <div class="modal-header bg-primary">
+                                <h5 class="modal-title" id="EditProductLabel">Thêm mới sản phẩm</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            </div>
+
+                            <div class="modal-body ">
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>
+                                                Tên sản phẩm<span class="text-danger">*</span>
+                                            </label>
+                                            <input hidden id="edit_id" name="Product_id" />
+                                            <div class="position-relative">
+                                                <input type="text" placeholder="Nhập tên sản phẩm" id="edit_name" class="form-control" name="name_product" pattern="\S+.*" required>
+                                                <div class="invalid-feedback">
+                                                    Vui lòng nhập tên sản phẩm !
+                                                </div>
+                                            </div> <!---->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>
+                                                Đơn vị tính<span class="text-danger">*</span>
+                                            </label>
+                                            <div class="position-relative">
+                                                <input type="text" placeholder="Nhập đơn vị tính " id="edit_unit" class="form-control" name="unit" pattern="\S+.*" required>
+                                                <div class="invalid-feedback">
+                                                    Vui lòng nhập tên đơn vị tính !
+                                                </div>
+                                            </div> <!---->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>
+                                                Số lượng sản phẩm<span class="text-danger">*</span>
+                                            </label>
+                                            <div class="position-relative">
+                                                <input type="number" placeholder="Nhập số lượng sản phẩm" id="edit_quatity" class="form-control" name="quantity" required>
+                                                <div class="invalid-feedback">
+                                                    Vui lòng nhập số lượng sản phẩm !
+                                                </div>
+                                            </div> <!---->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>
+                                                Nhóm hàng<span class="text-danger">*</span>
+                                            </label>
+                                            <div class="position-relative">
+                                                <select class="custom-select" id="GroupProductDropdown" name="GroupProductDropdown" required>
+                                                </select>
+                                                <div class="invalid-feedback">Vui lòng chọn nhóm hàng</div>
+                                            </div> <!---->
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>
+                                                Danh mục sản phẩm<span class="text-danger">*</span>
+                                            </label>
+                                            <div class="position-relative">
+                                                <select class="custom-select" id="CategoryDropdown" name="CategoryDropdown" required>
+                                                </select>
+                                                <div class="invalid-feedback">Vui lòng chọn danh mục</div>
+                                            </div> <!---->
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>
+                                                Đơn giá bán<span class="text-danger">*</span>
+                                            </label>
+                                            <div class="position-relative">
+                                                <input type="text" placeholder="Nhập giá tiền" id="edit_sell_price" max="999999999999" class="form-control "
+                                                       pattern="[0-9.,]+" data-type="number" name="sell_price" required>
+                                                <div class="invalid-feedback">
+                                                    Giá tiền bán không được để trống !
+                                                </div>
+                                            </div> <!---->
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="product-price-import">
+                                                Đơn giá nhập<span class="text-danger">*</span>
+                                            </label>
+                                            <div class="position-relative">
+                                                <input type="text" placeholder="Nhập giá tiền" id="edit_purchase_price" max="999999999999" class="form-control"
+                                                       pattern="[0-9.,]+" data-type="number" name="purchase_price" required>
                                                 <div class="invalid-feedback">
                                                     Giá tiền nhập không được để trống !
                                                 </div>
@@ -218,7 +336,7 @@
         </div>
     </div>
 </section>
-<script>
+<script type="text/javascript">
         $(document).ready(function () {
         $.ajax({
             type: "GET",
@@ -285,9 +403,9 @@
             var category_id = $("#filter_Category").val();
             GetList(group_id, category_id)
         });
-       
+
         function GetList(group_id, category_id ) {
-         
+
              $.ajax({
                  url: '@Url.Action("ProductList", "products")',
                  data: {
@@ -331,7 +449,51 @@
             $(this).val(n);
         })
     })
+    $('#edit_sell_price').keydown(function (e) {
+        setTimeout(() => {
+            let parts = $(this).val().split(".");
+            let v = parts[0].replace(/\D/g, ""),
+                dec = parts[1]
+            let calc_num = Number((dec !== undefined ? v + "." + dec : v));
+            // use this for numeric calculations
+            // console.log('number for calculations: ', calc_num);
+            let n = new Intl.NumberFormat('en-EN').format(v);
+            n = dec !== undefined ? n + "." + dec : n;
+            $(this).val(n);
+        })
+    })
+    $('#edit_purchase_price').keydown(function (e) {
+        setTimeout(() => {
+            let parts = $(this).val().split(".");
+            let v = parts[0].replace(/\D/g, ""),
+                dec = parts[1]
+            let calc_num = Number((dec !== undefined ? v + "." + dec : v));
+            // use this for numeric calculations
+            // console.log('number for calculations: ', calc_num);
+            let n = new Intl.NumberFormat('en-EN').format(v);
+            n = dec !== undefined ? n + "." + dec : n;
+            $(this).val(n);
+        })
+    })
+function GetProduct(ele, id) {
+        row = $(ele).closest('tr');
+         $.ajax({
+                type: 'POST',
+                url: "@Url.Action("FindProduct", "products")/",
+                data: { "Product_id": id },
+                success: function (response) {
+                    $('#edit_id').val(response.id);
+                    $('#edit_unit').val(response.unit);
+                    $('#edit_quatity').val(response.quatity);
+                    $('#edit_sell_price').val(response.sell_price);
+                    $('#edit_purchase_price').val(response.purchase_price);
+                    $('#edit_name').val(response.name);
 
+                    $('#EditProduct .close').css('display', 'none');
+                    $('#EditProduct').modal('show');
+                }
+            })
+    }
 
 
 </script>
