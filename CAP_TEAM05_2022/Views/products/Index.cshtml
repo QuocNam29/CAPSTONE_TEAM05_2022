@@ -5,7 +5,9 @@
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
 
 }
-
+<input type="text" hidden id="URLProductList" value="@Url.Action("ProductList", "products")" />
+<input type="text" hidden id="URLFindProduct" value="@Url.Action("FindProduct", "products")/" />
+<input type="text" hidden id="URLUpdateProduct" value="@Url.Action("UpdateProduct", "products")" />
 <section class="pcoded-main-container">
     <div class="pcoded-content">
         <div class="page-header">
@@ -43,12 +45,14 @@
                                 </div>
 
                                 <div class="col-md-3">
+                                    <input type="text"  hidden id="URLgetCategory" value="@Url.Action("getCategory", "categories")" />
                                     <select class="custom-select" id="filter_GroupProduct" name="filter_GroupProduct" required>
                                         <option value="" disabled="disabled" selected="selected">Xem tất cả nhóm hàng</option>
 
                                     </select>
                                 </div>
                                 <div class="col-md-3">
+                                    <input type="text" hidden id="URLgetGroupProduct" value="@Url.Action("getGroupProduct", "groups")" />
                                     <select class="custom-select" id="filter_Category" name="filter_Category" required>
                                         <option value="" disabled="disabled" selected="selected">Xem tất cả danh mục</option>
 
@@ -336,247 +340,11 @@
         </div>
     </div>
 </section>
-<script type="text/javascript">
-
-        $(document).ready(function () {
-        $.ajax({
-            type: "GET",
-            url: "@Url.Action("getGroupProduct", "groups")",
-            data: "{}",
-            success: function (data) {
-                var s = '<option value="" disabled="disabled" selected="selected">Chọn nhóm hàng</option>';
-                for (var i = 0; i < data.length; i++) {
-                    s += '<option value="' + data[i].groupID + '">' + data[i].groupName + '</option>';
-                }
-                $("#GroupProductDropdown").html(s);
-            }
-        });
-        $.ajax({
-            type: "GET",
-            url: "@Url.Action("getCategory", "categories")",
-            data: "{}",
-            success: function (data) {
-                var s = '<option value="" disabled="disabled" selected="selected">Chọn danh mục</option>';
-                for (var i = 0; i < data.length; i++) {
-                    s += '<option value="' + data[i].categoryID + '">' + data[i].categoryName + '</option>';
-                }
-                $("#CategoryDropdown").html(s);
-            }
-        });
-        $.ajax({
-            type: "GET",
-            url: "@Url.Action("getGroupProduct", "groups")",
-            data: "{}",
-            success: function (data) {
-                var s = '<option value="-1" >Xem tất cả nhóm hàng</option>';
-                for (var i = 0; i < data.length; i++) {
-                    s += '<option value="' + data[i].groupID + '">' + data[i].groupName + '</option>';
-                }
-                $("#filter_GroupProduct").html(s);
-            }
-        });
-        $.ajax({
-            type: "GET",
-            url: "@Url.Action("getCategory", "categories")",
-            data: "{}",
-            success: function (data) {
-                var s = '<option value="-1" >Xem tất cả danh mục</option>';
-                for (var i = 0; i < data.length; i++) {
-                    s += '<option value="' + data[i].categoryID + '">' + data[i].categoryName + '</option>';
-                }
-                $("#filter_Category").html(s);
-            }
-        });
-    });
-
-   
+<script type="text/javascript">   
     $(document).ready(function () {
         $('#example').DataTable({
             pagingType: 'full_numbers',
         });
-        $("#filter_GroupProduct").change(function () {
-            var group_id = $("#filter_GroupProduct").val();
-            var category_id = $("#filter_Category").val();
-            GetList(group_id, category_id)
-        });
-        $("#filter_Category").change(function () {
-            var group_id = $("#filter_GroupProduct").val();
-            var category_id = $("#filter_Category").val();
-            GetList(group_id, category_id)
-        });
-
-        function GetList(group_id, category_id ) {
-
-             $.ajax({
-                 url: '@Url.Action("ProductList", "products")',
-                 data: {
-                     group_id: group_id,
-                     category_id: category_id,
-                 }
-             }).done(function (result) {
-                 $('#dataContainer').html(result);
-                     $('#example').DataTable()
-                    console.log(result)
-                 }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                     console.log(textStatus)
-                     console.log(errorThrown)
-                     alert("Something Went Wrong, Try Later");
-                 });
-        }
+      
     });
-    $('#product-price-sold').keydown(function (e) {
-        setTimeout(() => {
-            let parts = $(this).val().split(".");
-            let v = parts[0].replace(/\D/g, ""),
-                dec = parts[1]
-            let calc_num = Number((dec !== undefined ? v + "." + dec : v));
-            // use this for numeric calculations
-            // console.log('number for calculations: ', calc_num);
-            let n = new Intl.NumberFormat('en-EN').format(v);
-            n = dec !== undefined ? n + "." + dec : n;
-            $(this).val(n);
-        })
-    })
-    $('#product-price-buy').keydown(function (e) {
-        setTimeout(() => {
-            let parts = $(this).val().split(".");
-            let v = parts[0].replace(/\D/g, ""),
-                dec = parts[1]
-            let calc_num = Number((dec !== undefined ? v + "." + dec : v));
-            // use this for numeric calculations
-            // console.log('number for calculations: ', calc_num);
-            let n = new Intl.NumberFormat('en-EN').format(v);
-            n = dec !== undefined ? n + "." + dec : n;
-            $(this).val(n);
-        })
-    })
-    $('#edit_sell_price').keydown(function (e) {
-        setTimeout(() => {
-            let parts = $(this).val().split(".");
-            let v = parts[0].replace(/\D/g, ""),
-                dec = parts[1]
-            let calc_num = Number((dec !== undefined ? v + "." + dec : v));
-            // use this for numeric calculations
-            // console.log('number for calculations: ', calc_num);
-            let n = new Intl.NumberFormat('en-EN').format(v);
-            n = dec !== undefined ? n + "." + dec : n;
-            $(this).val(n);
-        })
-    })
-    $('#edit_purchase_price').keydown(function (e) {
-        setTimeout(() => {
-            let parts = $(this).val().split(".");
-            let v = parts[0].replace(/\D/g, ""),
-                dec = parts[1]
-            let calc_num = Number((dec !== undefined ? v + "." + dec : v));
-            // use this for numeric calculations
-            // console.log('number for calculations: ', calc_num);
-            let n = new Intl.NumberFormat('en-EN').format(v);
-            n = dec !== undefined ? n + "." + dec : n;
-            $(this).val(n);
-        })
-    })
-    var row;
-function GetProduct(ele, id) {
-        row = $(ele).closest('tr');
-         $.ajax({
-                type: 'POST',
-                url: "@Url.Action("FindProduct", "products")/",
-                data: { "Product_id": id },
-                success: function (response) {
-                    $('#edit_id').val(response.id);
-                    $('#edit_unit').val(response.unit);
-                    $('#edit_quantity').val(response.quantity);
-                    $('#edit_sell_price').val(response.sell_price);
-                    $('#edit_purchase_price').val(response.purchase_price);
-                    $('#edit_name').val(response.name);
-                    var group_id = response.group_id;
-                    var category_id = response.category_id;
-                    $.ajax({
-            type: "GET",
-            url: "@Url.Action("getGroupProduct", "groups")",
-            data: "{}",
-            success: function (data) {
-                var s = '<option value="" disabled="disabled" >Chọn nhóm hàng</option>';
-                for (var i = 0; i < data.length; i++) {
-                    if (group_id == data[i].groupID ) {
-                        s += '<option value="' + data[i].groupID + '" selected="selected">' + data[i].groupName + '</option>';
-                    } else {
-                        s += '<option value="' + data[i].groupID + '">' + data[i].groupName + '</option>';
-                    }
-                }
-                $("#edit_GroupProduct").html(s);
-            }
-                    });
-                     $.ajax({
-            type: "GET",
-            url: "@Url.Action("getCategory", "categories")",
-            data: "{}",
-            success: function (data) {
-                var s = '<option value="" disabled="disabled">Chọn danh mục</option>';
-                for (var i = 0; i < data.length; i++) {
-                    if (category_id == data[i].categoryID) {
-                        s += '<option value="' + data[i].categoryID + '"  selected="selected">' + data[i].categoryName + '</option>';
-                    } else {
-                        s += '<option value="' + data[i].categoryID + '" >' + data[i].categoryName + '</option>';
-
-                    }
-                }
-                $("#edit_Category").html(s);
-            }
-        });
-                    $('#EditProduct .close').css('display', 'none');
-                    $('#EditProduct').modal('show');
-                }
-            })
-    }
-    function Update() {
-
-        var table = $('#example').DataTable();
-        var product = {};
-     product.id = $('#edit_id').val();
-     product.name = $('#edit_name').val();
-     product.unit = $('#edit_unit').val();
-     product.quantity = $('#edit_quantity').val();
-        product.sell_price = Number($('#edit_sell_price').val().replace(',', ''));
-        product.purchase_price = Number($('#edit_purchase_price').val().replace(',', '')); 
-     product.group_id = $('#edit_GroupProduct').val();
-        product.category_id = $('#edit_Category').val();
-        console.log($('#edit_sell_price').val().replace(',', ''));
-        console.log(product);
-        $.ajax({
-            url: "@Url.Action("UpdateProduct", "products")",
-            type: "Post",
-            data: JSON.stringify(product),
-            contentType: "application/json; charset=UTF-8",
-            dataType: "json",
-            success: function (response) {
-                var group_id = $("#filter_GroupProduct").val();
-                var category_id = $("#filter_Category").val();
-                $.ajax({
-                 url: '@Url.Action("ProductList", "products")',
-                 data: {
-                     group_id: group_id,
-                     category_id: category_id,
-                 }
-             }).done(function (result) {
-                 $('#dataContainer').html(result);
-                     $('#example').DataTable()
-                 $('#EditProduct .close').css('display', 'none');
-                 $('#EditProduct').modal('hide');
-
-                 sweetAlert
-                     ({
-                         title: "Cập nhật thành công !",
-                         type: "success"
-                     })
-                 }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                     console.log(textStatus)
-                     console.log(errorThrown)
-                     alert("Something Went Wrong, Try Later");
-                 });
-            }
-        });
-    }
-
 </script>

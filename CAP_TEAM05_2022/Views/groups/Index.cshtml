@@ -5,6 +5,8 @@
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
     int no = 0;
 }
+<input type="text" hidden id="URLFindGroupProduct" value="@Url.Action("FindGroupProduct", "groups")/" />
+<input type="text" hidden id="URLUpdateGroupProduct" value="@Url.Action("UpdateGroupProduct", "groups")" />
 <section class="pcoded-main-container">
     <div class="pcoded-content">
         <div class="page-header">
@@ -88,7 +90,7 @@
                                                 </script>
                                             </td>
                                             <td>
-                                                <button class="btn btn-success " onclick="GetProduct(this, @item.id)">
+                                                <button class="btn btn-success " onclick="GetGroupProduct(this, @item.id)">
                                                     <i class="feather icon-edit">
                                                     </i>
                                                 </button>
@@ -197,46 +199,5 @@
             pagingType: 'full_numbers',
         });
     });
-    function GetProduct(ele, id) {
-        row = $(ele).closest('tr');
-         $.ajax({
-                type: 'POST',
-                url: "@Url.Action("FindGroupProduct", "groups")/",
-                data: { "GroupProduct_id": id },
-                success: function (response) {
-                    $('#edit_id').val(response.id);
-                    $('#Edit_name').val(response.name);
-
-                    $('#Edit_Modal .close').css('display', 'none');
-                    $('#Edit_Modal').modal('show');
-                }
-            })
-    }
-    function Update() {
-        var table = $('#example').DataTable();
-        var group = {};
-        group.id = $('#edit_id').val();
-        group.name = $('#Edit_name').val();
-
-        $.ajax({
-            url: "@Url.Action("UpdateGroupProduct", "groups")",
-            type: "Post",
-            data: JSON.stringify(group),
-            contentType: "application/json; charset=UTF-8",
-            dataType: "json",
-            success: function (response) {
-                $('#Edit_Modal .close').css('display', 'none');
-                $('#Edit_Modal').modal('hide');
-                table.cell(row, 2).data($('#Edit_name').val());
-                table.draw();
-                sweetAlert
-                    ({
-                        title: "Cập nhật thành công !",
-                        type: "success"
-                    },)
-            }
-        });
-    }
-  
 </script>
 

@@ -77,11 +77,11 @@ namespace CAP_TEAM05_2022.Controllers
             return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public JsonResult FindCategory(int category_id)
+        public JsonResult FindCategory(int GroupProduct_id)
         {
-            category categories = db.categories.Find(category_id);
+            category categories = db.categories.Find(GroupProduct_id);
             var emp = new category();
-            emp.id = category_id;
+            emp.id = GroupProduct_id;
             emp.name = categories.name;       
             return Json(emp);
         }

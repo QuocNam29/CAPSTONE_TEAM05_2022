@@ -1,4 +1,31 @@
-﻿var URLDelete = "";
+﻿
+// Example starter JavaScript for disabling form submissions if there are invalid fields
+(function () {
+    'use strict';
+    window.addEventListener('load', function () {
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function (form) {
+            form.addEventListener('submit', function (event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+
+    }, false);
+})();
+$(document).ready(function () {
+    $('#submit_edit').on('click', function () {
+        var form = new FormData("#EditProduct");
+    })
+})
+
+//-------------------------Delete Group, Category, Product-----------------------
+var URLDelete = "";
 $('#URLDelete')
     .keypress(function () {
         URLDelete = $(this).val();
@@ -49,7 +76,7 @@ function deleteAlert(id, code) {
         })
 }
 
-
+//-----------------------Edit status------------------------------------------
 var URDEditStatus = "";
 $('#URDEditStatus')
     .keypress(function () {
@@ -76,3 +103,331 @@ function EditStatus(id) {
 
 }
 
+//-----------------------Định dạng giá-------------------------------------
+$('#product-price-sold').keydown(function (e) {
+    setTimeout(() => {
+        let parts = $(this).val().split(".");
+        let v = parts[0].replace(/\D/g, ""),
+            dec = parts[1]
+        let calc_num = Number((dec !== undefined ? v + "." + dec : v));
+        // use this for numeric calculations
+        // console.log('number for calculations: ', calc_num);
+        let n = new Intl.NumberFormat('en-EN').format(v);
+        n = dec !== undefined ? n + "." + dec : n;
+        $(this).val(n);
+    })
+})
+$('#product-price-buy').keydown(function (e) {
+    setTimeout(() => {
+        let parts = $(this).val().split(".");
+        let v = parts[0].replace(/\D/g, ""),
+            dec = parts[1]
+        let calc_num = Number((dec !== undefined ? v + "." + dec : v));
+        // use this for numeric calculations
+        // console.log('number for calculations: ', calc_num);
+        let n = new Intl.NumberFormat('en-EN').format(v);
+        n = dec !== undefined ? n + "." + dec : n;
+        $(this).val(n);
+    })
+})
+$('#edit_sell_price').keydown(function (e) {
+    setTimeout(() => {
+        let parts = $(this).val().split(".");
+        let v = parts[0].replace(/\D/g, ""),
+            dec = parts[1]
+        let calc_num = Number((dec !== undefined ? v + "." + dec : v));
+        // use this for numeric calculations
+        // console.log('number for calculations: ', calc_num);
+        let n = new Intl.NumberFormat('en-EN').format(v);
+        n = dec !== undefined ? n + "." + dec : n;
+        $(this).val(n);
+    })
+})
+$('#edit_purchase_price').keydown(function (e) {
+    setTimeout(() => {
+        let parts = $(this).val().split(".");
+        let v = parts[0].replace(/\D/g, ""),
+            dec = parts[1]
+        let calc_num = Number((dec !== undefined ? v + "." + dec : v));
+        // use this for numeric calculations
+        // console.log('number for calculations: ', calc_num);
+        let n = new Intl.NumberFormat('en-EN').format(v);
+        n = dec !== undefined ? n + "." + dec : n;
+        $(this).val(n);
+    })
+})
+
+//------------ Load dropdown form add product----------------------------------
+
+var URLgetGroupProduct = "";
+var URLgetCategory = "";
+$('#URLgetGroupProduct')
+    .keypress(function () {
+        URLgetGroupProduct = $(this).val();
+    })
+    .keypress();
+$('#URLgetCategory')
+    .keypress(function () {
+        URLgetCategory = $(this).val();
+    })
+    .keypress();
+
+$.ajax({
+    type: "GET",
+    url: URLgetGroupProduct,
+    data: "{}",
+    success: function (data) {
+        var s = '<option value="" disabled="disabled" selected="selected">Chọn nhóm hàng</option>';
+        for (var i = 0; i < data.length; i++) {
+            s += '<option value="' + data[i].groupID + '">' + data[i].groupName + '</option>';
+        }
+        $("#GroupProductDropdown").html(s);
+    }
+});
+$.ajax({
+    type: "GET",
+    url: URLgetCategory,
+    data: "{}",
+    success: function (data) {
+        var s = '<option value="" disabled="disabled" selected="selected">Chọn danh mục</option>';
+        for (var i = 0; i < data.length; i++) {
+            s += '<option value="' + data[i].categoryID + '">' + data[i].categoryName + '</option>';
+        }
+        $("#CategoryDropdown").html(s);
+    }
+});
+
+//------------ Load dropdown FILTER add product----------------------------------
+$.ajax({
+    type: "GET",
+    url: URLgetGroupProduct,
+    data: "{}",
+    success: function (data) {
+        var s = '<option value="-1" >Xem tất cả nhóm hàng</option>';
+        for (var i = 0; i < data.length; i++) {
+            s += '<option value="' + data[i].groupID + '">' + data[i].groupName + '</option>';
+        }
+        $("#filter_GroupProduct").html(s);
+    }
+});
+$.ajax({
+    type: "GET",
+    url: URLgetCategory,
+    data: "{}",
+    success: function (data) {
+        var s = '<option value="-1" >Xem tất cả danh mục</option>';
+        for (var i = 0; i < data.length; i++) {
+            s += '<option value="' + data[i].categoryID + '">' + data[i].categoryName + '</option>';
+        }
+        $("#filter_Category").html(s);
+    }
+});
+
+//----------------------FILTER PRODUCT------------------------------------------------
+$('#URLProductList')
+    .keypress(function () {
+        URLProductList = $(this).val();
+    })
+    .keypress();
+
+$("#filter_GroupProduct").change(function () {
+    var group_id = $("#filter_GroupProduct").val();
+    var category_id = $("#filter_Category").val();
+    GetList(group_id, category_id)
+});
+$("#filter_Category").change(function () {
+    var group_id = $("#filter_GroupProduct").val();
+    var category_id = $("#filter_Category").val();
+    GetList(group_id, category_id)
+});
+
+function GetList(group_id, category_id) {
+    $.ajax({
+        url: URLProductList,
+        data: {
+            group_id: group_id,
+            category_id: category_id,
+        }
+    }).done(function (result) {
+        $('#dataContainer').html(result);
+        $('#example').DataTable()
+      
+    }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        console.log(textStatus)
+        console.log(errorThrown)
+        alert("Something Went Wrong, Try Later");
+    });
+}
+
+//----------------------LOAD FORM EDIT PRODUCT---------------------------------------
+
+$('#URLFindProduct')
+    .keypress(function () {
+        URLFindProduct = $(this).val();
+    })
+    .keypress();
+
+function GetProduct(ele, id) {
+    row = $(ele).closest('tr');
+    $.ajax({
+        type: 'POST',
+        url: URLFindProduct,
+        data: { "Product_id": id },
+        success: function (response) {
+            $('#edit_id').val(response.id);
+            $('#edit_unit').val(response.unit);
+            $('#edit_quantity').val(response.quantity);
+            $('#edit_sell_price').val(response.sell_price);
+            $('#edit_purchase_price').val(response.purchase_price);
+            $('#edit_name').val(response.name);
+            var group_id = response.group_id;
+            var category_id = response.category_id;
+            $.ajax({
+                type: "GET",
+                url: URLgetGroupProduct,
+                data: "{}",
+                success: function (data) {
+                    var s = '<option value="" disabled="disabled" >Chọn nhóm hàng</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        if (group_id == data[i].groupID) {
+                            s += '<option value="' + data[i].groupID + '" selected="selected">' + data[i].groupName + '</option>';
+                        } else {
+                            s += '<option value="' + data[i].groupID + '">' + data[i].groupName + '</option>';
+                        }
+                    }
+                    $("#edit_GroupProduct").html(s);
+                }
+            });
+            $.ajax({
+                type: "GET",
+                url: URLgetCategory,
+                data: "{}",
+                success: function (data) {
+                    var s = '<option value="" disabled="disabled">Chọn danh mục</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        if (category_id == data[i].categoryID) {
+                            s += '<option value="' + data[i].categoryID + '"  selected="selected">' + data[i].categoryName + '</option>';
+                        } else {
+                            s += '<option value="' + data[i].categoryID + '" >' + data[i].categoryName + '</option>';
+
+                        }
+                    }
+                    $("#edit_Category").html(s);
+                }
+            });
+            $('#EditProduct .close').css('display', 'none');
+            $('#EditProduct').modal('show');
+        }
+    })
+}
+
+//-------------------------------UPDATE PRODUCT--------------------------------
+
+$('#URLUpdateProduct')
+    .keypress(function () {
+        URLUpdateProduct = $(this).val();
+    })
+    .keypress();
+
+function Update() {
+    var product = {};
+    product.id = $('#edit_id').val();
+    product.name = $('#edit_name').val();
+    product.unit = $('#edit_unit').val();
+    product.quantity = $('#edit_quantity').val();
+    product.sell_price = Number($('#edit_sell_price').val().replace(/,/g, ''));
+    product.purchase_price = Number($('#edit_purchase_price').val().replace(/,/g, ''));
+    product.group_id = $('#edit_GroupProduct').val();
+    product.category_id = $('#edit_Category').val();
+  
+    console.log(product);
+    $.ajax({
+        url: URLUpdateProduct,
+        type: "Post",
+        data: JSON.stringify(product),
+        contentType: "application/json; charset=UTF-8",
+        dataType: "json",
+        success: function (response) {
+            var group_id = $("#filter_GroupProduct").val();
+            var category_id = $("#filter_Category").val();
+            $.ajax({
+                url: URLProductList,
+                data: {
+                    group_id: group_id,
+                    category_id: category_id,
+                }
+            }).done(function (result) {
+                $('#dataContainer').html(result);
+                $('#example').DataTable()
+                $('#EditProduct .close').css('display', 'none');
+                $('#EditProduct').modal('hide');
+
+                sweetAlert
+                    ({
+                        title: "Cập nhật thành công !",
+                        type: "success"
+                    })
+            }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(textStatus)
+                console.log(errorThrown)
+                alert("Something Went Wrong, Try Later");
+            });
+        }
+    });
+}
+
+//-------------------------Get Group Product -------------------------------
+
+$('#URLFindGroupProduct')
+    .keypress(function () {
+        URLFindGroupProduct = $(this).val();
+    })
+    .keypress();
+function GetGroupProduct(ele, id) {
+    row = $(ele).closest('tr');
+    $.ajax({
+        type: 'POST',
+        url: URLFindGroupProduct,
+        data: { "GroupProduct_id": id },
+        success: function (response) {
+            $('#edit_id').val(response.id);
+            $('#Edit_name').val(response.name);
+
+            $('#Edit_Modal .close').css('display', 'none');
+            $('#Edit_Modal').modal('show');
+        }
+    })
+}
+
+//------------------------UPDATE GROUP PRODUCT-----------------------------
+$('#URLUpdateGroupProduct')
+    .keypress(function () {
+        URLUpdateGroupProduct = $(this).val();
+    })
+    .keypress();
+
+function Update() {
+    var table = $('#example').DataTable();
+    var group = {};
+    group.id = $('#edit_id').val();
+    group.name = $('#Edit_name').val();
+
+    $.ajax({
+        url: URLUpdateGroupProduct,
+        type: "Post",
+        data: JSON.stringify(group),
+        contentType: "application/json; charset=UTF-8",
+        dataType: "json",
+        success: function (response) {
+            $('#Edit_Modal .close').css('display', 'none');
+            $('#Edit_Modal').modal('hide');
+            table.cell(row, 2).data($('#Edit_name').val());
+            table.draw();
+            sweetAlert
+                ({
+                    title: "Cập nhật thành công !",
+                    type: "success"
+                })
+        }
+    });
+}
