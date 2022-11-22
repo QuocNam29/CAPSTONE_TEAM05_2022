@@ -109,6 +109,7 @@ namespace CAP_TEAM05_2022.Controllers
             bool status = true;
             return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
         }
+       
 /*
         // GET: groups/Details/5
         public ActionResult Details(int? id)

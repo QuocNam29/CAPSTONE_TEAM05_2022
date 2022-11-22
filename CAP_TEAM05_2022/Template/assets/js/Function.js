@@ -431,3 +431,14 @@ function Update() {
         }
     });
 }
+
+//---------------------Export Excel-------------------------
+(function ($) {
+    $("#btnExport").click(function () {
+        $("#example").table2excel({
+            filename: "San_Pham.xls"
+        });
+        toastr.success('Export excel successfully', 'Success');
+    });
+
+})(jQuery);

@@ -161,22 +161,22 @@
         </div>
     </header>
     @if (Session["notification"] != null)
-{
-    <button type="button" hidden class="btn btn-lg btn-block btn-outline-success mb-2" id="type-success" onclick="test()">Success</button>
-    <script>
+    {
+        <button type="button" hidden class="btn btn-lg btn-block btn-outline-success mb-2" id="type-success" onclick="test()">Success</button>
+        <script>
             function test() {
                 sweetAlert
                     ({
                         title: "Thêm mới thành công !",
                         type: "success"
-                    },)
+                    })
             }
             window.onload = function () {
                 document.getElementById('type-success').click();
             }
-    </script>
-    Session["notification"] = null;
-}
+        </script>
+        Session["notification"] = null;
+    }
     @RenderBody()
 
     <!-- Required Js -->
@@ -185,15 +185,14 @@
     <script src="~/Template/assets/js/vendor-all.min.js"></script>
     <script src="~/Template/assets/js/plugins/bootstrap.min.js"></script>
     <script src="~/Template/assets/js/pcoded.min.js"></script>
-    <script src="~/Template/assets/js/Function.js"></script>
 
 
     <!-- Sweet Alert -->
     <script src="~/Template/assets/js/SweetAlert/sweetalert.js"></script>
     <!-- Data Table -->
     <script src="~/Template/assets/js/jquery.dataTables.min.js"></script>
-    <!-- Validation -->
-    
+    <!--My script function-->
+    <script src="~/Template/assets/js/Function.js"></script>
 
 </body>
 </html>
