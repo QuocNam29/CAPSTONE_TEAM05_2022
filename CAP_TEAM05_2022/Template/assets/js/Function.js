@@ -433,12 +433,26 @@ function Update() {
 }
 
 //---------------------Export Excel-------------------------
-(function ($) {
-    $("#btnExport").click(function () {
-        $("#example").table2excel({
-            filename: "San_Pham.xls"
-        });
-        toastr.success('Export excel successfully', 'Success');
-    });
+$('#URLExportExcel')
+    .keypress(function () {
+        URLExportExcel = $(this).val();
+    })
+    .keypress();
 
-})(jQuery);
+$('#btnExportExcel').click(function () {
+    var group_id = $("#filter_GroupProduct").val();
+    var category_id = $("#filter_Category").val();
+    if (group_id == null || category_id == null) {
+       
+    } else {
+        URLExportExcel = URLExportExcel + "?group_id=" + group_id + "&category_id=" + category_id;
+        window.location.href = URLExportExcel;
+        sweetAlert
+            ({
+                title: "Xuất sản phẩm thành công !",
+                type: "success"
+            })
+    }
+   
+    
+})

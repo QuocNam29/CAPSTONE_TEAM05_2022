@@ -131,43 +131,52 @@ namespace CAP_TEAM05_2022.Controllers
             return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
         }
 
-        public void ExportExcel()
+        public void ExportExcel(int group_id, int category_id)
         {
             var list = from l in db.products
                         select l;
-          
-            list = list.Where(c => c.status != 3).OrderByDescending(c => c.id);
-            ExcelPackage ep = new ExcelPackage();
-            ExcelWorksheet Sheet = ep.Workbook.Worksheets.Add("SanPham");
-            Sheet.Cells["A1"].Value = "Mã sản phẩm";
-            Sheet.Cells["B1"].Value = "Tên sản phẩm";
-            Sheet.Cells["C1"].Value = "Nhóm hàng";
-            Sheet.Cells["D1"].Value = "Danh mục";
-            Sheet.Cells["E1"].Value = "Đơn vị";
-            Sheet.Cells["F1"].Value = "Giá bán";
-            Sheet.Cells["G1"].Value = "Giá nhập";
-            Sheet.Cells["H1"].Value = "Số lượng nhập";
-            Sheet.Cells["I1"].Value = "Đã bán";
-            int row = 2;// dòng bắt đầu ghi dữ liệu
-            foreach (var item in list)
+            if (group_id != -1)
             {
-                Sheet.Cells[string.Format("A{0}", row)].Value = item.code;
-                Sheet.Cells[string.Format("B{0}", row)].Value = item.name;
-                Sheet.Cells[string.Format("C{0}", row)].Value = item.group.name;
-                Sheet.Cells[string.Format("D{0}", row)].Value = item.category.name;
-                Sheet.Cells[string.Format("E{0}", row)].Value = item.unit;
-                Sheet.Cells[string.Format("F{0}", row)].Value = item.sell_price;
-                Sheet.Cells[string.Format("G{0}", row)].Value = item.purchase_price;
-                Sheet.Cells[string.Format("H{0}", row)].Value = item.quantity;
-                Sheet.Cells[string.Format("I{0}", row)].Value = item.import_inventory.Where(i => i.product_id == item.id).Sum(s => s.sold);
-                row++;
+                list = list.Where(p => p.group_id == group_id);
             }
-            Sheet.Cells["A:AZ"].AutoFitColumns();
-            Response.Clear();
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.AddHeader("content-disposition", "attachment; filename=" + "San_Pham.xlsx");
-            Response.BinaryWrite(ep.GetAsByteArray());
-            Response.End();
+            if (category_id != -1)
+            {
+                list = list.Where(p => p.category_id == category_id);
+            }
+            list = list.Where(c => c.status != 3).OrderByDescending(c => c.id);
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            ExcelPackage ep = new ExcelPackage();
+                ExcelWorksheet Sheet = ep.Workbook.Worksheets.Add("SanPham");
+                Sheet.Cells["A1"].Value = "Mã sản phẩm";
+                Sheet.Cells["B1"].Value = "Tên sản phẩm";
+                Sheet.Cells["C1"].Value = "Nhóm hàng";
+                Sheet.Cells["D1"].Value = "Danh mục";
+                Sheet.Cells["E1"].Value = "Đơn vị";
+                Sheet.Cells["F1"].Value = "Giá bán";
+                Sheet.Cells["G1"].Value = "Giá nhập";
+                Sheet.Cells["H1"].Value = "Số lượng nhập";
+                Sheet.Cells["I1"].Value = "Đã bán";
+                int row = 2;// dòng bắt đầu ghi dữ liệu
+                foreach (var item in list)
+                {
+                    Sheet.Cells[string.Format("A{0}", row)].Value = item.code;
+                    Sheet.Cells[string.Format("B{0}", row)].Value = item.name;
+                    Sheet.Cells[string.Format("C{0}", row)].Value = item.group.name;
+                    Sheet.Cells[string.Format("D{0}", row)].Value = item.category.name;
+                    Sheet.Cells[string.Format("E{0}", row)].Value = item.unit;
+                    Sheet.Cells[string.Format("F{0}", row)].Value = item.sell_price;
+                    Sheet.Cells[string.Format("G{0}", row)].Value = item.purchase_price;
+                    Sheet.Cells[string.Format("H{0}", row)].Value = item.quantity;
+                    Sheet.Cells[string.Format("I{0}", row)].Value = item.import_inventory.Where(i => i.product_id == item.id).Sum(s => s.sold);
+                    row++;
+                }
+                Sheet.Cells["A:AZ"].AutoFitColumns();
+                Response.Clear();
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment; filename=" + "San_Pham.xlsx");
+                Response.BinaryWrite(ep.GetAsByteArray());
+                Response.End();
+            
         }
 
         /*   public ActionResult getProduct()

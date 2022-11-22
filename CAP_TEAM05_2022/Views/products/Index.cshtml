@@ -39,7 +39,10 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-md-12 mb-3">
-                                    <button type="button" class="btn btn-secondary" onclick="location.href='@Url.Action("ExportExcel","products")';" >Xuất tệp Excel</button>
+                                     <input type="text" hidden id="URLExportExcel" value="@Url.Action("ExportExcel", "products")" />
+        <button type="button" class="btn btn-secondary" id="btnExportExcel">Xuất tệp Excel</button>
+@*                                    <button type="button" class="btn btn-secondary" onclick="location.href='@Url.Action("ExportExcel","products")';">Xuất tệp Excel</button>
+*@
                                     <button type="button" class="btn btn-dark">Nhập tệp Excel</button>
                                     <button type="button" class="btn btn-success">Mẫu tệp Excel</button>
                                 </div>
