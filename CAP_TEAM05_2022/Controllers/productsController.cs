@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -9,6 +10,8 @@ using System.Web.Mvc;
 using CAP_TEAM05_2022.Helper;
 using CAP_TEAM05_2022.Models;
 using OfficeOpenXml;
+using OfficeOpenXml.DataValidation;
+using OfficeOpenXml.Style;
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -147,7 +150,8 @@ namespace CAP_TEAM05_2022.Controllers
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ExcelPackage ep = new ExcelPackage();
                 ExcelWorksheet Sheet = ep.Workbook.Worksheets.Add("SanPham");
-                Sheet.Cells["A1"].Value = "Mã sản phẩm";
+            FormatExcel(Sheet, 1);
+            Sheet.Cells["A1"].Value = "Mã sản phẩm";
                 Sheet.Cells["B1"].Value = "Tên sản phẩm";
                 Sheet.Cells["C1"].Value = "Nhóm hàng";
                 Sheet.Cells["D1"].Value = "Danh mục";
@@ -156,7 +160,8 @@ namespace CAP_TEAM05_2022.Controllers
                 Sheet.Cells["G1"].Value = "Giá nhập";
                 Sheet.Cells["H1"].Value = "Số lượng nhập";
                 Sheet.Cells["I1"].Value = "Đã bán";
-                int row = 2;// dòng bắt đầu ghi dữ liệu
+            
+            int row = 2;// dòng bắt đầu ghi dữ liệu
                 foreach (var item in list)
                 {
                     Sheet.Cells[string.Format("A{0}", row)].Value = item.code;
@@ -177,6 +182,155 @@ namespace CAP_TEAM05_2022.Controllers
                 Response.BinaryWrite(ep.GetAsByteArray());
                 Response.End();
             
+        }
+
+        public void ExportTemplateExcel()
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            ExcelPackage ep = new ExcelPackage();
+            var list_group = db.groups.Where(g => g.status != 3).ToList();
+            var list_category = db.categories.Where(g => g.status != 3).ToList();
+            ExcelWorksheet Sheet = ep.Workbook.Worksheets.Add("NhapSanPham");
+            FormatExcel(Sheet, 3);
+            Sheet.Cells["A1"].Value = "Tên sản phẩm";
+            Sheet.Cells["B1"].Value = "Nhóm hàng";
+            Sheet.Cells["C1"].Value = "Danh mục";
+            Sheet.Cells["D1"].Value = "Đơn vị";
+            Sheet.Cells["E1"].Value = "Giá bán";
+            Sheet.Cells["F1"].Value = "Giá nhập";
+            Sheet.Cells["G1"].Value = "Số lượng nhập";
+            var validation_group = Sheet.Cells["B2:B999999"].DataValidation.AddListDataValidation();
+            validation_group.ShowErrorMessage = true;
+            validation_group.ErrorStyle = ExcelDataValidationWarningStyle.information;
+            validation_group.ErrorTitle = "Lỗi nhập nhóm hàng";
+            validation_group.Error = "Nhóm hàng này không có trong hệ thống, vui lòng chọn lại !";
+            foreach (var item in list_group)
+            {
+                validation_group.Formula.Values.Add(item.name);
+            }
+            var validation_category = Sheet.Cells["C2:C999999"].DataValidation.AddListDataValidation();
+            validation_category.ShowErrorMessage = true;
+            validation_category.ErrorStyle = ExcelDataValidationWarningStyle.information;
+            validation_category.ErrorTitle = "Lỗi nhập danh mục";
+            validation_category.Error = "Danh mục này không có trong hệ thống, vui lòng chọn lại !";
+            foreach (var item in list_category)
+            {
+                validation_category.Formula.Values.Add(item.name);
+            }
+            Sheet.Cells["A:AZ"].AutoFitColumns();
+            Response.Clear();
+            ExcelWorksheet Sheet_group = ep.Workbook.Worksheets.Add("NhomHang");
+            FormatExcel(Sheet_group, 2);
+            Sheet_group.DefaultColWidth = 20;
+            Sheet_group.Cells.Style.WrapText = true;
+
+            Sheet_group.Cells["A1"].Value = "Mã nhóm hàng";
+            Sheet_group.Cells["B1"].Value = "Tên nhóm hàng";
+          
+         
+            int row_group = 2;// dòng bắt đầu ghi dữ liệu
+            foreach (var item in list_group)
+            {
+                Sheet_group.Cells[string.Format("A{0}", row_group)].Value = item.code;
+                Sheet_group.Cells[string.Format("B{0}", row_group)].Value = item.name;
+                row_group++;
+            }
+            Sheet_group.Cells["A:AZ"].AutoFitColumns();
+            Response.Clear();
+
+            ExcelWorksheet Sheet_category = ep.Workbook.Worksheets.Add("DanhMuc");
+            FormatExcel(Sheet_category, 2);
+            Sheet_category.Cells["A1"].Value = "Mã danh mục";
+            Sheet_category.Cells["B1"].Value = "Tên danh mục";
+            int row_category = 2;// dòng bắt đầu ghi dữ liệu
+            foreach (var item in list_category)
+            {
+                Sheet_category.Cells[string.Format("A{0}", row_category)].Value = item.code;
+                Sheet_category.Cells[string.Format("B{0}", row_category)].Value = item.name;
+                row_category++;
+            }
+            Sheet_category.Cells["A:AZ"].AutoFitColumns();
+            Response.Clear();
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.AddHeader("content-disposition", "attachment; filename=" + "Mau_Nhap_Lieu.xlsx");
+            Response.BinaryWrite(ep.GetAsByteArray());
+            Response.End();
+
+        }
+        public void FormatExcel(ExcelWorksheet Sheet, int i)
+        {
+            Sheet.DefaultColWidth = 20;
+            Sheet.Cells.Style.WrapText = true;
+            if (i == 1)
+            {
+                // Lấy range vào tạo format cho range đó ở đây là từ A1 tới I1
+                using (var range = Sheet.Cells["A1:I1"])
+                {
+                    // Set PatternType
+                    range.Style.Fill.PatternType = ExcelFillStyle.DarkGray;
+                    // Set Màu cho Background
+                    range.Style.Fill.BackgroundColor.SetColor(Color.Aqua);
+                    // Canh giữa cho các text
+                    range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    // Set Border
+                    range.Style.Border.Bottom.Style = ExcelBorderStyle.Thick;
+                    // Set màu ch Border
+                    range.Style.Border.Bottom.Color.SetColor(Color.Blue);
+                    range.Style.Font.Bold = true;
+                }
+                using (var range = Sheet.Cells["A:C"])
+                {
+                    // Canh giữa cho các text
+                    range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                }
+            }
+            else if (i == 2)
+            {
+                // Lấy range vào tạo format cho range đó ở đây là từ A1 tới I1
+                using (var range = Sheet.Cells["A1:B1"])
+                {
+                    // Set PatternType
+                    range.Style.Fill.PatternType = ExcelFillStyle.DarkGray;
+                    // Set Màu cho Background
+                    range.Style.Fill.BackgroundColor.SetColor(Color.Aqua);
+                    // Canh giữa cho các text
+                    range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    // Set Border
+                    range.Style.Border.Bottom.Style = ExcelBorderStyle.Thick;
+                    // Set màu ch Border
+                    range.Style.Border.Bottom.Color.SetColor(Color.Blue);
+                    range.Style.Font.Bold = true;
+                }
+                using (var range = Sheet.Cells["A:C"])
+                {
+                    // Canh giữa cho các text
+                    range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                }
+            }
+            else if (i == 3)
+            {
+                // Lấy range vào tạo format cho range đó ở đây là từ A1 tới I1
+                using (var range = Sheet.Cells["A1:G1"])
+                {
+                    // Set PatternType
+                    range.Style.Fill.PatternType = ExcelFillStyle.DarkGray;
+                    // Set Màu cho Background
+                    range.Style.Fill.BackgroundColor.SetColor(Color.Aqua);
+                    // Canh giữa cho các text
+                    range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    // Set Border
+                    range.Style.Border.Bottom.Style = ExcelBorderStyle.Thick;
+                    // Set màu ch Border
+                    range.Style.Border.Bottom.Color.SetColor(Color.Blue);
+                    range.Style.Font.Bold = true;
+                }
+                using (var range = Sheet.Cells["A:C"])
+                {
+                    // Canh giữa cho các text
+                    range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                }
+            }
+
         }
 
         /*   public ActionResult getProduct()

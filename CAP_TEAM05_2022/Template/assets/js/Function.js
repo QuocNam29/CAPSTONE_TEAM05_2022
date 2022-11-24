@@ -440,13 +440,13 @@ $('#URLExportExcel')
     .keypress();
 
 $('#btnExportExcel').click(function () {
-    var group_id = $("#filter_GroupProduct").val();
-    var category_id = $("#filter_Category").val();
+    group_id = $("#filter_GroupProduct").val();
+    category_id = $("#filter_Category").val();
     if (group_id == null || category_id == null) {
        
     } else {
-        URLExportExcel = URLExportExcel + "?group_id=" + group_id + "&category_id=" + category_id;
-        window.location.href = URLExportExcel;
+       var URLExportExcel1 = URLExportExcel + "?group_id=" + group_id + "&category_id=" + category_id;
+        window.location.href = URLExportExcel1;
         sweetAlert
             ({
                 title: "Xuất sản phẩm thành công !",
