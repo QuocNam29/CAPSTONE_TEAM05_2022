@@ -294,7 +294,7 @@ namespace CAP_TEAM05_2022.Controllers
                               && !String.IsNullOrEmpty(row["Giá nhập"].ToString().Trim())
                               && !String.IsNullOrEmpty(row["Số lượng nhập"].ToString().Trim()))
                             {
-                                Session["name_product"] = row["Nhóm hàng"].ToString().Trim();
+                                Session["name_product"] = row["Tên sản phẩm"].ToString().Trim();
                                 Session["group_product"] = row["Nhóm hàng"].ToString().Trim();
                                 Session["category_product"] = row["Danh mục"].ToString().Trim();
                                 Session["unit_product"] = row["Đơn vị"].ToString().Trim();
@@ -311,7 +311,10 @@ namespace CAP_TEAM05_2022.Controllers
                                || String.IsNullOrEmpty(row["Số lượng nhập"].ToString()))
 
                             {
-                                Session["category_product"] = null;
+                                Session["name_product"] = row["Tên sản phẩm"].ToString().Trim();
+                                Session["group_product"] = row["Nhóm hàng"].ToString().Trim();
+                                Session["category_product"] = row["Danh mục"].ToString().Trim();
+                                Session["unit_product"] = null;
                             }
                             else
                             {
@@ -322,12 +325,13 @@ namespace CAP_TEAM05_2022.Controllers
                             if (Session["name_product"] != null)
                             {
                                 string name_product = Session["name_product"].ToString();
-                                string name_group = Session["group_product"].ToString();
+                                if (Session["unit_product"] != null)
+                                {
+                                    string name_group = Session["group_product"].ToString();
                                 string name_category = Session["category_product"].ToString();
                                 var check_group = db.groups.Where(g => g.name == name_group && g.status != 3).FirstOrDefault();
                                 var check_category = db.categories.Where(g => g.name == name_category && g.status != 3).FirstOrDefault();
-                                if ( Session["category_product"] != null)
-                                {
+                                
                                     if (check_group != null && check_category != null)
                                     {
                                         int group_id = check_group.id;
