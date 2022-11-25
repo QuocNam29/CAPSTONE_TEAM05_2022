@@ -8,6 +8,8 @@
 <input type="text" hidden id="URLProductList" value="@Url.Action("ProductList", "products")" />
 <input type="text" hidden id="URLFindProduct" value="@Url.Action("FindProduct", "products")/" />
 <input type="text" hidden id="URLUpdateProduct" value="@Url.Action("UpdateProduct", "products")" />
+
+
 <section class="pcoded-main-container">
     <div class="pcoded-content">
         <div class="page-header">
@@ -39,16 +41,16 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-md-12 mb-3">
-                                     <input type="text" hidden id="URLExportExcel" value="@Url.Action("ExportExcel", "products")" />
-        <button type="button" class="btn btn-secondary" id="btnExportExcel">Xuất tệp Excel</button>
-@*                                    <button type="button" class="btn btn-secondary" onclick="location.href='@Url.Action("ExportExcel","products")';">Xuất tệp Excel</button>
-*@
-                                    <button type="button" class="btn btn-dark">Nhập tệp Excel</button>
-                                    <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("ExportTemplateExcel","products")';" >Mẫu tệp Excel</button>
+                                    <input type="text" hidden id="URLExportExcel" value="@Url.Action("ExportExcel", "Excel")" />
+                                    <button type="button" class="btn btn-secondary" id="btnExportExcel">Xuất tệp Excel</button>
+                                    @*                                    <button type="button" class="btn btn-secondary" onclick="location.href='@Url.Action("ExportExcel","products")';">Xuất tệp Excel</button>
+                                    *@
+                                    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#ImportModal">Nhập tệp Excel</button>
+                                    <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("ExportTemplateExcel","Excel")';">Mẫu tệp Excel</button>
                                 </div>
 
                                 <div class="col-md-3">
-                                    <input type="text"  hidden id="URLgetCategory" value="@Url.Action("getCategory", "categories")" />
+                                    <input type="text" hidden id="URLgetCategory" value="@Url.Action("getCategory", "categories")" />
                                     <select class="custom-select" id="filter_GroupProduct" name="filter_GroupProduct" required>
                                         <option value="" disabled="disabled" selected="selected">Xem tất cả nhóm hàng</option>
 
@@ -69,6 +71,79 @@
                             </div>
                         </div>
                         <div class="card-body table-border-style">
+                            <div class="col-lg-12 col-md-6 col-sm-12">
+                                @if (Session["ViewBag.FileStatus"] != null)
+                                {
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        @Session["ViewBag.FileStatus"].ToString()
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+
+                                        </button>
+                                    </div>
+                                    Session["ViewBag.FileStatus"] = null;
+                                }
+
+                                @if (Session["ViewBag.Success"] != null)
+                                {
+                                    int success = int.Parse(Session["ViewBag.Success"].ToString());
+                                    int failFormat = int.Parse(Session["ViewBag.FailFormat"].ToString());
+                                    int exist = int.Parse(Session["ViewBag.Exist"].ToString());
+                                    int miss = int.Parse(Session["ViewBag.MissData"].ToString());
+                                    int count = success + failFormat + exist + miss;
+                                    <button type="button" hidden class="btn btn-lg btn-block btn-outline-success mb-2" id="import-success"
+                                            data-toggle="modal" data-target="#Success">
+                                        Success
+                                    </button>
+                                    <script>
+                                        window.onload = function () {
+                                            document.getElementById('import-success').click();
+                                        }
+                                    </script>
+                                    <!-- Modal -->
+                                    <div class="modal fade text-left" id="Success" tabindex="-1" role="dialog" aria-labelledby="myModalLabel34" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header  bg-primary ">
+                                                    <h4 class="modal-title" id="myModalLabel34">Kết quả</h4>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+
+                                                <div class="modal-body">
+                                                    <div class="col-12">
+                                                        <a> Nhập thành công <b>"@success"</b> trong số <b>"@count"</b> sản phẩm trong dữ liệu của tệp Excel</a>
+                                                    </div>
+                                                    <br />
+                                                    <div class="col-12">
+                                                        <div class="alert alert-success">
+                                                            <strong>Thành công!</strong> Nhập sản phẩm thành công ! <b>(@success dữ liệu)</b>
+                                                        </div>
+                                                        <div class="alert alert-danger">
+                                                            <strong>Thất bại!</strong> Nhập sản phẩm thất bại do sai tên danh mục hoặc nhóm hàng! <b>(@failFormat dữ liệu) </b>
+                                                        </div>
+                                                        <div class="alert alert-warning">
+                                                            <strong>Mất dữ liệu!</strong>  Nhập sản phẩm thất bại do thiếu thông tin sản phẩm ! <b>(@miss dữ liệu)</b>
+                                                        </div>
+                                                        <div class="alert alert-info">
+                                                            <strong>Tồn tại!</strong>  Sản phẩm đã tồn tại và hệ thống đã cập nhật lại thông tin ! <b>(@exist dữ liệu)</b>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <input type="reset" class="btn btn-outline-secondary btn-lg" data-dismiss="modal" value="Cancel">
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    Session["ViewBag.Success"] = null;
+                                }
+                            </div>
                             <div class="table-responsive" id="dataContainer">
                                 @{ Html.RenderAction("ProductList", "products", new { group_id = -1, category_id = -1 });}
 
@@ -78,27 +153,28 @@
                 </div>
             </div>
             <div id="ImportModal" tabindex="-1" role="dialog" aria-labelledby="ImportModalTitle" aria-hidden="true" class="modal fade">
-                <div role="document" class="modal-dialog">
-                    <form>
-                        <div class="modal-content">
-                            <div class="modal-header styling-modal-header-update">
-                                <h5 id="ImportModalTitle" class="modal-title">Nhập tệp Excel</h5>
-                                <button type="button" data-dismiss="modal" aria-label="Close" class="close">
-                                    <span aria-hidden="true">×</span>
-                                </button>
-                            </div>
+                <div role="document" class="modal-dialog">                  
+                    <div class="modal-content">
+                        <div class="modal-header bg-primary styling-modal-header-update">
+                            <h5 id="ImportModalTitle" class="modal-title">Nhập tệp Excel</h5>
+                            <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        @using (Html.BeginForm("ImportExcel", "Excel", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
                             <div class="modal-body">
                                 <label>
                                     Tệp Excel <span class="text-danger">(*)</span>
                                 </label>
-                                <input type="file" id="fileImport" name="fileImport" class="form-control">
+                                <input type="file" id="fileImport" accept=".xlsx, .xls" name="postedFile" class="form-control">
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary btn-3d">Tải lại</button>
-                                <button type="submit" class="btn btn-primary btn-3d">Import</button>
+                                <button type="reset" class="btn btn-secondary btn-3d">Tải lại</button>
+                                <button type="submit" class="btn btn-primary btn-3d" data-toggle="modal" data-target="#exampleModalCenter">Import</button>
                             </div>
-                        </div>
-                    </form>
+                        }
+                        </div>       
                 </div>
             </div>
             <div id="AddProduct" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="AddProductLabel" aria-hidden="true">
@@ -334,7 +410,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
-                                <button type="button" class="btn btn-primary" onclick="Update()">thay đổi</button>
+                                <button type="button" class="btn btn-primary" onclick="Update_Product()">thay đổi</button>
                             </div>
                         </div>
                     </form>
@@ -343,11 +419,29 @@
         </div>
     </div>
 </section>
-<script type="text/javascript">   
+<!-- Modal -->
+<div class="modal fade text-left" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel1"><b>Notification</b></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="text-center">
+                <img src="~/Template/app-assets/img/in-progress-animate.svg" style=" display: block; margin-left: auto; margin-right: auto; width: 50%;" />
+                <p> Please wait while the system is importing the list...</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
     $(document).ready(function () {
         $('#example').DataTable({
             pagingType: 'full_numbers',
         });
-      
+
     });
 </script>

@@ -329,7 +329,8 @@ $('#URLUpdateProduct')
     })
     .keypress();
 
-function Update() {
+function Update_Product() {
+    var table = $('#example').DataTable();
     var product = {};
     product.id = $('#edit_id').val();
     product.name = $('#edit_name').val();
