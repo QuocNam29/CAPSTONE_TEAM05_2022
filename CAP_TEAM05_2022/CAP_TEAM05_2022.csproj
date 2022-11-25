@@ -370,6 +370,7 @@
     <Content Include="Template\assets\images\gallery-grid\masonry-8.jpg" />
     <Content Include="Template\assets\images\hover-effect\triangle.svg" />
     <Content Include="Template\assets\images\hover-effect\triangle2.svg" />
+    <Content Include="Template\assets\images\in-progress-animate.svg" />
     <Content Include="Template\assets\images\light-box\l1.jpg" />
     <Content Include="Template\assets\images\light-box\l2.jpg" />
     <Content Include="Template\assets\images\light-box\l3.jpg" />
