@@ -221,9 +221,9 @@
                                                 Số lượng sản phẩm<span class="text-danger">*</span>
                                             </label>
                                             <div class="position-relative">
-                                                <input type="number" placeholder="Nhập số lượng sản phẩm" id="add_quantity" class="form-control" name="quantity" required>
+                                                <input type="number" placeholder="Nhập số lượng sản phẩm" min="0" id="add_quantity" class="form-control" name="quantity" required>
                                                 <div class="invalid-feedback">
-                                                    Vui lòng nhập số lượng sản phẩm !
+                                                    Vui lòng nhập số lượng sản phẩm và lớn hơn 0 !
                                                 </div>
                                             </div> <!---->
                                         </div>
@@ -234,7 +234,7 @@
                                                 Nhóm hàng<span class="text-danger">*</span>
                                             </label>
                                             <div class="position-relative">
-                                                <select class="custom-select" id="add_GroupProduct" name="GroupProductDropdown" required>
+                                                <select class="custom-select" id="GroupProductDropdown" name="GroupProductDropdown" required>
                                                 </select>
                                                 <div class="invalid-feedback">Vui lòng chọn nhóm hàng</div>
                                             </div> <!---->
@@ -247,7 +247,7 @@
                                                 Danh mục sản phẩm<span class="text-danger">*</span>
                                             </label>
                                             <div class="position-relative">
-                                                <select class="custom-select" id="add_Category" name="CategoryDropdown" required>
+                                                <select class="custom-select" id="CategoryDropdown" name="CategoryDropdown" required>
                                                 </select>
                                                 <div class="invalid-feedback">Vui lòng chọn danh mục</div>
                                             </div> <!---->

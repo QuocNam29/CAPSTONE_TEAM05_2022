@@ -348,7 +348,7 @@ function CopyProduct(ele, id) {
                             s += '<option value="' + data[i].groupID + '">' + data[i].groupName + '</option>';
                         }
                     }
-                    $("#add_GroupProduct").html(s);
+                    $("#GroupProductDropdown").html(s);
                 }
             });
             $.ajax({
@@ -365,7 +365,7 @@ function CopyProduct(ele, id) {
 
                         }
                     }
-                    $("#add_Category").html(s);
+                    $("#CategoryDropdown").html(s);
                 }
             });
             $('#AddProduct .close').css('display', 'none');
