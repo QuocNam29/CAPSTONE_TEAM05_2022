@@ -83,7 +83,7 @@ namespace CAP_TEAM05_2022.Controllers
         public ActionResult getGroupProduct()
         {
            
-            return Json(db.groups.Select(x => new
+            return Json(db.groups.Where(c => c.status == 1).OrderByDescending(c => c.id).Select(x => new
             {
                 groupID = x.id,
                 groupName = x.name

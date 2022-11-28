@@ -88,7 +88,7 @@ namespace CAP_TEAM05_2022.Controllers
         public ActionResult getCategory()
         {
 
-            return Json(db.categories.Select(x => new
+            return Json(db.categories.Where(c => c.status == 1).OrderByDescending(c => c.id).Select(x => new
             {
                 categoryID = x.id,
                 categoryName = x.name

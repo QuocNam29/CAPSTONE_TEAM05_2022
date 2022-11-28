@@ -321,6 +321,60 @@ function GetProduct(ele, id) {
     })
 }
 
+function CopyProduct(ele, id) {
+    row = $(ele).closest('tr');
+    $.ajax({
+        type: 'POST',
+        url: URLFindProduct,
+        data: { "Product_id": id },
+        success: function (response) {
+            $('#add_unit').val(response.unit);
+            $('#add_quantity').val(response.quantity);
+            $('#product-price-sold').val(response.sell_price);
+            $('#product-price-buy').val(response.purchase_price);
+            $('#add_name').val(response.name);
+            var group_id = response.group_id;
+            var category_id = response.category_id;
+            $.ajax({
+                type: "GET",
+                url: URLgetGroupProduct,
+                data: "{}",
+                success: function (data) {
+                    var s = '<option value="" disabled="disabled" >Chọn nhóm hàng</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        if (group_id == data[i].groupID) {
+                            s += '<option value="' + data[i].groupID + '" selected="selected">' + data[i].groupName + '</option>';
+                        } else {
+                            s += '<option value="' + data[i].groupID + '">' + data[i].groupName + '</option>';
+                        }
+                    }
+                    $("#add_GroupProduct").html(s);
+                }
+            });
+            $.ajax({
+                type: "GET",
+                url: URLgetCategory,
+                data: "{}",
+                success: function (data) {
+                    var s = '<option value="" disabled="disabled">Chọn danh mục</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        if (category_id == data[i].categoryID) {
+                            s += '<option value="' + data[i].categoryID + '"  selected="selected">' + data[i].categoryName + '</option>';
+                        } else {
+                            s += '<option value="' + data[i].categoryID + '" >' + data[i].categoryName + '</option>';
+
+                        }
+                    }
+                    $("#add_Category").html(s);
+                }
+            });
+            $('#AddProduct .close').css('display', 'none');
+            $('#AddProduct').modal('show');
+        }
+    })
+}
+
+
 //-------------------------------UPDATE PRODUCT--------------------------------
 
 $('#URLUpdateProduct')
