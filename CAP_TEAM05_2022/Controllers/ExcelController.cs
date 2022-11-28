@@ -29,6 +29,7 @@ namespace CAP_TEAM05_2022.Controllers
         public void ExportExcel(int group_id, int category_id)
         {
             var list = from l in db.products
+                       where l.@group.status == 1 && l.category.status == 1
                        select l;
             if (group_id != -1)
             {
@@ -262,7 +263,7 @@ namespace CAP_TEAM05_2022.Controllers
                                 dtExcelSchema = connExcel.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
 
                                 //Get the name of First Sheet.
-                                string sheetName = dtExcelSchema.Rows[0]["TABLE_NAME"].ToString();
+                                string sheetName = dtExcelSchema.Rows[1]["TABLE_NAME"].ToString();
 
                                 connExcel.Close();
 
@@ -417,7 +418,7 @@ namespace CAP_TEAM05_2022.Controllers
                         string bug = e.ToString();
                         bool check_bug = bug.Contains("does not belong to table");
                         bool check_bug1 = bug.Contains("Object reference not set to an instance of an object");
-                       /* if (check_bug == true)
+                        if (check_bug == true)
                         {
                             Session["ViewBag.Success"] = null;
                             Session["ViewBag.FileStatus"] = "Cấu trúc bảng hoặc tên bảng trong tệp excel không đúng định dạng!";
@@ -428,14 +429,10 @@ namespace CAP_TEAM05_2022.Controllers
                             Session["ViewBag.FileStatus"] = "Bạn đã bỏ sót dữ liệu ở dòng đầu tiên trong tệp excel!";
                         }
                         else
-                        {*/
+                        {
                             Session["ViewBag.Success"] = null;
                             Session["ViewBag.FileStatus"] = e.ToString();
-                 /*       }*/
-
-
-
-
+                        }
                     }
                     Session["name_product"] = null;
                     Session["group_product"] = null;
