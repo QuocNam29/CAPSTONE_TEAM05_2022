@@ -18,7 +18,7 @@ namespace CAP_TEAM05_2022.Models
         public int product_id { get; set; }
         public int quantity { get; set; }
         public int price_import { get; set; }
-        public Nullable<int> sold { get; set; }
+        public int sold { get; set; }
         public int created_by { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }

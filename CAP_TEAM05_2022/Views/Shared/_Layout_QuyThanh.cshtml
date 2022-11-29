@@ -36,7 +36,7 @@
             <div class="navbar-content scroll-div ">
                 <div class="">
                     <div class="main-menu-header">
-                        <img src="~/Template/assets/images/default-avatar.png" alt="User-Profile-Image" class="img-radius">
+                        <img src="@Url.Content("~/Template/assets/images/default-avatar.png")" alt="User-Profile-Image" class="img-radius">
                         <div class="user-details">
                             <span>@Session["user_email"].ToString()</span>
                             <div id="more-details">
@@ -79,23 +79,7 @@
                             <span class="pcoded-mtext">Sản phẩm</span>
                         </a>
                     </li>
-                    <li class="nav-item pcoded-menu-caption">
-                        <label>Kho</label>
-                    </li>
-                    <li class="nav-item">
-                        <a href="https://tancool.net/nhap-kho" class="nav-link">
-                            <span class="pcoded-micon">
-                                <i class="feather icon-box"></i>
-                            </span>
-                            <span class="pcoded-mtext">Nhập kho</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="https://tancool.net/ton-kho" class="nav-link">
-                            <span class="pcoded-micon"><i class="feather icon-package"></i></span>
-                            <span class="pcoded-mtext">Tồn kho</span>
-                        </a>
-                    </li>
+                    
                     <li class="nav-item pcoded-menu-caption">
                         <label>Hàng hoá</label>
                     </li>
@@ -104,12 +88,25 @@
                             <span class="pcoded-micon"><i class="feather icon-target"></i></span> <span class="pcoded-mtext">Bán hàng</span>
                         </a>
                     </li>
-                    <li class="nav-item"><a href="https://tancool.net/doanh-thu" class="nav-link"><span class="pcoded-micon"><i class="feather icon-clipboard"></i></span> <span class="pcoded-mtext">Doanh thu</span></a></li>
-                    <li class="nav-item"><a href="https://tancool.net/quan-ly-cong-no" class="nav-link"><span class="pcoded-micon"><i class="feather icon-file-text"></i></span> <span class="pcoded-mtext">Công nợ</span></a></li>
-                    <li class="nav-item"><a href="https://tancool.net/don-hang" class="nav-link"><span class="pcoded-micon"><i class="feather icon-inbox"></i></span> <span class="pcoded-mtext">Đơn hàng</span></a></li>
+                    <li class="nav-item"><a href="https://tancool.net/doanh-thu" class="nav-link">
+                        <span class="pcoded-micon"><i class="feather icon-clipboard"></i></span> 
+                        <span class="pcoded-mtext">Doanh thu</span></a></li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Index","import_inventory")" class="nav-link">
+                            <span class="pcoded-micon"><i class="feather icon-package"></i></span>
+                            <span class="pcoded-mtext">Tồn kho</span>
+                        </a>
+                    </li>                    
+                    <li class="nav-item"><a href="https://tancool.net/don-hang" class="nav-link">
+                        <span class="pcoded-micon"><i class="feather icon-inbox"></i></span> <span class="pcoded-mtext">Đơn hàng</span></a>
+                    </li>
                     <li class="nav-item pcoded-menu-caption"><label>Tín năng</label></li>
-                    <li class="nav-item"><a href="https://tancool.net/doi-tra" class="nav-link"><span class="pcoded-micon"><i class="feather icon-repeat"></i></span> <span class="pcoded-mtext">Đổi trả</span></a></li>
-                    <li class="nav-item"><a href="https://tancool.net/thu-chi" class="nav-link"><span class="pcoded-micon"><i class="feather icon-percent"></i></span> <span class="pcoded-mtext">Thu chi</span></a></li>
+                    <li class="nav-item"><a href="https://tancool.net/doi-tra" class="nav-link">
+                        <span class="pcoded-micon"><i class="feather icon-repeat"></i></span> <span class="pcoded-mtext">Đổi trả</span></a>
+                    </li>
+                    <li class="nav-item"><a href="https://tancool.net/thu-chi" class="nav-link">
+                        <span class="pcoded-micon"><i class="feather icon-percent"></i></span> <span class="pcoded-mtext">Thu chi</span></a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -131,7 +128,7 @@
                 <li>
                     <div class="dropdown drp-user">
                         <a href="#" data-toggle="dropdown" class="dropdown-toggle">
-                            <img src="~/Template/assets/images/default-avatar.png" alt="User-Profile-Image" class="img-radius mr-2" style="width: 2.5vw;">
+                            <img src="@Url.Content("~/Template/assets/images/default-avatar.png")" alt="User-Profile-Image" class="img-radius mr-2" style="width: 2.5vw;">
                             <span class="mr-3">@Session["user_email"].ToString()</span>
                         </a>
                         <a href="javascript:document.getElementById('logoutForm').submit()" title="Log out" class="dud-logout"> <i class="feather icon-log-out"></i></a>

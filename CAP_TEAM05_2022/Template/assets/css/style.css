@@ -30281,3 +30281,30 @@ body {
     list-style-type: none;
     margin-left: -40px
 }
+.icon-info {
+    font-size: 15px;
+    margin-left: 5px;
+    background-color: mediumblue;
+    color: white;
+    padding: 0px;
+    border-radius: 100%;
+}
+.total-price-btn {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: var(--primary);
+    padding: 20px 0;
+}
+.total-price-name, .total-price {
+    margin: 0;
+    color: black;
+    font-weight: bold;
+}
+
+.total-price {
+    padding: 7px 20px;
+    background-color: yellow;
+    border-radius: 5px;
+}
+

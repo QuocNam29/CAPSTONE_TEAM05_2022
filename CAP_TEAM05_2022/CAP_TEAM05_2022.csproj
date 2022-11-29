@@ -188,6 +188,7 @@
     <Compile Include="Controllers\ExcelController.cs" />
     <Compile Include="Controllers\groupsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\import_inventoryController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\productsController.cs" />
     <Compile Include="Controllers\SweetController.cs" />
@@ -582,6 +583,11 @@
     <Content Include="Views\products\Edit.cshtml" />
     <Content Include="Views\products\Index.cshtml" />
     <Content Include="Views\products\ProductList.cshtml" />
+    <Content Include="Views\import_inventory\Create.cshtml" />
+    <Content Include="Views\import_inventory\Delete.cshtml" />
+    <Content Include="Views\import_inventory\Details.cshtml" />
+    <Content Include="Views\import_inventory\Edit.cshtml" />
+    <Content Include="Views\import_inventory\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
