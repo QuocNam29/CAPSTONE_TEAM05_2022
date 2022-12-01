@@ -214,6 +214,26 @@ namespace CAP_TEAM05_2022.Controllers
                     range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 }
             }
+            else if (i == 4)
+            {
+                // Lấy range vào tạo format cho range đó ở đây là từ A1 tới I1
+                using (var range = Sheet.Cells["A1:F1"])
+                {
+
+                    // Canh giữa cho các text
+                    range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    // Set Border
+                    range.Style.Border.Bottom.Style = ExcelBorderStyle.Thick;
+                    // Set màu ch Border
+                    range.Style.Border.Bottom.Color.SetColor(Color.Black);
+                    range.Style.Font.Bold = true;
+                }
+                using (var range = Sheet.Cells["A:F"])
+                {
+                    // Canh giữa cho các text
+                    range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                }
+            }
 
         }
 
@@ -459,5 +479,103 @@ namespace CAP_TEAM05_2022.Controllers
             return RedirectToAction("Index", "products");
         }
 
+        public void ExportExcel_Inventory(DateTime? date_start, DateTime? date_end)
+        {
+            var import_inventory = db.import_inventory.Include(i => i.user).Include(i => i.product).Where(i => i.created_at >= date_start && i.created_at <= date_end);
+
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            ExcelPackage ep = new ExcelPackage();
+            ExcelWorksheet Sheet = ep.Workbook.Worksheets.Add("TonKho");
+            FormatExcel(Sheet, 1);
+            Sheet.DefaultColWidth = 20;
+            Sheet.Cells.Style.WrapText = true;
+            Sheet.Cells["A1"].Value = "Mã sản phẩm";
+            Sheet.Cells["B1"].Value = "Tên sản phẩm";
+            Sheet.Cells["C1"].Value = "Đơn vị";
+            Sheet.Cells["D1"].Value = "Đơn giá nhập";
+            Sheet.Cells["E1"].Value = "Số lượng nhập";
+            Sheet.Cells["F1"].Value = "Đơn giá bán";
+            Sheet.Cells["G1"].Value = "Số lượng bán";
+            Sheet.Cells["H1"].Value = "Tồn tổng";
+            Sheet.Cells["I1"].Value = "Thành tiền";
+
+            int row = 2;// dòng bắt đầu ghi dữ liệu
+            foreach (var item in import_inventory)
+            {
+                Sheet.Cells[string.Format("A{0}", row)].Value = item.product.code;
+                Sheet.Cells[string.Format("B{0}", row)].Value = item.product.name;
+                Sheet.Cells[string.Format("C{0}", row)].Value = item.product.unit;
+                Sheet.Cells[string.Format("D{0}", row)].Value = item.price_import;
+                Sheet.Cells[string.Format("E{0}", row)].Value = item.quantity;
+                Sheet.Cells[string.Format("F{0}", row)].Value = item.product.sell_price;
+                Sheet.Cells[string.Format("G{0}", row)].Value = item.sold;
+                Sheet.Cells[string.Format("H{0}", row)].Value = item.quantity - item.sold;
+                Sheet.Cells[string.Format("I{0}", row)].Value = (item.price_import * (item.quantity - item.sold));
+                row++;
+            }
+            Sheet.Cells["A:AZ"].AutoFitColumns();
+            Response.Clear();
+            ExcelWorksheet Sheet_sell = ep.Workbook.Worksheets.Add("ThongKeBan");
+            FormatExcel(Sheet_sell, 4);
+            Sheet_sell.DefaultColWidth = 20;
+            Sheet_sell.Cells.Style.WrapText = true;
+            Sheet_sell.Cells["A1"].Value = "Mã sản phẩm";
+            Sheet_sell.Cells["B1"].Value = "Tên sản phẩm";
+            Sheet_sell.Cells["C1"].Value = "Đơn vị";
+            Sheet_sell.Cells["D1"].Value = "Đơn giá bán";
+            Sheet_sell.Cells["E1"].Value = "Số lượng bán";
+            Sheet_sell.Cells["F1"].Value = "Thành tiền";
+          
+
+            int row_sell = 2;// dòng bắt đầu ghi dữ liệu
+            foreach (var item in import_inventory.Where(s => s.sold > 0))
+            {
+                Sheet_sell.Cells[string.Format("A{0}", row_sell)].Value = item.product.code;
+                Sheet_sell.Cells[string.Format("B{0}", row_sell)].Value = item.product.name;
+                Sheet_sell.Cells[string.Format("C{0}", row_sell)].Value = item.product.unit;
+                Sheet_sell.Cells[string.Format("D{0}", row_sell)].Value = item.product.sell_price;
+                Sheet_sell.Cells[string.Format("E{0}", row_sell)].Value = item.sold;
+                Sheet_sell.Cells[string.Format("F{0}", row_sell)].Value = item.product.sell_price * (item.sold);
+
+                row_sell++;
+            }
+            Sheet_sell.Cells["A:AZ"].AutoFitColumns();
+            Response.Clear();
+
+            ExcelWorksheet Sheet_import = ep.Workbook.Worksheets.Add("ThongKeNhap");
+            FormatExcel(Sheet_import, 4);
+            Sheet_import.DefaultColWidth = 20;
+            Sheet_import.Cells.Style.WrapText = true;
+            Sheet_import.Cells["A1"].Value = "Mã sản phẩm";
+            Sheet_import.Cells["B1"].Value = "Tên sản phẩm";
+            Sheet_import.Cells["C1"].Value = "Đơn vị";
+            Sheet_import.Cells["D1"].Value = "Đơn giá nhập";
+            Sheet_import.Cells["E1"].Value = "Số lượng nhập";
+            Sheet_import.Cells["F1"].Value = "Thành tiền";
+
+
+            int row_import = 2;// dòng bắt đầu ghi dữ liệu
+            foreach (var item in import_inventory)
+            {
+                Sheet_import.Cells[string.Format("A{0}", row_import)].Value = item.product.code;
+                Sheet_import.Cells[string.Format("B{0}", row_import)].Value = item.product.name;
+                Sheet_import.Cells[string.Format("C{0}", row_import)].Value = item.product.unit;
+                Sheet_import.Cells[string.Format("D{0}", row_import)].Value = item.price_import;
+                Sheet_import.Cells[string.Format("E{0}", row_import)].Value = item.quantity;
+                Sheet_import.Cells[string.Format("F{0}", row_import)].Value = item.price_import * (item.quantity);
+
+                row_import++;
+            }
+            Sheet_import.Cells["A:AZ"].AutoFitColumns();
+            Response.Clear();
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.AddHeader("content-disposition", "attachment; filename=" + "San_Pham.xlsx");
+            Response.BinaryWrite(ep.GetAsByteArray());
+            Response.End();
+
+        }
     }
+
+   
 }
+

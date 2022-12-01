@@ -502,14 +502,20 @@ $('#btnExportExcel').click(function () {
     } else {
        var URLExportExcel1 = URLExportExcel + "?group_id=" + group_id + "&category_id=" + category_id;
         window.location.href = URLExportExcel1;
-        sweetAlert
+        /*sweetAlert
             ({
                 title: "Xuất sản phẩm thành công !",
                 type: "success"
-            })
+            })*/
     }
-   
     
+})
+
+$('#btnExportExcel_Inventory').click(function () {
+    var date_start = $("#filter_DateStart").val();
+    var date_end = $("#filter_DateEnd").val();    
+        var URLExportExcel1 = URLExportExcel + "?date_start=" + date_start + "&date_end=" + date_end;
+        window.location.href = URLExportExcel1;
 })
 //----------------------FILTER INVENTORY PRODUCT------------------------------------------------
 $('#URLInventoryList')
@@ -538,7 +544,9 @@ function GetList_Inventory(date_start, date_end) {
         }
     }).done(function (result) {
         $('#dataContainer').html(result);
-    
+        $('#example').DataTable();
+        $('#example1').DataTable();
+        $('#example2').DataTable();
 
     }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
         console.log(textStatus)
