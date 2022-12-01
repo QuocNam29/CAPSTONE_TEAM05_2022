@@ -19,9 +19,28 @@
     }, false);
 })();
 $(document).ready(function () {
+    var forms = document.getElementsByClassName('needs-validation');
+    var validation = Array.prototype.filter.call(forms, function (form) {
     $('#submit_edit').on('click', function () {
-        var form = new FormData("#EditProduct");
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        } else {
+            Update();
+        }
+        form.classList.add('was-validated');
     })
+        $('#submit_edit_product').on('click', function () {
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                Update_Product();
+            }
+            form.classList.add('was-validated');
+        })
+
+    }, false);
 })
 
 //-------------------------Delete Group, Category, Product-----------------------
