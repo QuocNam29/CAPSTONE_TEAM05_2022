@@ -21,9 +21,17 @@ namespace CAP_TEAM05_2022.Controllers
         {
             return View();
         }
-        public ActionResult InventoryList()
+        public ActionResult InventoryList(DateTime? date_start, DateTime? date_end)
         {
-            var import_inventory = db.import_inventory.Include(i => i.user).Include(i => i.product);
+            if (date_start == null)
+            {
+                date_start = DateTime.Now.AddDays((-DateTime.Now.Day) + 1);
+            }
+            if (date_end == null)
+            {
+                date_end = DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day));
+            }
+            var import_inventory = db.import_inventory.Include(i => i.user).Include(i => i.product).Where(i => i.created_at >= date_start && i.created_at <= date_end);
             return PartialView(import_inventory.ToList());
         }
 

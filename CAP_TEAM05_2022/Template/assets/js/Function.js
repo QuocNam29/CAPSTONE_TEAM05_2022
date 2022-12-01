@@ -518,27 +518,27 @@ $('#URLInventoryList')
     })
     .keypress();
 
-$("#filter_GroupProduct").change(function () {
-    var group_id = $("#filter_GroupProduct").val();
-    var category_id = $("#filter_Category").val();
-    GetList(group_id, category_id)
+$("#filter_DateStart").change(function () {
+    var date_start = $("#filter_DateStart").val();
+    var date_end = $("#filter_DateEnd").val();
+    GetList_Inventory(date_start, date_end)
 });
-$("#filter_Category").change(function () {
-    var group_id = $("#filter_GroupProduct").val();
-    var category_id = $("#filter_Category").val();
-    GetList(group_id, category_id)
+$("#filter_DateEnd").change(function () {
+    var date_start = $("#filter_DateStart").val();
+    var date_end = $("#filter_DateEnd").val();
+    GetList_Inventory(date_start, date_end)
 });
 
-function GetList(group_id, category_id) {
+function GetList_Inventory(date_start, date_end) {
     $.ajax({
         url: URLInventoryList,
         data: {
-            group_id: group_id,
-            category_id: category_id,
+            date_start: date_start,
+            date_end: date_end,
         }
     }).done(function (result) {
         $('#dataContainer').html(result);
-        $('#example').DataTable()
+    
 
     }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
         console.log(textStatus)

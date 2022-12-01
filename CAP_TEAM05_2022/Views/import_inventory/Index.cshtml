@@ -40,30 +40,15 @@
                                 <div class="col-md-4">
                                     <div class="mx-datepicker">
                                         <div class="mx-input-wrapper">
-                                            <input name="date" type="date" placeholder="" class="form-control custom-width" value="@String.Format("{0:yyyy-MM-dd}",DateTime.Now.AddDays((-DateTime.Now.Day)+1))">
-                                            <i class="mx-icon-clear">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1em" height="1em">
-                                                </svg>
-                                            </i>
-                                            <i class="mx-icon-calendar">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1em" height="1em">
-                                                </svg>
-                                            </i>
+                                            <input name="date_start" id="filter_DateStart" type="date" placeholder="" class="form-control custom-width" value="@String.Format("{0:yyyy-MM-dd}",DateTime.Now.AddDays((-DateTime.Now.Day)+1))">
+
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="mx-datepicker">
                                         <div class="mx-input-wrapper">
-                                            <input name="date" type="date" class="form-control custom-width" value="@String.Format("{0:yyyy-MM-dd}",DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day)))">
-                                            <i class="mx-icon-clear">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1em" height="1em">
-                                                </svg>
-                                            </i>
-                                            <i class="mx-icon-calendar">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1em" height="1em">
-                                                </svg>
-                                            </i>
+                                            <input name="date_end" id="filter_DateEnd" type="date" class="form-control custom-width" value="@String.Format("{0:yyyy-MM-dd}",DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day)))">
                                         </div>
                                     </div>
                                 </div>
@@ -78,9 +63,11 @@
                             </div>
                         </div>
                     </div>
-                    @{ Html.RenderAction("InventoryList", "import_inventory");}
+                    <div class="card" id="dataContainer">
+                        @{ Html.RenderAction("InventoryList", "import_inventory");}
+                        </div>
+                    </div>
                 </div>
-            </div>
         </div>
     </div>
 </section>
