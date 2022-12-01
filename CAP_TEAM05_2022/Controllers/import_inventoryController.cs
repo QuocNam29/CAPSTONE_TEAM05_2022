@@ -19,8 +19,12 @@ namespace CAP_TEAM05_2022.Controllers
         // GET: import_inventory
         public ActionResult Index()
         {
+            return View();
+        }
+        public ActionResult InventoryList()
+        {
             var import_inventory = db.import_inventory.Include(i => i.user).Include(i => i.product);
-            return View(import_inventory.ToList());
+            return PartialView(import_inventory.ToList());
         }
 
         // GET: import_inventory/Details/5

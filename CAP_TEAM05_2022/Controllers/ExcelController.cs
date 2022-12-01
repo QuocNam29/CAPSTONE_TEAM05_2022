@@ -263,7 +263,7 @@ namespace CAP_TEAM05_2022.Controllers
                                 dtExcelSchema = connExcel.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
 
                                 //Get the name of First Sheet.
-                                string sheetName = dtExcelSchema.Rows[1]["TABLE_NAME"].ToString();
+                                string sheetName = dtExcelSchema.Rows[0]["TABLE_NAME"].ToString();
 
                                 connExcel.Close();
 

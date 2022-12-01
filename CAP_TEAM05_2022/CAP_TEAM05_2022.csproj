@@ -588,6 +588,7 @@
     <Content Include="Views\import_inventory\Details.cshtml" />
     <Content Include="Views\import_inventory\Edit.cshtml" />
     <Content Include="Views\import_inventory\Index.cshtml" />
+    <Content Include="Views\import_inventory\InventoryList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

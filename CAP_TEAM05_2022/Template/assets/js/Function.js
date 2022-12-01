@@ -511,3 +511,38 @@ $('#btnExportExcel').click(function () {
    
     
 })
+//----------------------FILTER INVENTORY PRODUCT------------------------------------------------
+$('#URLInventoryList')
+    .keypress(function () {
+        URLInventoryList = $(this).val();
+    })
+    .keypress();
+
+$("#filter_GroupProduct").change(function () {
+    var group_id = $("#filter_GroupProduct").val();
+    var category_id = $("#filter_Category").val();
+    GetList(group_id, category_id)
+});
+$("#filter_Category").change(function () {
+    var group_id = $("#filter_GroupProduct").val();
+    var category_id = $("#filter_Category").val();
+    GetList(group_id, category_id)
+});
+
+function GetList(group_id, category_id) {
+    $.ajax({
+        url: URLInventoryList,
+        data: {
+            group_id: group_id,
+            category_id: category_id,
+        }
+    }).done(function (result) {
+        $('#dataContainer').html(result);
+        $('#example').DataTable()
+
+    }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        console.log(textStatus)
+        console.log(errorThrown)
+        alert("Something Went Wrong, Try Later");
+    });
+}

@@ -1,0 +1,226 @@
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.import_inventory>
+@{
+    int no = 0;
+    int total_inventory = 0;
+    int no_sell = 0;
+    int total_sell = 0;
+    int no_import = 0;
+    int total_import = 0;
+
+}
+<div class="card">
+    <div class="card-body">
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Tồn Kho</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Thống kê bán</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Thống kê nhập</a>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                <div class="card">
+                    <div class="card-body table-border-style">
+
+                        <div class="table-responsive">
+                            <table id="example" class="table table-hover card-scroll">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center sticky-col first-col">STT</th>
+                                        <th class="sticky-col first-col">Mã sản phẩm</th>
+                                        <th class="sticky-col second-col">Tên sản phẩm</th>
+                                        <th class="text-center">Đơn vị</th>
+                                        <th class="text-center">Đơn giá nhập</th>
+                                        <th class="text-center">Số lượng nhập</th>
+                                        <th class="text-center">Đơn giá bán</th>
+                                        <th class="text-center">Số lượng bán</th>
+                                        <th class="text-center">
+                                            <span>
+                                                Tồn tổng
+                                                <i data-toggle="tooltip" data-placement="top" data-original-title="(Số lượng nhập - Số lượng bán)" class="feather icon-alert-circle icon-info"></i>
+                                            </span>
+                                        </th>
+                                        <th class="text-center">
+                                            <span>
+                                                Thành tiền
+                                                <i data-toggle="tooltip" data-placement="top" data-original-title="(Đơn giá nhập x Tồn tổng)" class="feather icon-alert-circle icon-info"></i>
+                                            </span>
+                                        </th>
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        no++;
+
+                                        <tr>
+                                            <td class="text-center sticky-col first-col">@no</td>
+                                            <td class="sticky-col first-col">@item.product.code</td>
+                                            <td class="sticky-col second-col">@item.product.name</td>
+                                            <td>@item.product.unit</td>
+                                            <td>@item.price_import.ToString("N0")</td>
+                                            <td>@item.quantity</td>
+                                            <td>@item.product.sell_price.ToString("N0")</td>
+                                            <td>@item.sold</td>
+                                            <td>@((item.quantity - item.sold).ToString("N0"))</td>
+                                            <td>@((item.price_import * (item.quantity - item.sold)).ToString("N0")) </td>
+                                        </tr>
+                                        total_inventory += (item.price_import * (item.quantity - item.sold));
+                                    }
+                                </tbody>
+                            </table>
+
+                            <div class="total-price-btn">
+                                <h5 class="total-price-name">Tổng</h5>
+                                <h5 class="total-price">@total_inventory.ToString("N0")</h5>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                <div class="card">
+                    <div class="card-body table-border-style">
+                        <div class="table-responsive">
+                            <table id="example1" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">STT</th>
+                                        <th>Mã sản phẩm</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th class="text-center">Đơn vị</th>
+                                        <th class="text-center">Đơn giá bán</th>
+                                        <th class="text-center">Số lượng bán</th>
+                                        <th class="text-center">
+                                            <span>
+                                                Thành tiền
+                                                <i data-toggle="tooltip" data-placement="top" data-original-title="(Đơn giá bán x Số lượng bán)" class="feather icon-alert-circle icon-info" aria-label="(Đơn giá bán x Số lượng bán)">
+                                                </i>
+                                            </span>
+                                        </th>
+
+                                    </tr>
+
+
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Where(s => s.sold > 0))
+                                    {
+                                        no_sell++;
+
+                                    <tr>
+                                        <td class="text-center">@no_sell</td>
+                                        <td>@item.product.code</td>
+                                        <td>@item.product.name</td>
+                                        <td>@item.product.unit</td>
+                                        <td>@item.product.sell_price.ToString("N0")</td>
+                                        <td>@item.sold</td>
+                                        <td>@((item.product.sell_price * (item.sold)).ToString("N0")) </td>
+                                    </tr>
+                                        total_sell += (item.product.sell_price * (item.sold));
+
+                                    }
+
+                                </tbody>
+                            </table>
+                            <div class="total-price-btn">
+                                <h5 class="total-price-name">Tổng</h5>
+                                <h5 class="total-price">@total_sell.ToString("N0")</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                <div class="card">
+                    <div class="card-body table-border-style">
+                        <div class="table-responsive">
+                            <table id="example2" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">STT</th>
+                                        <th>Mã sản phẩm</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th class="text-center">Đơn vị</th>
+                                        <th class="text-center">Đơn giá nhập</th>
+                                        <th class="text-center">Số lượng nhập</th>
+                                        <th class="text-center">
+                                            <span>
+                                                Thành tiền
+                                                <i data-toggle="tooltip" data-placement="top" data-original-title="(Đơn giá nhập x Số lượng nhập)" class="feather icon-alert-circle icon-info" aria-label="(Đơn giá nhập x Số lượng nhập)">
+                                                </i>
+                                            </span>
+                                        </th>
+                                        <th class="text-center">Ngày nhập hàng</th>
+                                    </tr>
+
+
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        no_import++;
+
+                                    <tr>
+                                        <td class="text-center">@no_import</td>
+                                        <td>@item.product.code</td>
+                                        <td>@item.product.name</td>
+                                        <td>@item.product.unit</td>
+                                        <td>@item.product.sell_price.ToString("N0")</td>
+                                        <td>@item.sold</td>
+                                        <td>@((item.price_import * (item.quantity)).ToString("N0")) </td>
+                                        <td>@item.created_at</td>
+
+                                    </tr>
+                                        total_import += (item.price_import * (item.quantity));
+
+                                    }
+
+                                </tbody>
+                            </table>
+                            <div class="total-price-btn">
+                                <h5 class="total-price-name">Tổng</h5>
+                                <h5 class="total-price">@total_import.ToString("N0")</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+    var row;
+    $(document).ready(function () {
+        $('#example').DataTable({
+            pagingType: 'full_numbers',
+        });
+    });
+</script>
+<script type="text/javascript">
+    var row;
+    $(document).ready(function () {
+        $('#example1').DataTable({
+            pagingType: 'full_numbers',
+        });
+    });
+</script>
+<script type="text/javascript">
+    var row;
+    $(document).ready(function () {
+        $('#example2').DataTable({
+            pagingType: 'full_numbers',
+        });
+    });
+</script>

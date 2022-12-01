@@ -29,7 +29,7 @@ namespace CAP_TEAM05_2022.Models
         public int category_id { get; set; }
         public string unit { get; set; }
         public int purchase_price { get; set; }
-        public Nullable<int> sell_price { get; set; }
+        public int sell_price { get; set; }
         public Nullable<int> quantity { get; set; }
         public int status { get; set; }
         public string note { get; set; }
