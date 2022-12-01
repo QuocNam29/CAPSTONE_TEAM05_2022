@@ -52,7 +52,7 @@
                                         </div>
                                     </div>
                                 </div>
-                               
+
                                 <div class="col-md-4">
                                     <input type="text" hidden id="URLExportExcel" value="@Url.Action("ExportExcel_Inventory", "Excel")" />
                                     <button class="btn btn-secondary float-right ml-2" id="btnExportExcel_Inventory">
@@ -64,13 +64,39 @@
                     </div>
                     <div class="card" id="dataContainer">
                         @{ Html.RenderAction("InventoryList", "import_inventory");}
-                        </div>
                     </div>
                 </div>
+            </div>
         </div>
     </div>
 </section>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+    var row;
+    $(document).ready(function () {
+        $('#example').DataTable({
+            pagingType: 'full_numbers',
+        });
+    });
+</script>
+<script type="text/javascript">
+    var row;
+    $(document).ready(function () {
+        $('#example1').DataTable({
+            pagingType: 'full_numbers',
+        });
+    });
+</script>
+<script type="text/javascript">
+    var row;
+    $(document).ready(function () {
+        $('#example2').DataTable({
+            pagingType: 'full_numbers',
+        });
+    });
+</script>
 
 
 
