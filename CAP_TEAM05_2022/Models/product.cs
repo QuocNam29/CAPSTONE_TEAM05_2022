@@ -30,13 +30,15 @@ namespace CAP_TEAM05_2022.Models
         public string unit { get; set; }
         public int purchase_price { get; set; }
         public int sell_price { get; set; }
-        public Nullable<int> quantity { get; set; }
+        public int quantity { get; set; }
         public int status { get; set; }
         public string note { get; set; }
         public int created_by { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }
         public Nullable<System.DateTime> deleted_at { get; set; }
+        public string name_group { get; set; }
+        public string name_category { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cart> carts { get; set; }

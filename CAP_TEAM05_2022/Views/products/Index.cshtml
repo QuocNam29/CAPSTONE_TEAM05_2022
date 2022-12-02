@@ -117,18 +117,20 @@
                                                     </div>
                                                     <br />
                                                     <div class="col-12">
-                                                        <div class="alert alert-success">
-                                                            <strong>Thành công!</strong> Nhập sản phẩm thành công ! <b>(@success dữ liệu)</b>
-                                                        </div>
-                                                        <div class="alert alert-danger">
+
+                                                        <button data-toggle="modal" data-target="#SuccessData" class="alert alert-success">
+                                                            <strong>Thành công!</strong> Nhập sản phẩm thành công từ excel ! <b>(@success dữ liệu)</b>
+                                                        </button>
+                                                        <button data-toggle="modal" data-target="#FailFormat" class="alert alert-danger">
                                                             <strong>Thất bại!</strong> Nhập sản phẩm thất bại do sai tên danh mục hoặc nhóm hàng! <b>(@failFormat dữ liệu) </b>
-                                                        </div>
-                                                        <div class="alert alert-warning">
+                                                        </button>
+                                                        <button data-toggle="modal" data-target="#MissData" class="alert alert-warning">
                                                             <strong>Mất dữ liệu!</strong>  Nhập sản phẩm thất bại do thiếu thông tin sản phẩm ! <b>(@miss dữ liệu)</b>
-                                                        </div>
-                                                        <div class="alert alert-info">
+                                                        </button>
+
+                                                        <button data-toggle="modal" data-target="#ExitData" class="alert alert-info">
                                                             <strong>Tồn tại!</strong>  Sản phẩm đã tồn tại và hệ thống đã cập nhật lại thông tin ! <b>(@exist dữ liệu)</b>
-                                                        </div>
+                                                        </button>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -153,7 +155,7 @@
                 </div>
             </div>
             <div id="ImportModal" tabindex="-1" role="dialog" aria-labelledby="ImportModalTitle" aria-hidden="true" class="modal fade">
-                <div role="document" class="modal-dialog">                  
+                <div role="document" class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header bg-primary styling-modal-header-update">
                             <h5 id="ImportModalTitle" class="modal-title">Nhập tệp Excel</h5>
@@ -174,7 +176,7 @@
                                 <button type="submit" class="btn btn-primary btn-3d" data-toggle="modal" data-target="#exampleModalCenter">Import</button>
                             </div>
                         }
-                        </div>       
+                    </div>
                 </div>
             </div>
             <div id="AddProduct" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="AddProductLabel" aria-hidden="true">
@@ -437,6 +439,8 @@
         </div>
     </div>
 </div>
+@{ Html.RenderAction("ProductList_import", "Excel");}
+
 <script type="text/javascript">
     $(document).ready(function () {
         $('#example').DataTable({

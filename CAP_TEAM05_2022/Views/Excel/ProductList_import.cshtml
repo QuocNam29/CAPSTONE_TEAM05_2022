@@ -1,0 +1,263 @@
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.product>
+
+<div id="MissData" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="MissDataLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <form class="needs-validation" method="post" @* action="@Url.Action("Edit_GroupProduct", "groups")"*@ novalidate>
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title" id="MissDataLabel">Dữ liệu bị mất</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">Dòng excel</th>
+                                            <th class="text-center">Tên sản phẩm</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Where(s => s.status == 6))
+                                        {
+                                            <tr>
+                                                <td class="text-center">
+                                                    @item.id
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.name
+                                                </td>
+                                               
+                                            </tr>
+                                        }
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Xác nhận</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="FailFormat" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="FailFormatLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <form class="needs-validation" method="post" @* action="@Url.Action("Edit_GroupProduct", "groups")"*@ novalidate>
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title" id="FailFormatLabel">Sai tên danh mục hoặc nhóm hàng</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">Dòng excel</th>
+                                            <th class="text-center">Tên sản phẩm</th>
+                                            <th class="text-center">Tên nhóm hàng</th>
+                                            <th class="text-center">Tên danh mục</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Where(s => s.status == 5))
+                                        {
+                                        <tr>
+                                            <td class="text-center">
+                                                @item.id
+                                            </td>
+                                            <td class="text-center">
+                                                @item.name
+                                            </td>
+                                            <td class="text-center">
+                                                @item.name_group
+                                            </td>
+                                            <td class="text-center">
+                                                @item.name_category
+                                            </td>
+
+                                        </tr>
+                                        }
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Xác nhận</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="SuccessData" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="SuccessDataLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <form class="needs-validation" method="post" @* action="@Url.Action("Edit_GroupProduct", "groups")"*@ novalidate>
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title" id="SuccessDataLabel">Import thành công</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">Dòng excel</th>
+                                            <th class="text-center">Tên sản phẩm</th>
+                                            <th class="text-center">Tên nhóm hàng</th>
+                                            <th class="text-center">Tên danh mục</th>
+                                            <th class="text-center">Đơn vị</th>
+                                            <th class="text-center">Giá bán</th>
+                                            <th class="text-center">Giá nhập</th>
+                                            <th class="text-center">Số lượng nhập</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Where(s => s.status == 4))
+                                        {
+                                        <tr>
+                                            <td class="text-center">
+                                                @item.id
+                                            </td>
+                                            <td class="text-center">
+                                                @item.name
+                                            </td>
+                                            <td class="text-center">
+                                                @item.name_group
+                                            </td>
+                                            <td class="text-center">
+                                                @item.name_category
+                                            </td>
+                                            <td class="text-center">
+                                                @item.unit
+                                            </td>
+                                            <td class="text-center">
+                                                @item.sell_price
+                                            </td>
+                                            <td class="text-center">
+                                                @item.purchase_price
+                                            </td>
+                                            <td class="text-center">
+                                                @item.quantity
+                                            </td>
+
+                                        </tr>
+                                        }
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Xác nhận</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="ExitData" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ExitDataLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <form class="needs-validation" method="post" @* action="@Url.Action("Edit_GroupProduct", "groups")"*@ novalidate>
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title" id="ExitDataLabel">Dữ liệu đã tồn tại và cập nhật lại</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">Dòng excel</th>
+                                            <th class="text-center">Tên sản phẩm</th>
+                                            <th class="text-center">Tên nhóm hàng</th>
+                                            <th class="text-center">Tên danh mục</th>
+                                            <th class="text-center">Đơn vị</th>
+                                            <th class="text-center">Giá bán</th>
+                                            <th class="text-center">Giá nhập</th>
+                                            <th class="text-center">Số lượng cũ</th>
+                                            <th class="text-center">Số lượng mới</th>
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Where(s => s.status == 7))
+                                        {
+                                        <tr>
+                                            <td class="text-center">
+                                                @item.id
+                                            </td>
+                                            <td class="text-center">
+                                                @item.name
+                                            </td>
+                                            <td class="text-center">
+                                                @item.name_group
+                                            </td>
+                                            <td class="text-center">
+                                                @item.name_category
+                                            </td>
+                                            <td class="text-center">
+                                                @item.unit
+                                            </td>
+                                            <td class="text-center">
+                                                @item.sell_price
+                                            </td>
+                                            <td class="text-center">
+                                                @item.purchase_price
+                                            </td>
+                                            <td class="text-center">
+                                                @item.note
+                                            </td>
+                                            <td class="text-center">
+                                                @item.quantity
+                                            </td>
+                                        </tr>
+                                        }
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Xác nhận</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -19,6 +19,20 @@ namespace CAP_TEAM05_2022.Controllers
 {
     public class ExcelController : Controller
     {
+        private List<product> Product_list = null;
+        public ExcelController()
+        {
+            var session = System.Web.HttpContext.Current.Session;
+            if (session["Product_list"] != null)
+            {
+                Product_list = session["Product_list"] as List<product>;
+            }
+            else
+            {
+                Product_list = new List<product>();
+                session["Product_list"] = Product_list;
+            }
+        }
         private CP25Team05Entities db = new CP25Team05Entities();
         // GET: Excel
         public ActionResult Index()
@@ -302,11 +316,14 @@ namespace CAP_TEAM05_2022.Controllers
                     int rowFailFormat = 0;
                     int rowExist = 0;
                     int missData = 0;
+                    int row_excel = 1;
+                    Product_list.Clear();
                     try
                     {
                         //Insert records to database table.
                         foreach (DataRow row in dt.Rows)
                         {
+                            row_excel++;
                             if (!String.IsNullOrEmpty(row["Tên sản phẩm"].ToString().Trim())
                                && !String.IsNullOrEmpty(row["Nhóm hàng"].ToString().Trim())
                            && !String.IsNullOrEmpty(row["Danh mục"].ToString().Trim())
@@ -393,9 +410,23 @@ namespace CAP_TEAM05_2022.Controllers
                                             db.SaveChanges();
 
                                             addRow++;
+                                            Product_list.Add(new product
+                                            {
+                                                id = row_excel,
+                                                name = name_product,
+                                                status = 4,
+                                                name_group = Session["group_product"].ToString(),
+                                                name_category = Session["category_product"].ToString(),
+                                                unit = unit_product,
+                                                purchase_price = purchase_price_product,
+                                                sell_price = sell_price_product,
+                                                quantity = quantity_product,
+
+                                            }) ;
                                         }
                                         else
                                         {
+                                            int quantity_current = check_product.quantity;
                                             check_product.sell_price = sell_price_product;
                                             check_product.purchase_price = purchase_price_product;
                                             check_product.quantity += quantity_product;
@@ -411,16 +442,44 @@ namespace CAP_TEAM05_2022.Controllers
                                             db.import_inventory.Add(inventory);
                                             db.SaveChanges();
                                             rowExist++;
+                                            Product_list.Add(new product
+                                            {
+                                                id = row_excel,
+                                                name = name_product,
+                                                status = 7,
+                                                name_group = Session["group_product"].ToString(),
+                                                name_category = Session["category_product"].ToString(),
+                                                unit = unit_product,
+                                                purchase_price = purchase_price_product,
+                                                sell_price = sell_price_product,
+                                                quantity = check_product.quantity,
+                                                note = quantity_current.ToString()
+                                            }) ;
                                         }
                                     }
                                     else
                                     {
                                         rowFailFormat++;
+                                        Product_list.Add(new product
+                                        {
+                                            id = row_excel,
+                                            name = name_product,
+                                            status = 5,
+                                            name_group = Session["group_product"].ToString(),
+                                            name_category = Session["category_product"].ToString(),
+
+                                        });
                                     }
                                 }
                                 else
                                 {
                                     missData++;
+                                    Product_list.Add(new product
+                                    {
+                                        id = row_excel,
+                                        name = name_product,
+                                        status = 6
+                                    }) ;
                                 }
 
 
@@ -478,7 +537,11 @@ namespace CAP_TEAM05_2022.Controllers
 
             return RedirectToAction("Index", "products");
         }
+        public ActionResult ProductList_import()
+        {
+            return PartialView(Product_list);
 
+        }
         public void ExportExcel_Inventory(DateTime? date_start, DateTime? date_end)
         {
             var import_inventory = db.import_inventory.Include(i => i.user).Include(i => i.product).Where(i => i.created_at >= date_start && i.created_at <= date_end);

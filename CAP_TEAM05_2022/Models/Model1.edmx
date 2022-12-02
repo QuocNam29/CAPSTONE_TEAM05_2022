@@ -193,13 +193,15 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="unit" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="purchase_price" Type="int" Nullable="false" />
           <Property Name="sell_price" Type="int" Nullable="false" />
-          <Property Name="quantity" Type="int" />
+          <Property Name="quantity" Type="int" Nullable="false" />
           <Property Name="status" Type="int" Nullable="false" />
           <Property Name="note" Type="nvarchar(max)" />
           <Property Name="created_by" Type="int" Nullable="false" />
           <Property Name="created_at" Type="datetime2" Precision="0" />
           <Property Name="updated_at" Type="datetime2" Precision="0" />
           <Property Name="deleted_at" Type="datetime2" Precision="0" />
+          <Property Name="name_group" Type="nvarchar" MaxLength="255" />
+          <Property Name="name_category" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="sale_details">
           <Key>
@@ -792,7 +794,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="unit" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="purchase_price" Type="Int32" Nullable="false" />
           <Property Name="sell_price" Type="Int32" Nullable="false" />
-          <Property Name="quantity" Type="Int32" />
+          <Property Name="quantity" Type="Int32" Nullable="false" />
           <Property Name="status" Type="Int32" Nullable="false" />
           <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="created_by" Type="Int32" Nullable="false" />
@@ -805,6 +807,8 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <NavigationProperty Name="import_inventory" Relationship="Self.import_inventory_ibfk_2" FromRole="products" ToRole="import_inventory" />
           <NavigationProperty Name="user" Relationship="Self.FK_products_users" FromRole="products" ToRole="users" />
           <NavigationProperty Name="sale_details" Relationship="Self.sale_details_ibfk_1" FromRole="products" ToRole="sale_details" />
+          <Property Name="name_group" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="name_category" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="sale_details">
           <Key>
@@ -1367,6 +1371,8 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <EntitySetMapping Name="products">
             <EntityTypeMapping TypeName="CP25Team05Model.product">
               <MappingFragment StoreEntitySet="products">
+                <ScalarProperty Name="name_category" ColumnName="name_category" />
+                <ScalarProperty Name="name_group" ColumnName="name_group" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="code" ColumnName="code" />
                 <ScalarProperty Name="name" ColumnName="name" />
