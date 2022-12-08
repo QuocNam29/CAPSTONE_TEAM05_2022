@@ -185,6 +185,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\categoriesController.cs" />
+    <Compile Include="Controllers\customersController.cs" />
     <Compile Include="Controllers\ExcelController.cs" />
     <Compile Include="Controllers\groupsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -590,6 +591,11 @@
     <Content Include="Views\import_inventory\Index.cshtml" />
     <Content Include="Views\import_inventory\InventoryList.cshtml" />
     <Content Include="Views\Excel\ProductList_import.cshtml" />
+    <Content Include="Views\customers\Create.cshtml" />
+    <Content Include="Views\customers\Delete.cshtml" />
+    <Content Include="Views\customers\Details.cshtml" />
+    <Content Include="Views\customers\Edit.cshtml" />
+    <Content Include="Views\customers\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

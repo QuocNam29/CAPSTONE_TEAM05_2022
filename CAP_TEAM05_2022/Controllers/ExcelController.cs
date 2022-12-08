@@ -126,7 +126,7 @@ namespace CAP_TEAM05_2022.Controllers
             }
             Sheet.Cells["A:AZ"].AutoFitColumns();
             Response.Clear();
-            ExcelWorksheet Sheet_group = ep.Workbook.Worksheets.Add("NhomHang");
+          /*  ExcelWorksheet Sheet_group = ep.Workbook.Worksheets.Add("NhomHang");
             FormatExcel(Sheet_group, 2);
             Sheet_group.DefaultColWidth = 20;
             Sheet_group.Cells.Style.WrapText = true;
@@ -157,7 +157,7 @@ namespace CAP_TEAM05_2022.Controllers
                 row_category++;
             }
             Sheet_category.Cells["A:AZ"].AutoFitColumns();
-            Response.Clear();
+            Response.Clear();*/
             Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             Response.AddHeader("content-disposition", "attachment; filename=" + "Mau_Nhap_Lieu.xlsx");
             Response.BinaryWrite(ep.GetAsByteArray());

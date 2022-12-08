@@ -30319,3 +30319,18 @@ body {
     background: #f6f6f6;
     text-transform: uppercase;
 }
+.role-cus {
+    padding: 5px;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+.cus-simple {
+    background-color: #b8e3ff;
+}
+.cus-supplier {
+    background-color: #f1c40f;
+}
+.cus-multi {
+    background-color: #f79ddf;
+}

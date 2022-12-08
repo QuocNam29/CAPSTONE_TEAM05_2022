@@ -114,6 +114,7 @@
           <Property Name="created_at" Type="datetime2" Precision="0" />
           <Property Name="updated_at" Type="datetime2" Precision="0" />
           <Property Name="deleted_at" Type="datetime2" Precision="0" />
+          <Property Name="code" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="debts">
           <Key>
@@ -720,6 +721,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="deleted_at" Type="DateTime" Precision="0" />
           <NavigationProperty Name="carts" Relationship="Self.carts_ibfk_2" FromRole="customers" ToRole="carts" />
           <NavigationProperty Name="sales" Relationship="Self.FK_sales_customers" FromRole="customers" ToRole="sales" />
+          <Property Name="code" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="debt">
           <Key>
@@ -1290,6 +1292,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <EntitySetMapping Name="customers">
             <EntityTypeMapping TypeName="CP25Team05Model.customer">
               <MappingFragment StoreEntitySet="customers">
+                <ScalarProperty Name="code" ColumnName="code" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="created_by" ColumnName="created_by" />
                 <ScalarProperty Name="name" ColumnName="name" />
