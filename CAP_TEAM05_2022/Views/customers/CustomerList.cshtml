@@ -1,0 +1,92 @@
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.customer>
+@{ 
+    int no = 0;
+}
+<table id="example" class="table table-hover ">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Mã khách hàng</th>
+            <th>Tên khách hàng</th>
+            <th>Điện thoại</th>
+            <th class="text-center">Nhóm khách hàng</th>
+            <th class="text-center">Tài khoản ngân hàng</th>
+            <th>Địa chỉ</th>
+            <th class="text-center">Trạng thái</th>
+            <th>Ghi chú</th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            no++;
+            string customswitch_KH = "customswitch" + item.id;
+            <tr>
+                <td>@no <input hidden type="text" name="record" value="@item.code" /> </td>
+                <td>@item.code</td>
+                <td>@item.name</td>
+                <td>@item.phone</td>
+                @if (item.type == 0)
+                {
+                    <td class="text-center">
+                        <p class="role-cus cus-simple">Khách mua lẻ</p>
+                    </td>
+                }
+                else if (item.type == 1)
+                {
+
+                    <td class="text-center">
+                        <p class="role-cus cus-multi">Khách mua sỉ</p>
+                    </td>
+
+                }
+                else if (item.type == 2)
+                {
+
+                    <td class="text-center">
+                        <p class="role-cus cus-supplier">Nhà cung cấp</p>
+                    </td>
+
+                }
+
+                <td class="text-center">
+                    @item.bank
+                </td>
+                <td>@item.address</td>
+                <td class="text-center">
+                    @if (item.status == 1)
+                    {
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" checked class="custom-control-input" id="@customswitch_KH">
+                            <label class="custom-control-label" for="@customswitch_KH"></label>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="@customswitch_KH">
+                            <label class="custom-control-label" for="@customswitch_KH"></label>
+                        </div>
+                    }
+                    <input hidden type="text" id="URDEditStatus" value="@Url.Action("EditStatus_Customer", "customers")">
+                    <script language="javascript">
+                                                        document.getElementById('@customswitch_KH').onclick = function (e) {
+                                                                EditStatus(@item.id);
+                                                        };
+                    </script>
+                </td>
+                <td>test</td>
+                <td>
+                    <button data-toggle="modal" data-target="#AddCustomer" class="btn btn-success">
+                        <i class="feather icon-edit">
+                        </i>
+                    </button>
+                </td>
+            </tr>
+        }
+
+
+    </tbody>
+</table>

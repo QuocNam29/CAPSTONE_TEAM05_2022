@@ -3,10 +3,10 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
-    int no = 0;
+
 }
 
-<input type="text" hidden id="URLCustomer" value="@Url.Action("Customers", "customer")" />
+<input type="text" hidden id="URLCustomerList" value="@Url.Action("CustomerList", "customers")" />
 <section class="pcoded-main-container">
     <div class="pcoded-content">
         <div class="page-header">
@@ -42,7 +42,7 @@
                                     <h4>KHÁCH HÀNG</h4>
                                 </div>
                                 <div class="col-md-3">
-                                    <select name="filter" id="filter" class="form-control">
+                                    <select name="filter_type" id="filter_type" class="form-control">
                                         <option value="">Xem tất cả</option>
                                         <option value="0">Khách mua lẻ</option>
                                         <option value="1">Công ty (khách mua sỉ)</option>
@@ -52,79 +52,9 @@
                             </div>
                         </div>
                         <div class="card-body table-border-style">
-                            <div class="table-responsive">
-                                <table id="example" class="table table-hover ">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Mã khách hàng</th>
-                                            <th>Tên khách hàng</th>
-                                            <th>Điện thoại</th>
-                                            <th class="text-center">Nhóm khách hàng</th>
-                                            <th class="text-center">Tài khoản ngân hàng</th>
-                                            <th>Địa chỉ</th>
-                                            <th class="text-center">Trạng thái</th>
-                                            <th>Ghi chú</th>
-                                            <th>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in Model)
-                                        {
-                                            no++;
-                                        <tr>
-                                            <td>@no <input hidden type="text" name="record" value="@item.code" /> </td>
-                                            <td>@item.code</td>
-                                            <td>@item.name</td>
-                                            <td>@item.phone</td>
-                                            @if (item.type == 0)
-                                            {
-                                                <td class="text-center">
-                                                    <p class="role-cus cus-simple">Khách mua lẻ</p>
-                                                </td>
-                                            }
-                                            else if (item.type == 1)
-                                            {
+                            <div class="table-responsive" id="dataContainer">
 
-                                                <td class="text-center">
-                                                    <p class="role-cus cus-multi">Khách mua sỉ</p>
-                                                </td>
-
-                                            }
-                                            else if (item.type == 2)
-                                            {
-
-                                                <td class="text-center">
-                                                    <p class="role-cus cus-supplier">Nhà cung cấp</p>
-                                                </td>
-
-                                            }
-
-                                            <td class="text-center">
-                                                @item.bank
-                                            </td>
-                                            <td>@item.address</td>
-                                            <td class="text-center">
-                                                <div class="custom-control custom-switch">
-                                                    <input type="checkbox" class="custom-control-input">
-                                                    <label class="custom-control-label">
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>test</td>
-                                            <td>
-                                                <button data-toggle="modal" data-target="#AddCustomer" class="btn btn-success">
-                                                    <i class="feather icon-edit">
-                                                    </i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        }
-
-
-                                    </tbody>
-                                </table>
+                                @{ Html.RenderAction("CustomerList", "customers");}
 
                                 <!---->
                             </div>

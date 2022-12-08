@@ -19,7 +19,19 @@ namespace CAP_TEAM05_2022.Controllers
         // GET: customers
         public ActionResult Index()
         {
-            return View(db.customers.ToList());
+            return View();
+        }
+        public ActionResult CustomerList(int? type)
+        {
+            var links = from l in db.customers
+                        select l;
+            if (type != null)
+            {
+                links = links.Where(p => p.type == type);
+            }
+           
+            return PartialView(links.OrderByDescending(c => c.id));
+
         }
         public ActionResult Create_Customer(string customer_name, string customer_phone,
            string customer_email, DateTime? customers_birth, string customer_account,
@@ -61,7 +73,23 @@ namespace CAP_TEAM05_2022.Controllers
             Session["notification"] = "Thêm mới thành công!";
             return RedirectToAction("Index");
         }
-
+        public ActionResult EditStatus_Customer(customer customer_current)
+        {
+            customer customer = db.customers.Find(customer_current.id);
+            if (customer.status == 1)
+            {
+                customer.status = 2;
+            }
+            else
+            {
+                customer.status = 1;
+            }
+            customer.updated_at = DateTime.Now;
+            db.Entry(customer).State = EntityState.Modified;
+            db.SaveChanges();
+            return Json("EditStatus_GroupProduct", JsonRequestBehavior.AllowGet);
+        }
+/*
         // GET: customers/Details/5
         public ActionResult Details(int? id)
         {
@@ -156,7 +184,7 @@ namespace CAP_TEAM05_2022.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
+*/
         protected override void Dispose(bool disposing)
         {
             if (disposing)

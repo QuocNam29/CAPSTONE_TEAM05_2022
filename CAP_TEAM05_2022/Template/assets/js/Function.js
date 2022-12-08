@@ -573,3 +573,32 @@ function GetList_Inventory(date_start, date_end) {
         alert("Something Went Wrong, Try Later");
     });
 }
+//----------------------FILTER CUSTOMER------------------------------------------------
+$('#URLCustomerList')
+    .keypress(function () {
+        URLCustomerList = $(this).val();
+    })
+    .keypress();
+
+$("#filter_type").change(function () {
+    var type = $("#filter_type").val();
+    GetList_Customer(type)
+});
+function GetList_Customer(type) {
+    $.ajax({
+        url: URLCustomerList,
+        data: {
+            type: type,
+          
+        }
+    }).done(function (result) {
+        $('#dataContainer').html(result);
+        $('#example').DataTable();
+    }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        console.log(textStatus)
+        console.log(errorThrown)
+        alert("Something Went Wrong, Try Later");
+    });
+}
+
+
