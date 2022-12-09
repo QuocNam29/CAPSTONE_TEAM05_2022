@@ -600,5 +600,92 @@ function GetList_Customer(type) {
         alert("Something Went Wrong, Try Later");
     });
 }
+//----------------------LOAD FORM EDIT CUSTOMER---------------------------------------
+
+$('#URLFindCustomer')
+    .keypress(function () {
+        URLFindCustomer = $(this).val();
+    })
+    .keypress();
+
+function GetCustomer(ele, id) {
+    row = $(ele).closest('tr');
+    $.ajax({
+        type: 'POST',
+        url: URLFindCustomer,
+        data: { "customer_id": id },
+        success: function (response) {
+            $('#edit_id').val(response.id);
+            $('#edit_customer_name').val(response.name);
+            $('#edit_customer_phone').val(response.phone);
+            $('#edit_customer_email').val(response.email);
+            $('#customers_birth').val(response.birthday);
+            $('#edit_customer_account').val(response.account_number);
+            $('#edit_customer_bank').val(response.bank);
+            $('#edit_customer_type').val(response.type);
+            $('textarea#edit_customer_address').html(response.address);
+            $('textarea#edit_customer_note').html(response.note);
+            
+            $('#EditCustomer .close').css('display', 'none');
+            $('#EditCustomer').modal('show');
+        }
+    })
+}
+
+//-------------------------------UPDATE PRODUCT--------------------------------
+
+$('#URLUpdateProduct')
+    .keypress(function () {
+        URLUpdateProduct = $(this).val();
+    })
+    .keypress();
+
+function Update_Product() {
+    var table = $('#example').DataTable();
+    var product = {};
+    product.id = $('#edit_id').val();
+    product.name = $('#edit_name').val();
+    product.unit = $('#edit_unit').val();
+    product.quantity = $('#edit_quantity').val();
+    product.sell_price = Number($('#edit_sell_price').val().replace(/,/g, ''));
+    product.purchase_price = Number($('#edit_purchase_price').val().replace(/,/g, ''));
+    product.group_id = $('#edit_GroupProduct').val();
+    product.category_id = $('#edit_Category').val();
+
+    console.log(product);
+    $.ajax({
+        url: URLUpdateProduct,
+        type: "Post",
+        data: JSON.stringify(product),
+        contentType: "application/json; charset=UTF-8",
+        dataType: "json",
+        success: function (response) {
+            var group_id = $("#filter_GroupProduct").val();
+            var category_id = $("#filter_Category").val();
+            $.ajax({
+                url: URLProductList,
+                data: {
+                    group_id: group_id,
+                    category_id: category_id,
+                }
+            }).done(function (result) {
+                $('#dataContainer').html(result);
+                $('#example').DataTable()
+                $('#EditProduct .close').css('display', 'none');
+                $('#EditProduct').modal('hide');
+
+                sweetAlert
+                    ({
+                        title: "Cập nhật thành công !",
+                        type: "success"
+                    })
+            }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(textStatus)
+                console.log(errorThrown)
+                alert("Something Went Wrong, Try Later");
+            });
+        }
+    });
+}
 
 
