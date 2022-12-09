@@ -8,6 +8,7 @@
 
 <input type="text" hidden id="URLCustomerList" value="@Url.Action("CustomerList", "customers")" />
 <input type="text" hidden id="URLFindCustomer" value="@Url.Action("FindCustomer", "customers")/" />
+<input type="text" hidden id="URLUpdateCustomer" value="@Url.Action("UpdateCustomer", "customers")" />
 
 <section class="pcoded-main-container">
     <div class="pcoded-content">
@@ -292,7 +293,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ bỏ</button>
-                    <button type="submit" class="btn btn-primary">chỉnh sửa</button>
+                    <button type="submit" class="btn btn-primary" id="submit_edit_customer">chỉnh sửa</button>
                 </div>
             </div>
         </form>

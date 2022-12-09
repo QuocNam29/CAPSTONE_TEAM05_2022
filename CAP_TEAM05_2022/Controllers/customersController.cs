@@ -107,6 +107,40 @@ namespace CAP_TEAM05_2022.Controllers
             emp.note = customer.note;
             return Json(emp);
         }
+        public JsonResult UpdateCustomer(customer customers)
+        {
+            customer customer = db.customers.Find(customers.id);
+            customer.name = customers.name;
+            customer.phone = customers.phone;
+            if (!String.IsNullOrWhiteSpace(customers.email))
+            {
+                customer.email = customers.email;
+            }
+            if (customers.birthday != null)
+            {
+                customer.birthday = customers.birthday;
+            }
+            if (!String.IsNullOrWhiteSpace(customers.account_number))
+            {
+                customer.account_number = customers.account_number;
+            }
+            if (!String.IsNullOrWhiteSpace(customers.bank))
+            {
+                customer.bank = customers.bank;
+            }
+            customer.type = customers.type;
+            customer.address = customers.address;
+            if (!String.IsNullOrWhiteSpace(customers.note))
+            {
+                customer.note = customers.note;
+            }          
+            customer.updated_at = DateTime.Now;
+            db.Entry(customer).State = EntityState.Modified;
+            db.SaveChanges();
+            string message = "Record Saved Successfully ";
+            bool status = true;
+            return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
+        }
         /*
                 // GET: customers/Details/5
                 public ActionResult Details(int? id)
