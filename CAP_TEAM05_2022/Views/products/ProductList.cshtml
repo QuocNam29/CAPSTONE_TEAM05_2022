@@ -34,9 +34,9 @@
                 <td>@item.group.name</td>
                 <td>@item.category.name</td>
                 <td class="text-center">@item.unit</td>
-                <td class="text-center">@item.sell_price</td>
-                <td class="text-center"> @item.purchase_price</td>
-                <td class="text-center">@item.quantity</td>
+                <td class="text-center">@item.sell_price.ToString("N0")</td>
+                <td class="text-center"> @item.purchase_price.ToString("N0")</td>
+                <td class="text-center">@item.quantity.ToString("N0")</td>
                 <td class="text-center">@item.import_inventory.Where(i => i.product_id == item.id).Sum(s => s.sold)</td>
                 <td class="text-center">
                     @if (item.status == 1)

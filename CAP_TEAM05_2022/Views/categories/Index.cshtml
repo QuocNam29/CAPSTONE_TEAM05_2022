@@ -136,8 +136,10 @@
                                     Tên danh mục<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input type="text" placeholder="Nhập tên danh mục" id="first-name-icon" class="form-control" name="name_category" pattern="\S+.*" required>
+                                    <input type="text" placeholder="Nhập tên danh mục" id="name_category"  onchange="UserCheck()" class="form-control" name="name_category" pattern="\S+.*" required>
+                                    <p id="Status" />
                                     <div class="invalid-feedback">
+
                                         Vui lòng nhập tên danh mục !
                                     </div>
                                 </div> <!---->
@@ -149,7 +151,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
-                    <button type="submit" class="btn btn-primary">Thêm mới</button>
+                    <button type="submit" class="btn btn-primary" id="btn_submit">Thêm mới</button>
                 </div>
             </div>
         </form>
@@ -200,6 +202,30 @@
         $('#example').DataTable({
             pagingType: 'full_numbers',
         });
-    });  
+    });
+
+    function UserCheck() {
+        
+        $.post("@Url.Action("CheckCategorynameAvailability", "categories")",
+            {
+                categorydata: $("#name_category").val()
+            },
+            function (data) {               
+                if (data == 0) {
+                    $("#Status").html('<font color="Red" hidden>That name is taken.Try Another.</font>');
+                    $("#name_category").css("border-color", "#adb5bd");
+                document.querySelector("#btn_submit").disabled = false;
+
+
+            }
+            else if (data == 1) {
+                $("#Status").html('<font color="Red">Tên danh mục đã tồn tại, vui lòng nhậ tên khác.</font>');
+                $("#name_category").css("border-color", "Red");
+                document.querySelector("#btn_submit").disabled = true;
+
+            }
+        });
+    }
 </script>
+
 
