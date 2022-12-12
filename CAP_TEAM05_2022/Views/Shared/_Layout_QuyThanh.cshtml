@@ -19,7 +19,7 @@
     <link href="~/Template/assets/css/style.css" rel="stylesheet" />
     <link href="~/Template/assets/css/plugins/animate.min.css" rel="stylesheet" />
     <link href="~/Content/toastr.css" rel="stylesheet" />
-
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     @Scripts.Render("~/bundles/jquery")
 
 </head>
@@ -79,7 +79,7 @@
                             <span class="pcoded-mtext">Sản phẩm</span>
                         </a>
                     </li>
-                    
+
                     <li class="nav-item pcoded-menu-caption">
                         <label>Hàng hoá</label>
                     </li>
@@ -88,24 +88,33 @@
                             <span class="pcoded-micon"><i class="feather icon-target"></i></span> <span class="pcoded-mtext">Bán hàng</span>
                         </a>
                     </li>
-                    <li class="nav-item"><a href="https://tancool.net/doanh-thu" class="nav-link">
-                        <span class="pcoded-micon"><i class="feather icon-clipboard"></i></span> 
-                        <span class="pcoded-mtext">Doanh thu</span></a></li>
+                    <li class="nav-item">
+                        <a href="https://tancool.net/doanh-thu" class="nav-link">
+                            <span class="pcoded-micon"><i class="feather icon-clipboard"></i></span>
+                            <span class="pcoded-mtext">Doanh thu</span>
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a href="@Url.Action("Index","import_inventory")" class="nav-link">
                             <span class="pcoded-micon"><i class="feather icon-package"></i></span>
                             <span class="pcoded-mtext">Tồn kho</span>
                         </a>
-                    </li>                    
-                    <li class="nav-item"><a href="https://tancool.net/don-hang" class="nav-link">
-                        <span class="pcoded-micon"><i class="feather icon-inbox"></i></span> <span class="pcoded-mtext">Đơn hàng</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://tancool.net/don-hang" class="nav-link">
+                            <span class="pcoded-micon"><i class="feather icon-inbox"></i></span> <span class="pcoded-mtext">Đơn hàng</span>
+                        </a>
                     </li>
                     <li class="nav-item pcoded-menu-caption"><label>Tín năng</label></li>
-                    <li class="nav-item"><a href="https://tancool.net/doi-tra" class="nav-link">
-                        <span class="pcoded-micon"><i class="feather icon-repeat"></i></span> <span class="pcoded-mtext">Đổi trả</span></a>
+                    <li class="nav-item">
+                        <a href="https://tancool.net/doi-tra" class="nav-link">
+                            <span class="pcoded-micon"><i class="feather icon-repeat"></i></span> <span class="pcoded-mtext">Đổi trả</span>
+                        </a>
                     </li>
-                    <li class="nav-item"><a href="https://tancool.net/thu-chi" class="nav-link">
-                        <span class="pcoded-micon"><i class="feather icon-percent"></i></span> <span class="pcoded-mtext">Thu chi</span></a>
+                    <li class="nav-item">
+                        <a href="https://tancool.net/thu-chi" class="nav-link">
+                            <span class="pcoded-micon"><i class="feather icon-percent"></i></span> <span class="pcoded-mtext">Thu chi</span>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -190,6 +199,7 @@
     <script src="~/Template/assets/js/jquery.dataTables.min.js"></script>
     <!--Toastr-->
     <script src="~/Scripts/toastr.js"></script>
+    <script src="~/Scripts/select2.js"></script>
     <!--My script function-->
     <script src="~/Template/assets/js/Function.js"></script>
 

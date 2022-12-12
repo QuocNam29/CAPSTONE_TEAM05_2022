@@ -141,6 +141,23 @@ namespace CAP_TEAM05_2022.Controllers
             bool status = true;
             return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
         }
+      
+        public JsonResult GetSearchValue(string search)
+        {
+            var CustomerList = db.customers.ToList();
+            if (search != null)
+            {
+                 CustomerList = db.customers.Where(x => x.name.Contains(search)).ToList();
+                
+            }
+
+            List<customer> allsearch = CustomerList.Where(x => x.name.Contains(search)).Select(x => new customer
+            {
+                id = x.id,
+                name = x.name
+            }).Take(10).ToList();
+            return new JsonResult { Data = allsearch, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+        }
         /*
                 // GET: customers/Details/5
                 public ActionResult Details(int? id)

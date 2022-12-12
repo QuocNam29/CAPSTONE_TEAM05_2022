@@ -131,8 +131,23 @@ namespace CAP_TEAM05_2022.Controllers
             bool status = true;
             return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult GetSearchValue(string search)
+        {
+            var ProductList = db.products.ToList();
+            if (search != null)
+            {
+                ProductList = db.products.Where(x => x.name.Contains(search)).ToList();
 
-     
+            }
+
+            List<customer> allsearch = ProductList.Where(x => x.name.Contains(search)).Select(x => new customer
+            {
+                id = x.id,
+                name = x.name
+            }).Take(10).ToList();
+            return new JsonResult { Data = allsearch, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+        }
+
         /*   public ActionResult getProduct()
            {
 
@@ -148,7 +163,7 @@ namespace CAP_TEAM05_2022.Controllers
                    productCategory_id = x.category_id,
                }).ToList(), JsonRequestBehavior.AllowGet) ;
            }*/
-        
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
