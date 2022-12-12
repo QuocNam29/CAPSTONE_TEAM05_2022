@@ -13,6 +13,7 @@
                     event.stopPropagation();
                 }
                 form.classList.add('was-validated');
+               
             }, false);
         });
 
@@ -696,6 +697,7 @@ function Update_Customer() {
         }
     });
 }
+//-------------------------------KHÔNG CHO NHẬP KÍ TỰ ĐẶC BIỆC--------------------------------
 
 $('input').keypress(function (event) {
     var character = String.fromCharCode(event.keyCode);
@@ -703,5 +705,55 @@ $('input').keypress(function (event) {
 });
 
 function isValid(str) {
-    return !/[~`!@#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(str);
+    return !/[~`!@#$%\^&*+=\\[\]\\';,/{}|\\":<>\?]/g.test(str);
+}
+
+//-------------------------------CHECK DỮ LIỆU TRÙNG--------------------------------
+
+$('#URLChecknameAvailability')
+    .keypress(function () {
+        URLChecknameAvailability = $(this).val();
+    })
+    .keypress();
+
+function UserCheck() {
+    console.log(URLChecknameAvailability);
+    $.post(URLChecknameAvailability,
+        {
+            categorydata: $("#name_category").val()
+        },
+        function (data) {
+            if (data == 0) {
+                $("#Status").html('<font color="Red" hidden>That name is taken.Try Another.</font>');
+                $("#name_GroupProduct").css("border-color", "#adb5bd");
+                document.querySelector("#btn_submit").disabled = false;
+
+
+            }
+            else if (data == 1) {
+                $("#Status").html('<font color="Red">Tên nhóm hàng đã tồn tại, vui lòng nhập tên khác.</font>');
+                $("#name_GroupProduct").css("border-color", "#e74c3c");
+                document.querySelector("#btn_submit").disabled = true;
+
+            }
+        });
+    $.post(URLChecknameAvailability,
+        {
+            categorydata: $("#name_GroupProduct").val()
+        },
+        function (data) {
+            if (data == 0) {
+                $("#Status").html('<font color="Red" hidden>That name is taken.Try Another.</font>');             
+                $("#name_GroupProduct").css("border-color", "#adb5bd");
+                document.querySelector("#btn_submit").disabled = false;
+
+
+            }
+            else if (data == 1) {
+                $("#Status").html('<font color="Red">Tên danh mục đã tồn tại, vui lòng nhập tên khác.</font>');       
+                $("#name_GroupProduct").css("border-color", "#e74c3c");
+                document.querySelector("#btn_submit").disabled = true;
+
+            }
+        });
 }

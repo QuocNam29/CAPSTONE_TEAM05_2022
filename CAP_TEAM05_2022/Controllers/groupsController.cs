@@ -109,106 +109,21 @@ namespace CAP_TEAM05_2022.Controllers
             bool status = true;
             return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
         }
-       
-/*
-        // GET: groups/Details/5
-        public ActionResult Details(int? id)
+
+        public JsonResult CheckGroupnameAvailability(string categorydata)
         {
-            if (id == null)
+            System.Threading.Thread.Sleep(200);
+            var SeachData = db.groups.Where(x => x.name == categorydata && x.status != 3).FirstOrDefault();
+            if (SeachData != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return Json(1);
             }
-            group group = db.groups.Find(id);
-            if (group == null)
+            else
             {
-                return HttpNotFound();
+                return Json(0);
             }
-            return View(group);
+
         }
-
-        // GET: groups/Create
-        public ActionResult Create()
-        {
-            ViewBag.created_by = new SelectList(db.users, "id", "name");
-            return View();
-        }
-
-        // POST: groups/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,code,created_by,name,slug,status,created_at,updated_at,deleted_at")] group group)
-        {
-            if (ModelState.IsValid)
-            {
-                db.groups.Add(group);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.created_by = new SelectList(db.users, "id", "name", group.created_by);
-            return View(group);
-        }
-
-        // GET: groups/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            group group = db.groups.Find(id);
-            if (group == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.created_by = new SelectList(db.users, "id", "name", group.created_by);
-            return View(group);
-        }
-
-        // POST: groups/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,code,created_by,name,slug,status,created_at,updated_at,deleted_at")] group group)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(group).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.created_by = new SelectList(db.users, "id", "name", group.created_by);
-            return View(group);
-        }
-
-        // GET: groups/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            group group = db.groups.Find(id);
-            if (group == null)
-            {
-                return HttpNotFound();
-            }
-            return View(group);
-        }
-
-        // POST: groups/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            group group = db.groups.Find(id);
-            db.groups.Remove(group);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }*/
 
         protected override void Dispose(bool disposing)
         {

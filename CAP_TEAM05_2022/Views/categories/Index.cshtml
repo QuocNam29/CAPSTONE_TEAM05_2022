@@ -8,6 +8,8 @@
 }
 <input type="text" hidden id="URLFindGroupProduct" value="@Url.Action("FindCategory", "categories")/" />
 <input type="text" hidden id="URLUpdateGroupProduct" value="@Url.Action("UpdateCategory", "categories")" />
+<input type="text" hidden id="URLChecknameAvailability" value="@Url.Action("CheckCategorynameAvailability", "categories")" />
+
 <section class="pcoded-main-container">
     <div class="pcoded-content">
         <div class="page-header">
@@ -136,7 +138,7 @@
                                     Tên danh mục<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input type="text" placeholder="Nhập tên danh mục" id="name_category"  onchange="UserCheck()" class="form-control" name="name_category" pattern="\S+.*" required>
+                                    <input type="text" placeholder="Nhập tên danh mục" id="name_category" onchange="UserCheck()" class="form-control" name="name_category" pattern="\S+.*" required>
                                     <p id="Status" />
                                     <div class="invalid-feedback">
 
@@ -204,28 +206,7 @@
         });
     });
 
-    function UserCheck() {
-        
-        $.post("@Url.Action("CheckCategorynameAvailability", "categories")",
-            {
-                categorydata: $("#name_category").val()
-            },
-            function (data) {               
-                if (data == 0) {
-                    $("#Status").html('<font color="Red" hidden>That name is taken.Try Another.</font>');
-                    $("#name_category").css("border-color", "#adb5bd");
-                document.querySelector("#btn_submit").disabled = false;
-
-
-            }
-            else if (data == 1) {
-                $("#Status").html('<font color="Red">Tên danh mục đã tồn tại, vui lòng nhậ tên khác.</font>');
-                $("#name_category").css("border-color", "Red");
-                document.querySelector("#btn_submit").disabled = true;
-
-            }
-        });
-    }
+    
 </script>
 
 
