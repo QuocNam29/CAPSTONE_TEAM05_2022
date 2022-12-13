@@ -757,4 +757,40 @@ function UserCheck() {
             }
         });
 }
-//------------------------------Load dữ liệu cú
+//------------------------Import Fail Add-----------------------------
+$('#URLUpdateGroupProduct')
+    .keypress(function () {
+        URLUpdateGroupProduct = $(this).val();
+    })
+    .keypress();
+
+function ImportFail_continue() {
+    var table = $('#example').DataTable();
+    var group = {};
+    group.id = $('#edit_id').val();
+    group.name = $('#Edit_name').val();
+
+    $.ajax({
+        url: URLUpdateGroupProduct,
+        type: "Post",
+        data: JSON.stringify(group),
+        contentType: "application/json; charset=UTF-8",
+        dataType: "json",
+        success: function (response) {
+          
+            table.cell(row, 2).data($('#Edit_name').val());
+            table.draw();
+            sweetAlert
+                ({
+                    title: "Cập nhật thành công !",
+                    type: "success"
+                }, function () {
+                    $("table tbody").find('input[name="record"]').each(function () {
+                        if (Contains($(this).val(), code)) {
+                            $(this).parents("tr").remove();
+                        }
+                    });
+                })
+        }
+    });
+}

@@ -460,6 +460,10 @@ namespace CAP_TEAM05_2022.Controllers
                                     else
                                     {
                                         rowFailFormat++;
+                                        string unit_product = Session["unit_product"].ToString().Trim();
+                                        int sell_price_product = int.Parse(Session["sell_price_product"].ToString().Trim());
+                                        int purchase_price_product = int.Parse(Session["purchase_price_product"].ToString().Trim());
+                                        int quantity_product = int.Parse(Session["quantity_product"].ToString().Trim());
                                         Product_list.Add(new product
                                         {
                                             id = row_excel,
@@ -467,7 +471,10 @@ namespace CAP_TEAM05_2022.Controllers
                                             status = 5,
                                             name_group = Session["group_product"].ToString(),
                                             name_category = Session["category_product"].ToString(),
-
+                                            unit = unit_product,
+                                            purchase_price = purchase_price_product,
+                                            sell_price = sell_price_product,
+                                            quantity = quantity_product,
                                         });
                                     }
                                 }
@@ -637,8 +644,158 @@ namespace CAP_TEAM05_2022.Controllers
             Response.End();
 
         }
-    }
 
-   
+        public ActionResult ImportFail_continues(int id)
+        {
+            var import = Product_list.Where(x => x.id == id).FirstOrDefault();
+            string email = Session["user_email"].ToString();
+            user user = db.users.Where(u => u.email == email).FirstOrDefault();
+            var check_group = db.groups.Where(g => g.name == import.name_group).FirstOrDefault();
+            group GroupProduct = new group();
+            if (check_group == null)
+            {
+                
+                GroupProduct.name = import.name_group;
+                GroupProduct.created_by = user.id;
+                GroupProduct.status = 1;
+                GroupProduct.created_at = DateTime.Now;
+                GroupProduct.slug = import.name_group;
+                GroupProduct.code = "NH" + CodeRandom.RandomCode();
+                db.groups.Add(GroupProduct);
+                db.SaveChanges();
+            }
+            var check_category = db.categories.Where(g => g.name == import.name_category).FirstOrDefault();
+            category category = new category();
+            if (check_category == null)
+            {
+                
+                category.name = import.name_category;
+                category.status = 1;
+                category.created_by = user.id;
+                category.created_at = DateTime.Now;
+                category.slug = import.name_category;
+                category.code = "DM" + CodeRandom.RandomCode();
+                db.categories.Add(category);
+                db.SaveChanges();
+            }
+
+            product product = new product();
+            product.name = import.name;
+            product.status = 1;
+            product.unit = import.unit;
+            if (check_group == null)
+            {
+                product.group_id = GroupProduct.id;
+            }
+            else
+            {
+                product.group_id = check_group.id;
+            }
+            if (check_category == null)
+            {
+                product.category_id = category.id;
+            }
+            else
+            {
+                product.category_id = check_category.id;
+            }
+           
+            product.created_by = user.id;
+            product.sell_price = import.sell_price;
+            product.purchase_price = import.purchase_price;
+            product.quantity = import.quantity;
+            product.created_at = DateTime.Now;
+            product.code = "SP" + CodeRandom.RandomCode();
+            db.products.Add(product);
+            import_inventory inventory = new import_inventory();
+            inventory.product_id = product.id;
+            inventory.quantity = import.quantity;
+            inventory.price_import = import.purchase_price;
+            inventory.sold = 0;
+            inventory.created_by = user.id;
+            inventory.created_at = DateTime.Now;
+            db.import_inventory.Add(inventory);
+            db.SaveChanges();
+            return RedirectToAction("Index", "products");
+        }
+
+        public ActionResult ImportFail_continues_ALL()
+        {
+            foreach (var item in Product_list.Where(p => p.status == 5))
+            {
+                var import = Product_list.Where(x => x.id == item.id).FirstOrDefault();
+                string email = Session["user_email"].ToString();
+                user user = db.users.Where(u => u.email == email).FirstOrDefault();
+                var check_group = db.groups.Where(g => g.name == import.name_group).FirstOrDefault();
+                group GroupProduct = new group();
+                if (check_group == null)
+                {
+
+                    GroupProduct.name = import.name_group;
+                    GroupProduct.created_by = user.id;
+                    GroupProduct.status = 1;
+                    GroupProduct.created_at = DateTime.Now;
+                    GroupProduct.slug = import.name_group;
+                    GroupProduct.code = "NH" + CodeRandom.RandomCode();
+                    db.groups.Add(GroupProduct);
+                    db.SaveChanges();
+                }
+                var check_category = db.categories.Where(g => g.name == import.name_category).FirstOrDefault();
+                category category = new category();
+                if (check_category == null)
+                {
+
+                    category.name = import.name_category;
+                    category.status = 1;
+                    category.created_by = user.id;
+                    category.created_at = DateTime.Now;
+                    category.slug = import.name_category;
+                    category.code = "DM" + CodeRandom.RandomCode();
+                    db.categories.Add(category);
+                    db.SaveChanges();
+                }
+
+                product product = new product();
+                product.name = import.name;
+                product.status = 1;
+                product.unit = import.unit;
+                if (check_group == null)
+                {
+                    product.group_id = GroupProduct.id;
+                }
+                else
+                {
+                    product.group_id = check_group.id;
+                }
+                if (check_category == null)
+                {
+                    product.category_id = category.id;
+                }
+                else
+                {
+                    product.category_id = check_category.id;
+                }
+
+                product.created_by = user.id;
+                product.sell_price = import.sell_price;
+                product.purchase_price = import.purchase_price;
+                product.quantity = import.quantity;
+                product.created_at = DateTime.Now;
+                product.code = "SP" + CodeRandom.RandomCode();
+                db.products.Add(product);
+                import_inventory inventory = new import_inventory();
+                inventory.product_id = product.id;
+                inventory.quantity = import.quantity;
+                inventory.price_import = import.purchase_price;
+                inventory.sold = 0;
+                inventory.created_by = user.id;
+                inventory.created_at = DateTime.Now;
+                db.import_inventory.Add(inventory);
+                db.SaveChanges();
+            }
+            
+            return RedirectToAction("Index", "products");
+        }
+    }
 }
 

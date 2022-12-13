@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<CAP_TEAM05_2022.Models.product>
 
+<input type="text" hidden id="URLUpdateProduct" value="@Url.Action("UpdateProduct", "products")" />
+
 <div id="MissData" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="MissDataLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <form class="needs-validation" method="post" @* action="@Url.Action("Edit_GroupProduct", "groups")"*@ novalidate>
@@ -30,7 +32,7 @@
                                                 <td class="text-center">
                                                     @item.name
                                                 </td>
-                                               
+
                                             </tr>
                                         }
 
@@ -71,7 +73,11 @@
                                             <th class="text-center">Tên sản phẩm</th>
                                             <th class="text-center">Tên nhóm hàng</th>
                                             <th class="text-center">Tên danh mục</th>
-
+                                            <th class="text-center">Đơn vị</th>
+                                            <th class="text-center">Giá bán</th>
+                                            <th class="text-center">Giá nhập</th>
+                                            <th class="text-center">Số lượng nhập</th>
+                                            <th class="text-center"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -79,7 +85,7 @@
                                         {
                                         <tr>
                                             <td class="text-center">
-                                                @item.id
+                                                @item.id <input hidden type="text" name="record" value="ImportFail-@item.code">
                                             </td>
                                             <td class="text-center">
                                                 @item.name
@@ -89,6 +95,27 @@
                                             </td>
                                             <td class="text-center">
                                                 @item.name_category
+                                            </td>
+                                            <td class="text-center">
+                                                @item.unit
+                                            </td>
+                                            <td class="text-center">
+                                                @item.sell_price
+                                            </td>
+                                            <td class="text-center">
+                                                @item.purchase_price
+                                            </td>
+                                            <td class="text-center">
+                                                @item.quantity
+                                            </td>
+                                            <td class="text-center">
+                                                <a title="Cập nhật" class="btn btn-success" href="@Url.Action("ImportFail_continues","Excel", new {id = item.id })">
+
+                                                    <i class="feather icon-download">
+                                                    </i>
+
+                                                </a>
+
                                             </td>
 
                                         </tr>
@@ -100,11 +127,16 @@
                             </div>
                         </div>
                     </div>
-
-
-
                 </div>
                 <div class="modal-footer">
+                    @if (Model.Where(s => s.status == 5).Count() > 0)
+                    {
+                        <a title="Cập nhật" class="btn btn-info" href="@Url.Action("ImportFail_continues_ALL","Excel")">
+                            <i class="feather icon-download">
+                            </i>Cập nhật tất cả
+                        </a>
+                    }
+
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Xác nhận</button>
                 </div>
             </div>
@@ -141,33 +173,33 @@
                                     <tbody>
                                         @foreach (var item in Model.Where(s => s.status == 4))
                                         {
-                                        <tr>
-                                            <td class="text-center">
-                                                @item.id
-                                            </td>
-                                            <td class="text-center">
-                                                @item.name
-                                            </td>
-                                            <td class="text-center">
-                                                @item.name_group
-                                            </td>
-                                            <td class="text-center">
-                                                @item.name_category
-                                            </td>
-                                            <td class="text-center">
-                                                @item.unit
-                                            </td>
-                                            <td class="text-center">
-                                                @item.sell_price
-                                            </td>
-                                            <td class="text-center">
-                                                @item.purchase_price
-                                            </td>
-                                            <td class="text-center">
-                                                @item.quantity
-                                            </td>
+                                            <tr>
+                                                <td class="text-center">
+                                                    @item.id
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.name
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.name_group
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.name_category
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.unit
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.sell_price
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.purchase_price
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.quantity
+                                                </td>
 
-                                        </tr>
+                                            </tr>
                                         }
 
                                     </tbody>
@@ -216,35 +248,35 @@
                                     <tbody>
                                         @foreach (var item in Model.Where(s => s.status == 7))
                                         {
-                                        <tr>
-                                            <td class="text-center">
-                                                @item.id
-                                            </td>
-                                            <td class="text-center">
-                                                @item.name
-                                            </td>
-                                            <td class="text-center">
-                                                @item.name_group
-                                            </td>
-                                            <td class="text-center">
-                                                @item.name_category
-                                            </td>
-                                            <td class="text-center">
-                                                @item.unit
-                                            </td>
-                                            <td class="text-center">
-                                                @item.sell_price
-                                            </td>
-                                            <td class="text-center">
-                                                @item.purchase_price
-                                            </td>
-                                            <td class="text-center">
-                                                @item.note
-                                            </td>
-                                            <td class="text-center">
-                                                @item.quantity
-                                            </td>
-                                        </tr>
+                                            <tr>
+                                                <td class="text-center">
+                                                    @item.id
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.name
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.name_group
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.name_category
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.unit
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.sell_price
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.purchase_price
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.note
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.quantity
+                                                </td>
+                                            </tr>
                                         }
 
                                     </tbody>
@@ -261,3 +293,4 @@
         </form>
     </div>
 </div>
+
