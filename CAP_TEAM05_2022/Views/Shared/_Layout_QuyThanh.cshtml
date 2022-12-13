@@ -229,7 +229,7 @@
                     });
                 },
                 select: function (e, i) {
-                   
+                    console.log(i.item.val)
                      $.ajax({
             type: 'POST',
             url: '@Url.Action("FindCustomer_name","customers")/',
@@ -249,11 +249,11 @@
                 $(this).data("autocomplete").search($(this).val());
             });
     });
-
-        $("#product_name").autocomplete({
+         $(function () {
+             $("#product_name").autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: '@Url.Action("GetSearchValue","products")',
+                        url: '@Url.Action("GetSearchValue", "products")',
                         data: "{ 'search': '" + request.term + "'}",
                         dataType: "json",
                         type: "POST",
@@ -274,15 +274,15 @@
                     });
                 },
                 select: function (e, i) {
-                    
+                    console.log(i.item.val)
                      $.ajax({
             type: 'POST',
-            url: '@Url.Action("FindCustomer_name","customers")/',
-                         data: { "customer_id": i.item.val },
+            url: '@Url.Action("FindProduct_name", "products")/',
+                         data: { "product_id": i.item.val },
             success: function (response) {
-                $('#customer_code').val(response.code);
-                $('#customer_phone').val(response.phone);
-                $('#customer_type').val(response.note);
+                $('#product_code').val(response.code);
+                $('#product_unit').val(response.note);
+                $('#product_price').val(response.name + " VNĐ");
             }
         })
                 },
@@ -294,47 +294,13 @@
                 $(this).data("autocomplete").search($(this).val());
             });
     });
+
+
+
+
     </script>
     <!--My script function-->
     <script src="~/Template/assets/js/Function.js"></script>
-    <script type="text/javascript">
-         $('#customer_name').change(function () {
-             var customer_name = $("#customer_name").val();
-             console.log(customer_name);
-        GetCustomer_sale(customer_name);
-        })
-        .keypress();
-    function GetCustomer_sale(customer_name) {
-        $.ajax({
-            type: 'POST',
-            url: '@Url.Action("FindCustomer_name","customers")/',
-            data: { "customer_name": customer_name },
-            success: function (response) {
-                $('#customer_code').val(response.code);
-                $('#customer_phone').val(response.phone);
-                $('#customer_type').val(response.note);
-                console.log(response);
-            }
-        })
-    }
-    $('#product_name').change(function () {
-        var product_name = $("#product_name").val();
-        GetProduct_sale(product_name);
-        })
-        .keypress();
-    function GetProduct_sale(product_name) {
-        $.ajax({
-            type: 'POST',
-            url: "@Url.Action("FindProduct_name","customers")/",
-            data: { "product_name": product_name },
-            success: function (response) {
-                $('#customer_code').val(response.code);
-                $('#customer_phone').val(response.phone);
-                $('#customer_type').val(response.note);
-                console.log(response);
-            }
-        })
-    }
-    </script>
+   
 </body>
 </html>

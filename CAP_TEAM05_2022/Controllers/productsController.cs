@@ -113,19 +113,7 @@ namespace CAP_TEAM05_2022.Controllers
             emp.category_id = product.category_id;
             return Json(emp);
         }
-        [HttpPost]
-        public JsonResult FindProduct_name(string Product_name)
-        {
-            product product = db.products.Where(p => p.name == Product_name).FirstOrDefault();
-            var emp = new product();
-            emp.id = product.id;
-            emp.code = product.code;
-            emp.name = product.name;
-            emp.unit = product.unit;
-            emp.quantity = product.quantity;
-           
-            return Json(emp);
-        }
+       
         public JsonResult UpdateProduct(product Products)
         {
             product product = db.products.Find(Products.id);
@@ -144,23 +132,32 @@ namespace CAP_TEAM05_2022.Controllers
             bool status = true;
             return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
         public JsonResult GetSearchValue(string search)
         {
-            var ProductList = db.products.ToList();
-            if (search != null)
-            {
-                ProductList = db.products.Where(x => x.name.Contains(search)).ToList();
+            var product = (from Product in db.products
+                             where Product.name.StartsWith(search) && Product.status != 3
+                           select new
+                             {
+                                 label = Product.name,
+                                 val = Product.id
+                             }).Take(10).ToList();
 
-            }
-
-            List<customer> allsearch = ProductList.Where(x => x.name.Contains(search)).Select(x => new customer
-            {
-                id = x.id,
-                name = x.name
-            }).Take(10).ToList();
-            return new JsonResult { Data = allsearch, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            return Json(product);
         }
 
+        [HttpPost]
+        public JsonResult FindProduct_name(int product_id)
+        {
+            product product = db.products.Find(product_id);
+            var emp = new product();
+            emp.id = product.id;
+            emp.code = product.code;
+            emp.name = product.sell_price.ToString("N0");
+            emp.note = "Đơn vị: " + product.unit + " - SL tồn: " + product.quantity;         
+            return Json(emp);
+        }
+       
         /*   public ActionResult getProduct()
            {
 

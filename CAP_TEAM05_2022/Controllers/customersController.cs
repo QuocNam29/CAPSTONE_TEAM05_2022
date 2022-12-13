@@ -115,15 +115,15 @@ namespace CAP_TEAM05_2022.Controllers
             emp.id = customer.id;
             emp.name = customer.name;
             emp.phone = customer.phone;
-            if (customer.type == 1)
+            if (customer.type == 0)
             {
                 emp.note = "Khách mua lẻ";
             }
-            else if (customer.type == 2)
+            else if (customer.type == 1)
             {
                 emp.note = "Khách mua sĩ";
             }
-            else if (customer.type == 3)
+            else if (customer.type == 2)
             {
                 emp.note = "Nhà cung cấp";
             }
@@ -168,12 +168,12 @@ namespace CAP_TEAM05_2022.Controllers
         public JsonResult GetSearchValue(string search)
         {
             var customers = (from customer in db.customers
-                             where customer.name.StartsWith(search)
+                             where customer.name.StartsWith(search) && customer.status != 3
                              select new
                              {
                                  label = customer.name,
                                  val = customer.id
-                             }).ToList();
+                             }).Take(10).ToList();
 
             return Json(customers);
         }
