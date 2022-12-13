@@ -5,6 +5,7 @@
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
 }
 
+
 <section class="pcoded-main-container">
     <div class="pcoded-content">
         <div class="page-header">
@@ -42,7 +43,8 @@
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <div class="position-relative">
-                                                <input type="search" placeholder="Chọn khách hàng" id="customer_name" aria-autocomplete="list"  class="form-control">
+                                                <input type="search" placeholder="Chọn khách hàng" id="customer_name" aria-autocomplete="list" class="form-control">
+                                                <input type="hidden" id="hfCustomer" name="CustomerId" />
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -79,12 +81,12 @@
                                         </div>
                                         <div class="form-group">
                                             <div class="position-relative">
-                                                <input type="text" placeholder="Mã sản phẩm" disabled="disabled" id="first-name-icon" class="form-control">
+                                                <input type="text" placeholder="Mã sản phẩm" disabled="disabled" id="product_code" class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="position-relative">
-                                                <input type="text" placeholder="Đơn vị tính - Số lượng tồn" id="first-name-icon" disabled="disabled" class="form-control">
+                                                <input type="text" placeholder="Đơn vị tính - Số lượng tồn" id="product_unit" disabled="disabled" class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -93,7 +95,7 @@
                                                     <div class="input-group-append">
                                                         <span id="basic-addon2" class="input-group-text">Giá bán:</span>
                                                     </div>
-                                                    <input type="text" placeholder="Gián bán" id="first-name-icon" disabled="disabled" class="form-control">
+                                                    <input type="text" placeholder="Gián bán" id="product_price" disabled="disabled" class="form-control">
                                                 </div>
                                             </div>
                                             <!---->
@@ -250,17 +252,18 @@
                         </div>
                     </div>
                 </div>
-            </div>                   
-            <div>               
             </div>
-            <div>                
+            <div>
+            </div>
+            <div>
             </div>
         </div>
     </div>
 </section>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+@*<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>*@
 <script>
-    $("#customer_name").autocomplete({
+
+   @* $("#customer_name").autocomplete({
             source: function (request, response) {
                 customer_name = $("#customer_name").val();
                 $.ajax({
@@ -277,7 +280,8 @@
                     }
                 });
             }
-        });
+        });*@
+
     $("#product_name").autocomplete({
             source: function (request, response) {
             product_name = $("#product_name").val();
@@ -287,21 +291,17 @@
                     data: { search: product_name },
                     success: function (data) {
                         response($.map(data, function (item) {
-                            return { label: item.name, value: item.id };
+                            return { label: item.name, value: item.name };
                         }));
                     },
                     error: function (xhr, status, error) {
                         alert("Error");
                     }
                 });
-            }
-        });
+        }
 
-    var customer_name = "hihi";
-    $('#customer_name')
-        .change(function () {
-            customer_name = $(this).val();
-        })
-        .keypress();
+    });
 
+
+   
 </script>

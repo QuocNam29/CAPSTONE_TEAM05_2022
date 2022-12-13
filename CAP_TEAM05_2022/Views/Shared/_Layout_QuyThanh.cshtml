@@ -18,9 +18,9 @@
     <link href="~/Content/sweetalert/sweet-alert.css" rel="stylesheet" />
     <link href="~/Template/assets/css/style.css" rel="stylesheet" />
     <link href="~/Template/assets/css/plugins/animate.min.css" rel="stylesheet" />
-    <link href="~/Content/toastr.css" rel="stylesheet" />
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    @Scripts.Render("~/bundles/jquery")
+@*    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">*@
+    <link href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/themes/blitzer/jquery-ui.css" rel="Stylesheet" type="text/css"/>
+          @Scripts.Render("~/bundles/jquery")
 
 </head>
 
@@ -189,6 +189,8 @@
     <!-- Apex Chart -->
     <!-- custom-chart js -->
     <script src="~/Template/assets/js/vendor-all.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.0.min.js" type="text/javascript"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/jquery-ui.min.js" type="text/javascript"></script>
     <script src="~/Template/assets/js/plugins/bootstrap.min.js"></script>
     <script src="~/Template/assets/js/pcoded.min.js"></script>
 
@@ -198,10 +200,141 @@
     <!-- Data Table -->
     <script src="~/Template/assets/js/jquery.dataTables.min.js"></script>
     <!--Toastr-->
-    <script src="~/Scripts/toastr.js"></script>
-    <script src="~/Scripts/select2.js"></script>
+    <!--<script src="~/Scripts/toastr.js"></script>
+    <script src="~/Scripts/select2.js"></script>-->
+
+    <script type="text/javascript">
+    $(function () {
+        $("#customer_name").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action("GetSearchValue","customers")',
+                        data: "{ 'search': '" + request.term + "'}",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return item;
+                                console.log(item);
+                            }))
+
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                },
+                select: function (e, i) {
+                   
+                     $.ajax({
+            type: 'POST',
+            url: '@Url.Action("FindCustomer_name","customers")/',
+                         data: { "customer_id": i.item.val },
+            success: function (response) {
+                $('#customer_code').val(response.code);
+                $('#customer_phone').val(response.phone);
+                $('#customer_type').val(response.note);
+            }
+        })
+                },
+                minLength: 0
+            }).focus(function () {
+                if ($(this).autocomplete("widget").is(":visible")) {
+                    return;
+                }
+                $(this).data("autocomplete").search($(this).val());
+            });
+    });
+
+        $("#product_name").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action("GetSearchValue","products")',
+                        data: "{ 'search': '" + request.term + "'}",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return item;
+                                console.log(item);
+                            }))
+
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                },
+                select: function (e, i) {
+                    
+                     $.ajax({
+            type: 'POST',
+            url: '@Url.Action("FindCustomer_name","customers")/',
+                         data: { "customer_id": i.item.val },
+            success: function (response) {
+                $('#customer_code').val(response.code);
+                $('#customer_phone').val(response.phone);
+                $('#customer_type').val(response.note);
+            }
+        })
+                },
+                minLength: 0
+            }).focus(function () {
+                if ($(this).autocomplete("widget").is(":visible")) {
+                    return;
+                }
+                $(this).data("autocomplete").search($(this).val());
+            });
+    });
+    </script>
     <!--My script function-->
     <script src="~/Template/assets/js/Function.js"></script>
-
+    <script type="text/javascript">
+         $('#customer_name').change(function () {
+             var customer_name = $("#customer_name").val();
+             console.log(customer_name);
+        GetCustomer_sale(customer_name);
+        })
+        .keypress();
+    function GetCustomer_sale(customer_name) {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("FindCustomer_name","customers")/',
+            data: { "customer_name": customer_name },
+            success: function (response) {
+                $('#customer_code').val(response.code);
+                $('#customer_phone').val(response.phone);
+                $('#customer_type').val(response.note);
+                console.log(response);
+            }
+        })
+    }
+    $('#product_name').change(function () {
+        var product_name = $("#product_name").val();
+        GetProduct_sale(product_name);
+        })
+        .keypress();
+    function GetProduct_sale(product_name) {
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("FindProduct_name","customers")/",
+            data: { "product_name": product_name },
+            success: function (response) {
+                $('#customer_code').val(response.code);
+                $('#customer_phone').val(response.phone);
+                $('#customer_type').val(response.note);
+                console.log(response);
+            }
+        })
+    }
+    </script>
 </body>
 </html>

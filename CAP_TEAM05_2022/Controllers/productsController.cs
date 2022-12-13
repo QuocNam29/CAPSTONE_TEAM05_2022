@@ -113,6 +113,19 @@ namespace CAP_TEAM05_2022.Controllers
             emp.category_id = product.category_id;
             return Json(emp);
         }
+        [HttpPost]
+        public JsonResult FindProduct_name(string Product_name)
+        {
+            product product = db.products.Where(p => p.name == Product_name).FirstOrDefault();
+            var emp = new product();
+            emp.id = product.id;
+            emp.code = product.code;
+            emp.name = product.name;
+            emp.unit = product.unit;
+            emp.quantity = product.quantity;
+           
+            return Json(emp);
+        }
         public JsonResult UpdateProduct(product Products)
         {
             product product = db.products.Find(Products.id);

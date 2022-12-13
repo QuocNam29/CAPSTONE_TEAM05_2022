@@ -107,6 +107,29 @@ namespace CAP_TEAM05_2022.Controllers
             emp.note = customer.note;
             return Json(emp);
         }
+        [HttpPost]
+        public JsonResult FindCustomer_name(int customer_id)
+        {
+            customer customer = db.customers.Find(customer_id);
+            var emp = new customer();
+            emp.id = customer.id;
+            emp.name = customer.name;
+            emp.phone = customer.phone;
+            if (customer.type == 1)
+            {
+                emp.note = "Khách mua lẻ";
+            }
+            else if (customer.type == 2)
+            {
+                emp.note = "Khách mua sĩ";
+            }
+            else if (customer.type == 3)
+            {
+                emp.note = "Nhà cung cấp";
+            }
+            emp.code = customer.code;
+            return Json(emp);
+        }
         public JsonResult UpdateCustomer(customer customers)
         {
             customer customer = db.customers.Find(customers.id);
@@ -141,119 +164,20 @@ namespace CAP_TEAM05_2022.Controllers
             bool status = true;
             return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
         }
-      
+        [HttpPost]
         public JsonResult GetSearchValue(string search)
         {
-            var CustomerList = db.customers.ToList();
-            if (search != null)
-            {
-                 CustomerList = db.customers.Where(x => x.name.Contains(search)).ToList();
-                
-            }
+            var customers = (from customer in db.customers
+                             where customer.name.StartsWith(search)
+                             select new
+                             {
+                                 label = customer.name,
+                                 val = customer.id
+                             }).ToList();
 
-            List<customer> allsearch = CustomerList.Where(x => x.name.Contains(search)).Select(x => new customer
-            {
-                id = x.id,
-                name = x.name
-            }).Take(10).ToList();
-            return new JsonResult { Data = allsearch, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            return Json(customers);
         }
-        /*
-                // GET: customers/Details/5
-                public ActionResult Details(int? id)
-                {
-                    if (id == null)
-                    {
-                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                    }
-                    customer customer = db.customers.Find(id);
-                    if (customer == null)
-                    {
-                        return HttpNotFound();
-                    }
-                    return View(customer);
-                }
-
-                // GET: customers/Create
-                public ActionResult Create()
-                {
-                    return View();
-                }
-
-                // POST: customers/Create
-                // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-                // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-                [HttpPost]
-                [ValidateAntiForgeryToken]
-                public ActionResult Create([Bind(Include = "id,created_by,name,email,phone,address,type,status,account_number,bank,note,birthday,price_level,created_at,updated_at,deleted_at")] customer customer)
-                {
-                    if (ModelState.IsValid)
-                    {
-                        db.customers.Add(customer);
-                        db.SaveChanges();
-                        return RedirectToAction("Index");
-                    }
-
-                    return View(customer);
-                }
-
-                // GET: customers/Edit/5
-                public ActionResult Edit(int? id)
-                {
-                    if (id == null)
-                    {
-                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                    }
-                    customer customer = db.customers.Find(id);
-                    if (customer == null)
-                    {
-                        return HttpNotFound();
-                    }
-                    return View(customer);
-                }
-
-                // POST: customers/Edit/5
-                // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-                // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-                [HttpPost]
-                [ValidateAntiForgeryToken]
-                public ActionResult Edit([Bind(Include = "id,created_by,name,email,phone,address,type,status,account_number,bank,note,birthday,price_level,created_at,updated_at,deleted_at")] customer customer)
-                {
-                    if (ModelState.IsValid)
-                    {
-                        db.Entry(customer).State = EntityState.Modified;
-                        db.SaveChanges();
-                        return RedirectToAction("Index");
-                    }
-                    return View(customer);
-                }
-
-                // GET: customers/Delete/5
-                public ActionResult Delete(int? id)
-                {
-                    if (id == null)
-                    {
-                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                    }
-                    customer customer = db.customers.Find(id);
-                    if (customer == null)
-                    {
-                        return HttpNotFound();
-                    }
-                    return View(customer);
-                }
-
-                // POST: customers/Delete/5
-                [HttpPost, ActionName("Delete")]
-                [ValidateAntiForgeryToken]
-                public ActionResult DeleteConfirmed(int id)
-                {
-                    customer customer = db.customers.Find(id);
-                    db.customers.Remove(customer);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-        */
+        
         protected override void Dispose(bool disposing)
         {
             if (disposing)
