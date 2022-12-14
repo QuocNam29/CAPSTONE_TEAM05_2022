@@ -17,13 +17,9 @@ namespace CAP_TEAM05_2022.Controllers
         // GET: carts
         public ActionResult Index(int customer_id)
         {
-            var carts = db.carts.Include(c => c.product).Include(c => c.customer);
-            if (customer_id != -1)
-            {
-                 carts = carts.Where(c => c.customer_id == customer_id);
-            }
+            var carts = db.carts.Include(c => c.product).Include(c => c.customer).Where(c => c.customer_id == customer_id);
          
-            return PartialView(carts.ToList());
+            return PartialView(carts.ToList().OrderByDescending(c => c.id));
         }
 
         public JsonResult CreateCart(cart cart_create)
