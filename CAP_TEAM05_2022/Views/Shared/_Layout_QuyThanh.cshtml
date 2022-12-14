@@ -84,7 +84,7 @@
                         <label>Hàng hoá</label>
                     </li>
                     <li class="nav-item">
-                        <a href="https://tancool.net/quan-ly-ban-hang" class="nav-link">
+                        <a href="@Url.Action("Index","sale_details")" class="nav-link">
                             <span class="pcoded-micon"><i class="feather icon-target"></i></span> <span class="pcoded-mtext">Bán hàng</span>
                         </a>
                     </li>
@@ -216,7 +216,7 @@
                         success: function (data) {
                             response($.map(data, function (item) {
                                 return item;
-                                console.log(item);
+                               
                             }))
 
                         },
@@ -229,7 +229,7 @@
                     });
                 },
                 select: function (e, i) {
-                    console.log(i.item.val)
+                   
                      $.ajax({
             type: 'POST',
             url: '@Url.Action("FindCustomer_name","customers")/',
@@ -261,7 +261,7 @@
                         success: function (data) {
                             response($.map(data, function (item) {
                                 return item;
-                                console.log(item);
+                              
                             }))
 
                         },
@@ -274,7 +274,7 @@
                     });
                 },
                 select: function (e, i) {
-                    console.log(i.item.val)
+                    
                      $.ajax({
             type: 'POST',
             url: '@Url.Action("FindProduct_name", "products")/',
@@ -283,6 +283,8 @@
                 $('#product_code').val(response.code);
                 $('#product_unit').val(response.note);
                 $('#product_price').val(response.name);
+                var sum_price = Number($('#product_price').val()) * 1000 * Number($('#product_quantity').val()) * (1- (parseFloat($('#product_discount').val()) / 100));
+                $('#sum_price').val(sum_price.toLocaleString());
             }
         })
                 },
@@ -293,9 +295,16 @@
                 }
                 $(this).data("autocomplete").search($(this).val());
             });
-    });
+         });
 
-
+        $("#product_quantity").change(function () {
+            var sum_price = Number($('#product_price').val()) * 1000 * Number($('#product_quantity').val()) * (1- (parseFloat($('#product_discount').val()) / 100));
+            $('#sum_price').val(sum_price.toLocaleString());
+        });
+        $("#product_discount").change(function () {
+            var sum_price = Number($('#product_price').val()) * 1000 * Number($('#product_quantity').val()) * (1 - (parseFloat($('#product_discount').val()) / 100));
+            $('#sum_price').val(sum_price.toLocaleString());
+        });
 
 
     </script>
