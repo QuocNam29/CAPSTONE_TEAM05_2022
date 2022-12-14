@@ -49,6 +49,18 @@ $(document).ready(function () {
             }
             form.classList.add('was-validated');
         })
+        $('#submit_addCart').on('click', function () {
+            console.log("hihih");
+            if (form.checkValidity() === false) {
+                console.log("check sai");
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                console.log("chuẩn bị vào create cart");
+                Create_Cart();
+            }
+            form.classList.add('was-validated');
+        })
 
     }, false);
 })
@@ -792,5 +804,64 @@ function ImportFail_continue() {
                     });
                 })
         }
+    });
+}
+
+//-------------------------------CREATE CART - SALE DETAIL --------------------------------
+
+$('#URLCreateCart')
+    .keypress(function () {
+        URLCreateCart = $(this).val();
+    })
+    .keypress();
+$('#URLCartList')
+    .keypress(function () {
+        URLCartList = $(this).val();
+    })
+    .keypress();
+function Create_Cart() {
+   
+    var cart_create = {};
+    cart_create.product_id = $('#product_id').val();
+    cart_create.customer_id = $('#customer_id').val();
+    cart_create.quantity = $('#product_quantity').val();
+    cart_create.price = Number($('#sum_price').val().replace(/,/g, ''));
+    cart_create.discount = $('#product_discount').val();
+    cart_create.note = $('#cart_note').val();   
+
+        $.ajax({
+            url: URLCreateCart,
+            type: "Post",
+            data: JSON.stringify(cart_create),
+            contentType: "application/json; charset=UTF-8",
+            dataType: "json",
+            success: function (response) {
+                console.log($('#customer_id').val());
+                GetList_Cart($('#customer_id').val());
+                sweetAlert
+                    ({
+                        title: "Cập nhật thành công !",
+                        type: "success"
+                    })
+            }
+        });   
+   
+}
+function GetList_Cart(customer_id) {
+    $.ajax({
+        url: URLCartList,
+        data: {
+            customer_id: customer_id,
+
+        }
+    }).done(function (result) {
+        $('#dataContainer').html(result);
+        $('#example').DataTable()
+
+       
+    }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        console.log(textStatus)
+        console.log(errorThrown)
+        alert("Something Went Wrong, Try Later");
     });
 }

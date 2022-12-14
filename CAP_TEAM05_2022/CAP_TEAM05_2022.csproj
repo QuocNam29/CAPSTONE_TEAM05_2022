@@ -184,6 +184,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\cartsController.cs" />
     <Compile Include="Controllers\categoriesController.cs" />
     <Compile Include="Controllers\customersController.cs" />
     <Compile Include="Controllers\ExcelController.cs" />
@@ -662,6 +663,7 @@
     <Content Include="Views\sale_details\Details.cshtml" />
     <Content Include="Views\sale_details\Edit.cshtml" />
     <Content Include="Views\sale_details\Index.cshtml" />
+    <Content Include="Views\carts\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

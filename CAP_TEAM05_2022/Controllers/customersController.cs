@@ -31,7 +31,6 @@ namespace CAP_TEAM05_2022.Controllers
             }
            
             return PartialView(links.OrderByDescending(c => c.id));
-
         }
         public ActionResult Create_Customer(string customer_name, string customer_phone,
            string customer_email, DateTime? customers_birth, string customer_account,

@@ -229,7 +229,9 @@
                     });
                 },
                 select: function (e, i) {
-                   
+                    $('#customer_id').val(i.item.val);
+                    GetList_Cart(i.item.val);
+
                      $.ajax({
             type: 'POST',
             url: '@Url.Action("FindCustomer_name","customers")/',
@@ -274,7 +276,7 @@
                     });
                 },
                 select: function (e, i) {
-                    
+                    $('#product_id').val(i.item.val);
                      $.ajax({
             type: 'POST',
             url: '@Url.Action("FindProduct_name", "products")/',

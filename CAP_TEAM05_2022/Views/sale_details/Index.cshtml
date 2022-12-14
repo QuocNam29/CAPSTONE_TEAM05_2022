@@ -5,6 +5,9 @@
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
 }
 
+<input type="text" hidden id="URLCreateCart" value="@Url.Action("CreateCart", "carts")" />
+<input type="text" hidden id="URLCartList" value="@Url.Action("Index", "carts")" />
+
 
 <section class="pcoded-main-container">
     <div class="pcoded-content">
@@ -38,13 +41,18 @@
                             <h4>Tạo mới đơn hàng</h4>
                         </div>
                         <div class="card-body">
-                            <form>
+                            <form class="needs-validation" method="post" @*action="@Url.Action("CreateCart", "carts")"*@ novalidate>
                                 <div class="row">
+
                                     <div class="col-md-3">
                                         <div class="form-group">
+                                            <input type="hidden" id="customer_id" class="form-control">
                                             <div class="position-relative">
-                                                <input type="search" placeholder="Chọn khách hàng" id="customer_name" aria-autocomplete="list" class="form-control">
-                                            </div>
+                                                <input type="text" placeholder="Chọn khách hàng" id="customer_name" aria-autocomplete="list" class="form-control" required>
+                                                <div class="invalid-feedback">
+                                                    Vui lòng nhập tên sản phẩm !
+                                                </div>
+                                            </div> <!---->
                                         </div>
                                         <div class="form-group">
                                             <div class="position-relative">
@@ -74,11 +82,15 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
+                                            <input type="hidden" id="product_id" class="form-control">
                                             <div class="position-relative">
-                                                <input type="search" placeholder="Chọn khách hàng" id="product_name" aria-autocomplete="list" class="form-control">
-
-                                            </div>
+                                                <input type="text" placeholder="Chọn sản phẩm" id="product_name" aria-autocomplete="list" class="form-control" required>
+                                                <div class="invalid-feedback">
+                                                    Vui lòng nhập tên sản phẩm !
+                                                </div>
+                                            </div> <!---->
                                         </div>
+
                                         <div class="form-group">
                                             <div class="position-relative">
                                                 <input type="text" placeholder="Mã sản phẩm" disabled="disabled" id="product_code" class="form-control">
@@ -115,7 +127,7 @@
                                         <div class="form-group">
                                             <div class="position-relative">
                                                 <div class="input-group mb-3">
-                                                    <input type="number" id="product_quantity" aria-label="Recipient's username" aria-describedby="basic-addon2" min="1"  class="form-control" value="1">
+                                                    <input type="number" id="product_quantity" aria-label="Recipient's username" aria-describedby="basic-addon2" min="1" class="form-control" value="1">
                                                     <div class="input-group-append">
                                                         <span id="basic-addon2" class="input-group-text">SL (*)</span>
                                                     </div>
@@ -146,14 +158,14 @@
                                         </div>
                                         <div class="form-group">
                                             <div class="position-relative">
-                                                <input id="first-name-icon" placeholder="Ghi chú" class="form-control">
+                                                <input id="cart_note" placeholder="Ghi chú" class="form-control">
                                             </div>
                                             <!---->
                                         </div>
                                     </div>
                                     <div class="col-md-3">
-                                        <button type="submit" class="btn btn-primary btn-block">Thêm</button>
-                                        <button type="button" class="btn btn-info btn-block">
+                                        <button type="button" class="btn btn-primary btn-block" id="submit_addCart">Thêm</button>
+                                        <button type="submit" class="btn btn-info btn-block">
                                             Làm mới
                                         </button>
                                         <button type="button" class="btn btn-danger btn-block" style="display: none;">
@@ -172,6 +184,7 @@
                                         </button>
                                     </div>
                                 </div>
+
                             </form>
                         </div>
                     </div>
@@ -216,47 +229,10 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-body table-border-style">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-center">STT</th>
-                                            <th>Mã hàng</th>
-                                            <th>Tên hàng hàng</th>
-                                            <th class="text-center">Đơn vị</th>
-                                            <th class="text-center">Số lượng</th>
-                                            <th class="text-center">Giá nhập</th>
-                                            <th class="text-center">Chiết khấu</th>
-                                            <th class="text-center">Giá bán</th>
-                                            <th class="text-center">Thành tiền</th>
-                                            <th>Ghi chú</th>
-                                            <th>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody style="display: none;">
-                                        <tr>
-                                            <td colspan="11">
-                                                <div class="alert alert-warning">
-                                                    <p class="text-center">Không tìm thấy dữ liệu</p>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+            <div class="row" id="dataContainer">
+                @{ Html.RenderAction("Index", "carts", new { customer_id = -1 });}
+                </div>
                 </div>
             </div>
-            <div>
-            </div>
-            <div>
-            </div>
-        </div>
-    </div>
 </section>
+
