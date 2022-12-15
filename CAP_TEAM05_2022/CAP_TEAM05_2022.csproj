@@ -193,6 +193,7 @@
     <Compile Include="Controllers\import_inventoryController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\productsController.cs" />
+    <Compile Include="Controllers\salesController.cs" />
     <Compile Include="Controllers\sale_detailsController.cs" />
     <Compile Include="Controllers\SweetController.cs" />
     <Compile Include="Controllers\usersController.cs" />
@@ -664,6 +665,7 @@
     <Content Include="Views\sale_details\Edit.cshtml" />
     <Content Include="Views\sale_details\Index.cshtml" />
     <Content Include="Views\carts\Index.cshtml" />
+    <Content Include="Views\sales\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

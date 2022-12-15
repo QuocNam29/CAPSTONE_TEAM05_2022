@@ -865,3 +865,11 @@ function GetList_Cart(customer_id) {
         alert("Something Went Wrong, Try Later");
     });
 }
+$("#product_quantity").change(function () {
+    var sum_price = Number($('#product_price').val()) * 1000 * Number($('#product_quantity').val()) * (1 - (parseFloat($('#product_discount').val()) / 100));
+    $('#sum_price').val(sum_price.toLocaleString());
+});
+$("#product_discount").change(function () {
+    var sum_price = Number($('#product_price').val()) * 1000 * Number($('#product_quantity').val()) * (1 - (parseFloat($('#product_discount').val()) / 100));
+    $('#sum_price').val(sum_price.toLocaleString());
+});

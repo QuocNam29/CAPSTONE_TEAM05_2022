@@ -146,7 +146,7 @@
                                             </div>
                                             <!---->
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group">hon
                                             <div class="position-relative">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-append">
@@ -172,14 +172,14 @@
                                             Huỷ bỏ
                                         </button>
                                         <hr>
-                                        <button type="button" disabled="disabled" class="btn btn-warning btn-block">
+                                        <button type="button" id="payment_btn" disabled="disabled" onclick="Payment_order()" class="btn btn-warning btn-block">
                                             Thanh toán
                                         </button>
                                         <button type="button" disabled="disabled" class="btn btn-dark btn-block">
                                             Ghi nợ
                                         </button>
                                         <hr>
-                                        <button type="button" disabled="disabled" class="btn btn-success btn-block">
+                                        <button type="button" id="order_btn" disabled="disabled" class="btn btn-success btn-block">
                                             Xem hoá đơn
                                         </button>
                                     </div>
@@ -191,47 +191,11 @@
                 </div>
             </div>
             <hr>
-            <div class="row" style="display: none;">
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label>Tạm tính tiền</label>
-                        <input type="text" disabled="disabled" class="form-control">
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label>VAT(%)</label>
-                        <input type="number" min="0" max="100" class="form-control">
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label>Chiết khấu(%)</label>
-                        <input type="number" min="0" max="100" class="form-control">
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label>Thành tiền</label>
-                        <input type="text" disabled="disabled" class="form-control">
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Trả trước</label>
-                        <input type="text" placeholder="Thanh toán 1 phần" class="form-control">
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label>Ghi chú</label>
-                        <input type="text" placeholder="Ghi chú" class="form-control">
-                    </div>
-                </div>
-            </div>
-            <div class="row" id="dataContainer">
+            <div id="dataContainer">
                 @{ Html.RenderAction("Index", "carts", new { customer_id = -1 });}
-                </div>
+            </div>
+           
+              
                 </div>
             </div>
 </section>

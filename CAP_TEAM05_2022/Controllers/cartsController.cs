@@ -28,7 +28,7 @@ namespace CAP_TEAM05_2022.Controllers
             cart.product_id = cart_create.product_id;
             cart.customer_id = cart_create.customer_id;
             cart.quantity = cart_create.quantity;
-            cart.price = cart_create.price;
+            cart.price = cart_create.price*1000;
             cart.discount = cart_create.discount;
             cart.note = cart_create.note;
             db.carts.Add(cart);

@@ -240,6 +240,11 @@
                 $('#customer_code').val(response.code);
                 $('#customer_phone').val(response.phone);
                 $('#customer_type').val(response.note);
+                if ($("#cart_total").val() != undefined) {
+                    console.log($("#cart_total").val());
+                    $("#payment_btn").prop("disabled", false);
+                    $("#order_btn").prop("disabled", false);
+                }
             }
         })
                 },
@@ -287,6 +292,7 @@
                 $('#product_price').val(response.name);
                 var sum_price = Number($('#product_price').val()) * 1000 * Number($('#product_quantity').val()) * (1- (parseFloat($('#product_discount').val()) / 100));
                 $('#sum_price').val(sum_price.toLocaleString());
+               
             }
         })
                 },
@@ -299,14 +305,35 @@
             });
          });
 
-        $("#product_quantity").change(function () {
-            var sum_price = Number($('#product_price').val()) * 1000 * Number($('#product_quantity').val()) * (1- (parseFloat($('#product_discount').val()) / 100));
-            $('#sum_price').val(sum_price.toLocaleString());
-        });
-        $("#product_discount").change(function () {
-            var sum_price = Number($('#product_price').val()) * 1000 * Number($('#product_quantity').val()) * (1 - (parseFloat($('#product_discount').val()) / 100));
-            $('#sum_price').val(sum_price.toLocaleString());
-        });
+        function Payment_order() {
+            var sale = {};
+            sale.customer_id = $('#customer_id').val();
+            sale.total = Number($('#total').val())*1000;
+            sale.discount = $('#discount').val();
+            sale.vat = $('#vat').val();
+            sale.note = $('#cart_note').val();
+           
+
+            $.ajax({
+                url: '@Url.Action("CreateSale", "sales")',
+                type: "Post",
+                data: JSON.stringify(sale),
+                contentType: "application/json; charset=UTF-8",
+                dataType: "json",
+                success: function (response) {
+                    
+                    
+                        sweetAlert
+                            ({
+                                title: "Cập nhật thành công !",
+                                type: "success"
+                            })
+                  
+                }
+            });
+        }
+        
+       
 
 
     </script>
