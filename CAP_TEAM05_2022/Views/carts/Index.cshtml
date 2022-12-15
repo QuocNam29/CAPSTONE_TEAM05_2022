@@ -16,13 +16,13 @@
         <div class="col-md-2">
             <div class="form-group">
                 <label>VAT(%)</label>
-                <input type="number" id="vat" min="0" max="100" class="form-control">
+                <input type="number" id="cart_vat" min="0" max="100" value="0" class="form-control">
             </div>
         </div>
         <div class="col-md-2">
             <div class="form-group">
                 <label>Chiết khấu(%)</label>
-                <input type="number" id="discount" min="0" max="100" class="form-control">
+                <input type="number" id="cart_discount" min="0" max="100" value="0" class="form-control">
             </div>
         </div>
         <div class="col-md-2">
@@ -55,8 +55,8 @@
                         <thead>
                             <tr>
                                 <th class="text-center">STT</th>
-                                <th>Mã hàng</th>
-                                <th>Tên hàng hàng</th>
+                                <th>Mã sản phẩm</th>
+                                <th>Tên sản phẩm</th>
                                 <th class="text-center">Đơn vị</th>
                                 <th class="text-center">Số lượng</th>
                                 <th class="text-center">Giá bán</th>
@@ -72,7 +72,7 @@
                             {
                                 no++;
                                 <tr>
-                                    <td>@no</td>
+                                    <td>@no </td>
                                     <td>@item.product.code</td>
                                     <td>@item.product.name</td>
                                     <td>@item.product.unit</td>
@@ -86,10 +86,12 @@
                                             <i class="feather icon-edit">
                                             </i>
                                         </button>
-                                        <button class="btn btn-danger">
+                                        <input hidden type="text" id="URLDelete" value="@Url.Action("Delete_CartProduct", "carts")">
+                                        <button class="btn btn-danger" onclick="deleteAlert('@item.id')" id="Delete">
                                             <i class="feather icon-trash-2">
                                             </i>
                                         </button>
+                                        
                                     </td>
 
 
@@ -102,12 +104,56 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#example').DataTable({
-                pagingType: 'full_numbers',
-            });
-        });
-    </script>
+    
 
 </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#example').DataTable({
+            pagingType: 'full_numbers',
+        });
+    });
+    $("#cart_vat").change(function () {
+        var total = Number($('#cart_total').val()) * 1000 * (1 + Number($('#cart_vat').val()) / 100) * (1 - (parseFloat($('#cart_discount').val()) / 100));
+        $('#total').val(total.toLocaleString());
+    });
+    $("#cart_discount").change(function () {
+        var total = Number($('#cart_total').val()) * 1000 * (1 + Number($('#cart_vat').val()) / 100) * (1 - (parseFloat($('#cart_discount').val()) / 100));
+        $('#total').val(total.toLocaleString());
+    });
+        
+</script>
+<script>
+    function deleteAlert(id) {
+        swal({
+            title: "Bạn chắn chắn muốn xóa ?",
+            type: "warning",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            confirmButtonText: "Xác nhận",
+            confirmButtonColor: "#ec6c62",
+        },
+            function () {
+                var categorys = {};
+                categorys.id = id;
+
+                $.ajax({
+                    url: '@Url.Action("Delete_CartProduct", "carts")',
+                    data: JSON.stringify(categorys),
+                    type: "POST",
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json'
+                })
+                    .done(function (data) {
+                        GetList_Cart($('#customer_id').val());
+                        sweetAlert
+                            ({
+                                title: "Đã xóa!",
+                                type: "success"
+                            },)
+                    })
+                
+            })
+    }
+
+</script>

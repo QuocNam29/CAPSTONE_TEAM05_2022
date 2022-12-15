@@ -838,15 +838,17 @@ function Create_Cart() {
             success: function (response) {
                 console.log($('#customer_id').val());
                 GetList_Cart($('#customer_id').val());
+                $("#payment_btn").prop("disabled", false);
                 sweetAlert
                     ({
-                        title: "Cập nhật thành công !",
+                        title: "Thêm giỏ hàng thành công !",
                         type: "success"
                     })
             }
         });   
    
 }
+
 function GetList_Cart(customer_id) {
     $.ajax({
         url: URLCartList,
@@ -873,3 +875,5 @@ $("#product_discount").change(function () {
     var sum_price = Number($('#product_price').val()) * 1000 * Number($('#product_quantity').val()) * (1 - (parseFloat($('#product_discount').val()) / 100));
     $('#sum_price').val(sum_price.toLocaleString());
 });
+
+

@@ -37,7 +37,13 @@ namespace CAP_TEAM05_2022.Controllers
             bool status = true;
             return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
         }
-
+        public ActionResult Delete_CartProduct(cart cart)
+        {
+            cart cart1 = db.carts.Find(cart.id);
+            db.carts.Remove(cart1);
+            db.SaveChanges();
+            return Json("Delete_CartProduct", JsonRequestBehavior.AllowGet);
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)
