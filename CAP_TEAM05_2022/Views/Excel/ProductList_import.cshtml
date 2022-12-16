@@ -115,7 +115,7 @@
 
                                                 </a>*@
                                                 <input hidden type="text" id="URLImportFail_continues" value="@Url.Action("ImportFail_continues", "Excel")">
-                                                <button class="btn btn-danger" onclick="ImportFail_continues('@item.id', 'FailFormat-@item.id')">
+                                                <button class="btn btn-success" onclick="ImportFail_continues('@item.id', 'FailFormat-@item.id')">
                                                     <i class="feather icon-download">
                                                     </i>
                                                 </button>
@@ -142,7 +142,7 @@
                         <input hidden type="text" id="ImportFail_continues_ALL" value="@Url.Action("ImportFail_continues_ALL", "Excel")">
                         <button type="button" class="btn btn-info" id="btn_ImportFail_continues_ALL" onclick="ImportFail_continuesAll()">
                             <i class="feather icon-download">
-                            </i>
+                            </i> Cập nhật tất cả
                         </button>
                     }
 

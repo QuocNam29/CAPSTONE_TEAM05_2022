@@ -930,7 +930,7 @@ $('#ImportFail_continues_ALL')
 
 function ImportFail_continuesAll() {
     swal({
-        title: "Bạn chắn chắn muốn thêm dữ liệu ?",
+        title: "Bạn chắn chắn muốn thêm tất cả dữ liệu ?",
         type: "warning",
         showCancelButton: true,
         closeOnConfirm: false,
@@ -947,7 +947,7 @@ function ImportFail_continuesAll() {
                 .done(function (data) {
                     sweetAlert
                         ({
-                            title: "Đã thêm thành công!",
+                            title: "Đã thêm thành công !",
                             type: "success"
                         },
                             function () {                              
