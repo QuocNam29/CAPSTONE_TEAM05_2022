@@ -876,4 +876,90 @@ $("#product_discount").change(function () {
     $('#sum_price').val(sum_price.toLocaleString());
 });
 
+//-------------------------Import data fail one-----------------------
+var URLImportFail_continues = "";
+$('#URLImportFail_continues')
+    .keypress(function () {
+        URLImportFail_continues = $(this).val();
+    })
+    .keypress();
 
+function ImportFail_continues(id, code) {
+    swal({
+        title: "Bạn chắn chắn muốn thêm dữ liệu ?",
+        type: "warning",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        confirmButtonText: "Xác nhận",
+        confirmButtonColor: "#ec6c62",
+    },
+        function () {
+
+            $.ajax({
+                url: URLImportFail_continues,
+                data: { id: id },
+
+            })
+                .done(function (data) {
+                    sweetAlert
+                        ({
+                            title: "Đã thêm thành công!",
+                            type: "success"
+                        },
+                            function () {
+                                $("table tbody").find('input[name="record"]').each(function () {
+                                    if (Contains($(this).val(), code)) {
+                                        $(this).parents("tr").remove();
+                                    }
+                                });
+                                GetList(-1, -1);
+                            })
+                })
+            /*   .error(function (data) {
+                   swal("OOps", "Chúng tôi không thể kết nối đến server!", "error");
+               })*/
+        })
+}
+//-------------------------Import data fail all-----------------------
+var ImportFail_continues_ALL = "";
+$('#ImportFail_continues_ALL')
+    .keypress(function () {
+        ImportFail_continues_ALL = $(this).val();
+    })
+    .keypress();
+
+function ImportFail_continuesAll() {
+    swal({
+        title: "Bạn chắn chắn muốn thêm dữ liệu ?",
+        type: "warning",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        confirmButtonText: "Xác nhận",
+        confirmButtonColor: "#ec6c62",
+    },
+        function () {
+
+            $.ajax({
+                url: ImportFail_continues_ALL,
+                data: {},
+
+            })
+                .done(function (data) {
+                    sweetAlert
+                        ({
+                            title: "Đã thêm thành công!",
+                            type: "success"
+                        },
+                            function () {                              
+                              /*  $("#FailFormat_table tr").remove(); */
+                                $('#table_body_failimport').empty()
+                                $("#btn_ImportFail_continues_ALL").prop("disabled", true);
+
+                                GetList(-1, -1);
+                            })
+                })
+            /*   .error(function (data) {
+                   swal("OOps", "Chúng tôi không thể kết nối đến server!", "error");
+               })*/
+        })
+}

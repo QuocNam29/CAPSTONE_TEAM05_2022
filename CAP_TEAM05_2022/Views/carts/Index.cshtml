@@ -104,8 +104,43 @@
             </div>
         </div>
     </div>
-    
+</div>
+<div id="Edit_Modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Edit_ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form class="needs-validation" method="post" @*action="@Url.Action("Edit_Category", "categories")"*@ novalidate>
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title" id="Edit_ModalLabel">Chỉnh sửa danh mục</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
 
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>
+                                    Tên danh mục<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <input hidden id="edit_id" name="category_id" />
+                                    <input type="text" placeholder="Nhập tên danh mục" id="Edit_name" class="form-control" name="name_category" pattern="\S+.*" required>
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập tên danh mục !
+                                    </div>
+                                </div> <!---->
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" id="submit_edit" @*onclick="Update()"*@>Chỉnh sửa</button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 <script type="text/javascript">
     $(document).ready(function () {

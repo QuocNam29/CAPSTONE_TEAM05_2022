@@ -541,6 +541,7 @@ namespace CAP_TEAM05_2022.Controllers
                 Session["ViewBag.Success"] = null;
                 Session["ViewBag.FileStatus"] = "Bạn chưa chọn tệp để nhập!";
             }
+            Session["Import_exist"] = "true";
 
             return RedirectToAction("Index", "products");
         }
@@ -650,7 +651,7 @@ namespace CAP_TEAM05_2022.Controllers
             var import = Product_list.Where(x => x.id == id).FirstOrDefault();
             string email = Session["user_email"].ToString();
             user user = db.users.Where(u => u.email == email).FirstOrDefault();
-            var check_group = db.groups.Where(g => g.name == import.name_group).FirstOrDefault();
+            var check_group = db.groups.Where(g => g.name == import.name_group && g.status != 3).FirstOrDefault();
             group GroupProduct = new group();
             if (check_group == null)
             {
@@ -664,7 +665,7 @@ namespace CAP_TEAM05_2022.Controllers
                 db.groups.Add(GroupProduct);
                 db.SaveChanges();
             }
-            var check_category = db.categories.Where(g => g.name == import.name_category).FirstOrDefault();
+            var check_category = db.categories.Where(g => g.name == import.name_category && g.status != 3).FirstOrDefault();
             category category = new category();
             if (check_category == null)
             {
@@ -716,7 +717,7 @@ namespace CAP_TEAM05_2022.Controllers
             inventory.created_at = DateTime.Now;
             db.import_inventory.Add(inventory);
             db.SaveChanges();
-            return RedirectToAction("Index", "products");
+            return Json("ImportFail_continues", JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult ImportFail_continues_ALL()
@@ -726,7 +727,7 @@ namespace CAP_TEAM05_2022.Controllers
                 var import = Product_list.Where(x => x.id == item.id).FirstOrDefault();
                 string email = Session["user_email"].ToString();
                 user user = db.users.Where(u => u.email == email).FirstOrDefault();
-                var check_group = db.groups.Where(g => g.name == import.name_group).FirstOrDefault();
+                var check_group = db.groups.Where(g => g.name == import.name_group && g.status != 3).FirstOrDefault();
                 group GroupProduct = new group();
                 if (check_group == null)
                 {
@@ -740,7 +741,7 @@ namespace CAP_TEAM05_2022.Controllers
                     db.groups.Add(GroupProduct);
                     db.SaveChanges();
                 }
-                var check_category = db.categories.Where(g => g.name == import.name_category).FirstOrDefault();
+                var check_category = db.categories.Where(g => g.name == import.name_category && g.status != 3).FirstOrDefault();
                 category category = new category();
                 if (check_category == null)
                 {
@@ -793,8 +794,8 @@ namespace CAP_TEAM05_2022.Controllers
                 db.import_inventory.Add(inventory);
                 db.SaveChanges();
             }
-            
-            return RedirectToAction("Index", "products");
+
+            return Json("ImportFail_continues_ALL", JsonRequestBehavior.AllowGet);
         }
     }
 }

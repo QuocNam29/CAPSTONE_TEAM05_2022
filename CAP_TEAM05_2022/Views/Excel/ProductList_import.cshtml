@@ -55,7 +55,6 @@
 </div>
 <div id="FailFormat" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="FailFormatLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <form class="needs-validation" method="post" @* action="@Url.Action("Edit_GroupProduct", "groups")"*@ novalidate>
             <div class="modal-content">
                 <div class="modal-header bg-primary">
                     <h5 class="modal-title" id="FailFormatLabel">Sai tên danh mục hoặc nhóm hàng</h5>
@@ -66,7 +65,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="table-responsive">
-                                <table class="table table-hover">
+                                <table id="FailFormat_table" class="table table-hover">
                                     <thead>
                                         <tr>
                                             <th class="text-center">Dòng excel</th>
@@ -80,12 +79,12 @@
                                             <th class="text-center"></th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="table_body_failimport">
                                         @foreach (var item in Model.Where(s => s.status == 5))
                                         {
                                         <tr>
                                             <td class="text-center">
-                                                @item.id <input hidden type="text" name="record" value="ImportFail-@item.code">
+                                                @item.id <input hidden type="text" name="record" value="FailFormat-@item.id">
                                             </td>
                                             <td class="text-center">
                                                 @item.name
@@ -109,12 +108,17 @@
                                                 @item.quantity
                                             </td>
                                             <td class="text-center">
-                                                <a title="Cập nhật" class="btn btn-success" href="@Url.Action("ImportFail_continues","Excel", new {id = item.id })">
+                                                @*<a title="Cập nhật" class="btn btn-success" href="@Url.Action("ImportFail_continues","Excel", new {id = item.id })">
 
                                                     <i class="feather icon-download">
                                                     </i>
 
-                                                </a>
+                                                </a>*@
+                                                <input hidden type="text" id="URLImportFail_continues" value="@Url.Action("ImportFail_continues", "Excel")">
+                                                <button class="btn btn-danger" onclick="ImportFail_continues('@item.id', 'FailFormat-@item.id')">
+                                                    <i class="feather icon-download">
+                                                    </i>
+                                                </button>
 
                                             </td>
 
@@ -131,16 +135,20 @@
                 <div class="modal-footer">
                     @if (Model.Where(s => s.status == 5).Count() > 0)
                     {
-                        <a title="Cập nhật" class="btn btn-info" href="@Url.Action("ImportFail_continues_ALL","Excel")">
+                       @* <a title="Cập nhật" class="btn btn-info" href="@Url.Action("ImportFail_continues_ALL","Excel")">
                             <i class="feather icon-download">
                             </i>Cập nhật tất cả
-                        </a>
+                        </a>*@
+                        <input hidden type="text" id="ImportFail_continues_ALL" value="@Url.Action("ImportFail_continues_ALL", "Excel")">
+                        <button type="button" class="btn btn-info" id="btn_ImportFail_continues_ALL" onclick="ImportFail_continuesAll()">
+                            <i class="feather icon-download">
+                            </i>
+                        </button>
                     }
 
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Xác nhận</button>
                 </div>
             </div>
-        </form>
     </div>
 </div>
 <div id="SuccessData" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="SuccessDataLabel" aria-hidden="true">
@@ -294,3 +302,6 @@
     </div>
 </div>
 
+<script>
+  
+</script>

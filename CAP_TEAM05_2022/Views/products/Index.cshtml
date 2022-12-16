@@ -146,12 +146,22 @@
                                     Session["ViewBag.Success"] = null;
                                 }
                             </div>
-                            <div class="table-responsive" id="dataContainer">
-                                @{ Html.RenderAction("ProductList", "products", new { group_id = -1, category_id = -1 });}
-
+                            @if (Session["Import_exist"] != null)
+                            {
+                        
+                            <div class="col-md-12">
+                                <button data-toggle="modal" data-target="#Success" class="alert alert-success">
+                                    Đã nhập thành công file excel, nhấn vào để xem chi tiết !
+                                </button>
                             </div>
-                        </div>
-                    </div>
+                        
+                                    }
+                                    <div class="table-responsive" id="dataContainer">
+                                        @{ Html.RenderAction("ProductList", "products", new { group_id = -1, category_id = -1 });}
+
+                                    </div>
+                                </div>
+                            </div>
                 </div>
             </div>
             <div id="ImportModal" tabindex="-1" role="dialog" aria-labelledby="ImportModalTitle" aria-hidden="true" class="modal fade">
