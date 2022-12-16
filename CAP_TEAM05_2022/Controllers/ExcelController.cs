@@ -717,12 +717,14 @@ namespace CAP_TEAM05_2022.Controllers
             inventory.created_at = DateTime.Now;
             db.import_inventory.Add(inventory);
             db.SaveChanges();
+            Product_list.RemoveAll(p => p.id == id);
             return Json("ImportFail_continues", JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult ImportFail_continues_ALL()
         {
-            foreach (var item in Product_list.Where(p => p.status == 5))
+            var product_list = Product_list.Where(p => p.status == 5).ToList();
+            foreach (var item in product_list)
             {
                 var import = Product_list.Where(x => x.id == item.id).FirstOrDefault();
                 string email = Session["user_email"].ToString();
@@ -793,6 +795,11 @@ namespace CAP_TEAM05_2022.Controllers
                 inventory.created_at = DateTime.Now;
                 db.import_inventory.Add(inventory);
                 db.SaveChanges();
+               
+            }
+            foreach (var item in product_list)
+            {
+                Product_list.RemoveAll(p => p.id == item.id);
             }
 
             return Json("ImportFail_continues_ALL", JsonRequestBehavior.AllowGet);
