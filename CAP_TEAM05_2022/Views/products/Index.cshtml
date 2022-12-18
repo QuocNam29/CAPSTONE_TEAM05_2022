@@ -122,7 +122,7 @@
                                                             <strong>Thành công!</strong> Nhập sản phẩm thành công từ excel ! <b>(@success dữ liệu)</b>
                                                         </button>
                                                         <button data-toggle="modal" data-target="#FailFormat" class="alert alert-danger">
-                                                            <strong>Thất bại!</strong> Nhập sản phẩm thất bại do sai tên danh mục hoặc nhóm hàng! <b>(@failFormat dữ liệu) </b>
+                                                            <strong>Thất bại!</strong> Nhập sản phẩm thất bại do tên danh mục hoặc nhóm hàng không có trong hệ thống! <b>(@failFormat dữ liệu) </b>
                                                         </button>
                                                         <button data-toggle="modal" data-target="#MissData" class="alert alert-warning">
                                                             <strong>Mất dữ liệu!</strong>  Nhập sản phẩm thất bại do thiếu thông tin sản phẩm ! <b>(@miss dữ liệu)</b>
@@ -148,14 +148,14 @@
                             </div>
                             @if (Session["Import_exist"] != null)
                             {
-                        
+
                             <div class="col-md-12">
                                 <button data-toggle="modal" data-target="#Success" class="alert alert-success">
                                     Đã nhập thành công file excel, nhấn vào để xem chi tiết !
                                 </button>
                             </div>
-                        
-                                    }
+                                Session["Import_exist"] = null;
+                            }
                                     <div class="table-responsive" id="dataContainer">
                                         @{ Html.RenderAction("ProductList", "products", new { group_id = -1, category_id = -1 });}
 
@@ -436,7 +436,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel1"><b>Notification</b></h4>
+                <h4 class="modal-title" id="myModalLabel1"><b>Thông báo</b></h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

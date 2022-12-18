@@ -963,3 +963,17 @@ function ImportFail_continuesAll() {
                })*/
         })
 }
+//-------------------------Làm mới cart--------------------------------
+$('#refresh_cart').on('click', function () {
+    GetList_Cart(-1);
+    $('#customer_code').val('');
+    $('#customer_phone').val('');
+    $('#customer_type').val('');
+    $('#customer_name').val('');
+    $('#product_code').val('');
+    $('#product_unit').val('');
+    $('#product_price').val('');
+    $('#product_name').val('');
+    $('#sum_price').val('');
+    $('#cart_note').val('');
+})

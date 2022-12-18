@@ -27,7 +27,7 @@ namespace CAP_TEAM05_2022.Controllers
         public ActionResult ProductList(int group_id , int category_id)
         {
             var links = from l in db.products
-                        where l.@group.status == 1 && l.category.status == 1
+                        where l.@group.status != 3 && l.category.status != 3
                         select l;
             if (group_id != -1)
                 {
@@ -136,7 +136,7 @@ namespace CAP_TEAM05_2022.Controllers
         public JsonResult GetSearchValue(string search)
         {
             var product = (from Product in db.products
-                             where Product.name.StartsWith(search) && Product.status != 3
+                             where Product.name.StartsWith(search) && Product.status != 3 && Product.@group.status != 3 && Product.category.status != 3
                            select new
                              {
                                  label = Product.name,

@@ -216,7 +216,7 @@
                         success: function (data) {
                             response($.map(data, function (item) {
                                 return item;
-                               
+
                             }))
 
                         },
@@ -231,11 +231,10 @@
                 select: function (e, i) {
                     $('#customer_id').val(i.item.val);
                     GetList_Cart(i.item.val);
-
-                     $.ajax({
+                      $.ajax({
             type: 'POST',
             url: '@Url.Action("FindCustomer_name","customers")/',
-                         data: { "customer_id": i.item.val },
+                          data: { "customer_id": i.item.val },
             success: function (response) {
                 $('#customer_code').val(response.code);
                 $('#customer_phone').val(response.phone);
@@ -268,7 +267,7 @@
                         success: function (data) {
                             response($.map(data, function (item) {
                                 return item;
-                              
+
                             }))
 
                         },
@@ -292,7 +291,7 @@
                 $('#product_price').val(response.name);
                 var sum_price = Number($('#product_price').val()) * 1000 * Number($('#product_quantity').val()) * (1- (parseFloat($('#product_discount').val()) / 100));
                 $('#sum_price').val(sum_price.toLocaleString());
-               
+
             }
         })
                 },
@@ -312,7 +311,7 @@
             sale.discount = $('#discount').val();
             sale.vat = $('#vat').val();
             sale.note = $('#cart_note').val();
-           
+
 
             $.ajax({
                 url: '@Url.Action("CreateSale", "sales")',
@@ -321,7 +320,7 @@
                 contentType: "application/json; charset=UTF-8",
                 dataType: "json",
                 success: function (response) {
-                    
+
                     GetList_Cart($('#customer_id').val());
                         sweetAlert
                             ({
@@ -332,6 +331,8 @@
             });
         }
 
+
+      
     </script>
     <!--My script function-->
     <script src="~/Template/assets/js/Function.js"></script>
