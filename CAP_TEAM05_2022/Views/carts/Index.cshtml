@@ -33,8 +33,9 @@
         </div>
         <div class="col-md-4">
             <div class="form-group">
-                <label>Trả trước</label>
-                <input type="text" placeholder="Thanh toán 1 phần" class="form-control">
+                <label>Trả trước</label>                
+                <input type="text" placeholder="Thanh toán 1 phần" id="cart_Prepay" max="999999999999" class="form-control"
+                       pattern="[0-9.,]+" data-type="number" name="purchase_price" onchange="ButtonDebit()">
             </div>
         </div>
         <div class="col-md-12">
@@ -156,7 +157,19 @@
         var total = Number($('#cart_total').val()) * 1000 * (1 + Number($('#cart_vat').val()) / 100) * (1 - (parseFloat($('#cart_discount').val()) / 100));
         $('#total').val(total.toLocaleString());
     });
-        
+    $('#cart_Prepay').keydown(function (e) {
+        setTimeout(() => {
+            let parts = $(this).val().split(".");
+            let v = parts[0].replace(/\D/g, ""),
+                dec = parts[1]
+            let calc_num = Number((dec !== undefined ? v + "." + dec : v));
+            // use this for numeric calculations
+            // console.log('number for calculations: ', calc_num);
+            let n = new Intl.NumberFormat('en-EN').format(v);
+            n = dec !== undefined ? n + "." + dec : n;
+            $(this).val(n);
+        })
+    })
 </script>
 <script>
     function deleteAlert(id) {

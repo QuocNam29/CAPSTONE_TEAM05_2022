@@ -198,6 +198,7 @@ $('#edit_purchase_price').keydown(function (e) {
     })
 })
 
+
 //------------ Load dropdown form add product----------------------------------
 
 var URLgetGroupProduct = "";
@@ -977,3 +978,16 @@ $('#refresh_cart').on('click', function () {
     $('#sum_price').val('');
     $('#cart_note').val('');
 })
+
+
+function ButtonDebit() {
+    var cart_Prepay1 = $('#cart_Prepay').val();
+    
+    if (cart_Prepay1 != undefined && cart_Prepay1 != '0') {
+        $("#btn_debit").prop("disabled", false);
+        $("#payment_btn").prop("disabled", true);
+    } else {
+        $("#btn_debit").prop("disabled", true);
+        $("#payment_btn").prop("disabled", false);
+    }
+}
