@@ -50,13 +50,12 @@ $(document).ready(function () {
             form.classList.add('was-validated');
         })
         $('#submit_addCart').on('click', function () {
-            console.log("hihih");
             if (form.checkValidity() === false) {
-                console.log("check sai");
+                
                 event.preventDefault();
                 event.stopPropagation();
             } else {
-                console.log("chuẩn bị vào create cart");
+                
                 Create_Cart();
             }
             form.classList.add('was-validated');
@@ -826,10 +825,10 @@ function Create_Cart() {
     cart_create.product_id = $('#product_id').val();
     cart_create.customer_id = $('#customer_id').val();
     cart_create.quantity = $('#product_quantity').val();
-    cart_create.price = Number($('#sum_price').val().replace(/,/g, ''));
+    cart_create.price = Number($('#sum_price').val().replace(/\,/g, '').replace(/\./g, ''));
     cart_create.discount = $('#product_discount').val();
     cart_create.note = $('#cart_note').val();   
-
+    console.log(Number($('#sum_price').val().replace(/\,/g, '').replace(/\./g, '')));
         $.ajax({
             url: URLCreateCart,
             type: "Post",
@@ -869,11 +868,11 @@ function GetList_Cart(customer_id) {
     });
 }
 $("#product_quantity").change(function () {
-    var sum_price = Number($('#product_price').val()) * 1000 * Number($('#product_quantity').val()) * (1 - (parseFloat($('#product_discount').val()) / 100));
+    var sum_price = Number($('#product_price').val().replace(/\,/g, '').replace(/\./g, '')) * Number($('#product_quantity').val()) * (1 - (parseFloat($('#product_discount').val()) / 100));
     $('#sum_price').val(sum_price.toLocaleString());
 });
 $("#product_discount").change(function () {
-    var sum_price = Number($('#product_price').val()) * 1000 * Number($('#product_quantity').val()) * (1 - (parseFloat($('#product_discount').val()) / 100));
+    var sum_price = Number($('#product_price').val().replace(/\,/g, '').replace(/\./g, ''))* Number($('#product_quantity').val()) * (1 - (parseFloat($('#product_discount').val()) / 100));
     $('#sum_price').val(sum_price.toLocaleString());
 });
 

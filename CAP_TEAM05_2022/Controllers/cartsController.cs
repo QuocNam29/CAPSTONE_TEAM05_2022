@@ -28,10 +28,14 @@ namespace CAP_TEAM05_2022.Controllers
             cart.product_id = cart_create.product_id;
             cart.customer_id = cart_create.customer_id;
             cart.quantity = cart_create.quantity;
-            cart.price = cart_create.price*1000;
+            cart.price = cart_create.price;
             cart.discount = cart_create.discount;
             cart.note = cart_create.note;
             db.carts.Add(cart);
+            db.SaveChanges();
+            product product = db.products.Find(cart_create.product_id);
+            product.quantity -= cart_create.quantity;
+            db.Entry(product).State = EntityState.Modified;
             db.SaveChanges();
             string message = "Record Saved Successfully ";
             bool status = true;

@@ -289,7 +289,7 @@
                 $('#product_code').val(response.code);
                 $('#product_unit').val(response.note);
                 $('#product_price').val(response.name);
-                var sum_price = Number($('#product_price').val()) * 1000 * Number($('#product_quantity').val()) * (1- (parseFloat($('#product_discount').val()) / 100));
+                var sum_price = Number($('#product_price').val().val().replace(/\,/g, '').replace(/\./g, '')) * Number($('#product_quantity').val()) * (1- (parseFloat($('#product_discount').val()) / 100));
                 $('#sum_price').val(sum_price.toLocaleString());
 
             }
@@ -307,12 +307,11 @@
         function Payment_order() {
             var sale = {};
             sale.customer_id = $('#customer_id').val();
-            sale.total = Number($('#total').val())*1000;
+            sale.total = Number($('#total').val().replace(/\,/g, '').replace(/\./g, ''));
             sale.discount = $('#discount').val();
             sale.vat = $('#vat').val();
             sale.note = $('#cart_note').val();
-
-
+            sale.method = Number($('#cart_Prepay').val().replace(/\,/g, '').replace(/\./g, ''));
             $.ajax({
                 url: '@Url.Action("CreateSale", "sales")',
                 type: "Post",
@@ -330,9 +329,11 @@
                 }
             });
         }
+    
 
 
-      
+
+
     </script>
     <!--My script function-->
     <script src="~/Template/assets/js/Function.js"></script>

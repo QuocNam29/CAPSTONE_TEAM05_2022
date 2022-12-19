@@ -29,7 +29,15 @@ namespace CAP_TEAM05_2022.Controllers
             sale sale = new sale();
             sale.code = "MDH"+ CodeRandom.RandomCode();
             sale.customer_id = createSale.customer_id;
-            sale.method = 1;
+            if (createSale .method > 0)
+            {
+                sale.method = 2;
+
+            }
+            else
+            {
+                sale.method = 1;
+            }
             sale.total = createSale.total;
             sale.discount = createSale.discount;
             sale.vat = createSale.vat;
@@ -41,6 +49,7 @@ namespace CAP_TEAM05_2022.Controllers
             var cart = db.carts.Where(c => c.customer_id == createSale.customer_id);
             foreach (var item in cart)
             {
+  
                 sale_details sale_Details = new sale_details();
                 sale_Details.sale_id = sale.id;
                 sale_Details.product_id = item.product_id;
@@ -53,6 +62,17 @@ namespace CAP_TEAM05_2022.Controllers
                 db.carts.Remove(cart1);
             }
             db.SaveChanges();
+            if (createSale.method > 0)
+            {
+                debt debt = new debt();
+                debt.sale_id = sale.id;
+                debt.paid = createSale.method;
+                debt.created_at = DateTime.Now;
+                debt.created_by = user.id;
+                debt.total = createSale.method;
+                db.debts.Add(debt);
+                db.SaveChanges();
+            }
             string message = "Record Saved Successfully ";
             bool status = true;
             return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);

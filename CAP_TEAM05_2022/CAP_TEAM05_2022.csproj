@@ -187,6 +187,7 @@
     <Compile Include="Controllers\cartsController.cs" />
     <Compile Include="Controllers\categoriesController.cs" />
     <Compile Include="Controllers\customersController.cs" />
+    <Compile Include="Controllers\debtsController.cs" />
     <Compile Include="Controllers\ExcelController.cs" />
     <Compile Include="Controllers\groupsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -666,6 +667,11 @@
     <Content Include="Views\sale_details\Index.cshtml" />
     <Content Include="Views\carts\Index.cshtml" />
     <Content Include="Views\sales\Index.cshtml" />
+    <Content Include="Views\debts\Create.cshtml" />
+    <Content Include="Views\debts\Delete.cshtml" />
+    <Content Include="Views\debts\Details.cshtml" />
+    <Content Include="Views\debts\Edit.cshtml" />
+    <Content Include="Views\debts\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
