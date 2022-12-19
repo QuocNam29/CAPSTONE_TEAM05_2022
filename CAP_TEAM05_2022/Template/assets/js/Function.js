@@ -990,3 +990,165 @@ function ButtonDebit() {
         $("#payment_btn").prop("disabled", false);
     }
 }
+
+
+//---------------------load customer sale----------------------------
+var URLGetSearchValue = "";
+$('#URLGetSearchValue')
+    .keypress(function () {
+        URLGetSearchValue = $(this).val();
+    })
+    .keypress();
+var URLFindCustomer_name = "";
+$('#URLFindCustomer_name')
+    .keypress(function () {
+        URLFindCustomer_name = $(this).val();
+    })
+    .keypress();
+$(function () {
+    $("#customer_name").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: URLGetSearchValue,
+                data: "{ 'search': '" + request.term + "'}",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return item;
+
+                    }))
+
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        },
+        select: function (e, i) {
+            $('#customer_id').val(i.item.val);
+            GetList_Cart(i.item.val);
+            $.ajax({
+                type: 'POST',
+                url: URLFindCustomer_name,
+                data: { "customer_id": i.item.val },
+                success: function (response) {
+                    $('#customer_code').val(response.code);
+                    $('#customer_phone').val(response.phone);
+                    $('#customer_type').val(response.note);
+                    if ($("#cart_total").val() != undefined) {
+                        console.log($("#cart_total").val());
+                        $("#payment_btn").prop("disabled", false);
+                        $("#order_btn").prop("disabled", false);
+                    }
+                }
+            })
+        },
+        minLength: 0
+    }).focus(function () {
+        if ($(this).autocomplete("widget").is(":visible")) {
+            return;
+        }
+        $(this).data("autocomplete").search($(this).val());
+    });
+});
+
+//---------------------load product sale----------------------------
+
+var URLGetSearchValue_product = "";
+$('#URLGetSearchValue_product')
+    .keypress(function () {
+        URLGetSearchValue_product = $(this).val();
+    })
+    .keypress();
+var URLFindProduct_name = "";
+$('#URLFindProduct_name')
+    .keypress(function () {
+        URLFindProduct_name = $(this).val();
+    })
+    .keypress();
+$(function () {
+    $("#product_name").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: URLGetSearchValue_product,
+                data: "{ 'search': '" + request.term + "'}",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return item;
+
+                    }))
+
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        },
+        select: function (e, i) {
+            $('#product_id').val(i.item.val);
+            $.ajax({
+                type: 'POST',
+                url: URLFindProduct_name,
+                data: { "product_id": i.item.val },
+                success: function (response) {
+                    $('#product_code').val(response.code);
+                    $('#product_unit').val(response.note);
+                    $('#product_price').val(response.name);
+                    var sum_price = Number($('#product_price').val().replace(/\,/g, '').replace(/\./g, '')) * Number($('#product_quantity').val()) * (1 - (parseFloat($('#product_discount').val()) / 100));
+                    $('#sum_price').val(sum_price.toLocaleString());
+
+                }
+            })
+        },
+        minLength: 0
+    }).focus(function () {
+        if ($(this).autocomplete("widget").is(":visible")) {
+            return;
+        }
+        $(this).data("autocomplete").search($(this).val());
+    });
+});
+
+//------------------------Payment / Debit-------------------------------------
+var URLCreateSale = "";
+$('#URLCreateSale')
+    .keypress(function () {
+        URLCreateSale = $(this).val();
+    })
+    .keypress();
+function Payment_order() {
+    var sale = {};
+    sale.customer_id = $('#customer_id').val();
+    sale.total = Number($('#total').val().replace(/\,/g, '').replace(/\./g, ''));
+    sale.discount = $('#discount').val();
+    sale.vat = $('#vat').val();
+    sale.note = $('#cart_note').val();
+    sale.method = Number($('#cart_Prepay').val().replace(/\,/g, '').replace(/\./g, ''));
+    $.ajax({
+        url: URLCreateSale,
+        type: "Post",
+        data: JSON.stringify(sale),
+        contentType: "application/json; charset=UTF-8",
+        dataType: "json",
+        success: function (response) {
+
+            GetList_Cart($('#customer_id').val());
+            sweetAlert
+                ({
+                    title: "Thanh toán thành công !",
+                    type: "success"
+                })
+        }
+    });
+}
