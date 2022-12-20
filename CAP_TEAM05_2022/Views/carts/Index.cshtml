@@ -150,11 +150,12 @@
         });
     });
     $("#cart_vat").change(function () {
-        var total = Number($('#cart_total').val()) * 1000 * (1 + Number($('#cart_vat').val()) / 100) * (1 - (parseFloat($('#cart_discount').val()) / 100));
+        console.log(Number($('#cart_vat').val()));
+        var total = Number($('#cart_total').val().replace(/\,/g, '').replace(/\./g, '')) * (1 + Number($('#cart_vat').val()) / 100) * (1 - (Number($('#cart_discount').val()) / 100));
         $('#total').val(total.toLocaleString());
     });
     $("#cart_discount").change(function () {
-        var total = Number($('#cart_total').val()) * 1000 * (1 + Number($('#cart_vat').val()) / 100) * (1 - (parseFloat($('#cart_discount').val()) / 100));
+        var total = Number($('#cart_total').val().replace(/\,/g, '').replace(/\./g, '')) * (1 + Number($('#cart_vat').val()) / 100) * (1 - (Number($('#cart_discount').val()) / 100));
         $('#total').val(total.toLocaleString());
     });
     $('#cart_Prepay').keydown(function (e) {
