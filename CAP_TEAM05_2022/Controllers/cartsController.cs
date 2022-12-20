@@ -21,6 +21,20 @@ namespace CAP_TEAM05_2022.Controllers
          
             return PartialView(carts.ToList().OrderByDescending(c => c.id));
         }
+        public ActionResult getCartProduct(int customer_id)
+        {
+            return Json(db.carts.Include(c => c.product).Include(c => c.customer).Where(c => c.customer_id == customer_id).OrderByDescending(c => c.id).Select(x => new
+            {
+                cartCode = x.product.code,
+                cartName = x.product.name,
+                cartUnit = x.product.unit,
+                cartQuantity = x.quantity,
+                cartPrice = x.product.sell_price,
+                cartDiscount = x.discount,
+                cartTotal = x.price,             
+                cartNote = x.note,
+            }).ToList(), JsonRequestBehavior.AllowGet);
+        }
 
         public JsonResult CreateCart(cart cart_create)
         {

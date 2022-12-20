@@ -25,11 +25,11 @@ namespace CAP_TEAM05_2022.Controllers
         {
             if (date_start == null)
             {
-                date_start = DateTime.Now.AddDays((-DateTime.Now.Day) + 1);
+                date_start = Convert.ToDateTime(DateTime.Now.AddDays((-DateTime.Now.Day) + 1).ToString("dd-MM-yyyy"));
             }
             if (date_end == null)
             {
-                date_end = DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day));
+                date_end = Convert.ToDateTime(DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day)).ToString("dd-MM-yyyy"));
             }
             var import_inventory = db.import_inventory.Include(i => i.user).Include(i => i.product).Where(i => i.created_at >= date_start && i.created_at <= date_end);
             return PartialView(import_inventory.ToList());
