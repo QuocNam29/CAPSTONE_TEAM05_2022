@@ -38,6 +38,13 @@ namespace CAP_TEAM05_2022.Controllers
 
         public JsonResult CreateCart(cart cart_create)
         {
+            product product = db.products.Find(cart_create.product_id);
+            if (cart_create.quantity > product.quantity)
+            {
+                string message1 = cart_create.quantity.ToString();
+                bool status1 = true;
+                return Json(new { status = status1, message = message1 }, JsonRequestBehavior.AllowGet);
+            }
             cart cart  = new cart();
             cart.product_id = cart_create.product_id;
             cart.customer_id = cart_create.customer_id;
@@ -47,11 +54,11 @@ namespace CAP_TEAM05_2022.Controllers
             cart.note = cart_create.note;
             db.carts.Add(cart);
             db.SaveChanges();
-            product product = db.products.Find(cart_create.product_id);
+            
             product.quantity -= cart_create.quantity;
             db.Entry(product).State = EntityState.Modified;
             db.SaveChanges();
-            string message = "Record Saved Successfully ";
+            string message = "Record Saved Successfully";
             bool status = true;
             return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
         }

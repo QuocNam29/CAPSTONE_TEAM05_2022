@@ -242,8 +242,8 @@
                         <td class="text-center">`+ data[i].cartUnit+`</td>
                         <td class="text-center">`+ data[i].cartQuantity +`</td>            
                         <td class="text-center">`+ data[i].cartDiscount + `%</td>
-                        <td class="text-center">`+ data[i].cartPrice+`</td>
-                        <td class="text-center">`+ data[i].cartTotal +`</td>
+                        <td class="text-center">`+ data[i].cartPrice.toLocaleString()+`</td>
+                        <td class="text-center">`+ data[i].cartTotal.toLocaleString() +`</td>
                         <td>`+ note +`</td>
                     </tr>`
                 }

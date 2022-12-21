@@ -836,14 +836,22 @@ function Create_Cart() {
             contentType: "application/json; charset=UTF-8",
             dataType: "json",
             success: function (response) {
-                console.log($('#customer_id').val());
-                GetList_Cart($('#customer_id').val());
-                $("#payment_btn").prop("disabled", false);
-                sweetAlert
-                    ({
-                        title: "Thêm giỏ hàng thành công !",
-                        type: "success"
-                    })
+                if (response.message == "Record Saved Successfully") {
+                    GetList_Cart($('#customer_id').val());
+                    $("#payment_btn").prop("disabled", false);
+                    sweetAlert
+                        ({
+                            title: "Thêm giỏ hàng thành công !",
+                            type: "success"
+                        })
+                } else {
+                    sweetAlert
+                        ({
+                            title: "Số lượng sản phẩm chỉ còn: " + response.message + " sản phẩm !",
+                            type: "error"
+                        })
+                }        
+                
             }
         });   
    
