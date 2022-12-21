@@ -41,7 +41,7 @@ namespace CAP_TEAM05_2022.Controllers
             product product = db.products.Find(cart_create.product_id);
             if (cart_create.quantity > product.quantity)
             {
-                string message1 = cart_create.quantity.ToString();
+                string message1 = product.quantity.ToString();
                 bool status1 = true;
                 return Json(new { status = status1, message = message1 }, JsonRequestBehavior.AllowGet);
             }
