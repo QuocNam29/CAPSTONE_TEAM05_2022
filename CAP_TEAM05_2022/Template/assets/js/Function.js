@@ -60,6 +60,7 @@ $(document).ready(function () {
             }
             form.classList.add('was-validated');
         })
+       
 
     }, false);
 })
@@ -985,7 +986,22 @@ $('#refresh_cart').on('click', function () {
     $('#sum_price').val('');
     $('#cart_note').val('');
 })
+$('#Cancel_Cart').on('click', function () {   
+    $('#product_code').val('');
+    $('#product_unit').val('');
+    $('#product_price').val('');
+    $('#product_name').val('');
+    $('#sum_price').val('');
+    $('#cart_note').val('');
+    $('#product_quantity').val(1);
+    document.querySelector("#customer_name").disabled = false;
+    document.querySelector("#product_name").disabled = false;
 
+    $("#submit_addCart").show();
+    $("#refresh_cart").show();
+    $("#submit_updateCart").hide();
+    $("#Cancel_Cart").hide();
+})
 
 function ButtonDebit() {
     var cart_Prepay1 = $('#cart_Prepay').val();
@@ -1161,3 +1177,88 @@ function Payment_order() {
     });
 }
 
+function FillProduct_cart(id, masp, tensp, soluong) {
+    $('#product_name').val(tensp);
+    $('#product_quantity').val(soluong);
+    $('#cart_id').val(id);
+    $('#product_id').val(masp);
+
+    document.querySelector("#customer_name").disabled = true;
+    document.querySelector("#product_name").disabled = true;
+
+    $("#submit_addCart").hide();
+    $("#refresh_cart").hide();
+    $("#submit_updateCart").show();
+    $("#Cancel_Cart").show();
+
+    $.ajax({
+        type: 'POST',
+        url: URLFindProduct_name,
+        data: { "product_id": masp },
+        success: function (response) {
+            $('#product_code').val(response.code);
+            $('#product_unit').val(response.note);
+            $('#product_price').val(response.name);
+            var sum_price = Number($('#product_price').val().replace(/\,/g, '').replace(/\./g, '')) * Number($('#product_quantity').val()) * (1 - (parseFloat($('#product_discount').val()) / 100));
+            $('#sum_price').val(sum_price.toLocaleString());
+        }
+    })
+    window.scrollTo({
+        top: 0,
+        behavior: `smooth`
+    })
+}
+//-------------------Update cart-------------------------------
+
+function Update_Cart() {
+    var URLUpdateCart = "";
+    $('#URLUpdateCart')
+        .keypress(function () {
+            URLUpdateCart = $(this).val();
+        })
+        .keypress();
+  
+    var cart_create = {};
+    cart_create.id = $('#cart_id').val();;
+    cart_create.product_id = $('#product_id').val();
+    cart_create.customer_id = $('#customer_id').val();
+    cart_create.quantity = $('#product_quantity').val();
+    cart_create.price = Number($('#sum_price').val().replace(/\,/g, '').replace(/\./g, ''));
+    cart_create.discount = $('#product_discount').val();
+    cart_create.note = $('#cart_note').val();
+
+    console.log(cart_create);
+    $.ajax({
+        url: URLUpdateCart,
+        type: "Post",
+        data: JSON.stringify(cart_create),
+        contentType: "application/json; charset=UTF-8",
+        dataType: "json",
+        success: function (response) {
+            if (response.message == "Record Saved Successfully") {
+                GetList_Cart($('#customer_id').val());
+                document.querySelector("#customer_name").disabled = false;
+                document.querySelector("#product_name").disabled = false;
+                $('#product_code').val('');
+                $('#product_unit').val('');
+                $('#product_price').val('');
+                $('#product_name').val('');
+                $('#sum_price').val('');
+                $('#product_quantity').val(1);
+                sweetAlert
+                    ({
+                        title: "Thêm giỏ hàng thành công !",
+                        type: "success"
+                    })
+            } else {
+                sweetAlert
+                    ({
+                        title: "Số lượng sản phẩm chỉ còn: " + response.message + " sản phẩm !",
+                        type: "error"
+                    })
+            }
+
+        }
+    });
+
+}

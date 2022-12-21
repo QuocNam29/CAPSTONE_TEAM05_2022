@@ -12,6 +12,7 @@
 <input type="text" hidden id="URLGetSearchValue_product" value="@Url.Action("GetSearchValue", "products")" />
 <input type="text" hidden id="URLFindProduct_name" value="@Url.Action("FindProduct_name", "products")/" />
 <input type="text" hidden id="URLCreateSale" value="@Url.Action("CreateSale", "sales")" />
+<input type="text" hidden id="URLUpdateCart" value="@Url.Action("UpdateCart", "carts")" />
 
 
 <section class="pcoded-main-container">
@@ -87,6 +88,8 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
+                                            <input type="hidden" id="cart_id" class="form-control">
+
                                             <input type="hidden" id="product_id" class="form-control">
                                             <div class="position-relative">
                                                 <input type="text" placeholder="Chọn sản phẩm" id="product_name" aria-autocomplete="list" class="form-control" required>
@@ -132,7 +135,7 @@
                                         <div class="form-group">
                                             <div class="position-relative">
                                                 <div class="input-group mb-3">
-                                                    <input type="number" id="product_quantity" aria-label="Recipient's username" aria-describedby="basic-addon2" min="1" class="form-control" value="1">
+                                                    <input type="number" id="product_quantity" aria-label="Recipient's username" aria-describedby="basic-addon2" min="1" class="form-control" value="1" required>
                                                     <div class="input-group-append">
                                                         <span id="basic-addon2" class="input-group-text">SL (*)</span>
                                                     </div>
@@ -173,6 +176,10 @@
                                         <button type="button" class="btn btn-info btn-block" id="refresh_cart">
                                             Làm mới
                                         </button>
+                                        <button type="button" class="btn btn-primary btn-block" id="submit_updateCart" onclick="Update_Cart()" style="display: none;">Cập nhật</button>
+                                        <button type="button" class="btn btn-danger btn-block" id="Cancel_Cart" style="display: none">
+                                            Huỷ bỏ
+                                        </button>
 
                                         <hr>
                                         <button type="button" id="payment_btn" disabled="disabled" onclick="Payment_order()" class="btn btn-warning btn-block">
@@ -185,7 +192,7 @@
                                         <button type="button" id="order_btn" disabled="disabled" class="btn btn-success btn-block" onclick="openWin()">
                                             Xem hoá đơn
                                         </button>
-                                        
+
 
                                     </div>
                                 </div>
@@ -199,13 +206,13 @@
             <div id="dataContainer">
                 @{ Html.RenderAction("Index", "carts", new { customer_id = -1 });}
             </div>
-           
-              
-                </div>
-            </div>
+
+
+        </div>
+    </div>
 </section>
 <script>
-   
+
     function openWin() {
         var curDate = new Date();
         // Ngày hiện tại
@@ -229,7 +236,7 @@
             url: '@Url.Action("getCartProduct", "carts")',
             data: { customer_id: customer_id},
             success: function (data) {
-               
+
                 for (var i = 0; i < data.length; i++) {
                     var note = "";
                     if (data[i].cartNote != null) {
@@ -240,7 +247,7 @@
                         <td>`+ data[i].cartCode +`</td>
                         <td>`+ data[i].cartName +`</td>
                         <td class="text-center">`+ data[i].cartUnit+`</td>
-                        <td class="text-center">`+ data[i].cartQuantity +`</td>            
+                        <td class="text-center">`+ data[i].cartQuantity +`</td>
                         <td class="text-center">`+ data[i].cartDiscount + `%</td>
                         <td class="text-center">`+ data[i].cartPrice.toLocaleString()+`</td>
                         <td class="text-center">`+ data[i].cartTotal.toLocaleString() +`</td>
@@ -250,8 +257,8 @@
             }
         });
         var myWindow = window.open('', '', 'width=1200,height=800');
-       @* myWindow.document.write('<link href="/Template/assets/css/style.css" rel="stylesheet" />'); *@    
-        myWindow.document.write('<link href="/CP25Team05/Template/assets/css/style.css" rel="stylesheet" />');     
+       @* myWindow.document.write('<link href="/Template/assets/css/style.css" rel="stylesheet" />'); *@
+        myWindow.document.write('<link href="/CP25Team05/Template/assets/css/style.css" rel="stylesheet" />');
         myWindow.document.write(`<div class="col-md-12">
     <div class="card">
         <div class="card-header">

@@ -62,6 +62,33 @@ namespace CAP_TEAM05_2022.Controllers
             bool status = true;
             return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult UpdateCart(cart cart_create)
+        {
+            product product = db.products.Find(cart_create.product_id);
+            cart cart = db.carts.Find(cart_create.id);
+            int quantity = cart.quantity + product.quantity;
+            if (cart_create.quantity > quantity)
+            {
+                string message1 = quantity.ToString();
+                bool status1 = true;
+                return Json(new { status = status1, message = message1 }, JsonRequestBehavior.AllowGet);
+            }
+           
+            
+            cart.quantity = cart_create.quantity;
+            cart.price = cart_create.price;
+            cart.discount = cart_create.discount;
+            cart.note = cart_create.note;
+            db.Entry(cart).State = EntityState.Modified;
+            db.SaveChanges();
+
+            product.quantity = quantity - cart_create.quantity;
+            db.Entry(product).State = EntityState.Modified;
+            db.SaveChanges();
+            string message = "Record Saved Successfully";
+            bool status = true;
+            return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult Delete_CartProduct(cart cart)
         {
             cart cart1 = db.carts.Find(cart.id);
@@ -69,6 +96,7 @@ namespace CAP_TEAM05_2022.Controllers
             db.SaveChanges();
             return Json("Delete_CartProduct", JsonRequestBehavior.AllowGet);
         }
+        
         protected override void Dispose(bool disposing)
         {
             if (disposing)
