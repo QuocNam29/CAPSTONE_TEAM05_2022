@@ -718,7 +718,7 @@ $('input').keypress(function (event) {
 });
 
 function isValid(str) {
-    return !/[~`!@#$%\^&*+=\\[\]\\';,/{}|\\":<>\?]/g.test(str);
+    return !/[~`!#$%\^&*+=\\[\]\\';,/{}|\\":<>\?]/g.test(str);
 }
 
 //-------------------------------CHECK DỮ LIỆU TRÙNG--------------------------------
@@ -840,6 +840,7 @@ function Create_Cart() {
                 if (response.message == "Record Saved Successfully") {
                     GetList_Cart($('#customer_id').val());
                     $("#payment_btn").prop("disabled", false);
+                    LoadDataProduct($('#product_id').val());
                     sweetAlert
                         ({
                             title: "Thêm giỏ hàng thành công !",
@@ -1121,19 +1122,7 @@ $(function () {
         },
         select: function (e, i) {
             $('#product_id').val(i.item.val);
-            $.ajax({
-                type: 'POST',
-                url: URLFindProduct_name,
-                data: { "product_id": i.item.val },
-                success: function (response) {
-                    $('#product_code').val(response.code);
-                    $('#product_unit').val(response.note);
-                    $('#product_price').val(response.name);
-                    var sum_price = Number($('#product_price').val().replace(/\,/g, '').replace(/\./g, '')) * Number($('#product_quantity').val()) * (1 - (parseFloat($('#product_discount').val()) / 100));
-                    $('#sum_price').val(sum_price.toLocaleString());
-
-                }
-            })
+            LoadDataProduct(i.item.val);
         },
         minLength: 0
     }).focus(function () {
@@ -1143,7 +1132,21 @@ $(function () {
         $(this).data("autocomplete").search($(this).val());
     });
 });
+function LoadDataProduct(id) {
+    $.ajax({
+        type: 'POST',
+        url: URLFindProduct_name,
+        data: { "product_id": id },
+        success: function (response) {
+            $('#product_code').val(response.code);
+            $('#product_unit').val(response.note);
+            $('#product_price').val(response.name);
+            var sum_price = Number($('#product_price').val().replace(/\,/g, '').replace(/\./g, '')) * Number($('#product_quantity').val()) * (1 - (parseFloat($('#product_discount').val()) / 100));
+            $('#sum_price').val(sum_price.toLocaleString());
 
+        }
+    })
+}
 //------------------------Payment / Debit-------------------------------------
 var URLCreateSale = "";
 $('#URLCreateSale')
@@ -1190,19 +1193,8 @@ function FillProduct_cart(id, masp, tensp, soluong) {
     $("#refresh_cart").hide();
     $("#submit_updateCart").show();
     $("#Cancel_Cart").show();
-
-    $.ajax({
-        type: 'POST',
-        url: URLFindProduct_name,
-        data: { "product_id": masp },
-        success: function (response) {
-            $('#product_code').val(response.code);
-            $('#product_unit').val(response.note);
-            $('#product_price').val(response.name);
-            var sum_price = Number($('#product_price').val().replace(/\,/g, '').replace(/\./g, '')) * Number($('#product_quantity').val()) * (1 - (parseFloat($('#product_discount').val()) / 100));
-            $('#sum_price').val(sum_price.toLocaleString());
-        }
-    })
+    LoadDataProduct(masp);
+   
     window.scrollTo({
         top: 0,
         behavior: `smooth`
@@ -1245,9 +1237,14 @@ function Update_Cart() {
                 $('#product_name').val('');
                 $('#sum_price').val('');
                 $('#product_quantity').val(1);
+                $("#submit_addCart").show();
+                $("#refresh_cart").show();
+                $("#submit_updateCart").hide();
+                $("#Cancel_Cart").hide();
+
                 sweetAlert
                     ({
-                        title: "Thêm giỏ hàng thành công !",
+                        title: "Cập nhật đơn hàng thành công !",
                         type: "success"
                     })
             } else {

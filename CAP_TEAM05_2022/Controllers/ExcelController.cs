@@ -42,6 +42,7 @@ namespace CAP_TEAM05_2022.Controllers
 
         public void ExportExcel(int group_id, int category_id)
         {
+            string nameFile = "SP_"+DateTime.Now+ ".xlsx";
             var list = from l in db.products
                        where l.@group.status == 1 && l.category.status == 1
                        select l;
@@ -85,7 +86,7 @@ namespace CAP_TEAM05_2022.Controllers
             Sheet.Cells["A:AZ"].AutoFitColumns();
             Response.Clear();
             Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.AddHeader("content-disposition", "attachment; filename=" + "San_Pham.xlsx");
+            Response.AddHeader("content-disposition", "attachment; filename=" + nameFile);
             Response.BinaryWrite(ep.GetAsByteArray());
             Response.End();
 
@@ -93,6 +94,8 @@ namespace CAP_TEAM05_2022.Controllers
 
         public void ExportTemplateExcel()
         {
+            string nameFile = "Mau_Nhap_" + DateTime.Now + ".xlsx";
+
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ExcelPackage ep = new ExcelPackage();
             var list_group = db.groups.Where(g => g.status != 3).ToList();
@@ -159,7 +162,7 @@ namespace CAP_TEAM05_2022.Controllers
             Sheet_category.Cells["A:AZ"].AutoFitColumns();
             Response.Clear();*/
             Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.AddHeader("content-disposition", "attachment; filename=" + "Mau_Nhap_Lieu.xlsx");
+            Response.AddHeader("content-disposition", "attachment; filename=" + nameFile);
             Response.BinaryWrite(ep.GetAsByteArray());
             Response.End();
 
@@ -552,7 +555,8 @@ namespace CAP_TEAM05_2022.Controllers
         }
         public void ExportExcel_Inventory(DateTime? date_start, DateTime? date_end)
         {
-            var import_inventory = db.import_inventory.Include(i => i.user).Include(i => i.product).Where(i => i.created_at >= date_start && i.created_at <= date_end);
+            string nameFile = "Kho_Hang_từ_" + date_start + "_đến_" + date_end + ".xlsx";
+;            var import_inventory = db.import_inventory.Include(i => i.user).Include(i => i.product).Where(i => i.created_at >= date_start && i.created_at <= date_end);
 
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ExcelPackage ep = new ExcelPackage();
@@ -640,7 +644,7 @@ namespace CAP_TEAM05_2022.Controllers
             Sheet_import.Cells["A:AZ"].AutoFitColumns();
             Response.Clear();
             Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.AddHeader("content-disposition", "attachment; filename=" + "San_Pham.xlsx");
+            Response.AddHeader("content-disposition", "attachment; filename=" + nameFile);
             Response.BinaryWrite(ep.GetAsByteArray());
             Response.End();
 
