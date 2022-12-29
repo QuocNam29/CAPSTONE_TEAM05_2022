@@ -25,8 +25,7 @@ namespace CAP_TEAM05_2022.Controllers
         } 
         public ActionResult Revenue()
         {
-            var sales = db.sales.Include(s => s.customer).Include(s => s.user);
-            return View(sales.ToList());
+            return View(db.revenues.ToList());
         }
         public ActionResult _RevenueList_Date(DateTime? date_Start, DateTime? date_End)
         {
@@ -89,11 +88,23 @@ namespace CAP_TEAM05_2022.Controllers
                 sale_Details.sale_id = sale.id;
                 sale_Details.product_id = item.product_id;
                 sale_Details.sold = item.quantity;
-                sale_Details.price = item.price * 1000;
+                sale_Details.price = item.price;
                 sale_Details.discount = item.discount;
                 sale_Details.created_at = DateTime.Now;
                 db.sale_details.Add(sale_Details);
-                cart cart1 = db.carts.Find(item.id);
+                
+                import_inventory inventory = db.import_inventory.Where(i => i.product_id == item.product_id && i.sold <= i.quantity 
+                                                                    && (i.quantity - i.sold) >= item.quantity).FirstOrDefault();
+                inventory.sold += item.quantity;
+                db.Entry(inventory).State = EntityState.Modified;
+              
+                revenue revenue = new revenue();
+                revenue.sale_details_id = sale_Details.id;
+                revenue.inventory_id = inventory.id;
+                revenue.Price = item.price/item.quantity;
+                revenue.quantity = item.quantity;
+                db.revenues.Add(revenue);
+                    cart cart1 = db.carts.Find(item.id);
                 db.carts.Remove(cart1);
             }
             db.SaveChanges();

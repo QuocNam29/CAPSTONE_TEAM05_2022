@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CAP_TEAM05_2022.Models.sale>
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.revenue>
 
 @{
     ViewBag.Title = "Revevue";
@@ -104,254 +104,58 @@
                                                                     <th>Tên sản phẩm</th>
                                                                     <th class="text-center">Đơn vị</th>
                                                                     <th class="text-center">Số lượng gốc</th>
-                                                                    <th class="text-center">Tổng Giá gốc</th>
+                                                                    <th class="text-center">Đơn giá gốc</th>
+                                                                   @* <th class="text-center">Tổng Giá gốc</th>*@
                                                                     <th class="text-center">Số lượng bán</th>
-                                                                    <th class="text-center">Tổng Giá bán</th>
+                                                                    <th class="text-center">Đơn giá bán</th>
+                                                                   @* <th class="text-center">Tổng Giá bán</th>*@
                                                                     <th class="text-center">Lợi nhuận</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
+                                                                @foreach (var item in Model)
+                                                                {
                                                                 <tr>
-                                                                    <td>SP16e953c58</td>
-                                                                    <td>NPK AMAZON mùa mưa </td>
+                                                                    <td>@item.sale_details.product.code</td>
+                                                                    <td>@item.sale_details.product.name</td>
                                                                     <td class="text-center">
-                                                                        25KG
+                                                                        @item.sale_details.product.unit
                                                                     </td>
                                                                     <td class="text-center">
-                                                                        54
+                                                                        @item.sale_details.product.quantity
                                                                     </td>
                                                                     <td class="text-center">
-                                                                        24,300,000
+                                                                        @(item.sale_details.product.purchase_price ) đ
+                                                                    </td>
+                                                                   @* <td class="text-center">
+                                                                        @(item.sale_details.product.purchase_price * item.sale_details.product.quantity)
+                                                                    </td>*@
+                                                                    <td class="text-center">
+                                                                        @item.quantity
                                                                     </td>
                                                                     <td class="text-center">
-                                                                        0
+                                                                        @item.Price đ
                                                                     </td>
-                                                                    <td class="text-center">
-                                                                        0
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        <p class="">
-                                                                            0
-                                                                        </p>
-                                                                    </td>
+                                                                    @*<td class="text-center">
+                                                                        @(item.Price * item.quantity)
+                                                                    </td>*@
+                                                                    @if ((item.Price - item.sale_details.product.purchase_price) * item.quantity > 0)
+                                                                    {
+                                                                        <td class="text-center text-success">
+                                                                           + @((item.Price - item.sale_details.product.purchase_price) *item.quantity) đ
+                                                                        </td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td class="text-right text-danger">
+                                                                            @((item.Price - item.sale_details.product.purchase_price) *item.quantity) đ
+                                                                        </td>
+                                                                    }
+
                                                                 </tr>
-                                                                <tr>
-                                                                    <td>SPeabbdd05a</td>
-                                                                    <td>NPK AMAZON cuối vụ</td>
-                                                                    <td class="text-center">
-                                                                        50KG
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        3
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        2,640,000
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        0
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        0
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        <p class="">
-                                                                            0
-                                                                        </p>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>SP263fcf1f4</td>
-                                                                    <td>Phân bón NPK Amazon Cao Su</td>
-                                                                    <td class="text-center">
-                                                                        40KG
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        62
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        43,524,000
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        0
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        0
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        <p class="">
-                                                                            0
-                                                                        </p>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>SP9b8e4f556</td>
-                                                                    <td>NPK AMAZON đầu vụ</td>
-                                                                    <td class="text-center">
-                                                                        50KG
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        1
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        830,000
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        0
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        0
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        <p class="">
-                                                                            0
-                                                                        </p>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>SPac6df8d5c</td>
-                                                                    <td>NPK AMAZON mùa khô</td>
-                                                                    <td class="text-center">
-                                                                        40KG
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        87
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        65,250,000
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        0
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        0
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        <p class="">
-                                                                            0
-                                                                        </p>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>SP8a3b126cd</td>
-                                                                    <td>Phân bón NPK BigOne Lúa F2</td>
-                                                                    <td class="text-center">
-                                                                        50KG
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        45
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        40,275,000
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        0
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        0
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        <p class="">
-                                                                            0
-                                                                        </p>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>SP53d86979f</td>
-                                                                    <td>Phân bón NPK BigOne Lúa F1</td>
-                                                                    <td class="text-center">
-                                                                        50KG
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        23
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        20,240,000
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        0
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        0
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        <p class="">
-                                                                            0
-                                                                        </p>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>SPc2d5269c6</td>
-                                                                    <td>NPK BIGONE mùa khô</td>
-                                                                    <td class="text-center">
-                                                                        50KG
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        60
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        52,200,000
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        0
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        0
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        <p class="">
-                                                                            0
-                                                                        </p>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>SP43863c6d0</td>
-                                                                    <td>NPK BIGONE cà phê</td>
-                                                                    <td class="text-center">
-                                                                        40KG
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        25
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        21,400,000
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        0
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        0
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        <p class="">
-                                                                            0
-                                                                        </p>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>SP1584ba517</td>
-                                                                    <td>NPK BIGONE đầu vụ</td>
-                                                                    <td class="text-center">
-                                                                        50KG
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        85
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        75,650,000
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        0
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        0
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        <p class="">
-                                                                            0
-                                                                        </p>
-                                                                    </td>
-                                                                </tr>
-                                                                
+                                                                }
+
+
                                                             </tbody>
                                                         </table>  
                                                     </div>

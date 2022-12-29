@@ -43,5 +43,6 @@ namespace CAP_TEAM05_2022.Models
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<user> users { get; set; }
         public virtual DbSet<password_resets> password_resets { get; set; }
+        public virtual DbSet<revenue> revenues { get; set; }
     }
 }

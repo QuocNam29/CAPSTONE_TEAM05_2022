@@ -265,6 +265,9 @@
     <Compile Include="Models\product.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\revenue.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\sale.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

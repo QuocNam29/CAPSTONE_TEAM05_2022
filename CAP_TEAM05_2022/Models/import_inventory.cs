@@ -14,6 +14,12 @@ namespace CAP_TEAM05_2022.Models
     
     public partial class import_inventory
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public import_inventory()
+        {
+            this.revenues = new HashSet<revenue>();
+        }
+    
         public int id { get; set; }
         public int product_id { get; set; }
         public int quantity { get; set; }
@@ -26,5 +32,7 @@ namespace CAP_TEAM05_2022.Models
     
         public virtual user user { get; set; }
         public virtual product product { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<revenue> revenues { get; set; }
     }
 }

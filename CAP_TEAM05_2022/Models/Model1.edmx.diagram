@@ -41,6 +41,9 @@
         <AssociationConnector Association="CP25Team05Model.sale_details_ibfk_2" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.FK_sales_users" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.AspNetUserRoles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="CP25Team05Model.revenue" Width="1.5" PointX="15.5" PointY="12.5" />
+        <AssociationConnector Association="CP25Team05Model.FK_revenue_import_inventory" />
+        <AssociationConnector Association="CP25Team05Model.FK_revenue_sale_details" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
