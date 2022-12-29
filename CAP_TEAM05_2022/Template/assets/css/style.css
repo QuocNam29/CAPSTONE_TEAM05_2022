@@ -30307,11 +30307,12 @@ body {
     background-color: yellow;
     border-radius: 5px;
 }
-.background-success, .background-success th {
+.background-success, .background-success th{
     vertical-align: middle;
     background-color: #d5f5e3;
     border-color: #c4f1d7;
 }
+    
 .table thead th {
     border-bottom: 1px solid #e2e5e8;
     font-size: 13px;
@@ -30336,4 +30337,32 @@ body {
 }
 .card-create {
     background-color: #e4f4f1;
+}
+.background-success h5 {
+    margin-bottom: 0;
+    padding: 5px;
+    text-align: center;
+    background-color: #1abc9c;
+    color: #fff;
+    border-radius: 5px;
+}
+.background-danger, .background-danger th {
+    vertical-align: middle;
+    background-color: #fadbd8;
+    border-color: #fadbd8;
+}
+    .background-danger h5 {
+        margin-bottom: 0;
+        padding: 5px;
+        text-align: center;
+        background-color: #e74c3c;
+        color: #fff;
+        border-radius: 5px;
+    }
+.totalPaid {
+    font-weight: bold;
+    color: #000 !important;
+    padding: 15px !important;
+    background-color: #f1c40f !important;
+    border-color: #f1c40f !important;
 }

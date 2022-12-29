@@ -11,6 +11,8 @@ using CAP_TEAM05_2022.Models;
 
 namespace CAP_TEAM05_2022.Controllers
 {
+    [LoginVerification]
+
     public class salesController : Controller
     {
         private CP25Team05Entities db = new CP25Team05Entities();
@@ -20,6 +22,39 @@ namespace CAP_TEAM05_2022.Controllers
         {
             var sales = db.sales.Include(s => s.customer).Include(s => s.user);
             return View(sales.ToList());
+        } 
+        public ActionResult Revenue()
+        {
+            var sales = db.sales.Include(s => s.customer).Include(s => s.user);
+            return View(sales.ToList());
+        }
+        public ActionResult _RevenueList_Date(DateTime? date_Start, DateTime? date_End)
+        {
+            if (date_Start == null)
+            {
+                date_Start = Convert.ToDateTime(DateTime.Now.ToString("dd-MM-yyyy"));
+            }
+            if (date_End == null)
+            {
+                date_End = Convert.ToDateTime(DateTime.Now.ToString("dd-MM-yyyy"));
+            }
+            var sales = db.sales.Include(s => s.customer).Include(s => s.user).Where(s => s.created_at >= date_Start && s.created_at <= date_End);
+          
+            return PartialView(sales.ToList());
+        }
+        public ActionResult _RevenueList_Month(DateTime? date_Start, DateTime? date_End)
+        {
+            if (date_Start == null)
+            {
+                date_Start = Convert.ToDateTime(DateTime.Now.AddDays((-DateTime.Now.Day) + 1).ToString("dd-MM-yyyy"));
+            }
+            if (date_End == null)
+            {
+                date_End = Convert.ToDateTime(DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day)).ToString("dd-MM-yyyy"));
+            }
+            var sales = db.sales.Include(s => s.customer).Include(s => s.user).Where(s => s.created_at.Value.Month >= date_Start.Value.Month && s.created_at.Value.Month <= date_End.Value.Month);
+
+            return PartialView(sales.ToList());
         }
 
         public JsonResult CreateSale(sale createSale)
@@ -77,6 +112,8 @@ namespace CAP_TEAM05_2022.Controllers
             bool status = true;
             return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
         }
+
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

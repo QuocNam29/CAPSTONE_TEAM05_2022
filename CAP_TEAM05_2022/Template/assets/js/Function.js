@@ -49,6 +49,15 @@ $(document).ready(function () {
             }
             form.classList.add('was-validated');
         })
+        $('#add_customer_sale').on('click', function () {
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                AddCustomerSale();
+            }
+            form.classList.add('was-validated');
+        })
         $('#submit_addCart').on('click', function () {
             if (form.checkValidity() === false) {
                 
@@ -85,6 +94,8 @@ function deleteAlert(id, code) {
         closeOnConfirm: false,
         confirmButtonText: "Xác nhận",
         confirmButtonColor: "#ec6c62",
+        allowOutsideClick: true,
+
     },
         function () {
             var categorys = {};
@@ -98,18 +109,32 @@ function deleteAlert(id, code) {
                 dataType: 'json'
             })
                 .done(function (data) {
-                    sweetAlert
-                        ({
-                            title: "Đã xóa!",
-                            type: "success"
-                        },
-                            function () {
-                                $("table tbody").find('input[name="record"]').each(function () {
-                                    if (Contains($(this).val(), code)) {
-                                        $(this).parents("tr").remove();
-                                    }
-                                });
+                    if (data.status) {
+                        sweetAlert
+                            ({
+                                title: data.message,
+                                type: "success",
+                                allowOutsideClick: true,
+
+                            },
+                                function () {
+                                    $("table tbody").find('input[name="record"]').each(function () {
+                                        if (Contains($(this).val(), code)) {
+                                            $(this).parents("tr").remove();
+                                        }
+                                    });
+                                })
+                    }
+                    else {
+                        sweetAlert
+                            ({
+                                title: data.message,
+                                type: "error",
+                                allowOutsideClick: true,
+
                             })
+                    }
+                 
                 })
             /*   .error(function (data) {
                    swal("OOps", "Chúng tôi không thể kết nối đến server!", "error");
@@ -128,7 +153,9 @@ function EditStatus(id) {
     sweetAlert
         ({
             title: "Cập nhật trạng thái thành công!",
-            type: "success"
+            type: "success",
+            allowOutsideClick: true,
+
         },
             function () {
                 var categorys = {};
@@ -462,7 +489,9 @@ function Update_Product() {
                 sweetAlert
                     ({
                         title: "Cập nhật thành công !",
-                        type: "success"
+                        type: "success",
+                        allowOutsideClick: true,
+
                     })
             }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log(textStatus)
@@ -523,7 +552,9 @@ function Update() {
             sweetAlert
                 ({
                     title: "Cập nhật thành công !",
-                    type: "success"
+                    type: "success",
+                    allowOutsideClick: true,
+
                 })
         }
     });
@@ -700,13 +731,62 @@ function Update_Customer() {
                 sweetAlert
                     ({
                         title: "Cập nhật thành công !",
-                        type: "success"
+                        type: "success",
+                        allowOutsideClick: true,
+
                     })
             }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log(textStatus)
                 console.log(errorThrown)
                 alert("Something Went Wrong, Try Later");
             });
+        }
+    });
+}
+function AddCustomerSale() {
+    var URLAddCustomerSale = "";
+    $('#URLAddCustomerSale')
+        .keypress(function () {
+            URLAddCustomerSale = $(this).val();
+        })
+        .keypress();
+   
+    var customer = {};
+    customer.name = $('#create_customer_name').val();
+    customer.phone = $('#sale_customer_phone').val();
+    customer.email = $('#customer_email').val();
+    customer.birthday = $('#customers_birth').val();
+    customer.account_number = $('#customer_account').val();
+    customer.bank = $('#customer_bank').val();
+    customer.type = $('#sale_customer_type').val();
+    customer.address = $('#customer_address').val();
+    customer.note = $('#customer_note').val();
+
+    console.log(URLAddCustomerSale);
+    $.ajax({
+        url: URLAddCustomerSale,
+        type: "Post",
+        data: JSON.stringify(customer),
+        contentType: "application/json; charset=UTF-8",
+        dataType: "json",
+        success: function (response) {
+            $('#customer_code').val(response.code);
+            $('#customer_phone').val(response.phone);
+           
+            if (response.type == 1 ) {
+                $('#customer_type').val("Khách mua lẻ");
+            } else if (response.type ==2 ) {
+                $('#customer_type').val("Công ty (Khách mua sĩ)");
+            } else if (response.type == 3) {
+                $('#customer_type').val("Nhà cung cấp");
+            }
+            if ($("#cart_total").val() != undefined) {
+                console.log($("#cart_total").val());
+                $("#payment_btn").prop("disabled", false);
+                $("#order_btn").prop("disabled", false);
+            }
+            $('#AddCustomer .close').css('display', 'none');
+            $('#AddCustomer').modal('hide');         
         }
     });
 }
@@ -728,6 +808,7 @@ $('#URLChecknameAvailability')
         URLChecknameAvailability = $(this).val();
     })
     .keypress();
+
 
 function UserCheck() {
     console.log(URLChecknameAvailability);
@@ -770,6 +851,48 @@ function UserCheck() {
             }
         });
 }
+
+function UserCustomer() {
+    var URLCheckCustomernameAvailability = "";
+    $('#URLCheckCustomernameAvailability')
+        .keypress(function () {
+             URLCheckCustomernameAvailability = $(this).val();
+        })
+        .keypress();
+    $.post(URLCheckCustomernameAvailability,
+        {
+            categorydata: $("#name_category").val()
+        },
+        function (data) {
+            if (data == 0) {
+
+                swal({
+                    title: "Khách hàng không có trong hệ thống, bạn có muốn thêm mới ?",
+                    type: "warning",
+                    showCancelButton: true,
+                    closeOnConfirm: true,
+                    confirmButtonText: "Xác nhận",
+                    confirmButtonColor: "#ec6c62",
+                    allowOutsideClick: true,
+                },
+                    function (isConfirm) {
+                        if (isConfirm) {
+                            $('#AddCustomer .close').css('display', 'none');
+                            $('#AddCustomer').modal('show');
+                            $('#create_customer_name').val($('#customer_name').val());
+                            document.querySelector("#create_customer_name").disabled = true;
+
+                        } 
+                        
+                        
+
+                    })
+                
+            }
+            
+        });
+  
+}
 //------------------------Import Fail Add-----------------------------
 $('#URLUpdateGroupProduct')
     .keypress(function () {
@@ -796,7 +919,9 @@ function ImportFail_continue() {
             sweetAlert
                 ({
                     title: "Cập nhật thành công !",
-                    type: "success"
+                    type: "success",
+                    allowOutsideClick: true,
+
                 }, function () {
                     $("table tbody").find('input[name="record"]').each(function () {
                         if (Contains($(this).val(), code)) {
@@ -844,13 +969,17 @@ function Create_Cart() {
                     sweetAlert
                         ({
                             title: "Thêm giỏ hàng thành công !",
-                            type: "success"
+                            type: "success",
+                            allowOutsideClick: true,
+
                         })
                 } else {
                     sweetAlert
                         ({
                             title: "Số lượng sản phẩm chỉ còn: " + response.message + " sản phẩm !",
-                            type: "error"
+                            type: "error",
+                            allowOutsideClick: true,
+
                         })
                 }        
                 
@@ -902,6 +1031,8 @@ function ImportFail_continues(id, code) {
         closeOnConfirm: false,
         confirmButtonText: "Xác nhận",
         confirmButtonColor: "#ec6c62",
+        allowOutsideClick: true,
+
     },
         function () {
 
@@ -914,7 +1045,9 @@ function ImportFail_continues(id, code) {
                     sweetAlert
                         ({
                             title: "Đã thêm thành công!",
-                            type: "success"
+                            type: "success",
+                            allowOutsideClick: true,
+
                         },
                             function () {
                                 $("table tbody").find('input[name="record"]').each(function () {
@@ -946,6 +1079,8 @@ function ImportFail_continuesAll() {
         closeOnConfirm: false,
         confirmButtonText: "Xác nhận",
         confirmButtonColor: "#ec6c62",
+        allowOutsideClick: true,
+
     },
         function () {
 
@@ -958,7 +1093,9 @@ function ImportFail_continuesAll() {
                     sweetAlert
                         ({
                             title: "Đã thêm thành công !",
-                            type: "success"
+                            type: "success",
+                            allowOutsideClick: true,
+
                         },
                             function () {                              
                               /*  $("#FailFormat_table tr").remove(); */

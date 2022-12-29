@@ -1,0 +1,537 @@
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.sale>
+
+@{
+    ViewBag.Title = "Revevue";
+    Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
+    int no = 0;
+}
+<section class="pcoded-main-container">
+    <div class="pcoded-content">
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">Doanh thu</h5>
+                        </div> <ul class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="https://tancool.net">
+                                    <i class="feather icon-home">
+                                    </i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="javascript:void(0)">Doanh thu</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div> <div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-4" style="">
+                                    <div class="mx-datepicker">
+                                        <div class="mx-input-wrapper">
+                                            <input name="date_start" id="filter_DateStart" type="date" placeholder="" class="form-control custom-width" value="@String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(DateTime.Now.ToString("dd-MM-yyyy")))">
+
+
+                                        </div>
+                                    </div>
+                                </div> <div class="col-md-4" style="">
+                                    <div class="mx-datepicker">
+                                        <div class="mx-input-wrapper">
+                                            <input name="date_end" id="filter_DateEnd" type="date" class="form-control custom-width" value="@String.Format("{0:yyyy-MM-dd}",Convert.ToDateTime(DateTime.Now.ToString("dd-MM-yyyy")))">
+
+                                        </div>
+                                    </div>
+                                </div> <div class="col-md-2" style="">
+                                    <button type="button" class="btn btn-warning float-left btn-block">Xem</button>
+                                </div> <div class="col-md-6" style="display: none;">
+                                    <h4>Doanh thu lợi nhuận</h4>
+                                </div> <div class="col-md-2">
+                                    <div class="float-right">
+                                        <button type="button" class="btn btn-secondary">Xuất tệp</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-body">
+                                <ul id="pills-tab" role="tablist" class="nav nav-pills mb-3">
+                                    <li class="nav-item">
+                                        <a id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="true" class="nav-link active">
+                                            Doanh thu theo ngày <input type="hidden" value="1">
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="false" class="nav-link">
+                                            Doanh thu theo tháng <input type="hidden" value="1">
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false" class="nav-link">
+                                            Doanh thu chi tiết lãi lỗ <input type="hidden" value="1">
+                                        </a>
+                                    </li>
+                                </ul> <div id="pills-tabContent" class="tab-content">
+                                    <div id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" class="tab-pane fade">
+                                        <div class="card">
+                                            <div class="card-body table-border-style">
+                                                <div>
+                                                    <div class="table-responsive">
+                                                        @{ Html.RenderAction("_RevenueList_Month", "sales");}
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                <div id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" class="tab-pane fade">
+                                        <div class="card">
+                                            <div class="card-body table-border-style">
+                                                <div>
+                                                    <input type="text" id="search" placeholder="Tìm kiếm..." class="form-control form-search mb-3"> <div class="table-responsive">
+                                                        <table class="table table-hover">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Mã sản phẩm</th>
+                                                                    <th>Tên sản phẩm</th>
+                                                                    <th class="text-center">Đơn vị</th>
+                                                                    <th class="text-center">Số lượng gốc</th>
+                                                                    <th class="text-center">Tổng Giá gốc</th>
+                                                                    <th class="text-center">Số lượng bán</th>
+                                                                    <th class="text-center">Tổng Giá bán</th>
+                                                                    <th class="text-center">Lợi nhuận</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>SP16e953c58</td>
+                                                                    <td>NPK AMAZON mùa mưa </td>
+                                                                    <td class="text-center">
+                                                                        25KG
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        54
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        24,300,000
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        0
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        0
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        <p class="">
+                                                                            0
+                                                                        </p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>SPeabbdd05a</td>
+                                                                    <td>NPK AMAZON cuối vụ</td>
+                                                                    <td class="text-center">
+                                                                        50KG
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        3
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        2,640,000
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        0
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        0
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        <p class="">
+                                                                            0
+                                                                        </p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>SP263fcf1f4</td>
+                                                                    <td>Phân bón NPK Amazon Cao Su</td>
+                                                                    <td class="text-center">
+                                                                        40KG
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        62
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        43,524,000
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        0
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        0
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        <p class="">
+                                                                            0
+                                                                        </p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>SP9b8e4f556</td>
+                                                                    <td>NPK AMAZON đầu vụ</td>
+                                                                    <td class="text-center">
+                                                                        50KG
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        1
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        830,000
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        0
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        0
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        <p class="">
+                                                                            0
+                                                                        </p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>SPac6df8d5c</td>
+                                                                    <td>NPK AMAZON mùa khô</td>
+                                                                    <td class="text-center">
+                                                                        40KG
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        87
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        65,250,000
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        0
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        0
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        <p class="">
+                                                                            0
+                                                                        </p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>SP8a3b126cd</td>
+                                                                    <td>Phân bón NPK BigOne Lúa F2</td>
+                                                                    <td class="text-center">
+                                                                        50KG
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        45
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        40,275,000
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        0
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        0
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        <p class="">
+                                                                            0
+                                                                        </p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>SP53d86979f</td>
+                                                                    <td>Phân bón NPK BigOne Lúa F1</td>
+                                                                    <td class="text-center">
+                                                                        50KG
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        23
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        20,240,000
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        0
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        0
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        <p class="">
+                                                                            0
+                                                                        </p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>SPc2d5269c6</td>
+                                                                    <td>NPK BIGONE mùa khô</td>
+                                                                    <td class="text-center">
+                                                                        50KG
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        60
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        52,200,000
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        0
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        0
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        <p class="">
+                                                                            0
+                                                                        </p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>SP43863c6d0</td>
+                                                                    <td>NPK BIGONE cà phê</td>
+                                                                    <td class="text-center">
+                                                                        40KG
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        25
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        21,400,000
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        0
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        0
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        <p class="">
+                                                                            0
+                                                                        </p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>SP1584ba517</td>
+                                                                    <td>NPK BIGONE đầu vụ</td>
+                                                                    <td class="text-center">
+                                                                        50KG
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        85
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        75,650,000
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        0
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        0
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        <p class="">
+                                                                            0
+                                                                        </p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr style="display: none;">
+                                                                    <td colspan="9">
+                                                                        <div class="alert alert-warning">
+                                                                            <p class="text-center">Không tìm thấy dữ liệu</p>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table> <div class="between:flex bottom:margin-3 ml-2">
+                                                            <div class="center:flex-items">
+                                                                <span class="right:marign-1">Hiển thị</span> <select id="form-select" class="select form-control select-entities">
+                                                                    <option value="5">
+                                                                        5
+                                                                    </option>
+                                                                    <option value="10">
+                                                                        10
+                                                                    </option>
+                                                                    <option value="25">
+                                                                        25
+                                                                    </option>
+                                                                    <option value="50">
+                                                                        50
+                                                                    </option>
+                                                                    <option value="100">
+                                                                        100
+                                                                    </option>
+                                                                    <option value="200">
+                                                                        200
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                        </div> <nav aria-label="...">
+                                                            <ul class="pagination justify-content-center">
+                                                                <li class="page-item disabled">
+                                                                    <a class="page-link"> &lt;&lt; </a>
+                                                                </li>
+                                                                <li class="page-item disabled">
+                                                                    <a class="page-link"> &lt; </a>
+                                                                </li>
+                                                                <li class="page-item active">
+                                                                    <a class="page-link">
+                                                                        1
+                                                                        <span class="sr-only">
+                                                                        </span>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="page-item">
+                                                                    <a class="page-link">
+                                                                        2
+                                                                        <!---->
+                                                                    </a>
+                                                                </li>
+                                                                <li class="page-item">
+                                                                    <a class="page-link">
+                                                                        3
+                                                                        <!---->
+                                                                    </a>
+                                                                </li>
+                                                                <li class="page-item">
+                                                                    <a class="page-link">
+                                                                        4
+                                                                        <!---->
+                                                                    </a>
+                                                                </li>
+                                                                <li class="page-item">
+                                                                    <a class="page-link">
+                                                                        5
+                                                                        <!---->
+                                                                    </a>
+                                                                </li>
+                                                                <li class="page-item">
+                                                                    <a class="page-link"> &gt; </a>
+                                                                </li>
+                                                                <li class="page-item">
+                                                                    <a class="page-link"> &gt;&gt; </a>
+                                                                </li>
+                                                            </ul>
+                                                        </nav>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                <div id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" class="tab-pane fade active show">
+                                        <div class="card">
+                                            <div class="card-body table-border-style">
+                                                <div>
+                                                    <div class="table-responsive">
+                                                        @{ Html.RenderAction("_RevenueList_Date", "sales");}
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div> <div id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalTitle" aria-hidden="true" class="modal fade bd-example-modal-lg">
+                <div role="document" class="modal-dialog modal-lg">
+                    <form>
+                        <div class="modal-content">
+                            <div class="modal-header bg-primary">
+                                <h5 id="detailModalTitle" class="modal-title white">Chi tiết</h5> <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div> <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">STT</th>
+                                                        <th>Ngày</th>
+                                                        <th>Mã sản phẩm</th>
+                                                        <th>Tên sản phẩm</th>
+                                                        <th class="text-center">Đơn vị</th>
+                                                        <th class="text-center">Đơn giá</th>
+                                                        <th class="text-center">Số lượng</th>
+                                                        <th class="text-center">Thành tiền</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="9">
+                                                            <div class="alert alert-warning">
+                                                                <p class="text-center">Không tìm thấy dữ liệu</p>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td colspan="7" class="text-right">
+                                                            <h5>Tạm tính</h5>
+                                                        </td>
+                                                        <td class="text-left">
+                                                            <h5>0 ₫</h5>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="7" class="text-right">
+                                                            <h5>VAT (%)</h5>
+                                                        </td>
+                                                        <td class="text-left">
+                                                            <h5>%</h5>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="7" class="text-right">
+                                                            <h5>Chiết khấu (%)</h5>
+                                                        </td>
+                                                        <td class="text-left">
+                                                            <h5>%</h5>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="7" class="text-right">
+                                                            <h5>Thành tiền</h5>
+                                                        </td>
+                                                        <td class="text-left">
+                                                            <h5>
+                                                                0
+                                                                ₫
+                                                            </h5>
+                                                        </td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -13,6 +13,8 @@
 <input type="text" hidden id="URLFindProduct_name" value="@Url.Action("FindProduct_name", "products")/" />
 <input type="text" hidden id="URLCreateSale" value="@Url.Action("CreateSale", "sales")" />
 <input type="text" hidden id="URLUpdateCart" value="@Url.Action("UpdateCart", "carts")" />
+<input type="text" hidden id="URLCheckCustomernameAvailability" value="@Url.Action("CheckCustomernameAvailability", "customers")" />
+<input type="text" hidden id="URLAddCustomerSale" value="@Url.Action("AddCustomerSale", "customers")" />
 
 
 <section class="pcoded-main-container">
@@ -54,7 +56,7 @@
                                         <div class="form-group">
                                             <input type="hidden" id="customer_id" class="form-control">
                                             <div class="position-relative">
-                                                <input type="text" placeholder="Chọn khách hàng" id="customer_name" aria-autocomplete="list" class="form-control" required>
+                                                <input type="text" placeholder="Chọn khách hàng" id="customer_name" aria-autocomplete="list" class="form-control" onchange="UserCustomer()" required>
                                                 <div class="invalid-feedback">
                                                     Vui lòng nhập nhập tên khách hàng !
                                                 </div>
@@ -211,6 +213,122 @@
         </div>
     </div>
 </section>
+<div id="AddCustomer" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="AddGroupProductLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <form class="needs-validation" method="post" action="@Url.Action("Create_Customer", "customers")" novalidate>
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 id="customModalTitle" class="modal-title white">Thêm mới khách hàng</h5>
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>
+                                    Họ và tên<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <input type="text" placeholder="Nhập họ tên" id="create_customer_name" name="customer_name" class="form-control" pattern="\S+.*" required>
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập họ và tên !
+                                    </div>
+                                </div>
+
+                                <!---->
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    Số điện thoại<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <input type="text" placeholder="Nhập số điện thoại" id="sale_customer_phone" name="customer_phone" class="form-control" pattern="\S+.*" required>
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập số điện thoại !
+                                    </div>
+                                </div>
+                                <!---->
+                            </div>
+                            <div class="form-group">
+                                <label>Địa chỉ Email</label>
+                                <div class="position-relative">
+                                    <input type="email" placeholder="Nhập địa chỉ Email" id="customer_email" name="customer_email" class="form-control">
+                                </div>
+                                <!---->
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Ngày sinh</label>
+                                <div class="position-relative">
+                                    <input type="date" id="customers_birth" name="customers_birth" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Số tài khoản ngân hàng</label>
+                                <div class="position-relative">
+                                    <input type="text" placeholder="Nhập số tài khoản" id="customer_account" name="customer_account" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Tên ngân hàng</label>
+                                <div class="position-relative">
+                                    <input type="text" placeholder="Nhập tên ngân hàng" id="customer_bank" name="customer_bank" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>
+                                    Nhóm khách hàng<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <select id="sale_customer_type" name="customer_type" class="form-control" required>
+                                        <option value="" disabled="disabled" selected="selected">Chọn nhóm khách hàng</option>
+                                        <option value="0">Khách đơn lẻ</option>
+                                        <option value="1">Công ty (khách sỉ)</option>
+                                        <option value="2">Nhà cung cấp</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Vui lòng chọn nhóm khách hàng !
+                                    </div>
+                                </div>
+                                <!---->
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    Địa chỉ<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <textarea id="customer_address" name="customer_address" placeholder="Nhập địa chỉ" rows="1" class="form-control" pattern="\S+.*" required></textarea>
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập đại chỉ !
+                                    </div>
+                                </div>
+                                <!---->
+                            </div>
+                            <div class="form-group">
+                                <label>Ghi chú</label>
+                                <div class="position-relative">
+                                    <textarea id="customer_note" name="customer_note" placeholder="Ghi chú" rows="1" class="form-control"></textarea>
+                                </div>
+                                <!---->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ bỏ</button>
+                    <button type="button" class="btn btn-primary" id="add_customer_sale">Thêm mới</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
 <script>
 
     function openWin() {

@@ -235,6 +235,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="created_at" Type="datetime2" Precision="0" />
           <Property Name="updated_at" Type="datetime2" Precision="0" />
           <Property Name="deleted_at" Type="datetime2" Precision="0" />
+          <Property Name="prepayment" Type="int" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -849,6 +850,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <NavigationProperty Name="debts" Relationship="Self.debts_ibfk_1" FromRole="sales" ToRole="debts" />
           <NavigationProperty Name="sale_details" Relationship="Self.sale_details_ibfk_2" FromRole="sales" ToRole="sale_details" />
           <NavigationProperty Name="user" Relationship="Self.FK_sales_users" FromRole="sales" ToRole="users" />
+          <Property Name="prepayment" Type="Int32" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -1412,6 +1414,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <EntitySetMapping Name="sales">
             <EntityTypeMapping TypeName="CP25Team05Model.sale">
               <MappingFragment StoreEntitySet="sales">
+                <ScalarProperty Name="prepayment" ColumnName="prepayment" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="code" ColumnName="code" />
                 <ScalarProperty Name="customer_id" ColumnName="customer_id" />

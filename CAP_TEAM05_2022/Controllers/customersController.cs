@@ -176,7 +176,57 @@ namespace CAP_TEAM05_2022.Controllers
 
             return Json(customers);
         }
-        
+        public JsonResult CheckCustomernameAvailability(string customer_name)
+        {
+            System.Threading.Thread.Sleep(200);
+            var SeachData = db.customers.Where(x => x.name == customer_name).FirstOrDefault();
+            if (SeachData != null)
+            {
+                return Json(1);
+            }
+            else
+            {
+                return Json(0);
+            }
+
+        }
+        public JsonResult AddCustomerSale(customer customers)
+        {
+            string email = Session["user_email"].ToString();
+            user user = db.users.Where(u => u.email == email).FirstOrDefault();
+            customer customer = new customer();
+            customer.name = customers.name;
+            customer.code = "MKH" + CodeRandom.RandomCode();
+            customer.phone = customers.phone;
+            if (!String.IsNullOrWhiteSpace(customers.email))
+            {
+                customer.email = customers.email;
+            }
+            if (customers.birthday != null)
+            {
+                customer.birthday = customers.birthday;
+            }
+            if (!String.IsNullOrWhiteSpace(customers.account_number))
+            {
+                customer.account_number = customers.account_number;
+            }
+            if (!String.IsNullOrWhiteSpace(customers.bank))
+            {
+                customer.bank = customers.bank;
+            }
+            customer.type = customers.type;
+            customer.address = customers.address;
+            if (!String.IsNullOrWhiteSpace(customers.note))
+            {
+                customer.note = customers.note;
+            }
+            customer.created_by = user.id;
+            customer.created_at = DateTime.Now;
+            customer.status = 1;
+            db.customers.Add(customer);
+            db.SaveChanges();
+            return Json(customer, JsonRequestBehavior.AllowGet);
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

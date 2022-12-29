@@ -42,12 +42,21 @@ namespace CAP_TEAM05_2022.Controllers
 
         public ActionResult Delete_Category(category categorys)
         {
-            category categories = db.categories.Find(categorys.id);
-            categories.status = 3;
-            categories.deleted_at = DateTime.Now;
-            db.Entry(categories).State = EntityState.Modified;
-            db.SaveChanges();
-            return Json("Delete_Category", JsonRequestBehavior.AllowGet);
+            bool status = true;
+            string mess = "";
+            try
+            {
+                category categories = db.categories.Find(categorys.id);
+                db.categories.Remove(categories);
+                db.SaveChanges();
+                mess = "Xóa danh mục thành công";
+            }
+            catch
+            {
+                status = false;
+                mess = "Xóa thất bại ! (còn sản phẩm thuộc danh mục).";
+            }
+            return Json(new { status = status, message = mess }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult EditStatus_Category(category categorys)
         {

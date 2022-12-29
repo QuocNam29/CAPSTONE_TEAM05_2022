@@ -1,0 +1,165 @@
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.sale>
+
+@{
+    int no = 0;
+    int no1 = 0;
+    var first_item = Model.FirstOrDefault();
+
+}
+<table class="table table-hover">
+    <thead>
+        <tr class="background-success">
+            <th colspan="2">
+                <h5>
+                    Đã thanh toán (@Model.Where(p => p.method == 1).Count())
+                </h5>
+            </th>
+            <th class="text-center">
+                <h5 class="custom-foot">
+                    @Model.Where(p => p.method == 1).Sum(t => t.total)
+                    ₫
+                </h5>
+            </th>
+            <th class="text-center">
+                <h5 class="custom-foot">
+                    @Model.Where(p => p.method == 1).Sum(t => t.vat)
+                    ₫
+                </h5>
+            </th>
+            <th class="text-center">
+                <h5 class="custom-foot">
+                    @Model.Where(p => p.method == 1).Sum(t => t.discount)
+                    ₫
+                </h5>
+            </th>
+            <th class="text-center">
+                <h5 class="custom-foot">
+                    @Model.Where(p => p.method == 1).Sum(t => t.total)
+                    ₫
+                </h5>
+            </th>
+            <th colspan="2">
+                <h5 class="totalPaid">@Model.Where(p => p.method == 1).Sum(t => t.total) ₫</h5>
+            </th>
+
+        </tr>
+        <tr>
+            <th class="text-center">STT</th>
+            <th>Mã hoá đơn</th>
+            <th class="text-center">Tổng hoá đơn</th>
+            <th class="text-center">VAT</th>
+            <th class="text-center">Chiết khấu</th>
+            <th class="text-center">Thành tiền</th>
+            <th class="text-center">Trạng thái</th>
+            <th class="text-center">Ngày giao dịch</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Where(m => m.method == 1))
+        {
+            no++;
+            <tr class="click-hover">
+                <td class="text-center">
+                    @no
+                </td>
+                <td>@item.code</td>
+                <td class="text-center">@item.total.ToString("N0")</td>
+                <td class="text-center">@item.vat%</td>
+                <td class="text-center">@item.discount%</td>
+                <td class="text-center">
+                    @item.total.ToString("N0")
+                </td>
+                <td class="text-center">
+                    Đã thanh toán
+                </td>
+                <td class="text-center">
+                    @String.Format("{0:HH:ss - dd/MM/yyy}", item.created_at)
+                </td>
+            </tr>
+        }
+
+
+    </tbody>
+</table>
+<table class="table table-hover">
+    <thead>
+        <tr class="background-danger">
+            <th colspan="2">
+                <h5>
+                    Ghi nợ (@Model.Where(p => p.method == 2).Count())
+                </h5>
+            </th>
+            <th class="text-center">
+                <h5 class="custom-foot">
+                    @Model.Where(p => p.method == 2).Sum(t => t.total)
+                    ₫
+                </h5>
+            </th>
+            <th class="text-center">
+                <h5 class="custom-foot">
+                    @Model.Where(p => p.method == 2).Sum(t => t.vat)
+                    ₫
+                </h5>
+            </th>
+            <th class="text-center">
+                <h5 class="custom-foot">
+                    @Model.Where(p => p.method == 2).Sum(t => t.discount)
+                    ₫
+                </h5>
+            </th>
+            <th class="text-center">
+                <h5 class="custom-foot">
+                    @Model.Where(p => p.method == 2).Sum(t => t.total)
+                    ₫
+                </h5>
+            </th>
+
+            <th>
+                <h5 class="totalPaid">
+                    <i>Đã thu:</i> @Model.Where(p => p.method == 2).Sum(s => s.prepayment)₫
+                </h5>
+            </th>
+            <th>
+                <h5 class="totalPaid">
+                    <i>Còn nợ:</i>@((Model.Where(p => p.method == 2).Sum(t => t.total) - Model.Where(p => p.method == 2).Sum(s => s.prepayment)))₫
+                </h5>
+            </th>
+        </tr>
+        <tr>
+            <th class="text-center">STT</th>
+            <th>Mã hoá đơn</th>
+            <th class="text-center">Tổng hoá đơn</th>
+            <th class="text-center">VAT</th>
+            <th class="text-center">Chiết khấu</th>
+            <th class="text-center">Thành tiền</th>
+            <th class="text-center">Trạng thái</th>
+            <th class="text-center">Ngày giao dịch</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Where(p => p.method == 2))
+        {
+            no1++;
+            <tr class="click-hover">
+                <td class="text-center">
+                    @no1
+                </td>
+                <td>@item.code</td>
+                <td class="text-center">@item.total</td>
+                <td class="text-center">@item.vat%</td>
+                <td class="text-center">@item.discount%</td>
+                <td class="text-center">
+                    @item.total
+                </td>
+                <td class="text-center">
+                    Ghi nợ
+                </td>
+                <td class="text-center">
+                    @String.Format("{0:HH:ss - dd/MM/yyy}", item.created_at)
+                </td>
+            </tr>
+        }
+
+
+    </tbody>
+</table>

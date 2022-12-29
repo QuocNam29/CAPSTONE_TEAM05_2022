@@ -42,12 +42,23 @@ namespace CAP_TEAM05_2022.Controllers
 
         public ActionResult Delete_GroupProduct(group GroupProducts)
         {
-            group group = db.groups.Find(GroupProducts.id);
-            group.status = 3;
-            group.deleted_at = DateTime.Now;
-            db.Entry(group).State = EntityState.Modified;
-            db.SaveChanges();
-            return Json("Delete_GroupProduct", JsonRequestBehavior.AllowGet);
+            bool status = true;
+            string mess = "";
+            try
+            {
+                group group = db.groups.Find(GroupProducts.id);
+                db.groups.Remove(group);
+                db.SaveChanges();
+                mess = "Xóa nhóm hàng thành công";
+            }
+            catch (Exception)
+            {
+
+                status = false;
+                mess = "Xóa thất bại ! (còn sản phẩm thuộc nhóm hàng).";
+            }
+           
+            return Json(new { status = status, message = mess }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult EditStatus_GroupProduct(group GroupProducts)
         {
