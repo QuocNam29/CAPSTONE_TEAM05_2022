@@ -1,0 +1,87 @@
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.sale>
+@{
+    int no = 0;
+}
+<table id="example" class="table table-hover card-scroll">
+    <thead>
+        <tr>
+            <th>STT</th>
+            <th>Mã đơn hàng</th>
+            <th>Mã khách hàng</th>
+            <th>Tên khách hàng</th>
+            <th>Số điện thoại</th>
+            <th class="text-center">Tổng đơn hàng</th>
+            <th class="text-center">Phương thức</th>
+            <th class="text-center">Ghi chú</th>
+            <th class="text-center">Ngày giao dịch</th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            no++;
+            <tr>
+                <td>@no</td>
+                <td>@item.code</td>
+                <td>@item.customer.code</td>
+                <td>@item.customer.name</td>
+                <td>@item.customer.phone</td>
+                <td class="text-center">
+                    @item.total
+                </td>
+
+                @if (item.method == 1)
+                {
+                    <td class="text-center">
+                        Đã thanh toán
+                    </td>
+                }
+                else if (item.method == 2)
+                {
+                    <td class="text-center">
+                        Ghi nợ
+                    </td>
+                }
+
+
+
+                <td class="text-center">
+                    @item.note
+                </td>
+                <td class="text-center">
+                    @String.Format("{0:HH:ss - dd/MM/yyy}", item.created_at)
+                </td>
+                <td>
+                    <button title="Xem chi tiết" class="btn btn-info">
+                        <span class="pcoded-micon">
+                            <i class="fas fa-info">
+                            </i>
+                        </span>
+                    </button>
+                    <button title="Đổi trả" class="btn btn-success">
+                        <span class="pcoded-micon">
+                            <i class="fas fa-retweet">
+                            </i>
+                        </span>
+                    </button>
+                    <button title="Tải hoá đơn" class="btn btn-primary">
+                        <span class="pcoded-micon">
+                            <i class="fas fa-download">
+                            </i>
+                        </span>
+                    </button>
+                    <button title="In hoá đơn" class="btn btn-secondary">
+                        <span class="pcoded-micon">
+                            <i class="fas fa-print">
+                            </i>
+                        </span>
+                    </button>
+                </td>
+            </tr>
+        }
+
+
+    </tbody>
+</table>

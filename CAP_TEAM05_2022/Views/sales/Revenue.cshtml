@@ -39,7 +39,7 @@
                                 <div class="col-md-4" style="">
                                     <div class="mx-datepicker">
                                         <div class="mx-input-wrapper">
-                                            <input name="date_start" id="revenue_DateStart" type="date" placeholder="" class="form-control custom-width" value="@String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(DateTime.Now.ToString("dd-MM-yyyy")))">
+                                            <input name="date_start" id="revenue_DateStart" type="date" placeholder="" class="form-control custom-width" value="@String.Format("{0:yyyy-MM-dd}", DateTime.Now)">
 
 
                                         </div>
@@ -47,7 +47,7 @@
                                 </div> <div class="col-md-4" style="">
                                     <div class="mx-datepicker">
                                         <div class="mx-input-wrapper">
-                                            <input name="date_end" id="revenue_DateEnd" type="date" class="form-control custom-width" value="@String.Format("{0:yyyy-MM-dd}",Convert.ToDateTime(DateTime.Now.ToString("dd-MM-yyyy")))">
+                                            <input name="date_end" id="revenue_DateEnd" type="date" class="form-control custom-width" value="@String.Format("{0:yyyy-MM-dd}",DateTime.Now)">
 
                                         </div>
                                     </div>
@@ -125,7 +125,7 @@
                                                                         @item.sale_details.product.quantity
                                                                     </td>
                                                                     <td class="text-center">
-                                                                        @(item.sale_details.product.purchase_price ) đ
+                                                                        @(item.sale_details.product.purchase_price.ToString("N0") ) đ
                                                                     </td>
                                                                    @* <td class="text-center">
                                                                         @(item.sale_details.product.purchase_price * item.sale_details.product.quantity)
@@ -141,14 +141,14 @@
                                                                     </td>*@
                                                                     @if ((item.Price - item.sale_details.product.purchase_price) * item.quantity > 0)
                                                                     {
-                                                                        <td class="text-center text-success">
-                                                                           + @((item.Price - item.sale_details.product.purchase_price) *item.quantity) đ
-                                                                        </td>
+                                                                <td class="text-center text-success">
+                                                                    + @(((item.Price - item.sale_details.product.purchase_price) *item.quantity)) đ
+                                                                </td>
                                                                     }
                                                                     else
                                                                     {
                                                                         <td class="text-right text-danger">
-                                                                            @((item.Price - item.sale_details.product.purchase_price) *item.quantity) đ
+                                                                            @(((item.Price - item.sale_details.product.purchase_price) *item.quantity)) đ
                                                                         </td>
                                                                     }
 

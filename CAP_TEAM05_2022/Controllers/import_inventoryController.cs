@@ -25,13 +25,15 @@ namespace CAP_TEAM05_2022.Controllers
         {
             if (date_start == null)
             {
-                date_start = Convert.ToDateTime(DateTime.Now.AddDays((-DateTime.Now.Day) + 1).ToString("dd-MM-yyyy"));
+                date_start =DateTime.Now.AddDays((-DateTime.Now.Day) + 1);
             }
             if (date_end == null)
             {
-                date_end = Convert.ToDateTime(DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day)).ToString("dd-MM-yyyy"));
+                date_end = DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day));
             }
-            var import_inventory = db.import_inventory.Include(i => i.user).Include(i => i.product).Where(i => i.created_at >= date_start && i.created_at <= date_end);
+            var import_inventory = db.import_inventory.Include(i => i.user).Include(i => i.product).Where(s => s.created_at.Value.Day >= date_start.Value.Day && s.created_at.Value.Day <= date_end.Value.Day
+            && s.created_at.Value.Month >= date_start.Value.Month && s.created_at.Value.Month <= date_end.Value.Month
+            && s.created_at.Value.Year >= date_start.Value.Year && s.created_at.Value.Day <= date_end.Value.Year);
             return PartialView(import_inventory.ToList());
         }
 

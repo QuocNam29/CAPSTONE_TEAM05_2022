@@ -678,6 +678,7 @@
     <Content Include="Views\sales\Revenue.cshtml" />
     <Content Include="Views\sales\_RevenueList_Date.cshtml" />
     <Content Include="Views\sales\_RevenueList_Month.cshtml" />
+    <Content Include="Views\sales\_OrderList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

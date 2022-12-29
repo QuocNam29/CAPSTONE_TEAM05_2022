@@ -20,9 +20,27 @@ namespace CAP_TEAM05_2022.Controllers
         // GET: sales
         public ActionResult Index()
         {
-            var sales = db.sales.Include(s => s.customer).Include(s => s.user);
-            return View(sales.ToList());
-        } 
+            
+            return View();
+        }
+        public ActionResult _OrderList(DateTime? date_Start, DateTime? date_End)
+        {
+            if (date_Start == null)
+            {
+                date_Start = DateTime.Now.AddDays((-DateTime.Now.Day) + 1);
+            }
+            if (date_End == null)
+            {
+                date_End = DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day));
+            }
+            var sales = db.sales.Include(s => s.customer).Include(s => s.user).Where(s => s.created_at.Value.Day >= date_Start.Value.Day && s.created_at.Value.Day <= date_End.Value.Day
+            && s.created_at.Value.Month >= date_Start.Value.Month && s.created_at.Value.Month <= date_End.Value.Month
+            && s.created_at.Value.Year >= date_Start.Value.Year && s.created_at.Value.Day <= date_End.Value.Year);
+
+            return PartialView(sales.ToList());
+        }
+
+
         public ActionResult Revenue()
         {
             return View(db.revenues.ToList());
@@ -31,13 +49,15 @@ namespace CAP_TEAM05_2022.Controllers
         {
             if (date_Start == null)
             {
-                date_Start = Convert.ToDateTime(DateTime.Now.ToString("dd-MM-yyyy"));
+                date_Start =(DateTime.Now);
             }
             if (date_End == null)
             {
-                date_End = Convert.ToDateTime(DateTime.Now.ToString("dd-MM-yyyy"));
+                date_End = (DateTime.Now);
             }
-            var sales = db.sales.Include(s => s.customer).Include(s => s.user).Where(s => s.created_at >= date_Start && s.created_at <= date_End);
+            var sales = db.sales.Include(s => s.customer).Include(s => s.user).Where(s => s.created_at.Value.Day >= date_Start.Value.Day && s.created_at.Value.Day <= date_End.Value.Day
+            && s.created_at.Value.Month >= date_Start.Value.Month && s.created_at.Value.Month <= date_End.Value.Month
+            && s.created_at.Value.Year >= date_Start.Value.Year && s.created_at.Value.Day <= date_End.Value.Year);
           
             return PartialView(sales.ToList());
         }
@@ -45,13 +65,14 @@ namespace CAP_TEAM05_2022.Controllers
         {
             if (date_Start == null)
             {
-                date_Start = Convert.ToDateTime(DateTime.Now.AddDays((-DateTime.Now.Day) + 1).ToString("dd-MM-yyyy"));
+                date_Start =DateTime.Now.AddDays((-DateTime.Now.Day) + 1);
             }
             if (date_End == null)
             {
-                date_End = Convert.ToDateTime(DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day)).ToString("dd-MM-yyyy"));
+                date_End =DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day));
             }
-            var sales = db.sales.Include(s => s.customer).Include(s => s.user).Where(s => s.created_at.Value.Month >= date_Start.Value.Month && s.created_at.Value.Month <= date_End.Value.Month);
+            var sales = db.sales.Include(s => s.customer).Include(s => s.user).Where(s => s.created_at.Value.Month >= date_Start.Value.Month && s.created_at.Value.Month <= date_End.Value.Month
+                                                         && s.created_at.Value.Year >= date_Start.Value.Year && s.created_at.Value.Day <= date_End.Value.Year);
 
             return PartialView(sales.ToList());
         }

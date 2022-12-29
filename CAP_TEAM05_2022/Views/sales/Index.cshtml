@@ -5,96 +5,440 @@
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
 }
 
-<h2>Index</h2>
+<section class="pcoded-main-container">
+    <div class="pcoded-content">
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">Quản lý đơn hàng</h5>
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="https://dnqt.net">
+                                    <i class="feather icon-home">
+                                    </i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="javascript:void(0)">Quản lý đơn hàng</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" class="tab-pane fade active show">
+                    <div class="card">
+                        <div class="card-body table-border-style">
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <div class="mx-datepicker">
+                                        <div class="mx-input-wrapper">
+                                            <input name="date" type="date" placeholder="" class="form-control custom-width" value="@String.Format("{0:yyyy-MM-dd}", DateTime.Now.AddDays((-DateTime.Now.Day) + 1))">
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mx-datepicker">
+                                        <div class="mx-input-wrapper">
+                                            <input name="date" type="date" placeholder="" class="form-control custom-width" value="@String.Format("{0:yyyy-MM-dd}",DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day)))">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="table-responsive">
+                                @{ Html.RenderAction("_OrderList", "sales");}
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.code)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.method)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.total)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.discount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.vat)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.note)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.status)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.created_at)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.updated_at)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.deleted_at)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.customer.name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.user.name)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.code)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.method)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.total)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.discount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.vat)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.note)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.status)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.created_at)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.updated_at)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.deleted_at)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.customer.name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.user.name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id })
-        </td>
-    </tr>
-}
-
-</table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div id="productSelectModal" tabindex="-1" role="dialog" aria-labelledby="productSelectModalTitle" aria-hidden="true" class="modal fade bd-example-modal-lg">
+                    <div role="document" class="modal-dialog modal-lg">
+                        <form>
+                            <div class="modal-content">
+                                <div class="modal-header bg-primary">
+                                    <h5 id="productSelectModalTitle" class="modal-title white">Chon sản phẩm đổi trả</h5>
+                                    <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center">STT</th>
+                                                            <th>Mã sản phẩm</th>
+                                                            <th>Tên sản phẩm</th>
+                                                            <th class="text-center">Số lượng</th>
+                                                            <th class="text-center">Tổng tiền</th>
+                                                            <th>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td colspan="7">
+                                                                <div class="alert alert-warning">
+                                                                    <p class="text-center">Không tìm thấy dữ liệu</p>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div id="productExchangeModal" tabindex="-1" role="dialog" aria-labelledby="productExchangeModalTitle" aria-hidden="true" class="modal fade bd-example-modal-lg">
+                    <div role="document" class="modal-dialog modal-lg">
+                        <form>
+                            <div class="modal-content">
+                                <div class="modal-header bg-primary">
+                                    <h5 id="productExchangeModalTitle" class="modal-title white">Đổi - Trả sản phẩm</h5>
+                                    <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <p class="alert alert-warning" style="display: none;">
+                                </p>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Sản phẩm hiện tại</label>
+                                                <div class="position-relative">
+                                                    <input type="text" disabled="disabled" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Số lượng</label>
+                                                <div class="position-relative">
+                                                    <input type="text" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Chiết khấu(%)</label>
+                                                <div class="position-relative">
+                                                    <input type="text" disabled="disabled" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>
+                                                    Lựa chọn<span class="text-danger">*</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input type="radio" value="0"> Đổi mới
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input type="radio" value="1"> Trả hàng
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <!---->
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>
+                                                    Chọn sản phẩm mới<span class="text-danger">*</span>
+                                                </label>
+                                                <div>
+                                                    <select id="" name="" class="form-control select2-hidden-accessible" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                                                    </select>
+                                                    <span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="2" style="width: auto;">
+                                                        <span class="selection">
+                                                            <span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2--container">
+                                                                <span class="select2-selection__rendered" id="select2--container" role="textbox" aria-readonly="true">
+                                                                    <span class="select2-selection__placeholder">Chọn sản phẩm</span>
+                                                                </span>
+                                                                <span class="select2-selection__arrow" role="presentation">
+                                                                    <b role="presentation">
+                                                                    </b>
+                                                                </span>
+                                                            </span>
+                                                        </span>
+                                                        <span class="dropdown-wrapper" aria-hidden="true">
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                                <!---->
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>
+                                                    Số lượng<span class="text-danger">*</span>
+                                                </label>
+                                                <input type="number" placeholder="Số lượng sản phẩm" disabled="disabled" class="form-control">
+                                                <!---->
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Giá sản phẩm</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-append">
+                                                        <span id="basic-addon2" class="input-group-text">
+                                                            Số lượng còn: 0
+                                                        </span>
+                                                    </div>
+                                                    <input type="text" disabled="disabled" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Giá chênh lệch hiện tại và muốn đổi</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-append">
+                                                        <span id="basic-addon1" class="input-group-text">
+                                                            Thu thêm
+                                                        </span>
+                                                    </div>
+                                                    <input type="text" disabled="disabled" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <p class="text-danger">
+                                                Sản phẩm hiện tại x 0 = 0
+                                            </p>
+                                            <p class="text-danger" style="display: none;">
+                                                Sản phẩm muốn đổi x 0 = 0
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary me-1 mb-1">Trờ lại</button>
+                                        <button type="submit" class="btn btn-primary me-1 mb-1">Lưu</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalTitle" aria-hidden="true" class="modal fade bd-example-modal-lg">
+                <div role="document" class="modal-dialog modal-lg">
+                    <form>
+                        <div class="modal-content">
+                            <div class="modal-header bg-primary">
+                                <h5 id="detailModalTitle" class="modal-title white">Chi tiết </h5>
+                                <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">STT</th>
+                                                        <th class="text-center">Mã sản phẩm</th>
+                                                        <th class="text-center">Tên sản phẩm</th>
+                                                        <th class="text-center">Đơn vị</th>
+                                                        <th class="text-center">Đơn giá</th>
+                                                        <th class="text-center">Số lượng</th>
+                                                        <th class="text-center">Thành tiền</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="7">
+                                                            <div class="alert alert-warning">
+                                                                <p class="text-center">Không tìm thấy dữ liệu</p>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td colspan="6" class="text-right">
+                                                            <h5>Tạm tính</h5>
+                                                        </td>
+                                                        <td class="text-left">
+                                                            <h5>0₫</h5>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="6" class="text-right">
+                                                            <h5>VAT (%)</h5>
+                                                        </td>
+                                                        <td class="text-left">
+                                                            <h5>%</h5>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="6" class="text-right">
+                                                            <h5>Chiết khấu (%)</h5>
+                                                        </td>
+                                                        <td class="text-left">
+                                                            <h5>%</h5>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="6" class="text-right">
+                                                            <h5>Thành tiền</h5>
+                                                        </td>
+                                                        <td class="text-left">
+                                                            <h5>
+                                                                0₫
+                                                            </h5>
+                                                        </td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div data-v-1fd3ad26="" class="vue-html2pdf" hidden="hidden">
+                <section data-v-1fd3ad26="" class="layout-container">
+                    <section data-v-1fd3ad26="" class="content-wrapper" style="width: 100%;">
+                        <section data-v-1fd3ad26="">
+                            <div id="invoicePrint" class="row" data-v-1fd3ad26="">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="text-center">DOANH NGHIỆP TẤN THÀNH</h4>
+                                            <h6 class="text-center">Địa chỉ: 11/43 Ấp Tân Trung B, xã Tân Hưng, Huyện Tân Châu, Tỉnh Tây Ninh</h6>
+                                            <h6 class="text-center">SDT: 0382399026</h6>
+                                            <hr>
+                                            <h4 class="text-center">HOÁ ĐƠN BÁN HÀNG</h4>
+                                        </div>
+                                        <div class="card-body table-border-style">
+                                            <div class="table-responsive">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p>
+                                                        </p>
+                                                        <p>Người bán hàng: </p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <p class="text-right">Mã hoá đơn: </p>
+                                                        <p class="text-right">Mã khách hàng: </p>
+                                                    </div>
+                                                </div>
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center">STT</th>
+                                                            <th>Mã hàng</th>
+                                                            <th>Tên hàng hàng</th>
+                                                            <th class="text-center">Đơn vị</th>
+                                                            <th class="text-center">Số lượng</th>
+                                                            <th class="text-center">Chiết khấu</th>
+                                                            <th class="text-center">Đơn giá</th>
+                                                            <th class="text-center">Thành tiền</th>
+                                                            <th>Ghi chú</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td colspan="11">
+                                                                <div class="alert alert-warning">
+                                                                    <p class="text-center">Không tìm thấy dữ liệu</p>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <td colspan="7" class="text-right">
+                                                                <h5>Tạm tính</h5>
+                                                            </td>
+                                                            <td colspan="2" class="text-left">
+                                                                <h5>0₫</h5>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="7" class="text-right">
+                                                                <h5>VAT (%)</h5>
+                                                            </td>
+                                                            <td colspan="2" class="text-left">
+                                                                <h5>%</h5>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="7" class="text-right">
+                                                                <h5>Chiết khấu (%)</h5>
+                                                            </td>
+                                                            <td colspan="2" class="text-left">
+                                                                <h5>%</h5>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="7" class="text-right">
+                                                                <h5>Hình thức</h5>
+                                                            </td>
+                                                            <td colspan="2" class="text-left">
+                                                                <h5>Đã thanh toán</h5>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="7" class="text-right">
+                                                                <h5>Thành tiền</h5>
+                                                            </td>
+                                                            <td colspan="2" class="text-left">
+                                                                <h5>
+                                                                    0₫
+                                                                </h5>
+                                                            </td>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+                <!---->
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    var row;
+    $(document).ready(function () {
+        $('#example').DataTable({
+            pagingType: 'full_numbers',
+        });
+    });
+</script>
