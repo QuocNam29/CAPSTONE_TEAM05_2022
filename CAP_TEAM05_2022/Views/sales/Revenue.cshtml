@@ -5,6 +5,9 @@
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
     int no = 0;
 }
+<input type="text" hidden id="URL_RevenueList_Date" value="@Url.Action("_RevenueList_Date", "sales")" />
+<input type="text" hidden id="URL_RevenueList_Month" value="@Url.Action("_RevenueList_Month", "sales")" />
+
 <section class="pcoded-main-container">
     <div class="pcoded-content">
         <div class="page-header">
@@ -36,7 +39,7 @@
                                 <div class="col-md-4" style="">
                                     <div class="mx-datepicker">
                                         <div class="mx-input-wrapper">
-                                            <input name="date_start" id="filter_DateStart" type="date" placeholder="" class="form-control custom-width" value="@String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(DateTime.Now.ToString("dd-MM-yyyy")))">
+                                            <input name="date_start" id="revenue_DateStart" type="date" placeholder="" class="form-control custom-width" value="@String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(DateTime.Now.ToString("dd-MM-yyyy")))">
 
 
                                         </div>
@@ -44,15 +47,12 @@
                                 </div> <div class="col-md-4" style="">
                                     <div class="mx-datepicker">
                                         <div class="mx-input-wrapper">
-                                            <input name="date_end" id="filter_DateEnd" type="date" class="form-control custom-width" value="@String.Format("{0:yyyy-MM-dd}",Convert.ToDateTime(DateTime.Now.ToString("dd-MM-yyyy")))">
+                                            <input name="date_end" id="revenue_DateEnd" type="date" class="form-control custom-width" value="@String.Format("{0:yyyy-MM-dd}",Convert.ToDateTime(DateTime.Now.ToString("dd-MM-yyyy")))">
 
                                         </div>
                                     </div>
-                                </div> <div class="col-md-2" style="">
-                                    <button type="button" class="btn btn-warning float-left btn-block">Xem</button>
-                                </div> <div class="col-md-6" style="display: none;">
-                                    <h4>Doanh thu lợi nhuận</h4>
-                                </div> <div class="col-md-2">
+                                </div>  
+                                <div class="col-md-4">
                                     <div class="float-right">
                                         <button type="button" class="btn btn-secondary">Xuất tệp</button>
                                     </div>
@@ -84,20 +84,20 @@
                                         <div class="card">
                                             <div class="card-body table-border-style">
                                                 <div>
-                                                    <div class="table-responsive">
+                                                    <div class="table-responsive" id="dataContainer1">
                                                         @{ Html.RenderAction("_RevenueList_Month", "sales");}
                                                     </div>
 
                                                 </div>
                                             </div>
                                         </div>
-                                    </div> 
-                                <div id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" class="tab-pane fade">
+                                    </div>
+                                    <div id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" class="tab-pane fade">
                                         <div class="card">
                                             <div class="card-body table-border-style">
                                                 <div>
-                                                    <input type="text" id="search" placeholder="Tìm kiếm..." class="form-control form-search mb-3"> <div class="table-responsive">
-                                                        <table class="table table-hover">
+                                                     <div class="table-responsive">
+                                                        <table id="example" class="table table-hover">
                                                             <thead>
                                                                 <tr>
                                                                     <th>Mã sản phẩm</th>
@@ -351,94 +351,19 @@
                                                                         </p>
                                                                     </td>
                                                                 </tr>
-                                                                <tr style="display: none;">
-                                                                    <td colspan="9">
-                                                                        <div class="alert alert-warning">
-                                                                            <p class="text-center">Không tìm thấy dữ liệu</p>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
+                                                                
                                                             </tbody>
-                                                        </table> <div class="between:flex bottom:margin-3 ml-2">
-                                                            <div class="center:flex-items">
-                                                                <span class="right:marign-1">Hiển thị</span> <select id="form-select" class="select form-control select-entities">
-                                                                    <option value="5">
-                                                                        5
-                                                                    </option>
-                                                                    <option value="10">
-                                                                        10
-                                                                    </option>
-                                                                    <option value="25">
-                                                                        25
-                                                                    </option>
-                                                                    <option value="50">
-                                                                        50
-                                                                    </option>
-                                                                    <option value="100">
-                                                                        100
-                                                                    </option>
-                                                                    <option value="200">
-                                                                        200
-                                                                    </option>
-                                                                </select>
-                                                            </div>
-                                                        </div> <nav aria-label="...">
-                                                            <ul class="pagination justify-content-center">
-                                                                <li class="page-item disabled">
-                                                                    <a class="page-link"> &lt;&lt; </a>
-                                                                </li>
-                                                                <li class="page-item disabled">
-                                                                    <a class="page-link"> &lt; </a>
-                                                                </li>
-                                                                <li class="page-item active">
-                                                                    <a class="page-link">
-                                                                        1
-                                                                        <span class="sr-only">
-                                                                        </span>
-                                                                    </a>
-                                                                </li>
-                                                                <li class="page-item">
-                                                                    <a class="page-link">
-                                                                        2
-                                                                        <!---->
-                                                                    </a>
-                                                                </li>
-                                                                <li class="page-item">
-                                                                    <a class="page-link">
-                                                                        3
-                                                                        <!---->
-                                                                    </a>
-                                                                </li>
-                                                                <li class="page-item">
-                                                                    <a class="page-link">
-                                                                        4
-                                                                        <!---->
-                                                                    </a>
-                                                                </li>
-                                                                <li class="page-item">
-                                                                    <a class="page-link">
-                                                                        5
-                                                                        <!---->
-                                                                    </a>
-                                                                </li>
-                                                                <li class="page-item">
-                                                                    <a class="page-link"> &gt; </a>
-                                                                </li>
-                                                                <li class="page-item">
-                                                                    <a class="page-link"> &gt;&gt; </a>
-                                                                </li>
-                                                            </ul>
-                                                        </nav>
+                                                        </table>  
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div> 
-                                <div id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" class="tab-pane fade active show">
+                                    </div>
+                                    <div id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" class="tab-pane fade active show">
                                         <div class="card">
                                             <div class="card-body table-border-style">
                                                 <div>
-                                                    <div class="table-responsive">
+                                                    <div class="table-responsive" id="dataContainer">
                                                         @{ Html.RenderAction("_RevenueList_Date", "sales");}
 
                                                     </div>
@@ -535,3 +460,11 @@
         </div>
     </div>
 </section>
+<script type="text/javascript">
+    var row;
+    $(document).ready(function () {
+        $('#example').DataTable({
+            pagingType: 'full_numbers',
+        });
+    });
+</script>

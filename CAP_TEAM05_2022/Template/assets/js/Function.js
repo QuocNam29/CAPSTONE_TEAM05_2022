@@ -600,12 +600,35 @@ $('#URLInventoryList')
 $("#filter_DateStart").change(function () {
     var date_start = $("#filter_DateStart").val();
     var date_end = $("#filter_DateEnd").val();
-    GetList_Inventory(date_start, date_end)
+   
+    if (date_start <= date_end) {
+        GetList_Inventory(date_start, date_end);
+    } else {
+        sweetAlert
+            ({
+                title: "Lỗi",
+                text: "Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc !",
+                type: "error",
+                allowOutsideClick: true,
+
+            })
+    }
 });
 $("#filter_DateEnd").change(function () {
     var date_start = $("#filter_DateStart").val();
     var date_end = $("#filter_DateEnd").val();
-    GetList_Inventory(date_start, date_end)
+    if (date_start <= date_end) {
+        GetList_Inventory(date_start, date_end);
+    } else {
+        sweetAlert
+            ({
+                title: "Lỗi",
+                text: "Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc !",
+                type: "error",
+                allowOutsideClick: true,
+
+            })
+    }
 });
 
 function GetList_Inventory(date_start, date_end) {
@@ -1395,4 +1418,88 @@ function Update_Cart() {
         }
     });
 
+}
+
+//----------------------FILTER INVENTORY PRODUCT------------------------------------------------
+$('#URL_RevenueList_Date')
+    .keypress(function () {
+        URL_RevenueList_Date = $(this).val();
+    })
+    .keypress();
+$('#URL_RevenueList_Month')
+    .keypress(function () {
+        URL_RevenueList_Month = $(this).val();
+    })
+    .keypress();
+
+$("#revenue_DateStart").change(function () {
+    var date_start = $("#revenue_DateStart").val();
+    var date_end = $("#revenue_DateEnd").val();
+    if (date_start <= date_end) {
+        GetList_RevenueListDate(date_start, date_end);
+        GetList_RevenueListMonth(date_start, date_end);
+    } else {
+        sweetAlert
+            ({
+                title: "Lỗi",
+                text: "Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc !",
+                type: "error",
+                allowOutsideClick: true,
+
+            })
+    }
+    
+});
+$("#revenue_DateEnd").change(function () {
+    var date_start = $("#revenue_DateStart").val();
+    var date_end = $("#revenue_DateEnd").val();
+    if (date_start <= date_end) {
+        GetList_RevenueListDate(date_start, date_end);
+        GetList_RevenueListMonth(date_start, date_end);
+    } else {
+        sweetAlert
+            ({
+                title: "Lỗi",
+                text: "Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc !",
+                type: "error",
+                allowOutsideClick: true,
+
+            })
+    }
+});
+
+function GetList_RevenueListDate(date_start, date_end) {
+    $.ajax({
+        url: URL_RevenueList_Date,
+        data: {
+            date_Start: date_start,
+            date_End: date_end,
+        }
+    }).done(function (result) {
+        $('#dataContainer').html(result);
+        $('#dataContainer1').html(result);
+
+    }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        console.log(textStatus)
+        console.log(errorThrown)
+        alert("Something Went Wrong, Try Later");
+    });
+}
+
+function GetList_RevenueListMonth(date_start, date_end) {
+    $.ajax({
+        url: URL_RevenueList_Month,
+        data: {
+            date_Start: date_start,
+            date_End: date_end,
+        }
+    }).done(function (result) {
+        $('#dataContainer').html(result);
+        $('#dataContainer1').html(result);
+
+    }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        console.log(textStatus)
+        console.log(errorThrown)
+        alert("Something Went Wrong, Try Later");
+    });
 }
