@@ -38,11 +38,11 @@ namespace CAP_TEAM05_2022.Models
         public virtual DbSet<import_inventory> import_inventory { get; set; }
         public virtual DbSet<personal_access_tokens> personal_access_tokens { get; set; }
         public virtual DbSet<product> products { get; set; }
+        public virtual DbSet<revenue> revenues { get; set; }
         public virtual DbSet<sale_details> sale_details { get; set; }
         public virtual DbSet<sale> sales { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<user> users { get; set; }
         public virtual DbSet<password_resets> password_resets { get; set; }
-        public virtual DbSet<revenue> revenues { get; set; }
     }
 }

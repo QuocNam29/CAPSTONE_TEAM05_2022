@@ -31,9 +31,9 @@
                             <table id="example" class="table table-hover card-scroll">
                                 <thead>
                                     <tr>
-                                        <th class="text-center sticky-col first-col">STT</th>
-                                        <th class="sticky-col first-col">Mã sản phẩm</th>
-                                        <th class="sticky-col second-col">Tên sản phẩm</th>
+                                        <th >STT</th>
+@*                                        <th >Mã sản phẩm</th>
+*@                                        <th >Tên sản phẩm</th>
                                         <th class="text-center">Đơn vị</th>
                                         <th class="text-center">Đơn giá nhập</th>
                                         <th class="text-center">Số lượng nhập</th>
@@ -60,9 +60,9 @@
                                         no++;
 
                                         <tr>
-                                            <td class="text-center sticky-col first-col">@no</td>
-                                            <td class="sticky-col first-col">@item.product.code</td>
-                                            <td class="sticky-col second-col">@item.product.name</td>
+                                            <td>@no</td>
+@*                                            <td >@item.product.code</td>
+*@                                            <td >@item.product.name</td>
                                             <td class="text-center">@item.product.unit</td>
                                             <td class="text-center">@item.price_import.ToString("N0")</td>
                                             <td class="text-center">@item.quantity</td>
@@ -123,7 +123,8 @@
                                         <td class="text-center">@item.product.unit</td>
                                         <td class="text-center">@item.product.sell_price.ToString("N0")</td>
                                         <td class="text-center">@item.sold</td>
-                                        <td class="text-center">@((item.product.sell_price * (item.sold)).ToString("N0")) </td>
+                                        @*<td class="text-center">@((item.product.sell_price * (item.sold)).ToString("N0")) </td>*@
+                                        <td class="text-center">@item.revenues.Sum(s => s.Price * s.quantity).ToString("N0") </td>
                                     </tr>
                                         total_sell += (item.product.sell_price * (item.sold));
 
@@ -144,12 +145,12 @@
                 <div class="card">
                     <div class="card-body table-border-style">
                         <div class="table-responsive">
-                            <table id="example2" class="table table-hover">
+                            <table id="example2" class="table table-hover card-scroll">
                                 <thead>
                                     <tr>
-                                        <th class="text-center">STT</th>
-                                        <th class="text-center">Mã sản phẩm</th>
-                                        <th class="text-center">Tên sản phẩm</th>
+                                        <th >STT</th>
+                                        <th>Mã sản phẩm</th>
+                                        <th>Tên sản phẩm</th>
                                         <th class="text-center">Đơn vị</th>
                                         <th class="text-center">Đơn giá nhập</th>
                                         <th class="text-center">Số lượng nhập</th>
@@ -171,14 +172,14 @@
                                         no_import++;
 
                                     <tr>
-                                        <td class="text-center">@no_import</td>
-                                        <td class="text-center">@item.product.code</td>
-                                        <td class="text-center">@item.product.name</td>
+                                        <td >@no_import</td>
+                                        <td >@item.product.code</td>
+                                        <td >@item.product.name</td>
                                         <td class="text-center">@item.product.unit</td>
                                         <td class="text-center">@item.product.sell_price.ToString("N0")</td>
                                         <td class="text-center">@item.sold</td>
                                         <td class="text-center">@((item.price_import * (item.quantity)).ToString("N0")) </td>
-                                        <td class="text-center">@item.created_at</td>
+                                        <td class="text-center"> @String.Format("{0:HH:ss - dd/MM/yyy}", item.created_at)</td>
 
                                     </tr>
                                         total_import += (item.price_import * (item.quantity));

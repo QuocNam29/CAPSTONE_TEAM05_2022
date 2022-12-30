@@ -34,7 +34,7 @@ namespace CAP_TEAM05_2022.Controllers
             var import_inventory = db.import_inventory.Include(i => i.user).Include(i => i.product).Where(s => s.created_at.Value.Day >= date_start.Value.Day && s.created_at.Value.Day <= date_end.Value.Day
             && s.created_at.Value.Month >= date_start.Value.Month && s.created_at.Value.Month <= date_end.Value.Month
             && s.created_at.Value.Year >= date_start.Value.Year && s.created_at.Value.Day <= date_end.Value.Year);
-            return PartialView(import_inventory.ToList());
+            return PartialView(import_inventory.OrderByDescending(i => i.id).ToList());
         }
 
         // GET: import_inventory/Details/5

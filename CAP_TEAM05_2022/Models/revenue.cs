@@ -15,10 +15,10 @@ namespace CAP_TEAM05_2022.Models
     public partial class revenue
     {
         public int id { get; set; }
-        public Nullable<int> inventory_id { get; set; }
-        public Nullable<int> sale_details_id { get; set; }
-        public Nullable<int> Price { get; set; }
-        public Nullable<int> quantity { get; set; }
+        public int inventory_id { get; set; }
+        public int sale_details_id { get; set; }
+        public int Price { get; set; }
+        public int quantity { get; set; }
     
         public virtual import_inventory import_inventory { get; set; }
         public virtual sale_details sale_details { get; set; }

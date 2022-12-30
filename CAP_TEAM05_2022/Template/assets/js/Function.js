@@ -23,6 +23,7 @@
 
     }, false);
 })();
+
 $(document).ready(function () {
     var forms = document.getElementsByClassName('needs-validation');
     var validation = Array.prototype.filter.call(forms, function (form) {
@@ -31,21 +32,25 @@ $(document).ready(function () {
             event.preventDefault();
             event.stopPropagation();
             form.classList.add('was-validated');
+            
         } else {
+           
             Update();
             form.classList.remove('was-validated');
 
         }
     })
         $('#submit_edit_product').on('click', function () {
+            
+
             if (form.checkValidity() === false) {
                 event.preventDefault();
                 event.stopPropagation();
                 form.classList.add('was-validated');
-            } else {
+            } else {               
+                console.log("hihi");
                 Update_Product();
                 form.classList.remove('was-validated');
-
             }
         })
         $('#submit_edit_customer').on('click', function () {
@@ -524,9 +529,9 @@ function Update_Product() {
     product.group_id = $('#edit_GroupProduct').val();
     product.category_id = $('#edit_Category').val();
   
-    console.log(product);
     $.ajax({
         url: URLUpdateProduct,
+        async: false,
         type: "Post",
         data: JSON.stringify(product),
         contentType: "application/json; charset=UTF-8",

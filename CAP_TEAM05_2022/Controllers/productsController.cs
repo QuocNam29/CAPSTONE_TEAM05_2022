@@ -116,6 +116,8 @@ namespace CAP_TEAM05_2022.Controllers
        
         public JsonResult UpdateProduct(product Products)
         {
+            string email = Session["user_email"].ToString();
+            user user = db.users.Where(u => u.email == email).FirstOrDefault();
             product product = db.products.Find(Products.id);
             product.name = Products.name;
            
@@ -127,6 +129,18 @@ namespace CAP_TEAM05_2022.Controllers
             product.quantity = Products.quantity;
             product.updated_at = DateTime.Now;
             db.Entry(product).State = EntityState.Modified;
+
+            int inventory = Products.quantity - db.import_inventory.Where(i => i.product_id == Products.id).Sum(s => s.quantity) - db.import_inventory.Where(i => i.product_id == Products.id).Sum(s => s.sold);
+            
+                import_inventory import = new import_inventory();
+                import.product_id = Products.id;
+                import.quantity = inventory;            
+                import.price_import = Products.purchase_price;
+                import.sold = 0;
+                import.created_at = DateTime.Now;
+                import.created_by = user.id;
+            db.import_inventory.Add(import);
+
             db.SaveChanges();
             string message = "Record Saved Successfully ";
             bool status = true;
