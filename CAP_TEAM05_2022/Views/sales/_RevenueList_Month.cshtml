@@ -16,7 +16,7 @@
             </th>
             <th class="text-center">
                 <h5 class="custom-foot">
-                    @Model.Where(p => p.method == 1).Sum(t => t.total)
+                    @Model.Where(p => p.method == 1).Sum(t => t.total).ToString("N0")
                     ₫
                 </h5>
             </th>
@@ -34,12 +34,12 @@
             </th>
             <th class="text-center">
                 <h5 class="custom-foot">
-                    @Model.Where(p => p.method == 1).Sum(t => t.total)
+                    @Model.Where(p => p.method == 1).Sum(t => t.total).ToString("N0")
                     ₫
                 </h5>
             </th>
             <th colspan="2">
-                <h5 class="totalPaid">@Model.Where(p => p.method == 1).Sum(t => t.total) ₫</h5>
+                <h5 class="totalPaid">@Model.Where(p => p.method == 1).Sum(t => t.total).ToString("N0") ₫</h5>
             </th>
 
         </tr>
@@ -91,7 +91,7 @@
             </th>
             <th class="text-center">
                 <h5 class="custom-foot">
-                    @Model.Where(p => p.method == 2).Sum(t => t.total)
+                    @Model.Where(p => p.method == 2).Sum(t => t.total).ToString("N0")
                     ₫
                 </h5>
             </th>
@@ -109,19 +109,19 @@
             </th>
             <th class="text-center">
                 <h5 class="custom-foot">
-                    @Model.Where(p => p.method == 2).Sum(t => t.total)
+                    @Model.Where(p => p.method == 2).Sum(t => t.total).ToString("N0")
                     ₫
                 </h5>
             </th>
 
             <th>
                 <h5 class="totalPaid">
-                    <i>Đã thu:</i> @Model.Where(p => p.method == 2).Sum(s => s.prepayment)₫
+                    <i>Đã thu:</i> @String.Format("{0:0,00}", Model.Where(p => p.method == 2).Sum(s => s.prepayment))₫
                 </h5>
             </th>
             <th>
                 <h5 class="totalPaid">
-                    <i>Còn nợ:</i>@((Model.Where(p => p.method == 2).Sum(t => t.total) - Model.Where(p => p.method == 2).Sum(s => s.prepayment)))₫
+                    <i>Còn nợ:</i>@String.Format("{0:0,00}", ((Model.Where(p => p.method == 2).Sum(t => t.total) - Model.Where(p => p.method == 2).Sum(s => s.prepayment))))₫
                 </h5>
             </th>
         </tr>
@@ -145,11 +145,11 @@
                     @no1
                 </td>
                 <td>@item.code</td>
-                <td class="text-center">@item.total</td>
+                <td class="text-center">@item.total.ToString("N0")</td>
                 <td class="text-center">@item.vat%</td>
                 <td class="text-center">@item.discount%</td>
                 <td class="text-center">
-                    @item.total
+                    @item.total.ToString("N0")
                 </td>
                 <td class="text-center">
                     Ghi nợ

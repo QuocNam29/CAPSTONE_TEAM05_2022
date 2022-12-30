@@ -101,10 +101,10 @@ namespace CAP_TEAM05_2022.Controllers
             sale.created_by = user.id;
             sale.created_at = DateTime.Now;
             db.sales.Add(sale);
-            var cart = db.carts.Where(c => c.customer_id == createSale.customer_id);
+            db.SaveChanges();
+            var cart = db.carts.Where(c => c.customer_id == createSale.customer_id).ToList();
             foreach (var item in cart)
             {
-  
                 sale_details sale_Details = new sale_details();
                 sale_Details.sale_id = sale.id;
                 sale_Details.product_id = item.product_id;
@@ -113,7 +113,7 @@ namespace CAP_TEAM05_2022.Controllers
                 sale_Details.discount = item.discount;
                 sale_Details.created_at = DateTime.Now;
                 db.sale_details.Add(sale_Details);
-                
+               
                 import_inventory inventory = db.import_inventory.Where(i => i.product_id == item.product_id && i.sold <= i.quantity 
                                                                     && (i.quantity - i.sold) >= item.quantity).FirstOrDefault();
                 inventory.sold += item.quantity;
@@ -127,8 +127,8 @@ namespace CAP_TEAM05_2022.Controllers
                 db.revenues.Add(revenue);
                     cart cart1 = db.carts.Find(item.id);
                 db.carts.Remove(cart1);
+                db.SaveChanges();
             }
-            db.SaveChanges();
             if (createSale.method > 0)
             {
                 debt debt = new debt();

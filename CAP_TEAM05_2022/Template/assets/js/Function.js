@@ -11,8 +11,12 @@
                 if (form.checkValidity() === false) {
                     event.preventDefault();
                     event.stopPropagation();
+                    form.classList.add('was-validated');
+                } else {
+                    form.classList.remove('was-validated');
+
                 }
-                form.classList.add('was-validated');
+               
                
             }, false);
         });
@@ -26,48 +30,104 @@ $(document).ready(function () {
         if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
+            form.classList.add('was-validated');
         } else {
             Update();
+            form.classList.remove('was-validated');
+
         }
-        form.classList.add('was-validated');
     })
         $('#submit_edit_product').on('click', function () {
             if (form.checkValidity() === false) {
                 event.preventDefault();
                 event.stopPropagation();
+                form.classList.add('was-validated');
             } else {
                 Update_Product();
+                form.classList.remove('was-validated');
+
             }
-            form.classList.add('was-validated');
         })
         $('#submit_edit_customer').on('click', function () {
             if (form.checkValidity() === false) {
                 event.preventDefault();
                 event.stopPropagation();
+                form.classList.add('was-validated');
             } else {
                 Update_Customer();
+                form.classList.remove('was-validated');
+
             }
-            form.classList.add('was-validated');
         })
         $('#add_customer_sale').on('click', function () {
             if (form.checkValidity() === false) {
                 event.preventDefault();
                 event.stopPropagation();
+                form.classList.add('was-validated');
             } else {
                 AddCustomerSale();
+                form.classList.remove('was-validated');
+
             }
-            form.classList.add('was-validated');
+            
         })
         $('#submit_addCart').on('click', function () {
             if (form.checkValidity() === false) {
                 
                 event.preventDefault();
                 event.stopPropagation();
+                form.classList.add('was-validated');
             } else {
                 
                 Create_Cart();
+                form.classList.remove('was-validated');
             }
-            form.classList.add('was-validated');
+           
+        })
+        $('#submit_updateCart').on('click', function () {
+            if (form.checkValidity() === false) {
+
+                event.preventDefault();
+                event.stopPropagation();
+                form.classList.add('was-validated');
+            } else {
+
+                Update_Cart();
+                form.classList.remove('was-validated');
+            }
+
+        })
+//-------------------------Làm mới cart--------------------------------
+        $('#refresh_cart').on('click', function () {
+            GetList_Cart(-1);
+            $('#customer_code').val('');
+            $('#customer_phone').val('');
+            $('#customer_type').val('');
+            $('#customer_name').val('');
+            $('#product_code').val('');
+            $('#product_unit').val('');
+            $('#product_price').val('');
+            $('#product_name').val('');
+            $('#sum_price').val('');
+            $('#cart_note').val('');
+            form.classList.remove('was-validated');
+        })
+        $('#Cancel_Cart').on('click', function () {
+            $('#product_code').val('');
+            $('#product_unit').val('');
+            $('#product_price').val('');
+            $('#product_name').val('');
+            $('#sum_price').val('');
+            $('#cart_note').val('');
+            $('#product_quantity').val(1);
+            document.querySelector("#customer_name").disabled = false;
+            document.querySelector("#product_name").disabled = false;
+
+            $("#submit_addCart").show();
+            $("#refresh_cart").show();
+            $("#submit_updateCart").hide();
+            $("#Cancel_Cart").hide();
+            form.classList.remove('was-validated');
         })
        
 
@@ -1133,36 +1193,8 @@ function ImportFail_continuesAll() {
                })*/
         })
 }
-//-------------------------Làm mới cart--------------------------------
-$('#refresh_cart').on('click', function () {
-    GetList_Cart(-1);
-    $('#customer_code').val('');
-    $('#customer_phone').val('');
-    $('#customer_type').val('');
-    $('#customer_name').val('');
-    $('#product_code').val('');
-    $('#product_unit').val('');
-    $('#product_price').val('');
-    $('#product_name').val('');
-    $('#sum_price').val('');
-    $('#cart_note').val('');
-})
-$('#Cancel_Cart').on('click', function () {   
-    $('#product_code').val('');
-    $('#product_unit').val('');
-    $('#product_price').val('');
-    $('#product_name').val('');
-    $('#sum_price').val('');
-    $('#cart_note').val('');
-    $('#product_quantity').val(1);
-    document.querySelector("#customer_name").disabled = false;
-    document.querySelector("#product_name").disabled = false;
 
-    $("#submit_addCart").show();
-    $("#refresh_cart").show();
-    $("#submit_updateCart").hide();
-    $("#Cancel_Cart").hide();
-})
+
 
 function ButtonDebit() {
     var cart_Prepay1 = $('#cart_Prepay').val();
@@ -1322,8 +1354,10 @@ function Payment_order() {
     sale.vat = $('#vat').val();
     sale.note = $('#cart_note').val();
     sale.method = Number($('#cart_Prepay').val().replace(/\,/g, '').replace(/\./g, ''));
+    console.log(URLCreateSale);
     $.ajax({
         url: URLCreateSale,
+        async: false,
         type: "Post",
         data: JSON.stringify(sale),
         contentType: "application/json; charset=UTF-8",

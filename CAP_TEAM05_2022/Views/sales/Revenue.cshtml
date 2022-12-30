@@ -134,22 +134,22 @@
                                                                         @item.quantity
                                                                     </td>
                                                                     <td class="text-center">
-                                                                        @item.Price đ
+                                                                        @String.Format("{0:0,00}", item.Price) đ
                                                                     </td>
                                                                     @*<td class="text-center">
                                                                         @(item.Price * item.quantity)
                                                                     </td>*@
                                                                     @if ((item.Price - item.sale_details.product.purchase_price) * item.quantity > 0)
                                                                     {
-                                                                <td class="text-center text-success">
-                                                                    + @(((item.Price - item.sale_details.product.purchase_price) *item.quantity)) đ
+                                                                <td class="text-right text-success">
+                                                                    + @String.Format("{0:0,00}", (((item.Price - item.sale_details.product.purchase_price) * item.quantity))) đ
                                                                 </td>
                                                                     }
                                                                     else
                                                                     {
-                                                                        <td class="text-right text-danger">
-                                                                            @(((item.Price - item.sale_details.product.purchase_price) *item.quantity)) đ
-                                                                        </td>
+                                                                <td class="text-right text-danger">
+                                                                    @String.Format("{0:0,00}", (((item.Price - item.sale_details.product.purchase_price) * item.quantity))) đ
+                                                                </td>
                                                                     }
 
                                                                 </tr>

@@ -45,15 +45,28 @@ namespace CAP_TEAM05_2022.Controllers
                 bool status1 = true;
                 return Json(new { status = status1, message = message1 }, JsonRequestBehavior.AllowGet);
             }
-            cart cart  = new cart();
-            cart.product_id = cart_create.product_id;
-            cart.customer_id = cart_create.customer_id;
-            cart.quantity = cart_create.quantity;
-            cart.price = cart_create.price;
-            cart.discount = cart_create.discount;
-            cart.note = cart_create.note;
-            db.carts.Add(cart);
-            db.SaveChanges();
+            cart cart_check = db.carts.Where(c => c.customer_id == cart_create.customer_id && c.product_id == cart_create.product_id
+            && c.discount == cart_create.discount).FirstOrDefault();
+            if (cart_check == null)
+            {
+                cart cart = new cart();
+                cart.product_id = cart_create.product_id;
+                cart.customer_id = cart_create.customer_id;
+                cart.quantity = cart_create.quantity;
+                cart.price = cart_create.price;
+                cart.discount = cart_create.discount;
+                cart.note = cart_create.note;
+                db.carts.Add(cart);
+                db.SaveChanges();
+            }
+            else
+            {
+                cart_check.quantity += cart_create.quantity;
+                cart_check.price = cart_create.price;
+                db.Entry(cart_check).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            
             
             product.quantity -= cart_create.quantity;
             db.Entry(product).State = EntityState.Modified;
