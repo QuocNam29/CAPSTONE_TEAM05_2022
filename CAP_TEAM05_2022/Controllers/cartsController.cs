@@ -62,7 +62,7 @@ namespace CAP_TEAM05_2022.Controllers
             else
             {
                 cart_check.quantity += cart_create.quantity;
-                cart_check.price = cart_create.price;
+                cart_check.price += cart_create.price;
                 db.Entry(cart_check).State = EntityState.Modified;
                 db.SaveChanges();
             }
@@ -105,6 +105,9 @@ namespace CAP_TEAM05_2022.Controllers
         public ActionResult Delete_CartProduct(cart cart)
         {
             cart cart1 = db.carts.Find(cart.id);
+            product product = db.products.Find(cart1.product_id);
+            product.quantity += cart1.quantity;
+            db.Entry(product).State = EntityState.Modified;
             db.carts.Remove(cart1);
             db.SaveChanges();
             return Json("Delete_CartProduct", JsonRequestBehavior.AllowGet);

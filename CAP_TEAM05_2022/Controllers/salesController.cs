@@ -37,13 +37,13 @@ namespace CAP_TEAM05_2022.Controllers
             && s.created_at.Value.Month >= date_Start.Value.Month && s.created_at.Value.Month <= date_End.Value.Month
             && s.created_at.Value.Year >= date_Start.Value.Year && s.created_at.Value.Day <= date_End.Value.Year);
 
-            return PartialView(sales.ToList());
+            return PartialView(sales.OrderByDescending(c => c.id).ToList());
         }
 
 
         public ActionResult Revenue()
         {
-            return View(db.revenues.ToList());
+            return View(db.revenues.OrderByDescending(c => c.id).ToList());
         }
         public ActionResult _RevenueList_Date(DateTime? date_Start, DateTime? date_End)
         {
@@ -59,7 +59,7 @@ namespace CAP_TEAM05_2022.Controllers
             && s.created_at.Value.Month >= date_Start.Value.Month && s.created_at.Value.Month <= date_End.Value.Month
             && s.created_at.Value.Year >= date_Start.Value.Year && s.created_at.Value.Day <= date_End.Value.Year);
           
-            return PartialView(sales.ToList());
+            return PartialView(sales.OrderByDescending(c => c.id).ToList());
         }
         public ActionResult _RevenueList_Month(DateTime? date_Start, DateTime? date_End)
         {
@@ -74,7 +74,7 @@ namespace CAP_TEAM05_2022.Controllers
             var sales = db.sales.Include(s => s.customer).Include(s => s.user).Where(s => s.created_at.Value.Month >= date_Start.Value.Month && s.created_at.Value.Month <= date_End.Value.Month
                                                          && s.created_at.Value.Year >= date_Start.Value.Year && s.created_at.Value.Day <= date_End.Value.Year);
 
-            return PartialView(sales.ToList());
+            return PartialView(sales.OrderByDescending(c => c.id).ToList());
         }
 
         public JsonResult CreateSale(sale createSale)
