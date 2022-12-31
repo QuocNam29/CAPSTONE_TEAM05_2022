@@ -23,6 +23,20 @@ namespace CAP_TEAM05_2022.Controllers
             
             return View();
         }
+        public ActionResult _OrderDetailsList(int order_id)
+        {
+            var sale = db.sales.Find(order_id);
+            if (sale!= null)
+            {
+                TempData["order_code"] = sale.code;
+                TempData["order_vat"] = sale.vat;
+                TempData["order_discount"] = sale.discount;
+                TempData["order_total"] = sale.total;
+            }
+           
+            var OrderDetailsList = db.sale_details.Where(o => o.sale_id == order_id);
+            return PartialView(OrderDetailsList.ToList());
+        }
         public ActionResult _OrderList(DateTime? date_Start, DateTime? date_End)
         {
             if (date_Start == null)
@@ -87,7 +101,7 @@ namespace CAP_TEAM05_2022.Controllers
             if (createSale .method > 0)
             {
                 sale.method = 2;
-
+                sale.prepayment = createSale.method;
             }
             else
             {

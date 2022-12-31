@@ -29,7 +29,7 @@
                 <td>@item.customer.name</td>
                 <td>@item.customer.phone</td>
                 <td class="text-center">
-                    @item.total
+                    @String.Format("{0:0,00}", item.total)
                 </td>
 
                 @if (item.method == 1)
@@ -54,7 +54,7 @@
                     @String.Format("{0:HH:ss - dd/MM/yyy}", item.created_at)
                 </td>
                 <td>
-                    <button title="Xem chi tiết" class="btn btn-info">
+                    <button title="Xem chi tiết" class="btn btn-info" onclick="GetList_orderDetails('@item.id')">
                         <span class="pcoded-micon">
                             <i class="fas fa-info">
                             </i>

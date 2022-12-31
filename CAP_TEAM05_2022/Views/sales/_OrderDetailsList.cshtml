@@ -1,0 +1,120 @@
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.sale_details>
+
+@{
+    int no = 0;
+    string order_code = "";
+    int order_total = 0;
+    int order_vat = 0;
+    int order_discount = 0;
+    if (TempData["order_code"] != null)
+    {
+        order_code = TempData["order_code"].ToString();
+        order_total = int.Parse(TempData["order_total"].ToString());
+        order_vat = int.Parse(TempData["order_vat"].ToString());
+        order_discount = int.Parse(TempData["order_discount"].ToString());
+    }
+
+}
+<div id="detailModal" tabindex="-1" aria-labelledby="detailModalTitle" class="modal fade bd-example-modal-lg" style="display: none;" aria-hidden="true">
+    <div role="document" class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 id="detailModalTitle" class="modal-title white">Chi tiết @order_code</h5>
+                <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">STT</th>
+                                        <th class="text-center">Mã sản phẩm</th>
+                                        <th class="text-center">Tên sản phẩm</th>
+                                        <th class="text-center">Đơn vị</th>
+                                        <th class="text-center">Đơn giá</th>
+                                        <th class="text-center">Số lượng</th>
+                                        <th class="text-center">Thành tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        no++;
+                                        <tr>
+                                            <td class="text-center">
+                                                @no
+                                            </td>
+                                            <td class="text-center">
+                                                @item.product.code
+                                            </td>
+                                            <td class="text-center">
+                                            @item.product.name
+                                            </td>
+                                            <td class="text-center">
+                                                @item.product.unit
+                                            </td>
+                                            <td class="text-center">
+                                                @String.Format("{0:0,00}", item.price / item.sold)
+                                            </td>
+                                            <td class="text-center">
+                                                @item.sold
+                                            </td>
+                                            <td class="text-center">
+                                                @String.Format("{0:0,00}", item.price)
+                                            </td>
+                                        </tr>
+                                    }
+
+
+
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="6" class="text-right">
+                                            <h5>Tạm tính</h5>
+                                        </td>
+                                        <td class="text-left">
+                                            <h5>  @String.Format("{0:0,00}", order_total / (1 + order_vat / 100 - order_discount / 100))₫</h5>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" class="text-right">
+                                            <h5>VAT (%)</h5>
+                                        </td>
+                                        <td class="text-left">
+                                            <h5>@order_vat%</h5>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" class="text-right">
+                                            <h5>Chiết khấu (%)</h5>
+                                        </td>
+                                        <td class="text-left">
+                                            <h5>@order_discount%</h5>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" class="text-right">
+                                            <h5>Thành tiền</h5>
+                                        </td>
+                                        <td class="text-left">
+                                            <h5>
+                                                @String.Format("{0:0,00}", order_total)₫
+                                            </h5>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
