@@ -1542,3 +1542,269 @@ function GetList_RevenueListMonth(date_start, date_end) {
         alert("Something Went Wrong, Try Later");
     });
 }
+//----------------------Xem trước hóa đơn------------------------------------------------
+$('#URLgetCartProduct')
+    .keypress(function () {
+        URLgetCartProduct = $(this).val();
+    })
+    .keypress();
+function openWin() {
+    var curDate = new Date();
+    // Ngày hiện tại
+    var curDay = curDate.getDate();
+    // Tháng hiện tại
+    var curMonth = curDate.getMonth() + 1;
+    // Năm hiện tại
+    var curYear = curDate.getFullYear();
+    // giờ hiện tại
+    var curTime = curDate.getHours() + ":" + curDate.getMinutes() + ":" + curDate.getSeconds();
+    var customer_id = $('#customer_id').val();
+    var customer_code = $('#customer_code').val();
+    var cart_total = $('#cart_total').val();
+    var total = $('#total').val();
+    var cart_vat = $('#cart_vat').val();
+    var cart_discount = $('#cart_discount').val();
+    var s = "";
+    $.ajax({
+        type: "GET",
+        async: false,
+        url: URLgetCartProduct,
+        data: { id: customer_id },
+        success: function (data) {
+
+            for (var i = 0; i < data.length; i++) {
+                var note = "";
+                if (data[i].cartNote != null) {
+                    note = data[i].cartNote;
+                }
+                s += `<tr>
+                        <td class="text-center">`+ (i + 1) + `</td>
+                        <td>`+ data[i].cartCode + `</td>
+                        <td>`+ data[i].cartName + `</td>
+                        <td class="text-center">`+ data[i].cartUnit + `</td>
+                        <td class="text-center">`+ data[i].cartQuantity + `</td>
+                        <td class="text-center">`+ data[i].cartDiscount + `%</td>
+                        <td class="text-center">`+ data[i].cartPrice.toLocaleString() + `</td>
+                        <td class="text-center">`+ data[i].cartTotal.toLocaleString() + `</td>
+                        <td>`+ note + `</td>
+                    </tr>`
+            }
+        }
+    });
+    var myWindow = window.open('', '', 'width=1200,height=800');
+  /*  myWindow.document.write('<link href="/Template/assets/css/style.css" rel="stylesheet" />'); */
+    myWindow.document.write('<link href="/CP25Team05/Template/assets/css/style.css" rel="stylesheet" />');
+    myWindow.document.write(`<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="text-center">DOANH NGHIỆP TẤN THÀNH</h4>
+            <h6 class="text-center">Địa chỉ: 11/43 Ấp Tân Trung B, xã Tân Hưng, Huyện Tân Châu, Tỉnh Tây Ninh</h6>
+            <h6 class="text-center">SDT: 0382399026</h6>
+            <hr>
+            <h4 class="text-center">BẢN XEM TRƯỚC HOÁ ĐƠN</h4>
+        </div>
+        <div class="card-body table-border-style">
+            <div class="table-responsive">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>Ngày: ` + curDay + ' tháng ' + curMonth + ' năm ' + curYear + ', Thời gian: ' + curTime + `</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="text-right">Mã khách hàng: `+ customer_code + `</p>
+                    </div>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-center">STT</th>
+                            <th>Mã hàng</th>
+                            <th>Tên hàng hàng</th>
+                            <th class="text-center">Đơn vị</th>
+                            <th class="text-center">Số lượng</th>
+                            <th class="text-center">Chiết khấu</th>
+                            <th class="text-center">Đơn giá</th>
+                            <th class="text-center">Thành tiền</th>
+                            <th>Ghi chú</th>
+                        </tr>
+                    </thead>
+                        <tbody>` + s + `</tbody >
+                    <tfoot>
+                        <tr>
+                            <td colspan="7" class="text-right">
+                                <h5>Tạm tính</h5>
+                            </td>
+                            <td colspan="2" class="text-left">
+                                <h5>`+ cart_total + `₫</h5>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="7" class="text-right">
+                                <h5>VAT (%)</h5>
+                            </td>
+                            <td colspan="2" class="text-left">
+                                <h5>`+ cart_vat + `%</h5>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="7" class="text-right">
+                                <h5>Chiết khấu (%)</h5>
+                            </td>
+                            <td colspan="2" class="text-left">
+                                <h5>`+ cart_discount + `%</h5>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="7" class="text-right">
+                                <h5>Hình thức</h5>
+                            </td>
+                            <td colspan="2" class="text-left">
+                                Xem trước (Chưa thanh toán)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="7" class="text-right">
+                                <h5>Thành tiền</h5>
+                            </td>
+                            <td colspan="2" class="text-left">
+                                <h5>
+                                    `+ total + `₫
+                                </h5>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>`);
+
+    myWindow.print();
+    myWindow.document.close();
+    myWindow.focus();
+}
+
+function PrintOrder(id, code, method, total, discount, vat, create_at, customer_code) {
+    
+   
+    var s = "";
+    $.ajax({
+        type: "GET",
+        async: false,
+        url: URLgetCartProduct,
+        data: { id: id },
+        success: function (data) {
+
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].cartNote != null) {
+                    note = data[i].cartNote;
+                }
+                s += `<tr>
+                        <td class="text-center">`+ (i + 1) + `</td>
+                        <td>`+ data[i].cartCode + `</td>
+                        <td>`+ data[i].cartName + `</td>
+                        <td class="text-center">`+ data[i].cartUnit + `</td>
+                        <td class="text-center">`+ data[i].cartQuantity + `</td>
+                        <td class="text-center">`+ data[i].cartDiscount + `%</td>
+                        <td class="text-center">`+ data[i].cartPrice.toLocaleString() + `</td>
+                        <td class="text-center">`+ data[i].cartTotal.toLocaleString() + `</td>
+                    </tr>`
+            }
+        }
+    });
+    if (method == 1) {
+        var form_method = "Đã thanh toán";
+    } else if (method == 1) {
+        var form_method = "Ghi nợ";
+    }
+
+    var myWindow = window.open('', '', 'width=1200,height=800');
+      myWindow.document.write('<link href="/Template/assets/css/style.css" rel="stylesheet" />'); 
+/*    myWindow.document.write('<link href="/CP25Team05/Template/assets/css/style.css" rel="stylesheet" />');
+*/    myWindow.document.write(`<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="text-center">DOANH NGHIỆP TẤN THÀNH</h4>
+            <h6 class="text-center">Địa chỉ: 11/43 Ấp Tân Trung B, xã Tân Hưng, Huyện Tân Châu, Tỉnh Tây Ninh</h6>
+            <h6 class="text-center">SDT: 0382399026</h6>
+            <hr>
+         <h4 class="text-center">HOÁ ĐƠN BÁN HÀNG</h4>
+        </div>
+        <div class="card-body table-border-style">
+            <div class="table-responsive">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>Ngày tạo đơn: ` + create_at + `</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="text-right">Mã hóa đơn: `+ code + `</p>
+                        <p class="text-right">Mã khách hàng: `+ customer_code + `</p>
+                    </div>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-center">STT</th>
+                            <th>Mã hàng</th>
+                            <th>Tên hàng hàng</th>
+                            <th class="text-center">Đơn vị</th>
+                            <th class="text-center">Số lượng</th>
+                            <th class="text-center">Chiết khấu</th>
+                            <th class="text-center">Đơn giá</th>
+                            <th class="text-center">Thành tiền</th>
+                        </tr>
+                    </thead>
+                        <tbody>` + s + `</tbody >
+                    <tfoot>
+                        <tr>
+                            <td colspan="7" class="text-right">
+                                <h5>Tạm tính</h5>
+                            </td>
+                            <td colspan="2" class="text-left">
+                                <h5>`+ (total / (1 + vat / 100 - discount / 100)).toLocaleString() + `₫</h5>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="7" class="text-right">
+                                <h5>VAT (%)</h5>
+                            </td>
+                            <td colspan="2" class="text-left">
+                                <h5>`+ vat + `%</h5>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="7" class="text-right">
+                                <h5>Chiết khấu (%)</h5>
+                            </td>
+                            <td colspan="2" class="text-left">
+                                <h5>`+ discount + `%</h5>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="7" class="text-right">
+                                <h5>Hình thức</h5>
+                            </td>
+                            <td colspan="2" class="text-left">
+                               `+ form_method +`
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="7" class="text-right">
+                                <h5>Thành tiền</h5>
+                            </td>
+                            <td colspan="2" class="text-left">
+                                <h5>
+                                    `+ total.toLocaleString() + `₫
+                                </h5>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>`);
+    
+    myWindow.print();
+    myWindow.document.close();
+    myWindow.focus();
+}

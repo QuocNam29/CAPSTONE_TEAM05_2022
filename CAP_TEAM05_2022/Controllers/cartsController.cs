@@ -21,9 +21,9 @@ namespace CAP_TEAM05_2022.Controllers
          
             return PartialView(carts.ToList().OrderByDescending(c => c.id));
         }
-        public ActionResult getCartProduct(int customer_id)
+        public ActionResult getCartProduct(int id)
         {
-            return Json(db.carts.Include(c => c.product).Include(c => c.customer).Where(c => c.customer_id == customer_id).OrderByDescending(c => c.id).Select(x => new
+            return Json(db.carts.Include(c => c.product).Include(c => c.customer).Where(c => c.customer_id == id).OrderByDescending(c => c.id).Select(x => new
             {
                 cartCode = x.product.code,
                 cartName = x.product.name,

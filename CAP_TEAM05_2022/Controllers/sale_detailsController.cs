@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
+using System.Drawing;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using CAP_TEAM05_2022.Helper;
 using CAP_TEAM05_2022.Models;
+
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -22,7 +20,19 @@ namespace CAP_TEAM05_2022.Controllers
             var sale_details = db.sale_details.Include(s => s.product).Include(s => s.sale);
             return View(sale_details.ToList());
         }
-
+        public ActionResult getCartProduct(int id)
+        {
+            return Json(db.sale_details.Include(s => s.product).Include(s => s.sale).Where(c => c.sale_id == id).OrderByDescending(c => c.id).Select(x => new
+            {
+                cartCode = x.product.code,
+                cartName = x.product.name,
+                cartUnit = x.product.unit,
+                cartQuantity = x.sold,
+                cartPrice = x.price/ x.sold,
+                cartDiscount = x.discount,
+                cartTotal = x.price,
+            }).ToList(), JsonRequestBehavior.AllowGet);
+        }
         // GET: sale_details/Details/5
         public ActionResult Details(int? id)
         {
