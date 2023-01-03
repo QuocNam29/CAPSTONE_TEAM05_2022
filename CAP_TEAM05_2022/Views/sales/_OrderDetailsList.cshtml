@@ -2,6 +2,7 @@
 
 @{
     int no = 0;
+    int no_return = 0;
     string order_code = "";
     int order_total = 0;
     int order_vat = 0;
@@ -116,5 +117,206 @@
             </div>
         </div>
 
+    </div>
+</div>
+<div id="productSelectModal" tabindex="-1" role="dialog" aria-labelledby="productSelectModalTitle" aria-hidden="true" class="modal fade bd-example-modal-lg">
+    <div role="document" class="modal-dialog modal-lg">
+        <form>
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 id="productSelectModalTitle" class="modal-title white">Chon sản phẩm đổi trả</h5>
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">STT</th>
+                                            <th>Mã sản phẩm</th>
+                                            <th>Tên sản phẩm</th>
+                                            <th class="text-center">Số lượng</th>
+                                            <th class="text-center">Tổng tiền</th>
+                                            <th>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            no_return++;
+                                        <tr>
+                                            <td class="text-center">
+                                                @no_return
+                                            </td>
+                                            <td class="text-center">
+                                                @item.product.code
+                                            </td>
+                                            <td class="text-center">
+                                                @item.product.name
+                                            </td>
+
+                                            <td class="text-center">
+                                                @item.sold
+                                            </td>
+                                            <td class="text-center">
+                                                @String.Format("{0:0,00}", item.price)
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary"  onclick="Get_ReturnProduct('@item.id')">Chọn</button>
+                                            </td>
+                                        </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="productExchangeModal" tabindex="-1" role="dialog" aria-labelledby="productExchangeModalTitle" aria-hidden="true" class="modal fade bd-example-modal-lg">
+    <div role="document" class="modal-dialog modal-lg">
+        <form>
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 id="productExchangeModalTitle" class="modal-title white">Đổi - Trả sản phẩm</h5>
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <p class="alert alert-warning" style="display: none;">
+                </p>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Sản phẩm hiện tại</label>
+                                <div class="position-relative">
+                                    <input type="text" id="product_Current" disabled="disabled" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Số lượng</label>
+                                <div class="position-relative">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Chiết khấu(%)</label>
+                                <div class="position-relative">
+                                    <input type="text" disabled="disabled" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>
+                                    Lựa chọn<span class="text-danger">*</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <input type="radio" value="0"> Đổi mới
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <input type="radio" value="1"> Trả hàng
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <!---->
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Chọn sản phẩm mới<span class="text-danger">*</span>
+                                </label>
+                                <div>
+                                    <select id="" name="" class="form-control select2-hidden-accessible" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                                    </select>
+                                    <span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="2" style="width: auto;">
+                                        <span class="selection">
+                                            <span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2--container">
+                                                <span class="select2-selection__rendered" id="select2--container" role="textbox" aria-readonly="true">
+                                                    <span class="select2-selection__placeholder">Chọn sản phẩm</span>
+                                                </span>
+                                                <span class="select2-selection__arrow" role="presentation">
+                                                    <b role="presentation">
+                                                    </b>
+                                                </span>
+                                            </span>
+                                        </span>
+                                        <span class="dropdown-wrapper" aria-hidden="true">
+                                        </span>
+                                    </span>
+                                </div>
+                                <!---->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Số lượng<span class="text-danger">*</span>
+                                </label>
+                                <input type="number" placeholder="Số lượng sản phẩm" disabled="disabled" class="form-control">
+                                <!---->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Giá sản phẩm</label>
+                                <div class="input-group">
+                                    <div class="input-group-append">
+                                        <span id="basic-addon2" class="input-group-text">
+                                            Số lượng còn: 0
+                                        </span>
+                                    </div>
+                                    <input type="text" disabled="disabled" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Giá chênh lệch hiện tại và muốn đổi</label>
+                                <div class="input-group">
+                                    <div class="input-group-append">
+                                        <span id="basic-addon1" class="input-group-text">
+                                            Thu thêm
+                                        </span>
+                                    </div>
+                                    <input type="text" disabled="disabled" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="text-danger">
+                                Sản phẩm hiện tại x 0 = 0
+                            </p>
+                            <p class="text-danger" style="display: none;">
+                                Sản phẩm muốn đổi x 0 = 0
+                            </p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary me-1 mb-1">Trờ lại</button>
+                        <button type="submit" class="btn btn-primary me-1 mb-1">Lưu</button>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 </div>

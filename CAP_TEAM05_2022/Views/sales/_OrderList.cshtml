@@ -54,13 +54,13 @@
                     @String.Format("{0:HH:ss - dd/MM/yyy}", item.created_at)
                 </td>
                 <td>
-                    <button title="Xem chi tiết" class="btn btn-info" onclick="GetList_orderDetails('@item.id')">
+                    <button title="Xem chi tiết" class="btn btn-info" onclick="GetList_orderDetails('@item.id', 1)">
                         <span class="pcoded-micon">
                             <i class="fas fa-info">
                             </i>
                         </span>
                     </button>
-                    <button title="Đổi trả" class="btn btn-success">
+                    <button title="Đổi trả" class="btn btn-success" onclick="GetList_orderDetails('@item.id', 2)">
                         <span class="pcoded-micon">
                             <i class="fas fa-retweet">
                             </i>

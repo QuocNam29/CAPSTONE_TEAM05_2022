@@ -33,6 +33,17 @@ namespace CAP_TEAM05_2022.Controllers
                 cartTotal = x.price,
             }).ToList(), JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
+        public JsonResult FindSaleDetails(int id)
+        {
+            sale_details details = db.sale_details.Find(id);
+            var emp = new sale_details();
+            emp.product.code = details.product.code;
+            emp.product.name = details.product.name;
+            emp.sold = details.sold;
+            emp.discount = details.discount;
+            return Json(emp);
+        }
         // GET: sale_details/Details/5
         public ActionResult Details(int? id)
         {

@@ -1718,9 +1718,9 @@ function PrintOrder(id, code, method, total, discount, vat, create_at, customer_
     }
 
     var myWindow = window.open('', '', 'width=1200,height=800');
-      myWindow.document.write('<link href="/Template/assets/css/style.css" rel="stylesheet" />'); 
-/*    myWindow.document.write('<link href="/CP25Team05/Template/assets/css/style.css" rel="stylesheet" />');
-*/    myWindow.document.write(`<div class="col-md-12">
+/*      myWindow.document.write('<link href="/Template/assets/css/style.css" rel="stylesheet" />'); 
+*/    myWindow.document.write('<link href="/CP25Team05/Template/assets/css/style.css" rel="stylesheet" />');
+    myWindow.document.write(`<div class="col-md-12">
     <div class="card">
         <div class="card-header">
             <h4 class="text-center">DOANH NGHIỆP TẤN THÀNH</h4>
