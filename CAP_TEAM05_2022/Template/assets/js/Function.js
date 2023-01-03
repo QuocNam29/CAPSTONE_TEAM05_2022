@@ -1476,7 +1476,6 @@ $("#revenue_DateStart").change(function () {
     var date_end = $("#revenue_DateEnd").val();
     if (date_start <= date_end) {
         GetList_RevenueListDate(date_start, date_end);
-        GetList_RevenueListMonth(date_start, date_end);
     } else {
         sweetAlert
             ({
@@ -1494,6 +1493,38 @@ $("#revenue_DateEnd").change(function () {
     var date_end = $("#revenue_DateEnd").val();
     if (date_start <= date_end) {
         GetList_RevenueListDate(date_start, date_end);
+    } else {
+        sweetAlert
+            ({
+                title: "Lỗi",
+                text: "Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc !",
+                type: "error",
+                allowOutsideClick: true,
+
+            })
+    }
+});
+$("#revenue_DateStart_Month").change(function () {
+    var date_start = $("#revenue_DateStart_Month").val();
+    var date_end = $("#revenue_DateEnd_Month").val();
+    if (date_start <= date_end) {
+        GetList_RevenueListMonth(date_start, date_end);
+    } else {
+        sweetAlert
+            ({
+                title: "Lỗi",
+                text: "Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc !",
+                type: "error",
+                allowOutsideClick: true,
+
+            })
+    }
+
+});
+$("#revenue_DateEnd_Month").change(function () {
+    var date_start = $("#revenue_DateStart_Month").val();
+    var date_end = $("#revenue_DateEnd_Month").val();
+    if (date_start <= date_end) {
         GetList_RevenueListMonth(date_start, date_end);
     } else {
         sweetAlert

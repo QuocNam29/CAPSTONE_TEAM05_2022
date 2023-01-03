@@ -3,7 +3,6 @@
 @{
     ViewBag.Title = "Revevue";
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
-    int no = 0;
 }
 <input type="text" hidden id="URL_RevenueList_Date" value="@Url.Action("_RevenueList_Date", "sales")" />
 <input type="text" hidden id="URL_RevenueList_Month" value="@Url.Action("_RevenueList_Month", "sales")" />
@@ -40,15 +39,18 @@
                                     <div class="mx-datepicker">
                                         <div class="mx-input-wrapper">
                                             <input name="date_start" id="revenue_DateStart" type="date" placeholder="" class="form-control custom-width" value="@String.Format("{0:yyyy-MM-dd}", DateTime.Now)">
-
-
+                                        </div>
+                                        <div class="mx-input-wrapper">
+                                            <input name="date_start" id="revenue_DateStart_Month" type="month" placeholder="" class="form-control custom-width" value="@String.Format("{0:yyyy-MM}", DateTime.Now)" style="display: none;">
                                         </div>
                                     </div>
                                 </div> <div class="col-md-4" style="">
                                     <div class="mx-datepicker">
                                         <div class="mx-input-wrapper">
                                             <input name="date_end" id="revenue_DateEnd" type="date" class="form-control custom-width" value="@String.Format("{0:yyyy-MM-dd}",DateTime.Now)">
-
+                                        </div>
+                                        <div class="mx-input-wrapper">
+                                            <input name="date_end" id="revenue_DateEnd_Month" type="month" class="form-control custom-width" value="@String.Format("{0:yyyy-MM}",DateTime.Now)" style="display: none;">
                                         </div>
                                     </div>
                                 </div>  
@@ -65,12 +67,12 @@
                             <div class="card-body">
                                 <ul id="pills-tab" role="tablist" class="nav nav-pills mb-3">
                                     <li class="nav-item">
-                                        <a id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="true" class="nav-link active">
+                                        <a id="pills-contact-tab" onclick="revenue_Date()" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="true" class="nav-link active">
                                             Doanh thu theo ngày <input type="hidden" value="1">
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="false" class="nav-link">
+                                        <a id="pills-home-tab" onclick="revenue_Month()" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="false" class="nav-link">
                                             Doanh thu theo tháng <input type="hidden" value="1">
                                         </a>
                                     </li>
@@ -271,4 +273,16 @@
             pagingType: 'full_numbers',
         });
     });
+    function revenue_Month() {      
+        $("#revenue_DateStart").hide();
+        $("#revenue_DateEnd").hide();
+        $("#revenue_DateStart_Month").show();
+        $("#revenue_DateEnd_Month").show();
+    }
+    function revenue_Date() {
+        $("#revenue_DateStart").show();
+        $("#revenue_DateEnd").show();
+        $("#revenue_DateStart_Month").hide();
+        $("#revenue_DateEnd_Month").hide();
+    }
 </script>
