@@ -1,0 +1,71 @@
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.product>
+@{
+    int no = 0;
+    int total_inventory = 0;
+}
+            <div class="table-responsive">
+                <table id="example" class="table table-hover card-scroll">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th >Mã sản phẩm</th>                            
+                            <th>Tên sản phẩm</th>
+                            <th class="text-center">Đơn vị</th>
+                            <th class="text-center">Đơn giá nhập</th>
+                            <th class="text-center">Số lượng nhập</th>
+                            <th class="text-center">Đơn giá bán</th>
+                            <th class="text-center">Số lượng bán</th>
+                            <th class="text-center">
+                                <span>
+                                    Tồn tổng
+                                    <i data-toggle="tooltip" data-placement="top" data-original-title="(Số lượng nhập - Số lượng bán)" class="feather icon-alert-circle icon-info"></i>
+                                </span>
+                            </th>
+                            <th class="text-center">
+                                <span>
+                                    Thành tiền
+                                    <i data-toggle="tooltip" data-placement="top" data-original-title="(Đơn giá nhập x Tồn tổng)" class="feather icon-alert-circle icon-info"></i>
+                                </span>
+                            </th>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            var inventory = item.import_inventory.ToList();
+                            var hihi = inventory.GroupBy(s => s.price_import).ToList();
+
+                            foreach (var item1 in hihi)
+                            {
+                                no++;
+                                
+                                <tr>
+                                    <td>@no</td>
+                                    <td>@item.code</td>
+                                    <td>@item.name</td>
+                                    <td class="text-center">@item.unit</td>
+                                    <td class="text-center">@item1.Key.ToString("N0")</td>
+                                    <td class="text-center">@inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity)</td>
+                                    <td class="text-center">@item.sell_price.ToString("N0")</td>
+                                    <td class="text-center">@inventory.Where(i => i.price_import == item1.Key).Sum(i => i.sold)</td>
+                                    <td class="text-center">@inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity - i.sold)</td>
+                                    <td class="text-center">@((item1.Key * (inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity - i.sold))).ToString("N0")) </td>
+                                </tr>
+                                total_inventory += (item1.Key * (inventory.Where(i => i.price_import == item1.Key).Sum(i => i.sold)));
+
+                            }
+
+                      
+                        }
+                    </tbody>
+                </table>
+
+                <div class="total-price-btn">
+                    <h5 class="total-price-name">Tổng</h5>
+                  <h5 class="total-price">@total_inventory.ToString("N0")</h5>
+                </div>
+
+
+            </div>
+    

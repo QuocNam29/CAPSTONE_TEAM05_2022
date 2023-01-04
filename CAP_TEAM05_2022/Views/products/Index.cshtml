@@ -8,6 +8,7 @@
 <input type="text" hidden id="URLProductList" value="@Url.Action("ProductList", "products")" />
 <input type="text" hidden id="URLFindProduct" value="@Url.Action("FindProduct", "products")/" />
 <input type="text" hidden id="URLUpdateProduct" value="@Url.Action("UpdateProduct", "products")" />
+<input type="text" hidden id="URLImport_Stock" value="@Url.Action("Import_Stock", "products")" />
 
 
 <section class="pcoded-main-container">
@@ -358,7 +359,7 @@
                                 </div> <!---->
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label>
                                     Đơn vị tính<span class="text-danger">*</span>
@@ -371,7 +372,7 @@
                                 </div> <!---->
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <!--<div class="col-md-3">
                             <div class="form-group">
                                 <label>
                                     Số lượng sản phẩm<span class="text-danger">*</span>
@@ -381,9 +382,9 @@
                                     <div class="invalid-feedback">
                                         Vui lòng nhập số lượng sản phẩm !
                                     </div>
-                                </div> <!---->
-                            </div>
-                        </div>
+                                </div>--> <!---->
+                            <!--</div>
+                        </div>-->
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>
@@ -410,7 +411,7 @@
 
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label>
                                     Đơn giá bán<span class="text-danger">*</span>
@@ -425,7 +426,7 @@
 
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <!--<div class="col-md-6">
                             <div class="form-group">
                                 <label for="product-price-import">
                                     Đơn giá nhập<span class="text-danger">*</span>
@@ -436,8 +437,87 @@
                                     <div class="invalid-feedback">
                                         Giá tiền nhập không được để trống !
                                     </div>
-                                </div>
+                                </div>-->
                                 <!---->
+                            <!--</div>
+                        </div>-->
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" id="submit_edit_product" @*onclick="Update_Product()"*@>thay đổi</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="Stock_import" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Stock_importLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <form class="needs-validation" method="post" id="Stock_import" novalidate>
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title" id="EditProductLabel">Thêm số lượng sản phẩm</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+
+                <div class="modal-body ">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Mã sản phẩm<span class="text-danger">*</span>
+                                </label>
+                                <input hidden id="stock_pid" name="Product_id" />
+                                <div class="position-relative">
+                                    <input type="text" placeholder="Nhập tên sản phẩm" id="stock_pCode" class="form-control" name="name_product" pattern="\S+.*" disabled>
+
+                                </div> <!---->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Tên sản phẩm<span class="text-danger">*</span>
+                                </label>
+                                <input hidden id="edit_id" name="Product_id" />
+                                <div class="position-relative">
+                                    <input type="text" placeholder="Nhập tên sản phẩm" id="stock_pName" class="form-control" name="name_product" pattern="\S+.*" disabled>
+
+                                </div> <!---->
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Số lượng thêm<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <input type="number" placeholder="Nhập số lượng sản phẩm" min="0" id="stock_pQuantity" class="form-control" name="quantity" required>
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập số lượng sản phẩm !
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product-price-import">
+                                    Đơn giá nhập<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <input type="text" placeholder="Nhập giá tiền" id="stock_pPurchasePrice" max="999999999999" class="form-control"
+                                           pattern="[0-9.,]+" data-type="number" name="purchase_price" required>
+                                    <div class="invalid-feedback">
+                                        Giá tiền nhập không được để trống !
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -446,7 +526,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" id="submit_edit_product" @*onclick="Update_Product()"*@>thay đổi</button>
+                    <button type="button" class="btn btn-primary" id="submit_stock" @*onclick="Update_Product()"*@>thay đổi</button>
                 </div>
             </div>
         </form>

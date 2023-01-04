@@ -21,28 +21,35 @@ namespace CAP_TEAM05_2022.Controllers
         public ActionResult Index()
         {
             return View();
-         
+
         }
-      
-        public ActionResult ProductList(int group_id , int category_id)
+
+        public ActionResult ProductList(int group_id, int category_id)
         {
             var links = from l in db.products
-                        where l.@group.status != 3 && l.category.status != 3
                         select l;
             if (group_id != -1)
-                {
+            {
                 links = links.Where(p => p.group_id == group_id);
             }
-             if (category_id != -1)
+            if (category_id != -1)
             {
                 links = links.Where(p => p.category_id == category_id);
-            }                                        
+            }
+            return PartialView(links.Where(c => c.status != 3).OrderByDescending(c => c.id));
+
+        }
+        public ActionResult _Inventory_ProductList()
+        {
+            var links = from l in db.products
+                        select l;
+
             return PartialView(links.Where(c => c.status != 3).OrderByDescending(c => c.id));
 
         }
         public ActionResult Create_Product(string name_product, string unit,
             int quantity, int GroupProductDropdown, int CategoryDropdown,
-            string sell_price,  string purchase_price
+            string sell_price, string purchase_price
             )
         {
             string email = Session["user_email"].ToString();
@@ -54,7 +61,7 @@ namespace CAP_TEAM05_2022.Controllers
             product.category_id = CategoryDropdown;
             product.group_id = GroupProductDropdown;
             product.created_by = user.id;
-            product.sell_price = int.Parse(sell_price.Replace(",",""));
+            product.sell_price = int.Parse(sell_price.Replace(",", ""));
             product.purchase_price = int.Parse(purchase_price.Replace(",", ""));
             product.quantity = quantity;
             product.created_at = DateTime.Now;
@@ -97,7 +104,7 @@ namespace CAP_TEAM05_2022.Controllers
             db.SaveChanges();
             return Json("EditStatus_Product", JsonRequestBehavior.AllowGet);
         }
-      
+
         [HttpPost]
         public JsonResult FindProduct(int Product_id)
         {
@@ -113,49 +120,97 @@ namespace CAP_TEAM05_2022.Controllers
             emp.category_id = product.category_id;
             return Json(emp);
         }
-       
+
         public JsonResult UpdateProduct(product Products)
         {
-            string email = Session["user_email"].ToString();
-            user user = db.users.Where(u => u.email == email).FirstOrDefault();
-            product product = db.products.Find(Products.id);
-            product.name = Products.name;
-           
-            product.unit = Products.unit;
-            product.category_id = Products.category_id;
-            product.group_id = Products.group_id;     
-            product.sell_price = Products.sell_price;
-            product.purchase_price = Products.purchase_price;
-            product.quantity = Products.quantity;
-            product.updated_at = DateTime.Now;
-            db.Entry(product).State = EntityState.Modified;
+            string message = "";
+            bool status = true;
+            try
+            {
+                string email = Session["user_email"].ToString();
+                user user = db.users.Where(u => u.email == email).FirstOrDefault();
+                product product = db.products.Find(Products.id);
+                product.name = Products.name;
 
-            int inventory = Products.quantity - db.import_inventory.Where(i => i.product_id == Products.id).Sum(s => s.quantity) - db.import_inventory.Where(i => i.product_id == Products.id).Sum(s => s.sold);
-            
+                product.unit = Products.unit;
+                product.category_id = Products.category_id;
+                product.group_id = Products.group_id;
+                product.sell_price = Products.sell_price;
+                /* product.purchase_price = Products.purchase_price;
+                 product.quantity = Products.quantity;*/
+                product.updated_at = DateTime.Now;
+                db.Entry(product).State = EntityState.Modified;
+
+                /*int inventory = Products.quantity - db.import_inventory
+                    .Where(i => i.product_id == Products.id).Sum(s => s.quantity) - db.import_inventory
+                    .Where(i => i.product_id == Products.id).Sum(s => s.sold);
+
+                    import_inventory import = new import_inventory();
+                    import.product_id = Products.id;
+                    import.quantity = inventory;            
+                    import.price_import = Products.purchase_price;
+                    import.sold = 0;
+                    import.created_at = DateTime.Now;
+                    import.created_by = user.id;
+                db.import_inventory.Add(import);*/
+
+                db.SaveChanges();
+                message = "Record Saved Successfully ";
+                status = true;
+            }
+            catch (Exception e)
+            {
+
+                message = e.Message;
+                status = true;
+            }
+
+            return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult Import_Stock(product Products)
+        {
+            string message = "";
+            bool status = true;
+            try
+            {
+                string email = Session["user_email"].ToString();
+                user user = db.users.Where(u => u.email == email).FirstOrDefault();
+                product product = db.products.Find(Products.id);
+                product.quantity += Products.quantity;
+                product.updated_at = DateTime.Now;
+                db.Entry(product).State = EntityState.Modified;
                 import_inventory import = new import_inventory();
                 import.product_id = Products.id;
-                import.quantity = inventory;            
+                import.quantity = Products.quantity;
                 import.price_import = Products.purchase_price;
                 import.sold = 0;
                 import.created_at = DateTime.Now;
                 import.created_by = user.id;
-            db.import_inventory.Add(import);
+                db.import_inventory.Add(import);
 
-            db.SaveChanges();
-            string message = "Record Saved Successfully ";
-            bool status = true;
+                db.SaveChanges();
+                message = "Nhập số lượng sản phẩm thành công ";
+                status = true;
+            }
+            catch (Exception e)
+            {
+
+                message = e.Message;
+                status = true;
+            }
+
             return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public JsonResult GetSearchValue(string search)
         {
             var product = (from Product in db.products
-                             where Product.name.StartsWith(search) && Product.status != 3 && Product.@group.status != 3 && Product.category.status != 3
+                           where Product.name.StartsWith(search) && Product.status != 3 && Product.@group.status != 3 && Product.category.status != 3
                            select new
-                             {
-                                 label = Product.name,
-                                 val = Product.id
-                             }).ToList();
+                           {
+                               label = Product.name,
+                               val = Product.id
+                           }).ToList();
 
             return Json(product);
         }
@@ -168,10 +223,10 @@ namespace CAP_TEAM05_2022.Controllers
             emp.id = product.id;
             emp.code = product.code;
             emp.name = product.sell_price.ToString("N0");
-            emp.note = "Đơn vị: " + product.unit + " - SL tồn: " + product.quantity;         
+            emp.note = "Đơn vị: " + product.unit + " - SL tồn: " + product.quantity;
             return Json(emp);
         }
-       
+
         /*   public ActionResult getProduct()
            {
 

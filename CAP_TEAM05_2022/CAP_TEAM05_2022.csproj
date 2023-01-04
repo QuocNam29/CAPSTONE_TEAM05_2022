@@ -650,10 +650,6 @@
     <Content Include="Views\groups\Index.cshtml" />
     <Content Include="Views\products\Index.cshtml" />
     <Content Include="Views\products\ProductList.cshtml" />
-    <Content Include="Views\import_inventory\Create.cshtml" />
-    <Content Include="Views\import_inventory\Delete.cshtml" />
-    <Content Include="Views\import_inventory\Details.cshtml" />
-    <Content Include="Views\import_inventory\Edit.cshtml" />
     <Content Include="Views\import_inventory\Index.cshtml" />
     <Content Include="Views\import_inventory\InventoryList.cshtml" />
     <Content Include="Views\Excel\ProductList_import.cshtml" />
@@ -680,6 +676,7 @@
     <Content Include="Views\sales\_RevenueList_Month.cshtml" />
     <Content Include="Views\sales\_OrderList.cshtml" />
     <Content Include="Views\sales\_OrderDetailsList.cshtml" />
+    <Content Include="Views\products\_Inventory_ProductList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
