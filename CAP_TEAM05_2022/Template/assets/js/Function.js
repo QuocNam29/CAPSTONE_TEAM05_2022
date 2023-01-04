@@ -1368,8 +1368,8 @@ function Payment_order() {
     var sale = {};
     sale.customer_id = $('#customer_id').val();
     sale.total = Number($('#total').val().replace(/\,/g, '').replace(/\./g, ''));
-    sale.discount = $('#discount').val();
-    sale.vat = $('#vat').val();
+    sale.discount = $('#cart_discount').val();
+    sale.vat = $('#cart_vat').val();
     sale.note = $('#cart_note').val();
     sale.method = Number($('#cart_Prepay').val().replace(/\,/g, '').replace(/\./g, ''));
     console.log(URLCreateSale);
