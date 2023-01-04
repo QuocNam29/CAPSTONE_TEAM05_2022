@@ -108,6 +108,8 @@ $(document).ready(function () {
             $('#customer_code').val('');
             $('#customer_phone').val('');
             $('#customer_type').val('');
+            $('#count_sale').val('');
+            $('#debit_sum').val('');
             $('#customer_name').val('');
             $('#product_code').val('');
             $('#product_unit').val('');
@@ -860,7 +862,8 @@ function AddCustomerSale() {
         success: function (response) {
             $('#customer_code').val(response.code);
             $('#customer_phone').val(response.phone);
-           
+            $('#count_sale').val(0);
+            $('#debit_sum').val(0);
             if (response.type == 1 ) {
                 $('#customer_type').val("Khách mua lẻ");
             } else if (response.type ==2 ) {
@@ -941,44 +944,52 @@ function UserCheck() {
 }
 
 function UserCustomer() {
-    var URLCheckCustomernameAvailability = "";
-    $('#URLCheckCustomernameAvailability')
-        .keypress(function () {
-             URLCheckCustomernameAvailability = $(this).val();
-        })
-        .keypress();
-    $.post(URLCheckCustomernameAvailability,
-        {
-            categorydata: $("#name_category").val()
-        },
-        function (data) {
-            if (data == 0) {
+    var customer_name = $("#customer_name").val();
+    if (customer_name != "" && customer_name != undefined) {
+        var URLCheckCustomernameAvailability = "";
+        $('#URLCheckCustomernameAvailability')
+            .keypress(function () {
+                URLCheckCustomernameAvailability = $(this).val();
+            })
+            .keypress();
+        $.post(URLCheckCustomernameAvailability,
+            {
+                customer_name: customer_name
+            },
+            function (data) {
+                if (data == 0) {
+                    $('#customer_id').val('');
+                    $('#customer_code').val('');
+                    $('#customer_phone').val('');
+                    $('#customer_type').val('');
+                    $('#count_sale').val('');
+                    $('#debit_sum').val('');
+                    $('#debit_sum').val('');
 
-                swal({
-                    title: "Khách hàng không có trong hệ thống, bạn có muốn thêm mới ?",
-                    type: "warning",
-                    showCancelButton: true,
-                    closeOnConfirm: true,
-                    confirmButtonText: "Xác nhận",
-                    confirmButtonColor: "#ec6c62",
-                    allowOutsideClick: true,
-                },
-                    function (isConfirm) {
-                        if (isConfirm) {
-                            $('#AddCustomer .close').css('display', 'none');
-                            $('#AddCustomer').modal('show');
-                            $('#create_customer_name').val($('#customer_name').val());
-                            document.querySelector("#create_customer_name").disabled = true;
+                    swal({
+                        title: "Khách hàng không có trong hệ thống, bạn có muốn thêm mới ?",
+                        type: "warning",
+                        showCancelButton: true,
+                        closeOnConfirm: true,
+                        confirmButtonText: "Xác nhận",
+                        confirmButtonColor: "#ec6c62",
+                        allowOutsideClick: true,
+                    },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                $('#AddCustomer .close').css('display', 'none');
+                                $('#AddCustomer').modal('show');
+                                $('#create_customer_name').val($('#customer_name').val());
+                                document.querySelector("#create_customer_name").disabled = true;
 
-                        } 
-                        
-                        
+                            }
+                        })
 
-                    })
-                
-            }
-            
-        });
+                }
+
+            });
+    }
+  
   
 }
 //------------------------Import Fail Add-----------------------------
@@ -1262,6 +1273,8 @@ $(function () {
                     $('#customer_code').val(response.code);
                     $('#customer_phone').val(response.phone);
                     $('#customer_type').val(response.note);
+                    $('#count_sale').val(response.status);
+                    $('#debit_sum').val(response.type.toLocaleString());
                     if ($("#cart_total").val() != undefined) {
                         console.log($("#cart_total").val());
                         $("#payment_btn").prop("disabled", false);
@@ -1547,7 +1560,6 @@ function GetList_RevenueListDate(date_start, date_end) {
         }
     }).done(function (result) {
         $('#dataContainer').html(result);
-        $('#dataContainer1').html(result);
 
     }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
         console.log(textStatus)
@@ -1564,9 +1576,66 @@ function GetList_RevenueListMonth(date_start, date_end) {
             date_End: date_end,
         }
     }).done(function (result) {
-        $('#dataContainer').html(result);
         $('#dataContainer1').html(result);
 
+    }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        console.log(textStatus)
+        console.log(errorThrown)
+        alert("Something Went Wrong, Try Later");
+    });
+}
+
+$("#sale_DateStart").change(function () {
+    var date_start = $("#sale_DateStart").val();
+    var date_end = $("#sale_DateEnd").val();
+    console.log("hihi");
+    if (date_start <= date_end) {
+        GetList_OrderList(date_start, date_end);
+    } else {
+        sweetAlert
+            ({
+                title: "Lỗi",
+                text: "Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc !",
+                type: "error",
+                allowOutsideClick: true,
+
+            })
+    }
+
+});
+$("#sale_DateEnd").change(function () {
+    var date_start = $("#sale_DateStart").val();
+    var date_end = $("#sale_DateEnd").val();
+    if (date_start <= date_end) {
+        GetList_OrderList(date_start, date_end);
+    } else {
+        sweetAlert
+            ({
+                title: "Lỗi",
+                text: "Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc !",
+                type: "error",
+                allowOutsideClick: true,
+
+            })
+    }
+});
+var URL_OrderList = "";
+$('#URL_OrderList')
+    .keypress(function () {
+        URL_OrderList = $(this).val();
+    })
+    .keypress();
+function GetList_OrderList(date_start, date_end) {
+   
+    $.ajax({
+        url: URL_OrderList,
+        data: {
+            date_Start: date_start,
+            date_End: date_end,
+        }
+    }).done(function (result) {
+        $('#dataContainer3').html(result);
+        $('#example').DataTable()
     }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
         console.log(textStatus)
         console.log(errorThrown)
@@ -1709,7 +1778,6 @@ function openWin() {
     </div>
 </div>`);
 
-    myWindow.print();
     myWindow.document.close();
     myWindow.focus();
 }
@@ -1839,3 +1907,4 @@ function PrintOrder(id, code, method, total, discount, vat, create_at, customer_
     myWindow.document.close();
     myWindow.focus();
 }
+//---------------------------click---------------

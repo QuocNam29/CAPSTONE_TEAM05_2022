@@ -127,6 +127,8 @@ namespace CAP_TEAM05_2022.Controllers
                 emp.note = "Nhà cung cấp";
             }
             emp.code = customer.code;
+            emp.status = customer.sales.Count();
+            emp.type = (int)customer.sales.Where(s => s.method == 2).Sum(s => s.total - s.prepayment);
             return Json(emp);
         }
         public JsonResult UpdateCustomer(customer customers)
@@ -172,7 +174,7 @@ namespace CAP_TEAM05_2022.Controllers
                              {
                                  label = customer.name,
                                  val = customer.id
-                             }).Take(10).ToList();
+                             }).ToList();
 
             return Json(customers);
         }

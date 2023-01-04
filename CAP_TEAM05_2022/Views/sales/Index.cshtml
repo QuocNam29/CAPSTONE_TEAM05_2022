@@ -5,6 +5,7 @@
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
 }
 <input type="text" hidden id="URLgetCartProduct" value="@Url.Action("getCartProduct", "sale_details")" />
+<input type="text" hidden id="URL_OrderList" value="@Url.Action("_OrderList", "sales")" />
 
 <section class="pcoded-main-container">
     <div class="pcoded-content">
@@ -39,7 +40,7 @@
                                 <div class="col-md-4">
                                     <div class="mx-datepicker">
                                         <div class="mx-input-wrapper">
-                                            <input name="date" type="date" placeholder="" class="form-control custom-width" value="@String.Format("{0:yyyy-MM-dd}", DateTime.Now.AddDays((-DateTime.Now.Day) + 1))">
+                                            <input name="date" type="date" id="sale_DateStart" class="form-control custom-width" value="@String.Format("{0:yyyy-MM-dd}", DateTime.Now.AddDays((-DateTime.Now.Day) + 1))">
 
                                         </div>
                                     </div>
@@ -47,14 +48,14 @@
                                 <div class="col-md-4">
                                     <div class="mx-datepicker">
                                         <div class="mx-input-wrapper">
-                                            <input name="date" type="date" placeholder="" class="form-control custom-width" value="@String.Format("{0:yyyy-MM-dd}",DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day)))">
+                                            <input name="date" type="date" id="sale_DateEnd" class="form-control custom-width" value="@String.Format("{0:yyyy-MM-dd}",DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day)))">
 
                                         </div>
                                     </div>
                                 </div>
 
                             </div>
-                            <div class="table-responsive">
+                            <div class="table-responsive" id="dataContainer3">
                                 @{ Html.RenderAction("_OrderList", "sales");}
 
 
@@ -63,7 +64,7 @@
                     </div>
                 </div>
             </div>
-            <div>       
+            <div>
             </div>
 
 
@@ -118,7 +119,7 @@
             success: function (response) {
                 console.log("hihi");
                 $('#product_Current').val(response.product.code + " - " + response.product.name);
-                
+
             }
         })
     }

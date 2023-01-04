@@ -155,7 +155,7 @@ namespace CAP_TEAM05_2022.Controllers
                              {
                                  label = Product.name,
                                  val = Product.id
-                             }).Take(10).ToList();
+                             }).ToList();
 
             return Json(product);
         }
