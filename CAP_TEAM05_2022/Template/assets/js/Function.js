@@ -27,30 +27,8 @@
 $(document).ready(function () {
     var forms = document.getElementsByClassName('needs-validation');
     var validation = Array.prototype.filter.call(forms, function (form) {     
-        $('#submit_edit_product').on('click', function () {
-            
-
-            if (form.checkValidity() === false) {
-                event.preventDefault();
-                event.stopPropagation();
-                form.classList.add('was-validated');
-            } else {               
-                console.log("hihi");
-                Update_Product();
-                form.classList.remove('was-validated');
-            }
-        })
-        $('#submit_edit_customer').on('click', function () {
-            if (form.checkValidity() === false) {
-                event.preventDefault();
-                event.stopPropagation();
-                form.classList.add('was-validated');
-            } else {
-                Update_Customer();
-                form.classList.remove('was-validated');
-
-            }
-        })
+        
+     
         $('#add_customer_sale').on('click', function () {
             if (form.checkValidity() === false) {
                 event.preventDefault();
@@ -848,63 +826,66 @@ function GetCustomer(ele, id) {
     })
 }
 
-//-------------------------------UPDATE PRODUCT--------------------------------
+//-------------------------------ADD CUSTOMER SALE--------------------------------
 
-$('#URLUpdateCustomer')
-    .keypress(function () {
-        URLUpdateCustomer = $(this).val();
-    })
-    .keypress();
+$('.AddCustomerSaleFrom').submit(function (e) {
+    var form = $(this);
 
-function Update_Customer() {
-    var table = $('#example').DataTable();
-    var customer = {};
-    customer.id = $('#edit_id').val();
-    customer.name = $('#edit_customer_name').val();
-    customer.phone = $('#edit_customer_phone').val();
-    customer.email = $('#edit_customer_email').val();
-    customer.birthday = $('#customers_birth').val();
-    customer.account_number = $('#edit_customer_account').val();
-    customer.bank = $('#edit_customer_bank').val();
-    customer.type = $('#edit_customer_type').val();
-    customer.address = $('#edit_customer_address').val();
-    customer.note = $('#edit_customer_note').val();
+    // Check if form is valid then submit ajax
+    if (form[0].checkValidity()) {
+        e.preventDefault();
+        var url = form.attr('action');
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: form.serialize(),
+            success: function (data) {
+                // Hide bootstrap modal to prevent conflict
+                $('.modal').modal('hide');
 
-    console.log(customer);
-    $.ajax({
-        url: URLUpdateCustomer,
-        type: "Post",
-        data: JSON.stringify(customer),
-        contentType: "application/json; charset=UTF-8",
-        dataType: "json",
-        success: function (response) {
-            var type = $("#filter_type").val();          
-            $.ajax({
-                url: URLCustomerList,
-                data: {
-                    type: type,
+                if (data.status) {
+                    // Refresh table data
+                    
+                    sweetAlert
+                        ({
+                            title: "Thành công !",
+                            text: data.message,
+                            type: "success"
+                        })
+
+                    form[0].reset();
+                    form.removeClass('was-validated');
+                    $('#customer_name').val(data.customer.name);
+                    $('#customer_id').val(data.customer.id);
+                    $('#customer_code').val(data.customer.code);
+                    $('#customer_phone').val(data.customer.phone);
+                    $('#count_sale').val(0);
+                    $('#debit_sum').val(0);
+                    if (data.customer.type == 1) {
+                        $('#customer_type').val("Khách mua lẻ");
+                    } else if (data.customer.type == 2) {
+                        $('#customer_type').val("Công ty (Khách mua sĩ)");
+                    } else if (data.customer.type == 3) {
+                        $('#customer_type').val("Nhà cung cấp");
+                    }
+                    if ($("#cart_total").val() != undefined) {
+                        console.log($("#cart_total").val());
+                        $("#payment_btn").prop("disabled", false);
+                        $("#order_btn").prop("disabled", false);
+                    }
+                } else {
+                    swal({
+                        title: 'Lỗi !',
+                        text: data.message,
+                        type: 'error',
+
+                    }, function () { $('#AddCustomer').modal('show') }); // Show bootstrap modal again
                 }
-            }).done(function (result) {
-                $('#dataContainer').html(result);
-                $('#example').DataTable()
-                $('#EditCustomer .close').css('display', 'none');
-                $('#EditCustomer').modal('hide');
+            }
+        });
+    }
+});
 
-                sweetAlert
-                    ({
-                        title: "Cập nhật thành công !",
-                        type: "success",
-                        allowOutsideClick: true,
-
-                    })
-            }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                console.log(textStatus)
-                console.log(errorThrown)
-                alert("Something Went Wrong, Try Later");
-            });
-        }
-    });
-}
 function AddCustomerSale() {
     var URLAddCustomerSale = "";
     $('#URLAddCustomerSale')
@@ -1003,7 +984,6 @@ function UserCustomer() {
                                 $('#AddCustomer .close').css('display', 'none');
                                 $('#AddCustomer').modal('show');
                                 $('#create_customer_name').val($('#customer_name').val());
-                                document.querySelector("#create_customer_name").disabled = true;
 
                             }
                         })
@@ -1255,6 +1235,12 @@ $('#URLGetSearchValue')
         URLGetSearchValue = $(this).val();
     })
     .keypress();
+var URLGetSearch_phoneValue = "";
+$('#URLGetSearch_phoneValue')
+    .keypress(function () {
+        URLGetSearch_phoneValue = $(this).val();
+    })
+    .keypress();
 var URLFindCustomer_name = "";
 $('#URLFindCustomer_name')
     .keypress(function () {
@@ -1314,7 +1300,60 @@ $(function () {
         $(this).data("autocomplete").search($(this).val());
     });
 });
+$(function () {
+    $("#customer_phone").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: URLGetSearch_phoneValue,
+                data: "{ 'search': '" + request.term + "'}",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return item;
 
+                    }))
+
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        },
+        select: function (e, i) {
+            $('#customer_id').val(i.item.val);
+            GetList_Cart(i.item.val);
+            $.ajax({
+                type: 'POST',
+                url: URLFindCustomer_name,
+                data: { "customer_id": i.item.val },
+                success: function (response) {
+                    $('#customer_name').val(response.name);
+                    $('#customer_code').val(response.code);
+                    $('#customer_phone').val(response.phone);
+                    $('#customer_type').val(response.note);
+                    $('#count_sale').val(response.status);
+                    $('#debit_sum').val(response.type.toLocaleString());
+                    if ($("#cart_total").val() != undefined) {
+                        console.log($("#cart_total").val());
+                        $("#payment_btn").prop("disabled", false);
+                        $("#order_btn").prop("disabled", false);
+                    }
+                }
+            })
+        },
+        minLength: 0
+    })/*.focus(function () {
+        if ($(this).autocomplete("widget").is(":visible")) {
+            return;
+        }
+        $(this).data("autocomplete").search($(this).val());
+    });*/
+});
 //---------------------load product sale----------------------------
 
 var URLGetSearchValue_product = "";

@@ -8,13 +8,13 @@
 <input type="text" hidden id="URLCreateCart" value="@Url.Action("CreateCart", "carts")" />
 <input type="text" hidden id="URLCartList" value="@Url.Action("Index", "carts")" />
 <input type="text" hidden id="URLGetSearchValue" value="@Url.Action("GetSearchValue","customers")" />
+<input type="text" hidden id="URLGetSearch_phoneValue" value="@Url.Action("GetSearch_phoneValue","customers")" />
 <input type="text" hidden id="URLFindCustomer_name" value="@Url.Action("FindCustomer_name","customers")/" />
 <input type="text" hidden id="URLGetSearchValue_product" value="@Url.Action("GetSearchValue", "products")" />
 <input type="text" hidden id="URLFindProduct_name" value="@Url.Action("FindProduct_name", "products")/" />
 <input type="text" hidden id="URLCreateSale" value="@Url.Action("CreateSale", "sales")" />
 <input type="text" hidden id="URLUpdateCart" value="@Url.Action("UpdateCart", "carts")" />
 <input type="text" hidden id="URLCheckCustomernameAvailability" value="@Url.Action("CheckCustomernameAvailability", "customers")" />
-<input type="text" hidden id="URLAddCustomerSale" value="@Url.Action("AddCustomerSale", "customers")" />
 <input type="text" hidden id="URLgetCartProduct" value="@Url.Action("getCartProduct", "carts")" />
 
 
@@ -65,14 +65,15 @@
                                         </div>
                                         <div class="form-group">
                                             <div class="position-relative">
-                                                <input type="text" placeholder="Mã khách hàng" id="customer_code" disabled="disabled" class="form-control">
+                                                <input type="text" placeholder="Số điện thoại khách hàng" id="customer_phone" aria-autocomplete="list" class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="position-relative">
-                                                <input type="text" placeholder="Số điện thoại khách hàng" id="customer_phone" disabled="disabled" class="form-control">
+                                                <input type="text" placeholder="Mã khách hàng" id="customer_code" disabled="disabled" class="form-control">
                                             </div>
                                         </div>
+
                                         <div class="form-group">
                                             <div class="position-relative">
                                                 <input type="text" placeholder="Nhóm khách hàng" id="customer_type" disabled="disabled" class="form-control">
@@ -216,7 +217,7 @@
 </section>
 <div id="AddCustomer" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="AddGroupProductLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
-        <form class="needs-validation" method="post" action="@Url.Action("Create_Customer", "customers")" novalidate>
+        <form class="needs-validation AddCustomerSaleFrom" method="post" action="@Url.Action("AddCustomerSale", "customers")" novalidate>
             <div class="modal-content">
                 <div class="modal-header bg-primary">
                     <h5 id="customModalTitle" class="modal-title white">Thêm mới khách hàng</h5>
@@ -322,7 +323,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ bỏ</button>
-                    <button type="button" class="btn btn-primary" id="add_customer_sale">Thêm mới</button>
+                    <button type="submit" class="btn btn-primary" @*id="add_customer_sale"*@>Thêm mới</button>
                 </div>
             </div>
         </form>

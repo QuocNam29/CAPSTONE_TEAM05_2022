@@ -220,6 +220,19 @@ namespace CAP_TEAM05_2022.Controllers
 
             return Json(customers);
         }
+        [HttpPost]
+        public JsonResult GetSearch_phoneValue(string search)
+        {
+            var customers = (from customer in db.customers
+                             where customer.phone.Contains(search) && customer.status != 3
+                             select new
+                             {
+                                 label = customer.phone,
+                                 val = customer.id
+                             }).ToList();
+
+            return Json(customers);
+        }
         public JsonResult CheckCustomernameAvailability(string customer_name)
         {
             System.Threading.Thread.Sleep(200);
@@ -234,42 +247,67 @@ namespace CAP_TEAM05_2022.Controllers
             }
 
         }
-        public JsonResult AddCustomerSale(customer customers)
+        public JsonResult AddCustomerSale(string customer_name, string customer_phone,
+           string customer_email, DateTime? customers_birth, string customer_account,
+           string customer_bank, int customer_type, string customer_address, string customer_note)
         {
-            string email = Session["user_email"].ToString();
-            user user = db.users.Where(u => u.email == email).FirstOrDefault();
-            customer customer = new customer();
-            customer.name = customers.name;
-            customer.code = "MKH" + CodeRandom.RandomCode();
-            customer.phone = customers.phone;
-            if (!String.IsNullOrWhiteSpace(customers.email))
+            string message = "";
+            bool status = true;
+            try
             {
-                customer.email = customers.email;
+                int check = db.customers.Where(c => c.phone == customer_phone).Count();
+                if (check > 0)
+                {
+                    status = false;
+                    message = "Khách hàng đã tồn tại ! (Vui lòng kiểm tra lại số điện thoại)";
+                }
+                else
+                {
+                    string email = Session["user_email"].ToString();
+                    user user = db.users.Where(u => u.email == email).FirstOrDefault();
+                    customer customer = new customer();
+                    customer.name = customer_name;
+                    customer.code = "MKH" + CodeRandom.RandomCode();
+                    customer.phone = customer_phone;
+                    if (!String.IsNullOrWhiteSpace(customer_email))
+                    {
+                        customer.email = customer_email;
+                    }
+                    if (customers_birth != null)
+                    {
+                        customer.birthday = customers_birth;
+                    }
+                    if (!String.IsNullOrWhiteSpace(customer_account))
+                    {
+                        customer.account_number = customer_account;
+                    }
+                    if (!String.IsNullOrWhiteSpace(customer_bank))
+                    {
+                        customer.bank = customer_bank;
+                    }
+                    customer.type = customer_type;
+                    customer.address = customer_address;
+                    if (!String.IsNullOrWhiteSpace(customer_note))
+                    {
+                        customer.note = customer_note;
+                    }
+                    customer.created_by = user.id;
+                    customer.created_at = DateTime.Now;
+                    customer.status = 1;
+                    db.customers.Add(customer);
+                    db.SaveChanges();
+                    message = "Thêm khách hàng thành công !";
+                    return Json(new { status, message, customer }, JsonRequestBehavior.AllowGet);
+
+                }
             }
-            if (customers.birthday != null)
+            catch (Exception e)
             {
-                customer.birthday = customers.birthday;
+
+                status = false;
+                message = e.Message;
             }
-            if (!String.IsNullOrWhiteSpace(customers.account_number))
-            {
-                customer.account_number = customers.account_number;
-            }
-            if (!String.IsNullOrWhiteSpace(customers.bank))
-            {
-                customer.bank = customers.bank;
-            }
-            customer.type = customers.type;
-            customer.address = customers.address;
-            if (!String.IsNullOrWhiteSpace(customers.note))
-            {
-                customer.note = customers.note;
-            }
-            customer.created_by = user.id;
-            customer.created_at = DateTime.Now;
-            customer.status = 1;
-            db.customers.Add(customer);
-            db.SaveChanges();
-            return Json(customer, JsonRequestBehavior.AllowGet);
+            return Json(new { status, message }, JsonRequestBehavior.AllowGet);
         }
         protected override void Dispose(bool disposing)
         {
