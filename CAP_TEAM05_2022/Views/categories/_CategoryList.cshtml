@@ -1,69 +1,65 @@
 ﻿@model IEnumerable<CAP_TEAM05_2022.Models.category>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.code)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.slug)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.status)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.created_at)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.updated_at)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.deleted_at)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.user.name)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.code)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.slug)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.status)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.created_at)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.updated_at)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.deleted_at)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.user.name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id })
-        </td>
-    </tr>
+@{ 
+    int no = 0;
 }
+<table id="example" class="table table-hover">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Mã danh mục</th>
+            <th>Tên danh mục</th>
+            <th width="15%">Trạng thái</th>
+            <th width="15%">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            string customswitch_DM = "customswitch" + item.id;
+            no++;
+            <tr>
+                <td>@no <input hidden type="text" name="record" value="@item.code"></td>
 
+                <td>@item.code</td>
+                <td>@item.name</td>
+                <td>
+                    @if (item.status == 1)
+                    {
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" checked class="custom-control-input" id="@customswitch_DM">
+                            <label class="custom-control-label" for="@customswitch_DM"></label>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="@customswitch_DM">
+                            <label class="custom-control-label" for="@customswitch_DM"></label>
+                        </div>
+                    }
+                    <input hidden type="text" id="URDEditStatus" value="@Url.Action("EditStatus_Category", "categories")">
+                    <script language="javascript">
+                                                        document.getElementById('@customswitch_DM').onclick = function (e) {
+                                                                EditStatus(@item.id);
+                                                        };
+                    </script>
+                </td>
+                <td>
+                    <button class="btn btn-success " onclick="GetGroupProduct(this, @item.id, '@item.name')">
+                        <i class="feather icon-edit">
+                        </i>
+                    </button>
+                    <input hidden type="text" id="URLDelete" value="@Url.Action("Delete_Category", "categories")">
+                    <button class="btn btn-danger" onclick="deleteAlert('@item.id', '@item.code')" id="Delete">
+                        <i class="feather icon-trash-2">
+                        </i>
+                    </button>
+
+                </td>
+            </tr>
+
+        }
+
+    </tbody>
 </table>

@@ -3,12 +3,9 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
-    int no = 0;
 
 }
-<input type="text" hidden id="URLFindGroupProduct" value="@Url.Action("FindCategory", "categories")/" />
-<input type="text" hidden id="URLUpdateGroupProduct" value="@Url.Action("UpdateCategory", "categories")" />
-<input type="text" hidden id="URLChecknameAvailability" value="@Url.Action("CheckCategorynameAvailability", "categories")" />
+<input type="text" hidden id="URL_List" value="@Url.Action("_CategoryList", "categories")" />
 
 <section class="pcoded-main-container">
     <div class="pcoded-content">
@@ -49,69 +46,8 @@
                             </div>
                         </div>
                         <div class="card-body table-border-style">
-                            <div class="table-responsive">
-                                <table id="example" class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Mã danh mục</th>
-                                            <th>Tên danh mục</th>
-                                            <th width="15%">Trạng thái</th>
-                                            <th width="15%">
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in Model)
-                                        {
-                                            string customswitch_DM = "customswitch" + item.id;
-                                            no++;
-                                            <tr>
-                                                <td>@no <input hidden type="text" name="record" value="@item.code"></td>
-
-                                                <td>@item.code</td>
-                                                <td>@item.name</td>
-                                                <td>
-                                                    @if (item.status == 1)
-                                                    {
-                                                        <div class="custom-control custom-switch">
-                                                            <input type="checkbox" checked class="custom-control-input" id="@customswitch_DM">
-                                                            <label class="custom-control-label" for="@customswitch_DM"></label>
-                                                        </div>
-                                                    }
-                                                    else
-                                                    {
-                                                        <div class="custom-control custom-switch">
-                                                            <input type="checkbox" class="custom-control-input" id="@customswitch_DM">
-                                                            <label class="custom-control-label" for="@customswitch_DM"></label>
-                                                        </div>
-                                                    }
-                                                    <input hidden type="text" id="URDEditStatus" value="@Url.Action("EditStatus_Category", "categories")">
-                                                    <script language="javascript">
-                                                        document.getElementById('@customswitch_DM').onclick = function (e) {
-                                                                EditStatus(@item.id);
-                                                        };
-                                                    </script>
-                                                </td>
-                                                <td>
-                                                    <button class="btn btn-success " onclick="GetGroupProduct(this, @item.id)">
-                                                        <i class="feather icon-edit">
-                                                        </i>
-                                                    </button>
-                                                    <input hidden type="text" id="URLDelete" value="@Url.Action("Delete_Category", "categories")">
-                                                    <button class="btn btn-danger" onclick="deleteAlert('@item.id', '@item.code')" id="Delete">
-                                                        <i class="feather icon-trash-2">
-                                                        </i>
-                                                    </button>
-
-                                                </td>
-                                            </tr>
-
-                                        }
-
-                                    </tbody>
-                                </table>
-
+                            <div class="table-responsive" id="dataContainer">
+                                @{ Html.RenderAction("_CategoryList", "categories");}
                             </div>
                         </div>
                     </div>
@@ -123,7 +59,7 @@
 
 <div id="AddCategory" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="AddCategoryLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form class="needs-validation" method="post" action="@Url.Action("Create_Category", "categories")" novalidate>
+        <form class="needs-validation GroupForm" method="post" action="@Url.Action("Create_Category", "categories")" novalidate>
             <div class="modal-content">
                 <div class="modal-header bg-primary">
                     <h5 class="modal-title" id="AddCategoryLabel">Thêm mới danh mục</h5>
@@ -138,7 +74,7 @@
                                     Tên danh mục<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input type="text" placeholder="Nhập tên danh mục" id="name_category" onchange="UserCheck()" class="form-control" name="name_category" pattern="\S+.*" required>
+                                    <input type="text" placeholder="Nhập tên danh mục" id="name_category" class="form-control" name="name_category" pattern="\S+.*" required>
                                     <p id="Status" />
                                     <div class="invalid-feedback">
 
@@ -153,7 +89,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
-                    <button type="submit" class="btn btn-primary" id="btn_submit">Thêm mới</button>
+                    <button type="submit" class="btn btn-primary" >Thêm mới</button>
                 </div>
             </div>
         </form>
@@ -161,7 +97,7 @@
 </div>
 <div id="Edit_Modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Edit_ModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form class="needs-validation" method="post" @*action="@Url.Action("Edit_Category", "categories")"*@ novalidate>
+        <form class="needs-validation GroupForm" method="post" action="@Url.Action("UpdateCategory", "categories")" novalidate>
             <div class="modal-content">
                 <div class="modal-header bg-primary">
                     <h5 class="modal-title" id="Edit_ModalLabel">Chỉnh sửa danh mục</h5>
@@ -176,7 +112,7 @@
                                     Tên danh mục<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input hidden id="edit_id" name="category_id" />
+                                    <input hidden id="edit_id" name="id" />
                                     <input type="text" placeholder="Nhập tên danh mục" id="Edit_name" class="form-control" name="name_category" pattern="\S+.*" required>
                                     <div class="invalid-feedback">
                                         Vui lòng nhập tên danh mục !
@@ -190,7 +126,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" id="submit_edit" @*onclick="Update()"*@>Chỉnh sửa</button>
+                    <button type="submit" class="btn btn-primary" @*id="submit_edit" onclick="Update()"*@>Chỉnh sửa</button>
                 </div>
             </div>
         </form>
@@ -205,8 +141,6 @@
             pagingType: 'full_numbers',
         });
     });
-
-    
 </script>
 
 

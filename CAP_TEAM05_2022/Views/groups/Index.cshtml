@@ -3,11 +3,7 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
 }
-<input type="text" hidden id="URLFindGroupProduct" value="@Url.Action("FindGroupProduct", "groups")/" />
-<input type="text" hidden id="URLUpdateGroupProduct" value="@Url.Action("UpdateGroupProduct", "groups")" />
-<input type="text" hidden id="URLChecknameAvailability" value="@Url.Action("CheckGroupnameAvailability", "groups")" />
 <input type="text" hidden id="URL_List" value="@Url.Action("_GroupList", "groups")" />
-<input type="text" hidden id="URLCreate" value="@Url.Action("Create_GroupProduct", "groups")" />
 
 <section class="pcoded-main-container">
     <div class="pcoded-content">
@@ -50,8 +46,6 @@
                         <div class="card-body table-border-style">
                             <div class="table-responsive" id="dataContainer">
                                 @{ Html.RenderAction("_GroupList", "groups");}
-
-
                             </div>
                         </div>
                     </div>

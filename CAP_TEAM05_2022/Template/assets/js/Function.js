@@ -26,32 +26,7 @@
 
 $(document).ready(function () {
     var forms = document.getElementsByClassName('needs-validation');
-    var validation = Array.prototype.filter.call(forms, function (form) {
-    $('#submit_edit').on('click', function () {
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-            form.classList.add('was-validated');
-            
-        } else {
-           
-            Update();
-            form.classList.remove('was-validated');
-
-        }
-    })
-        $('#btn_submit').on('click', function () {
-            if (form.checkValidity() === false) {
-                event.preventDefault();
-                event.stopPropagation();
-                form.classList.add('was-validated');
-
-            } else {
-                Add();
-                form.classList.remove('was-validated');
-
-            }
-        })
+    var validation = Array.prototype.filter.call(forms, function (form) {     
         $('#submit_edit_product').on('click', function () {
             
 
@@ -698,44 +673,8 @@ function GetGroupProduct(ele, id, name) {
         }
    
 
-//------------------------UPDATE GROUP PRODUCT-----------------------------
-$('#URLUpdateGroupProduct')
-    .keypress(function () {
-        URLUpdateGroupProduct = $(this).val();
-    })
-    .keypress();
 
-function Update() {
-    var table = $('#example').DataTable();
-    var group = {};
-    group.id = $('#edit_id').val();
-    group.name = $('#Edit_name').val();
-
-    $.ajax({
-        url: URLUpdateGroupProduct,
-        type: "Post",
-        data: JSON.stringify(group),
-        contentType: "application/json; charset=UTF-8",
-        dataType: "json",
-        success: function (response) {
-            $('#Edit_Modal .close').css('display', 'none');
-            $('#Edit_Modal').modal('hide');
-            table.cell(row, 2).data($('#Edit_name').val());
-            table.draw();
-            $('#edit_id').val('');
-            $('#Edit_name').val('');
-            sweetAlert
-                ({
-                    title: "Cập nhật thành công !",
-                    type: "success",
-                    allowOutsideClick: true,
-
-                })
-        }
-    });
-}
-
-//----------------------Add group/ category-------------------
+//----------------------Add, Update group, category-------------------
 
 $('#URL_List')
     .keypress(function () {
@@ -759,7 +698,7 @@ $('.GroupForm').submit(function (e) {
 
                 if (data.status) {
                     // Refresh table data
-                    GetList_CategoryAndType();
+                    GetList_CategoryAndGroup();
                     sweetAlert
                         ({
                             title: "Thành công !",
@@ -781,7 +720,7 @@ $('.GroupForm').submit(function (e) {
         });
     }
 });
-function GetList_CategoryAndType() {
+function GetList_CategoryAndGroup() {
     $.ajax({
         url: URL_List,
         data: {}
@@ -1060,14 +999,7 @@ function isValid(str) {
     return !/[~`!#$%\^&*+=\\[\]\\';,/{}|\\":<>\?]/g.test(str);
 }
 
-//-------------------------------CHECK DỮ LIỆU TRÙNG--------------------------------
-
-$('#URLChecknameAvailability')
-    .keypress(function () {
-        URLChecknameAvailability = $(this).val();
-    })
-    .keypress();
-
+//-------------------------------CHECK Người dùng đã có trong hệ thống--------------------------------
 
 function UserCustomer() {
     var customer_name = $("#customer_name").val();
@@ -1118,7 +1050,7 @@ function UserCustomer() {
   
   
 }
-//------------------------Import Fail Add-----------------------------
+/*//------------------------Import Fail Add-----------------------------
 $('#URLUpdateGroupProduct')
     .keypress(function () {
         URLUpdateGroupProduct = $(this).val();
@@ -1156,7 +1088,7 @@ function ImportFail_continue() {
                 })
         }
     });
-}
+}*/
 
 //-------------------------------CREATE CART - SALE DETAIL --------------------------------
 
