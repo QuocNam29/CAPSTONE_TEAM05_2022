@@ -247,6 +247,20 @@ namespace CAP_TEAM05_2022.Controllers
             }
 
         }
+        public JsonResult CheckCustomerPhoneAvailability(string phone)
+        {
+            System.Threading.Thread.Sleep(200);
+            var SeachData = db.customers.Where(x => x.phone == phone).FirstOrDefault();
+            if (SeachData != null)
+            {
+                return Json(1);
+            }
+            else
+            {
+                return Json(0);
+            }
+
+        }
         public JsonResult AddCustomerSale(string customer_name, string customer_phone,
            string customer_email, DateTime? customers_birth, string customer_account,
            string customer_bank, int customer_type, string customer_address, string customer_note)

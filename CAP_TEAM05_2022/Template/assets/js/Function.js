@@ -27,20 +27,7 @@
 $(document).ready(function () {
     var forms = document.getElementsByClassName('needs-validation');
     var validation = Array.prototype.filter.call(forms, function (form) {     
-        
-     
-        $('#add_customer_sale').on('click', function () {
-            if (form.checkValidity() === false) {
-                event.preventDefault();
-                event.stopPropagation();
-                form.classList.add('was-validated');
-            } else {
-                AddCustomerSale();
-                form.classList.remove('was-validated');
-
-            }
-            
-        })
+               
         $('#submit_addCart').on('click', function () {
             if (form.checkValidity() === false) {
                 
@@ -67,19 +54,7 @@ $(document).ready(function () {
             }
 
         })
-        $('#submit_stock').on('click', function () {
-            if (form.checkValidity() === false) {
-
-                event.preventDefault();
-                event.stopPropagation();
-                form.classList.add('was-validated');
-            } else {
-
-                Import_Stock();
-                form.classList.remove('was-validated');
-            }
-
-        })
+       
 //-------------------------Làm mới cart--------------------------------
         $('#refresh_cart').on('click', function () {
             GetList_Cart(-1);
@@ -886,54 +861,6 @@ $('.AddCustomerSaleFrom').submit(function (e) {
     }
 });
 
-function AddCustomerSale() {
-    var URLAddCustomerSale = "";
-    $('#URLAddCustomerSale')
-        .keypress(function () {
-            URLAddCustomerSale = $(this).val();
-        })
-        .keypress();
-   
-    var customer = {};
-    customer.name = $('#create_customer_name').val();
-    customer.phone = $('#sale_customer_phone').val();
-    customer.email = $('#customer_email').val();
-    customer.birthday = $('#customers_birth').val();
-    customer.account_number = $('#customer_account').val();
-    customer.bank = $('#customer_bank').val();
-    customer.type = $('#sale_customer_type').val();
-    customer.address = $('#customer_address').val();
-    customer.note = $('#customer_note').val();
-
-    console.log(URLAddCustomerSale);
-    $.ajax({
-        url: URLAddCustomerSale,
-        type: "Post",
-        data: JSON.stringify(customer),
-        contentType: "application/json; charset=UTF-8",
-        dataType: "json",
-        success: function (response) {
-            $('#customer_code').val(response.code);
-            $('#customer_phone').val(response.phone);
-            $('#count_sale').val(0);
-            $('#debit_sum').val(0);
-            if (response.type == 1 ) {
-                $('#customer_type').val("Khách mua lẻ");
-            } else if (response.type ==2 ) {
-                $('#customer_type').val("Công ty (Khách mua sĩ)");
-            } else if (response.type == 3) {
-                $('#customer_type').val("Nhà cung cấp");
-            }
-            if ($("#cart_total").val() != undefined) {
-                console.log($("#cart_total").val());
-                $("#payment_btn").prop("disabled", false);
-                $("#order_btn").prop("disabled", false);
-            }
-            $('#AddCustomer .close').css('display', 'none');
-            $('#AddCustomer').modal('hide');         
-        }
-    });
-}
 //-------------------------------KHÔNG CHO NHẬP KÍ TỰ ĐẶC BIỆC--------------------------------
 
 $('input').keypress(function (event) {
@@ -994,6 +921,53 @@ function UserCustomer() {
     }
   
   
+}
+function UserCustomer_phone() {
+    var customer_phone = $("#customer_phone").val();
+    if (customer_phone != "" && customer_phone != undefined) {
+        var URLCheckCustomerPhoneAvailability = "";
+        $('#URLCheckCustomernameAvailability')
+            .keypress(function () {
+                URLCheckCustomerPhoneAvailability = $(this).val();
+            })
+            .keypress();
+        $.post(URLCheckCustomerPhoneAvailability,
+            {
+                phone: customer_phone
+            },
+            function (data) {
+                if (data == 0) {
+                    $('#customer_id').val('');
+                    $('#customer_code').val('');
+                    $('#customer_type').val('');
+                    $('#count_sale').val('');
+                    $('#debit_sum').val('');
+                    $('#debit_sum').val('');
+                    $('#debit_name').val('');
+                    swal({
+                        title: "Khách hàng không có trong hệ thống, bạn có muốn thêm mới ?",
+                        type: "warning",
+                        showCancelButton: true,
+                        closeOnConfirm: true,
+                        confirmButtonText: "Xác nhận",
+                        confirmButtonColor: "#ec6c62",
+                        allowOutsideClick: true,
+                    },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                $('#AddCustomer .close').css('display', 'none');
+                                $('#AddCustomer').modal('show');
+                                $('#sale_customer_phone').val(customer_phone);
+
+                            }
+                        })
+
+                }
+
+            });
+    }
+
+
 }
 /*//------------------------Import Fail Add-----------------------------
 $('#URLUpdateGroupProduct')

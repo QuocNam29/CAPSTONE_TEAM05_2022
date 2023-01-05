@@ -15,6 +15,7 @@
 <input type="text" hidden id="URLCreateSale" value="@Url.Action("CreateSale", "sales")" />
 <input type="text" hidden id="URLUpdateCart" value="@Url.Action("UpdateCart", "carts")" />
 <input type="text" hidden id="URLCheckCustomernameAvailability" value="@Url.Action("CheckCustomernameAvailability", "customers")" />
+<input type="text" hidden id="URLCheckCustomerPhoneAvailability" value="@Url.Action("CheckCustomerPhoneAvailability", "customers")" />
 <input type="text" hidden id="URLgetCartProduct" value="@Url.Action("getCartProduct", "carts")" />
 
 
@@ -65,7 +66,10 @@
                                         </div>
                                         <div class="form-group">
                                             <div class="position-relative">
-                                                <input type="text" placeholder="Số điện thoại khách hàng" id="customer_phone" aria-autocomplete="list" class="form-control">
+                                                <input type="text" placeholder="Số điện thoại khách hàng" id="customer_phone" aria-autocomplete="list" onchange="UserCustomer_phone()" class="form-control" required>
+                                                <div class="invalid-feedback">
+                                                    Vui lòng nhập số điện thoại !
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -142,6 +146,9 @@
                                                     <input type="number" id="product_quantity" aria-label="Recipient's username" aria-describedby="basic-addon2" min="1" class="form-control" value="1" required>
                                                     <div class="input-group-append">
                                                         <span id="basic-addon2" class="input-group-text">SL (*)</span>
+                                                    </div>
+                                                    <div class="invalid-feedback">
+                                                       Số lượng sản phẩm phải lớn hơn 0!
                                                     </div>
                                                 </div>
                                             </div>
@@ -323,7 +330,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ bỏ</button>
-                    <button type="submit" class="btn btn-primary" @*id="add_customer_sale"*@>Thêm mới</button>
+                    <button type="submit" class="btn btn-primary">Thêm mới</button>
                 </div>
             </div>
         </form>
