@@ -24,7 +24,7 @@ namespace CAP_TEAM05_2022.Controllers
 
         }
 
-        public ActionResult ProductList(int group_id, int category_id)
+        public ActionResult _ProductList(int group_id, int category_id)
         {
             var links = from l in db.products
                         select l;
@@ -49,44 +49,78 @@ namespace CAP_TEAM05_2022.Controllers
         }
         public ActionResult Create_Product(string name_product, string unit,
             int quantity, int GroupProductDropdown, int CategoryDropdown,
-            string sell_price, string purchase_price
-            )
+            string sell_price, string purchase_price)
         {
-            string email = Session["user_email"].ToString();
-            user user = db.users.Where(u => u.email == email).FirstOrDefault();
-            product product = new product();
-            product.name = name_product;
-            product.status = 1;
-            product.unit = unit;
-            product.category_id = CategoryDropdown;
-            product.group_id = GroupProductDropdown;
-            product.created_by = user.id;
-            product.sell_price = int.Parse(sell_price.Replace(",", ""));
-            product.purchase_price = int.Parse(purchase_price.Replace(",", ""));
-            product.quantity = quantity;
-            product.created_at = DateTime.Now;
-            product.code = "SP" + CodeRandom.RandomCode();
-            db.products.Add(product);
-            import_inventory inventory = new import_inventory();
-            inventory.product_id = product.id;
-            inventory.quantity = quantity;
-            inventory.price_import = int.Parse(purchase_price.Replace(",", ""));
-            inventory.sold = 0;
-            inventory.created_by = user.id;
-            inventory.created_at = DateTime.Now;
-            db.import_inventory.Add(inventory);
-            db.SaveChanges();
-            Session["notification"] = "Thêm mới thành công!";
-            return RedirectToAction("Index");
+            string message = "";
+            bool status = true;
+            try
+            {
+                int check = db.products.Where(p => p.name == name_product
+                                        && p.group_id == GroupProductDropdown
+                                        && p.category_id == CategoryDropdown
+                                        && p.unit == unit).Count();
+                if (check > 0)
+                {
+                    status = false;
+                    message = "Sản phẩm đã tồn tại trong hệ thống !";
+                }
+                else
+                {
+                    string email = Session["user_email"].ToString();
+                    user user = db.users.Where(u => u.email == email).FirstOrDefault();
+                    product product = new product();
+                    product.name = name_product;
+                    product.status = 1;
+                    product.unit = unit;
+                    product.category_id = CategoryDropdown;
+                    product.group_id = GroupProductDropdown;
+                    product.created_by = user.id;
+                    product.sell_price = int.Parse(sell_price.Replace(",", "").Replace(".", ""));
+                    product.purchase_price = int.Parse(purchase_price.Replace(",", "").Replace(".", ""));
+                    product.quantity = quantity;
+                    product.created_at = DateTime.Now;
+                    product.code = "SP" + CodeRandom.RandomCode();
+                    db.products.Add(product);
+                    import_inventory inventory = new import_inventory();
+                    inventory.product_id = product.id;
+                    inventory.quantity = quantity;
+                    inventory.price_import = int.Parse(purchase_price.Replace(",", "").Replace(".", ""));
+                    inventory.sold = 0;
+                    inventory.created_by = user.id;
+                    inventory.created_at = DateTime.Now;
+                    db.import_inventory.Add(inventory);
+                    db.SaveChanges();
+                    message = "Tạo sản phẩm thành công";
+                }
+               
+            }
+            catch (Exception e)
+            {
+                status = false;
+                message = e.Message;
+            }
+
+            return Json(new { status, message }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult Delete_Product(product product)
         {
-            product product1 = db.products.Find(product.id);
-            product1.status = 3;
-            product1.deleted_at = DateTime.Now;
-            db.Entry(product1).State = EntityState.Modified;
-            db.SaveChanges();
-            return Json("Delete_Product", JsonRequestBehavior.AllowGet);
+            bool status = true;
+            string mess = "";
+            try
+            {
+                product product1 = db.products.Find(product.id);
+                db.products.Remove(product1);
+                db.SaveChanges();
+                mess = "Xóa nhóm hàng thành công";
+                db.SaveChanges();
+            }
+            catch (Exception)
+            {
+
+                status = false;
+                mess = "Xóa thất bại ! (Sản phẩm đang thuộc đơn hàng hoặc hóa đơn đã bán)";
+            }
+            return Json(new { status = status, message = mess }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult EditStatus_Product(product products)
         {
@@ -121,42 +155,40 @@ namespace CAP_TEAM05_2022.Controllers
             return Json(emp);
         }
 
-        public JsonResult UpdateProduct(product Products)
+        public JsonResult UpdateProduct(int Product_id, string name_product, string unit,
+            int GroupProductDropdown, int CategoryDropdown,
+            string sell_price)
         {
             string message = "";
             bool status = true;
             try
             {
-                string email = Session["user_email"].ToString();
-                user user = db.users.Where(u => u.email == email).FirstOrDefault();
-                product product = db.products.Find(Products.id);
-                product.name = Products.name;
-
-                product.unit = Products.unit;
-                product.category_id = Products.category_id;
-                product.group_id = Products.group_id;
-                product.sell_price = Products.sell_price;
-                /* product.purchase_price = Products.purchase_price;
-                 product.quantity = Products.quantity;*/
-                product.updated_at = DateTime.Now;
-                db.Entry(product).State = EntityState.Modified;
-
-                /*int inventory = Products.quantity - db.import_inventory
-                    .Where(i => i.product_id == Products.id).Sum(s => s.quantity) - db.import_inventory
-                    .Where(i => i.product_id == Products.id).Sum(s => s.sold);
-
-                    import_inventory import = new import_inventory();
-                    import.product_id = Products.id;
-                    import.quantity = inventory;            
-                    import.price_import = Products.purchase_price;
-                    import.sold = 0;
-                    import.created_at = DateTime.Now;
-                    import.created_by = user.id;
-                db.import_inventory.Add(import);*/
-
-                db.SaveChanges();
-                message = "Record Saved Successfully ";
-                status = true;
+                int check = db.products.Where(p => p.name == name_product
+                                       && p.group_id == GroupProductDropdown
+                                       && p.category_id == CategoryDropdown
+                                       && p.unit == unit 
+                                       && p.id != Product_id).Count();
+                if (check > 0)
+                {
+                    status = false;
+                    message = "Sản phẩm đã tồn tại trong hệ thống !";
+                }
+                else
+                {
+                    string email = Session["user_email"].ToString();
+                    user user = db.users.Where(u => u.email == email).FirstOrDefault();
+                    product product = db.products.Find(Product_id);
+                    product.name = name_product;
+                    product.unit = unit;
+                    product.category_id = CategoryDropdown;
+                    product.group_id = GroupProductDropdown;
+                    product.sell_price = int.Parse(sell_price.Replace(",", "").Replace(".", ""));
+                    product.updated_at = DateTime.Now;
+                    db.Entry(product).State = EntityState.Modified;
+                    db.SaveChanges();
+                    message = "Chỉnh sửa thông tin sản phẩm thành công ";
+                    
+                }
             }
             catch (Exception e)
             {
@@ -167,7 +199,7 @@ namespace CAP_TEAM05_2022.Controllers
 
             return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult Import_Stock(product Products)
+        public JsonResult Import_Stock(int Product_id, int quantity, string purchase_price)
         {
             string message = "";
             bool status = true;
@@ -175,14 +207,14 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 string email = Session["user_email"].ToString();
                 user user = db.users.Where(u => u.email == email).FirstOrDefault();
-                product product = db.products.Find(Products.id);
-                product.quantity += Products.quantity;
+                product product = db.products.Find(Product_id);
+                product.quantity += quantity;
                 product.updated_at = DateTime.Now;
                 db.Entry(product).State = EntityState.Modified;
                 import_inventory import = new import_inventory();
-                import.product_id = Products.id;
-                import.quantity = Products.quantity;
-                import.price_import = Products.purchase_price;
+                import.product_id = Product_id;
+                import.quantity = quantity;
+                import.price_import = int.Parse(purchase_price.Replace(",", "").Replace(".", ""));
                 import.sold = 0;
                 import.created_at = DateTime.Now;
                 import.created_by = user.id;
@@ -196,7 +228,7 @@ namespace CAP_TEAM05_2022.Controllers
             {
 
                 message = e.Message;
-                status = true;
+                status = false;
             }
 
             return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);

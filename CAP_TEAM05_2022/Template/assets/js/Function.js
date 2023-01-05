@@ -141,6 +141,50 @@ $(document).ready(function () {
     }, false);
 })
 
+
+//--------------------------Add, Update Product----------------------------------
+$('.ProductForm').submit(function (e) {
+    var form = $(this);
+
+    // Check if form is valid then submit ajax
+    if (form[0].checkValidity()) {
+        e.preventDefault();
+        var url = form.attr('action');
+        console.log();
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: form.serialize(),
+            success: function (data) {
+                // Hide bootstrap modal to prevent conflict
+                $('.modal').modal('hide');
+
+                if (data.status) {
+                    // Refresh table data
+                    var group_id = $("#filter_GroupProduct").val();
+                    var category_id = $("#filter_Category").val();
+                    GetList(group_id, category_id)
+                    sweetAlert
+                        ({
+                            title: "Thành công !",
+                            text: data.message,
+                            type: "success"
+                        })
+
+                    form[0].reset();
+                    form.removeClass('was-validated');
+                } else {
+                    swal({
+                        title: 'Lỗi !',
+                        text: data.message,
+                        type: 'error',
+
+                    }); // Show bootstrap modal again
+                }
+            }
+        });
+    }
+});
 //-------------------------Delete Group, Category, Product-----------------------
 var URLDelete = "";
 $('#URLDelete')
@@ -374,6 +418,7 @@ $.ajax({
 });
 
 //----------------------FILTER PRODUCT------------------------------------------------
+
 $('#URLProductList')
     .keypress(function () {
         URLProductList = $(this).val();
@@ -536,125 +581,6 @@ function GetProduct_Stock(ele, id, code, name) {
 }
 //-------------------------------UPDATE PRODUCT--------------------------------
 
-$('#URLUpdateProduct')
-    .keypress(function () {
-        URLUpdateProduct = $(this).val();
-    })
-    .keypress();
-$('#URLImport_Stock')
-    .keypress(function () {
-        URLImport_Stock = $(this).val();
-    })
-    .keypress();
-
-function Update_Product() {
-    var table = $('#example').DataTable();
-    var product = {};
-    product.id = $('#edit_id').val();
-    product.name = $('#edit_name').val();
-    product.unit = $('#edit_unit').val();
-   /* product.quantity = $('#edit_quantity').val();*/
-    product.sell_price = Number($('#edit_sell_price').val().replace(/,/g, ''));
-    /*product.purchase_price = Number($('#edit_purchase_price').val().replace(/,/g, ''));*/
-    product.group_id = $('#edit_GroupProduct').val();
-    product.category_id = $('#edit_Category').val();
-  
-    $.ajax({
-        url: URLUpdateProduct,
-        async: false,
-        type: "Post",
-        data: JSON.stringify(product),
-        contentType: "application/json; charset=UTF-8",
-        dataType: "json",
-        success: function (response) {
-            var group_id = $("#filter_GroupProduct").val();
-            var category_id = $("#filter_Category").val();
-            $.ajax({
-                url: URLProductList,
-                data: {
-                    group_id: group_id,
-                    category_id: category_id,
-                }
-            }).done(function (result) {
-                $('#dataContainer').html(result);
-                $('#example').DataTable()
-                $('#EditProduct .close').css('display', 'none');
-                $('#EditProduct').modal('hide');
-
-                sweetAlert
-                    ({
-                        title: "Cập nhật thành công !",
-                        type: "success",
-                        allowOutsideClick: true,
-
-                    })
-            }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                console.log(textStatus)
-                console.log(errorThrown)
-                alert("Something Went Wrong, Try Later");
-            });
-        }
-    });
-}
-function Import_Stock() {
-    var table = $('#example').DataTable();
-    var product = {};
-    product.id = $('#stock_pid').val();
-   
- 
-    product.quantity = $('#stock_pQuantity').val();
-    
-    product.purchase_price = Number($('#stock_pPurchasePrice').val().replace(/,/g, ''));
-    
-
-    $.ajax({
-        url: URLImport_Stock,
-        async: false,
-        type: "Post",
-        data: JSON.stringify(product),
-        contentType: "application/json; charset=UTF-8",
-        dataType: "json",
-        success: function (response) {
-            if (response.status == true) {
-            var group_id = $("#filter_GroupProduct").val();
-            var category_id = $("#filter_Category").val();
-            $.ajax({
-                url: URLProductList,
-                data: {
-                    group_id: group_id,
-                    category_id: category_id,
-                }
-            }).done(function (result) {
-                $('#dataContainer').html(result);
-                $('#example').DataTable()
-                $('#Stock_import .close').css('display', 'none');
-                $('#Stock_import').modal('hide');                  
-                sweetAlert
-                    ({
-                        title: response.message,
-                        type: "success",
-                        allowOutsideClick: true,
-
-                    })
-           
-            }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                console.log(textStatus)
-                console.log(errorThrown)
-                alert("Something Went Wrong, Try Later");
-            });
-            } else {
-                sweetAlert
-                    ({
-                        title: Lỗi,
-                        text: response.message,
-                        type: "error",
-                        allowOutsideClick: true,
-
-                    })
-            }
-        }
-    });
-}
 //-------------------------Get Group Product -------------------------------
 
 $('#URLFindGroupProduct')
@@ -714,7 +640,7 @@ $('.GroupForm').submit(function (e) {
                         text: data.message,
                         type: 'error',
 
-                    }, function () { $('#AddUser').modal('show') }); // Show bootstrap modal again
+                    }); // Show bootstrap modal again
                 }
             }
         });
@@ -830,10 +756,49 @@ $('#URLCustomerList')
         URLCustomerList = $(this).val();
     })
     .keypress();
-
 $("#filter_type").change(function () {
     var type = $("#filter_type").val();
     GetList_Customer(type)
+});
+$('.CusomerForm').submit(function (e) {
+    var form = $(this);
+
+    // Check if form is valid then submit ajax
+    if (form[0].checkValidity()) {
+        e.preventDefault();
+        var url = form.attr('action');
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: form.serialize(),
+            success: function (data) {
+                // Hide bootstrap modal to prevent conflict
+                $('.modal').modal('hide');
+
+                if (data.status) {
+                    // Refresh table data
+                    var type = $("#filter_type").val();
+                    GetList_Customer(type)
+                    sweetAlert
+                        ({
+                            title: "Thành công !",
+                            text: data.message,
+                            type: "success"
+                        })
+
+                    form[0].reset();
+                    form.removeClass('was-validated');
+                } else {
+                    swal({
+                        title: 'Lỗi !',
+                        text: data.message,
+                        type: 'error',
+
+                    }); // Show bootstrap modal again
+                }
+            }
+        });
+    }
 });
 function GetList_Customer(type) {
     $.ajax({

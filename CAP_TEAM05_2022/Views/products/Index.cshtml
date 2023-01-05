@@ -5,10 +5,8 @@
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
 
 }
-<input type="text" hidden id="URLProductList" value="@Url.Action("ProductList", "products")" />
+<input type="text" hidden id="URLProductList" value="@Url.Action("_ProductList", "products")" />
 <input type="text" hidden id="URLFindProduct" value="@Url.Action("FindProduct", "products")/" />
-<input type="text" hidden id="URLUpdateProduct" value="@Url.Action("UpdateProduct", "products")" />
-<input type="text" hidden id="URLImport_Stock" value="@Url.Action("Import_Stock", "products")" />
 
 
 <section class="pcoded-main-container">
@@ -158,7 +156,7 @@
                                 Session["Import_exist"] = null;
                             }
                                     <div class="table-responsive" id="dataContainer">
-                                        @{ Html.RenderAction("ProductList", "products", new { group_id = -1, category_id = -1 });}
+                                        @{ Html.RenderAction("_ProductList", "products", new { group_id = -1, category_id = -1 });}
 
                                     </div>
                                 </div>
@@ -172,6 +170,23 @@
     </div>
 </section>
 <!-- Modal -->
+<div class="modal fade text-left" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel1"><b>Thông báo</b></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="text-center">
+                <img src="~/Template/assets/images/in-progress-animate.svg" style=" display: block; margin-left: auto; margin-right: auto; width: 50%;" />
+                <p> Vui lòng chờ trong khi hệ thống đang xử lý dữ liệu...</p>
+            </div>
+
+        </div>
+    </div>
+</div>
 <div id="ImportModal" tabindex="-1" role="dialog" aria-labelledby="ImportModalTitle" aria-hidden="true" class="modal fade">
     <div role="document" class="modal-dialog">
         <div class="modal-content">
@@ -199,7 +214,7 @@
 </div>
 <div id="AddProduct" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="AddProductLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <form class="needs-validation" method="post" action="@Url.Action("Create_Product", "products")" novalidate>
+        <form class="needs-validation ProductForm" method="post" action="@Url.Action("Create_Product", "products")" novalidate>
             <div class="modal-content">
                 <div class="modal-header bg-primary">
                     <h5 class="modal-title" id="AddProductLabel">Thêm mới sản phẩm</h5>
@@ -316,26 +331,9 @@
         </form>
     </div>
 </div>
-<div class="modal fade text-left" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel1"><b>Thông báo</b></h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="text-center">
-                <img src="~/Template/assets/images/in-progress-animate.svg" style=" display: block; margin-left: auto; margin-right: auto; width: 50%;" />
-                <p> Vui lòng chờ trong khi hệ thống đang xử lý dữ liệu...</p>
-            </div>
-
-        </div>
-    </div>
-</div>
 <div id="EditProduct" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="EditProductLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <form class="needs-validation" method="post" id="EditProduct" novalidate>
+        <form class="needs-validation ProductForm" method="post" action="@Url.Action("UpdateProduct","products")" id="EditProduct" novalidate>
             <div class="modal-content">
                 <div class="modal-header bg-primary">
                     <h5 class="modal-title" id="EditProductLabel">Chỉnh sửa thông tin sản phẩm</h5>
@@ -447,7 +445,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" id="submit_edit_product" @*onclick="Update_Product()"*@>thay đổi</button>
+                    <button type="submit" class="btn btn-primary">thay đổi</button>
                 </div>
             </div>
         </form>
@@ -455,7 +453,7 @@
 </div>
 <div id="Stock_import" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Stock_importLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <form class="needs-validation" method="post" id="Stock_import" novalidate>
+        <form class="needs-validation ProductForm" method="post" action="@Url.Action("Import_Stock", "products")" novalidate>
             <div class="modal-content">
                 <div class="modal-header bg-primary">
                     <h5 class="modal-title" id="EditProductLabel">Thêm số lượng sản phẩm</h5>
@@ -472,7 +470,7 @@
                                 </label>
                                 <input hidden id="stock_pid" name="Product_id" />
                                 <div class="position-relative">
-                                    <input type="text" placeholder="Nhập tên sản phẩm" id="stock_pCode" class="form-control" name="name_product" pattern="\S+.*" disabled>
+                                    <input type="text" placeholder="Nhập tên sản phẩm" id="stock_pCode" class="form-control" name="code_product" pattern="\S+.*" disabled>
 
                                 </div> <!---->
                             </div>
@@ -482,7 +480,6 @@
                                 <label>
                                     Tên sản phẩm<span class="text-danger">*</span>
                                 </label>
-                                <input hidden id="edit_id" name="Product_id" />
                                 <div class="position-relative">
                                     <input type="text" placeholder="Nhập tên sản phẩm" id="stock_pName" class="form-control" name="name_product" pattern="\S+.*" disabled>
 
@@ -526,7 +523,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" id="submit_stock" @*onclick="Update_Product()"*@>thay đổi</button>
+                    <button type="submit" class="btn btn-primary">Nhập hàng</button>
                 </div>
             </div>
         </form>
