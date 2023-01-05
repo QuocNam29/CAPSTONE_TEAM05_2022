@@ -630,10 +630,6 @@
     <Content Include="Template\assets\fonts\pct.woff" />
     <Content Include="Template\assets\json\cities.json" />
     <Content Include="Template\assets\json\citynames.json" />
-    <Content Include="Views\categories\Create.cshtml" />
-    <Content Include="Views\categories\Delete.cshtml" />
-    <Content Include="Views\categories\Details.cshtml" />
-    <Content Include="Views\categories\Edit.cshtml" />
     <Content Include="Views\categories\Index.cshtml" />
     <Content Include="Views\Shared\_Layout_QuyThanh.cshtml" />
     <Content Include="Views\users\Create.cshtml" />
@@ -643,10 +639,6 @@
     <Content Include="Views\users\Index.cshtml" />
     <Content Include="Views\users\Index2.cshtml" />
     <Content Include="Views\Sweet\Alert.cshtml" />
-    <Content Include="Views\groups\Create.cshtml" />
-    <Content Include="Views\groups\Delete.cshtml" />
-    <Content Include="Views\groups\Details.cshtml" />
-    <Content Include="Views\groups\Edit.cshtml" />
     <Content Include="Views\groups\Index.cshtml" />
     <Content Include="Views\products\Index.cshtml" />
     <Content Include="Views\products\ProductList.cshtml" />
@@ -677,6 +669,8 @@
     <Content Include="Views\sales\_OrderList.cshtml" />
     <Content Include="Views\sales\_OrderDetailsList.cshtml" />
     <Content Include="Views\products\_Inventory_ProductList.cshtml" />
+    <Content Include="Views\groups\_GroupList.cshtml" />
+    <Content Include="Views\categories\_CategoryList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -19,24 +19,49 @@ namespace CAP_TEAM05_2022.Controllers
         // GET: groups
         public ActionResult Index()
         {
-            var groups = db.groups.Include(g => g.user).Where(c => c.status != 3).OrderByDescending(c => c.id);
-            return View(groups.ToList());
+          
+            return View();
         }
-        public ActionResult Create_GroupProduct(string name_GroupProduct)
+        public ActionResult _GroupList()
         {
-            string email = Session["user_email"].ToString();
-            user user = db.users.Where(u => u.email == email).FirstOrDefault();
-            group GroupProduct = new group();
-            GroupProduct.name = name_GroupProduct;
-            GroupProduct.created_by = user.id;
-            GroupProduct.status = 1;
-            GroupProduct.created_at = DateTime.Now;
-            GroupProduct.slug = name_GroupProduct;
-            GroupProduct.code = "NH" + CodeRandom.RandomCode();
-            db.groups.Add(GroupProduct);
-            db.SaveChanges();
-            Session["notification"] = "Thêm mới thành công!";
-            return RedirectToAction("Index");
+            var groups = db.groups.Include(g => g.user).Where(c => c.status != 3).OrderByDescending(c => c.id);
+            return PartialView(groups.ToList());
+        }
+        public ActionResult Create_GroupProduct(string Add_name)
+        {
+            string message = "";
+            bool status = true;
+            try
+            {
+                int check = db.groups.Where(c => c.name == Add_name).Count();
+                if (check > 0)
+                {
+                    status = false;
+                    message = "Nhóm hàng đã tồn tại !";                   
+                }
+                else
+                {
+                    string email = Session["user_email"].ToString();
+                    user user = db.users.Where(u => u.email == email).FirstOrDefault();
+                    group GroupProduct = new group();
+                    GroupProduct.name = Add_name;
+                    GroupProduct.created_by = user.id;
+                    GroupProduct.status = 1;
+                    GroupProduct.created_at = DateTime.Now;
+                    GroupProduct.slug = Add_name;
+                    GroupProduct.code = "NH" + CodeRandom.RandomCode();
+                    db.groups.Add(GroupProduct);
+                    db.SaveChanges();
+                    message = "Tạo nhóm hàng thành công";
+                }
+            }
+            catch (Exception e)
+            {
+
+                status = false;
+                message = e.Message;
+            }
+             return Json(new { status, message }, JsonRequestBehavior.AllowGet);
         }
        
 
@@ -100,25 +125,36 @@ namespace CAP_TEAM05_2022.Controllers
                 groupName = x.name
             }).ToList(), JsonRequestBehavior.AllowGet);
         }
-        /*public ActionResult Edit_GroupProduct(int GroupProduct_id, string name_GroupProduct)
+       
+        public JsonResult UpdateGroupProduct( int id, string Edit_name)
         {
-            group group = db.groups.Find(GroupProduct_id);
-            group.name = name_GroupProduct;
-            group.updated_at = DateTime.Now;
-            db.Entry(group).State = EntityState.Modified;
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }*/
-        public JsonResult UpdateGroupProduct(group GroupProducts)
-        {
-            group group = db.groups.Find(GroupProducts.id);
-            group.name = GroupProducts.name;
-            group.updated_at = DateTime.Now;
-            db.Entry(group).State = EntityState.Modified;
-            db.SaveChanges();
-            string message = "Record Saved Successfully ";
+            string message = "";
             bool status = true;
-            return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
+            try
+            {
+                int check = db.groups.Where(c => c.name == Edit_name).Count();
+                if (check > 0)
+                {
+                    status = false;
+                    message = "Tên nhóm hàng đã tồn tại !";
+                }
+                else
+                {
+                    group group = db.groups.Find(id);
+                    group.name = Edit_name;
+                    group.updated_at = DateTime.Now;
+                    db.Entry(group).State = EntityState.Modified;
+                    db.SaveChanges();
+                    message = "Cập nhật nhóm hàng thành công";
+                }
+            }
+            catch (Exception e)
+            {
+
+                message = e.Message;
+                status = false;
+            }
+            return Json(new { status, message }, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult CheckGroupnameAvailability(string categorydata)

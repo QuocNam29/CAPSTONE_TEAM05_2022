@@ -1,0 +1,64 @@
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.group>
+@{ 
+    int no = 0;
+}
+<table id="example" class="table table-hover">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Mã nhóm hàng</th>
+            <th>Tên nhóm hàng</th>
+            <th width="15%">Trạng thái</th>
+            <th width="15%">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            string customswitch_NH = "customswitch" + item.id;
+            no++;
+            <tr>
+                <td>@no  <input hidden type="text" name="record" value="@item.code"></td>
+                <td>@item.code</td>
+                <td>@item.name</td>
+                <td>
+                    @if (item.status == 1)
+                    {
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" checked class="custom-control-input" id="@customswitch_NH">
+                            <label class="custom-control-label" for="@customswitch_NH"></label>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="@customswitch_NH">
+                            <label class="custom-control-label" for="@customswitch_NH"></label>
+                        </div>
+                    }
+                    <input hidden type="text" id="URDEditStatus" value="@Url.Action("EditStatus_GroupProduct", "groups")">
+                    <script language="javascript">
+                                                        document.getElementById('@customswitch_NH').onclick = function (e) {
+                                                                EditStatus(@item.id);
+                                                        };
+                    </script>
+                </td>
+                <td>
+                    <button class="btn btn-success " onclick="GetGroupProduct(this, @item.id, '@item.name')">
+                        <i class="feather icon-edit">
+                        </i>
+                    </button>
+                    <input hidden type="text" id="URLDelete" value="@Url.Action("Delete_GroupProduct", "groups")">
+                    <button class="btn btn-danger" onclick="deleteAlert('@item.id', '@item.code')" id="Delete">
+                        <i class="feather icon-trash-2">
+                        </i>
+                    </button>
+
+                </td>
+            </tr>
+
+        }
+
+    </tbody>
+</table>

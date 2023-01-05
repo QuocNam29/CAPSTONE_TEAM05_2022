@@ -22,7 +22,12 @@ namespace CAP_TEAM05_2022.Controllers
             var categories = db.categories.Include(c => c.user).Where(c => c.status != 3).OrderByDescending(c => c.id);
             return View(categories.ToList());
         }
-        
+        public ActionResult _CategoryList()
+        {
+            var categories = db.categories.Include(c => c.user).Where(c => c.status != 3).OrderByDescending(c => c.id);
+            return PartialView(categories.ToList());
+        }
+
         public ActionResult Create_Category(string name_category)
         {
             string email =  Session["user_email"].ToString();

@@ -40,6 +40,18 @@ $(document).ready(function () {
 
         }
     })
+        $('#btn_submit').on('click', function () {
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+                form.classList.add('was-validated');
+
+            } else {
+                Add();
+                form.classList.remove('was-validated');
+
+            }
+        })
         $('#submit_edit_product').on('click', function () {
             
 
@@ -192,7 +204,8 @@ function deleteAlert(id, code) {
                     if (data.status) {
                         sweetAlert
                             ({
-                                title: data.message,
+                                title: "Thành công",
+                                text: data.message,
                                 type: "success",
                                 allowOutsideClick: true,
 
@@ -208,7 +221,8 @@ function deleteAlert(id, code) {
                     else {
                         sweetAlert
                             ({
-                                title: data.message,
+                                title: "Lỗi !",
+                                text: data.message,
                                 type: "error",
                                 allowOutsideClick: true,
 
@@ -673,21 +687,16 @@ $('#URLFindGroupProduct')
         URLFindGroupProduct = $(this).val();
     })
     .keypress();
-function GetGroupProduct(ele, id) {
+function GetGroupProduct(ele, id, name) {
     row = $(ele).closest('tr');
-    $.ajax({
-        type: 'POST',
-        url: URLFindGroupProduct,
-        data: { "GroupProduct_id": id },
-        success: function (response) {
-            $('#edit_id').val(response.id);
-            $('#Edit_name').val(response.name);
+   
+            $('#edit_id').val(id);
+            $('#Edit_name').val(name);
 
             $('#Edit_Modal .close').css('display', 'none');
             $('#Edit_Modal').modal('show');
         }
-    })
-}
+   
 
 //------------------------UPDATE GROUP PRODUCT-----------------------------
 $('#URLUpdateGroupProduct')
@@ -713,6 +722,8 @@ function Update() {
             $('#Edit_Modal').modal('hide');
             table.cell(row, 2).data($('#Edit_name').val());
             table.draw();
+            $('#edit_id').val('');
+            $('#Edit_name').val('');
             sweetAlert
                 ({
                     title: "Cập nhật thành công !",
@@ -724,6 +735,66 @@ function Update() {
     });
 }
 
+//----------------------Add group/ category-------------------
+
+$('#URL_List')
+    .keypress(function () {
+        URL_List = $(this).val();
+    })
+    .keypress();
+$('.GroupForm').submit(function (e) {
+    var form = $(this);
+
+    // Check if form is valid then submit ajax
+    if (form[0].checkValidity()) {
+        e.preventDefault();
+        var url = form.attr('action');
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: form.serialize(),
+            success: function (data) {
+                // Hide bootstrap modal to prevent conflict
+                $('.modal').modal('hide');
+
+                if (data.status) {
+                    // Refresh table data
+                    GetList_CategoryAndType();
+                    sweetAlert
+                        ({
+                            title: "Thành công !",
+                            text: data.message,
+                            type: "success"
+                        })
+
+                    form[0].reset();
+                    form.removeClass('was-validated');
+                } else {
+                    swal({
+                        title: 'Lỗi !',
+                        text: data.message,
+                        type: 'error',
+
+                    }, function () { $('#AddUser').modal('show') }); // Show bootstrap modal again
+                }
+            }
+        });
+    }
+});
+function GetList_CategoryAndType() {
+    $.ajax({
+        url: URL_List,
+        data: {}
+    }).done(function (result) {
+        $('#dataContainer').html(result);
+        $('#example').DataTable()
+
+    }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        console.log(textStatus)
+        console.log(errorThrown)
+        alert("Something Went Wrong, Try Later");
+    });
+}
 //---------------------Export Excel-------------------------
 $('#URLExportExcel')
     .keypress(function () {
@@ -997,48 +1068,6 @@ $('#URLChecknameAvailability')
     })
     .keypress();
 
-
-function UserCheck() {
-    console.log(URLChecknameAvailability);
-    $.post(URLChecknameAvailability,
-        {
-            categorydata: $("#name_category").val()
-        },
-        function (data) {
-            if (data == 0) {
-                $("#Status").html('<font color="Red" hidden>That name is taken.Try Another.</font>');
-                $("#name_GroupProduct").css("border-color", "#adb5bd");
-                document.querySelector("#btn_submit").disabled = false;
-
-
-            }
-            else if (data == 1) {
-                $("#Status").html('<font color="Red">Tên nhóm hàng đã tồn tại, vui lòng nhập tên khác.</font>');
-                $("#name_GroupProduct").css("border-color", "#e74c3c");
-                document.querySelector("#btn_submit").disabled = true;
-
-            }
-        });
-    $.post(URLChecknameAvailability,
-        {
-            categorydata: $("#name_GroupProduct").val()
-        },
-        function (data) {
-            if (data == 0) {
-                $("#Status").html('<font color="Red" hidden>That name is taken.Try Another.</font>');             
-                $("#name_GroupProduct").css("border-color", "#adb5bd");
-                document.querySelector("#btn_submit").disabled = false;
-
-
-            }
-            else if (data == 1) {
-                $("#Status").html('<font color="Red">Tên danh mục đã tồn tại, vui lòng nhập tên khác.</font>');       
-                $("#name_GroupProduct").css("border-color", "#e74c3c");
-                document.querySelector("#btn_submit").disabled = true;
-
-            }
-        });
-}
 
 function UserCustomer() {
     var customer_name = $("#customer_name").val();
