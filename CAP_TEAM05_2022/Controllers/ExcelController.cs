@@ -556,8 +556,14 @@ namespace CAP_TEAM05_2022.Controllers
         public void ExportExcel_Inventory(DateTime? date_start, DateTime? date_end)
         {
             string nameFile = "Kho_Hang_từ_" + date_start + "_đến_" + date_end + ".xlsx";
-;            var import_inventory = db.import_inventory.Include(i => i.user).Include(i => i.product).Where(i => i.created_at >= date_start && i.created_at <= date_end);
-
+;            var import_inventory = db.import_inventory.Include(i => i.user).Include(i => i.product).Where(s => s.created_at >= date_start && s.created_at <= date_end
+                                                    || s.created_at.Value.Day == date_start.Value.Day
+                                                    && s.created_at.Value.Month == date_start.Value.Month
+                                                    && s.created_at.Value.Year == date_start.Value.Year
+                                                    || s.created_at.Value.Day == date_end.Value.Day
+                                                    && s.created_at.Value.Month == date_end.Value.Month
+                                                    && s.created_at.Value.Year == date_end.Value.Year).ToList();
+            var product = db.products.Where(c => c.status != 3).OrderByDescending(c => c.id).ToList();
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ExcelPackage ep = new ExcelPackage();
             ExcelWorksheet Sheet = ep.Workbook.Worksheets.Add("TonKho");
@@ -575,18 +581,24 @@ namespace CAP_TEAM05_2022.Controllers
             Sheet.Cells["I1"].Value = "Thành tiền";
 
             int row = 2;// dòng bắt đầu ghi dữ liệu
-            foreach (var item in import_inventory)
+            foreach (var item in product)
             {
-                Sheet.Cells[string.Format("A{0}", row)].Value = item.product.code;
-                Sheet.Cells[string.Format("B{0}", row)].Value = item.product.name;
-                Sheet.Cells[string.Format("C{0}", row)].Value = item.product.unit;
-                Sheet.Cells[string.Format("D{0}", row)].Value = item.price_import;
-                Sheet.Cells[string.Format("E{0}", row)].Value = item.quantity;
-                Sheet.Cells[string.Format("F{0}", row)].Value = item.product.sell_price;
-                Sheet.Cells[string.Format("G{0}", row)].Value = item.sold;
-                Sheet.Cells[string.Format("H{0}", row)].Value = item.quantity - item.sold;
-                Sheet.Cells[string.Format("I{0}", row)].Value = (item.price_import * (item.quantity - item.sold));
-                row++;
+                var inventory = item.import_inventory.ToList();
+                var invento_groupby = inventory.GroupBy(s => s.price_import).ToList();
+
+                foreach (var item1 in invento_groupby)
+                {
+                    Sheet.Cells[string.Format("A{0}", row)].Value = item.code;
+                    Sheet.Cells[string.Format("B{0}", row)].Value = item.name;
+                    Sheet.Cells[string.Format("C{0}", row)].Value = item.unit;
+                    Sheet.Cells[string.Format("D{0}", row)].Value = item1.Key;
+                    Sheet.Cells[string.Format("E{0}", row)].Value = inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity);
+                    Sheet.Cells[string.Format("F{0}", row)].Value = item.sell_price;
+                    Sheet.Cells[string.Format("G{0}", row)].Value = inventory.Where(i => i.price_import == item1.Key).Sum(i => i.sold);
+                    Sheet.Cells[string.Format("H{0}", row)].Value = inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity - i.sold);
+                    Sheet.Cells[string.Format("I{0}", row)].Value = item1.Key * (inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity - i.sold));
+                    row++;
+                }
             }
             Sheet.Cells["A:AZ"].AutoFitColumns();
             Response.Clear();

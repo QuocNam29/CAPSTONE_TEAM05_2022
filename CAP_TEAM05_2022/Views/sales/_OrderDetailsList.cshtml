@@ -5,14 +5,14 @@
     int no_return = 0;
     string order_code = "";
     int order_total = 0;
-    int order_vat = 0;
-    int order_discount = 0;
+    double order_vat = 0;
+    double order_discount = 0;
     if (TempData["order_code"] != null)
     {
         order_code = TempData["order_code"].ToString();
         order_total = int.Parse(TempData["order_total"].ToString());
-        order_vat = int.Parse(TempData["order_vat"].ToString());
-        order_discount = int.Parse(TempData["order_discount"].ToString());
+        order_vat = double.Parse(TempData["order_vat"].ToString());
+        order_discount = double.Parse(TempData["order_discount"].ToString());
     }
 
 }

@@ -1,7 +1,6 @@
 ﻿@model IEnumerable<CAP_TEAM05_2022.Models.import_inventory>
 @{
    
-    int total_inventory = 0;
     int no_sell = 0;
     int total_sell = 0;
     int no_import = 0;
@@ -29,10 +28,6 @@
 
                         <div class="table-responsive" id="dataContainer_inventory">
                             @{ Html.RenderAction("_Inventory_ProductList", "products");}
-
-
-                            
-
 
                         </div>
                     </div>

@@ -34,9 +34,9 @@
                         @foreach (var item in Model)
                         {
                             var inventory = item.import_inventory.ToList();
-                            var hihi = inventory.GroupBy(s => s.price_import).ToList();
+                            var invento_groupby = inventory.GroupBy(s => s.price_import).ToList();
 
-                            foreach (var item1 in hihi)
+                            foreach (var item1 in invento_groupby)
                             {
                                 no++;
                                 
