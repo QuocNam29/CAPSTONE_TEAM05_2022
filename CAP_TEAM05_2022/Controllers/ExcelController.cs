@@ -832,7 +832,8 @@ namespace CAP_TEAM05_2022.Controllers
                                                     && s.created_at.Value.Year == date_Start.Value.Year
                                                     || s.created_at.Value.Day == date_End.Value.Day
                                                     && s.created_at.Value.Month == date_End.Value.Month
-                                                    && s.created_at.Value.Year == date_End.Value.Year);
+                                                    && s.created_at.Value.Year == date_End.Value.Year)
+                .OrderByDescending(o => o.id);
           
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ExcelPackage ep = new ExcelPackage();
@@ -846,7 +847,7 @@ namespace CAP_TEAM05_2022.Controllers
             Sheet.Cells["D1"].Value = "Chiết khấu(%)";
             Sheet.Cells["E1"].Value = "Thành tiền";
             Sheet.Cells["F1"].Value = "Trả trước(nếu có)";
-            Sheet.Cells["G1"].Value = "Trạng thái";
+            Sheet.Cells["G1"].Value = "Còn nợ";
             Sheet.Cells["H1"].Value = "Trạng thái";
             Sheet.Cells["I1"].Value = "Ngày giao dịch";
 
@@ -896,7 +897,8 @@ namespace CAP_TEAM05_2022.Controllers
 
             var sales = db.sales.Include(s => s.customer).Include(s => s.user).Where(s => s.created_at >= date_Start && s.created_at <= date_End
                                                     || s.created_at.Value.Month == date_Start.Value.Month && s.created_at.Value.Year == date_Start.Value.Year
-                                                    || s.created_at.Value.Month == date_End.Value.Month && s.created_at.Value.Year == date_End.Value.Year); ;
+                                                    || s.created_at.Value.Month == date_End.Value.Month && s.created_at.Value.Year == date_End.Value.Year)
+                .OrderByDescending(o => o.id);    
           
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ExcelPackage ep = new ExcelPackage();
@@ -910,7 +912,7 @@ namespace CAP_TEAM05_2022.Controllers
             Sheet.Cells["D1"].Value = "Chiết khấu(%)";
             Sheet.Cells["E1"].Value = "Thành tiền";
             Sheet.Cells["F1"].Value = "Trả trước(nếu có)";
-            Sheet.Cells["G1"].Value = "Trạng thái";
+            Sheet.Cells["G1"].Value = "Còn nợ";
             Sheet.Cells["H1"].Value = "Trạng thái";
             Sheet.Cells["I1"].Value = "Ngày giao dịch";
 
