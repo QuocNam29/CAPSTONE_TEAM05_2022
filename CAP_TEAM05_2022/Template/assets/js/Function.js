@@ -620,6 +620,7 @@ $('#URLExportExcel')
     })
     .keypress();
 
+
 $('#btnExportExcel').click(function () {
     group_id = $("#filter_GroupProduct").val();
     category_id = $("#filter_Category").val();
@@ -634,7 +635,6 @@ $('#btnExportExcel').click(function () {
                 type: "success"
             })*/
     }
-    
 })
 
 $('#btnExportExcel_Inventory').click(function () {
@@ -642,6 +642,29 @@ $('#btnExportExcel_Inventory').click(function () {
     var date_end = $("#filter_DateEnd").val();    
         var URLExportExcel1 = URLExportExcel + "?date_start=" + date_start + "&date_end=" + date_end;
         window.location.href = URLExportExcel1;
+})
+//-----------------------Export Excel Revenue-----------------------------------------
+$('#URLExportExcel_RevenueDate')
+    .keypress(function () {
+        URLExportExcel_RevenueDate = $(this).val();
+    })
+    .keypress();
+$('#URLExportExcel_RevenueMonth')
+    .keypress(function () {
+        URLExportExcel_RevenueMonth = $(this).val();
+    })
+    .keypress();
+$('#btnExportExcel_RevenueDate').click(function () {
+    var date_start = $("#revenue_DateStart").val();
+    var date_end = $("#revenue_DateEnd").val();    
+    var URLExportExcel_RevenueDate1 = URLExportExcel_RevenueDate + "?date_Start=" + date_start + "&date_End=" + date_end;
+    window.location.href = URLExportExcel_RevenueDate1;
+})
+$('#btnExportExcel_RevenueMonth').click(function () {
+    var date_start = $("#revenue_DateStart_Month").val();
+    var date_end = $("#revenue_DateEnd_Month").val();
+    var URLExportExcel_RevenueMonth1 = URLExportExcel_RevenueMonth + "?date_Start=" + date_start + "&date_End=" + date_end;
+    window.location.href = URLExportExcel_RevenueMonth1;
 })
 //----------------------FILTER INVENTORY PRODUCT------------------------------------------------
 $('#URLInventoryList')

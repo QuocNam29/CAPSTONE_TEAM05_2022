@@ -555,8 +555,8 @@ namespace CAP_TEAM05_2022.Controllers
         }
         public void ExportExcel_Inventory(DateTime? date_start, DateTime? date_end)
         {
-            string nameFile = "Kho_Hang_từ_" + date_start + "_đến_" + date_end + ".xlsx";
-;            var import_inventory = db.import_inventory.Include(i => i.user).Include(i => i.product).Where(s => s.created_at >= date_start && s.created_at <= date_end
+            string nameFile = "Kho_Hang_từ_" + String.Format("{0:yyyy-MM-dd}", date_start) + "_đến_" + String.Format("{0:yyyy-MM-dd}", date_end) + ".xlsx";
+            var import_inventory = db.import_inventory.Include(i => i.user).Include(i => i.product).Where(s => s.created_at >= date_start && s.created_at <= date_end
                                                     || s.created_at.Value.Day == date_start.Value.Day
                                                     && s.created_at.Value.Month == date_start.Value.Month
                                                     && s.created_at.Value.Year == date_start.Value.Year
@@ -819,6 +819,132 @@ namespace CAP_TEAM05_2022.Controllers
             }
 
             return Json("ImportFail_continues_ALL", JsonRequestBehavior.AllowGet);
+        }
+
+        public void ExportExcel_RevenueDate(DateTime? date_Start, DateTime? date_End)
+        {
+
+            string nameFile = "Doanh thu" + String.Format("{0:dd-MM-yyyy}", date_Start) + " đến " + String.Format("{0:dd-MM-yyyy}", date_End) + ".xlsx";
+           
+            var sales = db.sales.Include(s => s.customer).Include(s => s.user).Where(s => s.created_at >= date_Start && s.created_at <= date_End
+                                                    || s.created_at.Value.Day == date_Start.Value.Day
+                                                    && s.created_at.Value.Month == date_Start.Value.Month
+                                                    && s.created_at.Value.Year == date_Start.Value.Year
+                                                    || s.created_at.Value.Day == date_End.Value.Day
+                                                    && s.created_at.Value.Month == date_End.Value.Month
+                                                    && s.created_at.Value.Year == date_End.Value.Year);
+          
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            ExcelPackage ep = new ExcelPackage();
+            ExcelWorksheet Sheet = ep.Workbook.Worksheets.Add("TonKho");
+            FormatExcel(Sheet, 1);
+            Sheet.DefaultColWidth = 20;
+            Sheet.Cells.Style.WrapText = true;
+            Sheet.Cells["A1"].Value = "Mã hóa đơn";
+            Sheet.Cells["B1"].Value = "Tên Tổng hóa đơn";
+            Sheet.Cells["C1"].Value = "VAT(%)";
+            Sheet.Cells["D1"].Value = "Chiết khấu(%)";
+            Sheet.Cells["E1"].Value = "Thành tiền";
+            Sheet.Cells["F1"].Value = "Trả trước(nếu có)";
+            Sheet.Cells["G1"].Value = "Trạng thái";
+            Sheet.Cells["H1"].Value = "Trạng thái";
+            Sheet.Cells["I1"].Value = "Ngày giao dịch";
+
+            int row = 2;// dòng bắt đầu ghi dữ liệu
+            foreach (var item in sales)
+            {
+               
+                    Sheet.Cells[string.Format("A{0}", row)].Value = item.code;
+                    Sheet.Cells[string.Format("B{0}", row)].Value = item.total / (1 + double.Parse(item.vat.ToString()) / 100 - double.Parse(item.discount.ToString()) / 100);
+                    Sheet.Cells[string.Format("C{0}", row)].Value = item.vat;
+                    Sheet.Cells[string.Format("D{0}", row)].Value = item.discount;
+                    Sheet.Cells[string.Format("E{0}", row)].Value = item.total;
+                    Sheet.Cells[string.Format("F{0}", row)].Value = item.prepayment;
+                    Sheet.Cells[string.Format("G{0}", row)].Value = item.total - item.prepayment;
+                if (item.method == 1)
+                {
+                    Sheet.Cells[string.Format("H{0}", row)].Value = "Đã thanh toán";
+                }
+                else if (item.method == 2)
+                {
+                    Sheet.Cells[string.Format("H{0}", row)].Value = "Ghi nợ";
+                }
+                   
+                    Sheet.Cells[string.Format("I{0}", row)].Value = String.Format("{0:dd-MM-yyyy HH:mm:yy}", item.created_at); ;
+                    row++;
+                
+            }
+            Sheet.Cells["A:AZ"].AutoFitColumns();
+            Response.Clear();          
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.AddHeader("content-disposition", "attachment; filename=" + nameFile);
+            Response.BinaryWrite(ep.GetAsByteArray());
+            Response.End();
+
+        }
+        public void ExportExcel_RevenueMonth(DateTime? date_Start, DateTime? date_End)
+        {
+            string nameFile = "";
+            if (date_Start == date_End)
+            {
+                nameFile = "Doanh thu tháng " + String.Format("{0:MM-yyyy}", date_End) + ".xlsx";
+            }
+            else
+            {
+                nameFile = "Doanh thu từ tháng" + String.Format("{0:MM-yyyy}", date_Start) + " đến tháng " + String.Format("{0:MM-yyyy}", date_End) + ".xlsx";
+            }
+
+            var sales = db.sales.Include(s => s.customer).Include(s => s.user).Where(s => s.created_at >= date_Start && s.created_at <= date_End
+                                                    || s.created_at.Value.Month == date_Start.Value.Month && s.created_at.Value.Year == date_Start.Value.Year
+                                                    || s.created_at.Value.Month == date_End.Value.Month && s.created_at.Value.Year == date_End.Value.Year); ;
+          
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            ExcelPackage ep = new ExcelPackage();
+            ExcelWorksheet Sheet = ep.Workbook.Worksheets.Add("TonKho");
+            FormatExcel(Sheet, 1);
+            Sheet.DefaultColWidth = 20;
+            Sheet.Cells.Style.WrapText = true;
+            Sheet.Cells["A1"].Value = "Mã hóa đơn";
+            Sheet.Cells["B1"].Value = "Tên Tổng hóa đơn";
+            Sheet.Cells["C1"].Value = "VAT(%)";
+            Sheet.Cells["D1"].Value = "Chiết khấu(%)";
+            Sheet.Cells["E1"].Value = "Thành tiền";
+            Sheet.Cells["F1"].Value = "Trả trước(nếu có)";
+            Sheet.Cells["G1"].Value = "Trạng thái";
+            Sheet.Cells["H1"].Value = "Trạng thái";
+            Sheet.Cells["I1"].Value = "Ngày giao dịch";
+
+            int row = 2;// dòng bắt đầu ghi dữ liệu
+            foreach (var item in sales)
+            {
+               
+                    Sheet.Cells[string.Format("A{0}", row)].Value = item.code;
+                    Sheet.Cells[string.Format("B{0}", row)].Value = item.total / (1 + double.Parse(item.vat.ToString()) / 100 - double.Parse(item.discount.ToString()) / 100);
+                    Sheet.Cells[string.Format("C{0}", row)].Value = item.vat;
+                    Sheet.Cells[string.Format("D{0}", row)].Value = item.discount;
+                    Sheet.Cells[string.Format("E{0}", row)].Value = item.total;
+                    Sheet.Cells[string.Format("F{0}", row)].Value = item.prepayment;
+                    Sheet.Cells[string.Format("G{0}", row)].Value = item.total - item.prepayment;
+                if (item.method == 1)
+                {
+                    Sheet.Cells[string.Format("H{0}", row)].Value = "Đã thanh toán";
+                }
+                else if (item.method == 2)
+                {
+                    Sheet.Cells[string.Format("H{0}", row)].Value = "Ghi nợ";
+                }
+                   
+                    Sheet.Cells[string.Format("I{0}", row)].Value = String.Format("{0:dd-MM-yyyy HH:mm:yy}",item.created_at);
+                    row++;
+                
+            }
+            Sheet.Cells["A:AZ"].AutoFitColumns();
+            Response.Clear();          
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.AddHeader("content-disposition", "attachment; filename=" + nameFile);
+            Response.BinaryWrite(ep.GetAsByteArray());
+            Response.End();
+
         }
     }
 }
