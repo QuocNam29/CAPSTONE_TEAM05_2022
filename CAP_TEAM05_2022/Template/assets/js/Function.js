@@ -654,6 +654,7 @@ $('#URLExportExcel_RevenueMonth')
         URLExportExcel_RevenueMonth = $(this).val();
     })
     .keypress();
+
 $('#btnExportExcel_RevenueDate').click(function () {
     var date_start = $("#revenue_DateStart").val();
     var date_end = $("#revenue_DateEnd").val();    
@@ -665,6 +666,14 @@ $('#btnExportExcel_RevenueMonth').click(function () {
     var date_end = $("#revenue_DateEnd_Month").val();
     var URLExportExcel_RevenueMonth1 = URLExportExcel_RevenueMonth + "?date_Start=" + date_start + "&date_End=" + date_end;
     window.location.href = URLExportExcel_RevenueMonth1;
+})
+$('#btnExportExcel_profit').click(function () { 
+    $('#URLExportExcel_profit')
+        .keypress(function () {
+            URLExportExcel_profit = $(this).val();
+        })
+        .keypress();
+    window.location.href = URLExportExcel_profit;
 })
 //----------------------FILTER INVENTORY PRODUCT------------------------------------------------
 $('#URLInventoryList')

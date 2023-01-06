@@ -946,6 +946,52 @@ namespace CAP_TEAM05_2022.Controllers
             Response.End();
 
         }
+        public void ExportExcel_profit()
+        {
+            string nameFile = "Lợi nhuận xuất  " + String.Format("{0:dd-MM-yyyy}", DateTime.Now) + ".xlsx";
+           
+
+            var revenues = db.revenues.OrderByDescending(c => c.id).ToList();
+
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            ExcelPackage ep = new ExcelPackage();
+            ExcelWorksheet Sheet = ep.Workbook.Worksheets.Add("TonKho");
+            FormatExcel(Sheet, 1);
+            Sheet.DefaultColWidth = 20;
+            Sheet.Cells.Style.WrapText = true;
+            Sheet.Cells["A1"].Value = "Mã sản phẩm";
+            Sheet.Cells["B1"].Value = "Tên sản phẩm";
+            Sheet.Cells["C1"].Value = "Đơn vị";
+            Sheet.Cells["D1"].Value = "Số lượng gốc";
+            Sheet.Cells["E1"].Value = "Đơn giá gốc";
+            Sheet.Cells["F1"].Value = "Số lượng bán";
+            Sheet.Cells["G1"].Value = "Đơn giá bán";
+            Sheet.Cells["H1"].Value = "Thành tiền";
+
+            int row = 2;// dòng bắt đầu ghi dữ liệu
+            foreach (var item in revenues)
+            {
+
+                Sheet.Cells[string.Format("A{0}", row)].Value = item.sale_details.product.code;
+                Sheet.Cells[string.Format("B{0}", row)].Value = item.sale_details.product.name;
+                Sheet.Cells[string.Format("C{0}", row)].Value = item.sale_details.product.unit;
+                Sheet.Cells[string.Format("D{0}", row)].Value = item.sale_details.product.quantity;
+                Sheet.Cells[string.Format("E{0}", row)].Value = item.sale_details.product.purchase_price;
+                Sheet.Cells[string.Format("F{0}", row)].Value = item.quantity;
+                Sheet.Cells[string.Format("G{0}", row)].Value = item.Price;
+                Sheet.Cells[string.Format("H{0}", row)].Value = (item.Price - item.sale_details.product.purchase_price) *item.quantity;
+
+                row++;
+
+            }
+            Sheet.Cells["A:AZ"].AutoFitColumns();
+            Response.Clear();
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.AddHeader("content-disposition", "attachment; filename=" + nameFile);
+            Response.BinaryWrite(ep.GetAsByteArray());
+            Response.End();
+
+        }
     }
 }
 
