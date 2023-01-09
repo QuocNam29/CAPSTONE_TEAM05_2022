@@ -958,7 +958,7 @@ function UserCustomer_phone() {
     var customer_phone = $("#customer_phone").val();
     if (customer_phone != "" && customer_phone != undefined) {
         var URLCheckCustomerPhoneAvailability = "";
-        $('#URLCheckCustomernameAvailability')
+        $('#URLCheckCustomerPhoneAvailability')
             .keypress(function () {
                 URLCheckCustomerPhoneAvailability = $(this).val();
             })
@@ -1440,7 +1440,6 @@ function Payment_order() {
     sale.vat = $('#cart_vat').val();
     sale.note = $('#cart_note').val();
     sale.method = Number($('#cart_Prepay').val().replace(/\,/g, '').replace(/\./g, ''));
-    console.log(URLCreateSale);
     $.ajax({
         url: URLCreateSale,
         async: false,
@@ -1449,13 +1448,34 @@ function Payment_order() {
         contentType: "application/json; charset=UTF-8",
         dataType: "json",
         success: function (response) {
+            console.log(response);
+            if (response.status) {
+                GetList_Cart($('#customer_id').val());
+                sweetAlert
+                    ({
+                        title: "Thanh toán thành công !",
+                        type: "success",
+                        text: response.message,
+                        confirmButtonText: "In hóa đơn",
+                        confirmButtonColor: "#ec6c62",
+                        showCancelButton: true
+                    },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                PrintOrder(response.sale_id, response.sale_code, response.sale_method,
+                                    response.sale_total, response.sale_discount, response.sale_vat,
+                                    response.sale_create, $('#customer_code').val());
+                            }
+                        })
+            } else {
+                swal({
+                    title: 'Lỗi !',
+                    text: response.message,
+                    type: 'error',
 
-            GetList_Cart($('#customer_id').val());
-            sweetAlert
-                ({
-                    title: "Thanh toán thành công !",
-                    type: "success"
                 })
+            }
+          
         }
     });
 }
@@ -1711,9 +1731,9 @@ function GetList_OrderList(date_start, date_end) {
     });
 }
 //----------------------Xem trước hóa đơn------------------------------------------------
-$('#URLgetCartProduct')
+$('#URLgetOrderProduct')
     .keypress(function () {
-        URLgetCartProduct = $(this).val();
+        URLgetOrderProduct = $(this).val();
     })
     .keypress();
 function openWin() {
@@ -1857,7 +1877,7 @@ function PrintOrder(id, code, method, total, discount, vat, create_at, customer_
     $.ajax({
         type: "GET",
         async: false,
-        url: URLgetCartProduct,
+        url: URLgetOrderProduct,
         data: { id: id },
         success: function (data) {
 
