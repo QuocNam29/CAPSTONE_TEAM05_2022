@@ -401,6 +401,7 @@
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\toastr.min.js" />
+    <Content Include="Template\assets\css\flatpickr.css" />
     <Content Include="Template\assets\css\layout-dark.css" />
     <Content Include="Template\assets\css\layout-rtl.css" />
     <Content Include="Template\assets\css\plugins\animate.min.css" />
