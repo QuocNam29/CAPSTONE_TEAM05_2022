@@ -73,7 +73,7 @@
                                         @*<td class="text-center">@((item.product.sell_price * (item.sold)).ToString("N0")) </td>*@
                                         <td class="text-center">@item.revenues.Sum(s => s.Price * s.quantity).ToString("N0") </td>
                                     </tr>
-                                        total_sell += (item.product.sell_price * (item.sold));
+                                        total_sell += item.revenues.Sum(s => s.Price * s.quantity);
 
                                     }
 

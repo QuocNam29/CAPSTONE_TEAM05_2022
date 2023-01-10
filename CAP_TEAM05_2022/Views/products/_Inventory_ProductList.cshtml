@@ -52,7 +52,7 @@
                                     <td class="text-center">@inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity - i.sold)</td>
                                     <td class="text-center">@((item1.Key * (inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity - i.sold))).ToString("N0")) </td>
                                 </tr>
-                                total_inventory += (item1.Key * (inventory.Where(i => i.price_import == item1.Key).Sum(i => i.sold)));
+                                total_inventory += (item1.Key * (inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity - i.sold)));
 
                             }
 
