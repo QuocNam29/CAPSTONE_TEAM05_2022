@@ -19,8 +19,8 @@ namespace CAP_TEAM05_2022.Controllers
         // GET: categories
         public ActionResult Index()
         {
-            var categories = db.categories.Include(c => c.user).Where(c => c.status != 3).OrderByDescending(c => c.id);
-            return View(categories.ToList());
+            var categories = db.categories.Where(c => c.status != 3).OrderByDescending(c => c.id).ToList();
+            return View(categories);
         }
         public ActionResult _CategoryList()
         {

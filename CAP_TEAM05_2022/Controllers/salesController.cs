@@ -169,7 +169,7 @@ namespace CAP_TEAM05_2022.Controllers
                     db.debts.Add(debt);
                     db.SaveChanges();
                 }
-                message = "Thanh toán hóa đơn thành công. Bạn có muốn in hóa đơn ?";
+                message = "Bạn có muốn in hóa đơn ?";
                 return Json(new { status, message, sale_id = sale.id,
                 sale_code = sale.code, sale_method = sale.method,
                 sale_total = sale.total, sale_discount = sale.discount,
