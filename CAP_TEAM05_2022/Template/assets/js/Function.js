@@ -1995,4 +1995,5 @@ function PrintOrder(id, code, method, total, discount, vat, create_at, customer_
     myWindow.document.close();
     myWindow.focus();
 }
-//---------------------------click---------------
+//---------------------------flatpickr---------------
+flatpickr(".flatpickr", {});

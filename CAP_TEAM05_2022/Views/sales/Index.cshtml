@@ -40,7 +40,7 @@
                                 <div class="col-md-4">
                                     <div class="mx-datepicker">
                                         <div class="mx-input-wrapper">
-                                            <input name="date" type="date" id="sale_DateStart" class="form-control custom-width" value="@String.Format("{0:yyyy-MM-dd}", DateTime.Now.AddDays((-DateTime.Now.Day) + 1))">
+                                            <input id="sale_DateStart" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}", DateTime.Now.AddDays((-DateTime.Now.Day) + 1))">
 
                                         </div>
                                     </div>
@@ -48,7 +48,7 @@
                                 <div class="col-md-4">
                                     <div class="mx-datepicker">
                                         <div class="mx-input-wrapper">
-                                            <input name="date" type="date" id="sale_DateEnd" class="form-control custom-width" value="@String.Format("{0:yyyy-MM-dd}",DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day)))">
+                                            <input id="sale_DateEnd" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}",DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day)))">
 
                                         </div>
                                     </div>
