@@ -426,6 +426,7 @@
     <Content Include="Template\assets\images\cd-arrow.svg" />
     <Content Include="Template\assets\images\close.png" />
     <Content Include="Template\assets\images\complete.png" />
+    <Content Include="Template\assets\images\default-avatar.png" />
     <Content Include="Template\assets\images\favicon.ico" />
     <Content Include="Template\assets\images\gallery-grid\img-grd-gal-1.jpg" />
     <Content Include="Template\assets\images\gallery-grid\img-grd-gal-2.jpg" />
