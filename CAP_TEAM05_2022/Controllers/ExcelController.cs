@@ -530,6 +530,7 @@ namespace CAP_TEAM05_2022.Controllers
                     Session["sell_price_product"] = null;
                     Session["purchase_price_product"] = null;
                     Session["quantity_product"] = null;
+                    Session["Import_exist"] = "true";
 
                 }
                 else
@@ -544,7 +545,6 @@ namespace CAP_TEAM05_2022.Controllers
                 Session["ViewBag.Success"] = null;
                 Session["ViewBag.FileStatus"] = "Bạn chưa chọn tệp để nhập!";
             }
-            Session["Import_exist"] = "true";
 
             return RedirectToAction("Index", "products");
         }

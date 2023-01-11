@@ -24,11 +24,11 @@ namespace CAP_TEAM05_2022.Models
         public int id { get; set; }
         public int sale_id { get; set; }
         public int product_id { get; set; }
-        [Range(0, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
+        [Range(-1, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
         public int price { get; set; }
-        [Range(0, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
+        [Range(-1, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
         public int discount { get; set; }
-        [Range(0, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
+        [Range(-1, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
         public int sold { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }

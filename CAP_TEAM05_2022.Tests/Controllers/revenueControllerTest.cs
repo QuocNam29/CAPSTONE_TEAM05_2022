@@ -51,7 +51,7 @@ namespace CAP_TEAM05_2022.Controllers.Tests
             };
 
             // Assert
-            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Please enter a value bigger than 0")).Count() > 0);
+            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Please enter a value bigger than -1")).Count() > 0);
         }
 
         [TestMethod()]
@@ -68,7 +68,7 @@ namespace CAP_TEAM05_2022.Controllers.Tests
             };
 
             // Assert
-            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Please enter a value bigger than 0")).Count() > 0);
+            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Please enter a value bigger than -1")).Count() > 0);
         }
     }
 }

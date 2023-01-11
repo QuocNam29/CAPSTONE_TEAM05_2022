@@ -82,6 +82,14 @@
                                     </div>
                                     Session["ViewBag.FileStatus"] = null;
                                 }
+                                @if (Session["Import_exist"] != null)
+                                {
+
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert" data-toggle="modal" data-target="#Success">
+                                            Đã nhập thành công file excel, nhấn vào để xem chi tiết !
+                                    </div>
+                                    Session["Import_exist"] = null;
+                                }
 
                                 @if (Session["ViewBag.Success"] != null)
                                 {
@@ -145,16 +153,7 @@
                                     Session["ViewBag.Success"] = null;
                                 }
                             </div>
-                            @if (Session["Import_exist"] != null)
-                            {
-
-                            <div class="col-md-12">
-                                <button data-toggle="modal" data-target="#Success" class="alert alert-success">
-                                    Đã nhập thành công file excel, nhấn vào để xem chi tiết !
-                                </button>
-                            </div>
-                                Session["Import_exist"] = null;
-                            }
+                            
                                     <div class="table-responsive" id="dataContainer">
                                         @{ Html.RenderAction("_ProductList", "products", new { group_id = -1, category_id = -1 });}
 

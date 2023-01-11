@@ -108,17 +108,24 @@ namespace CAP_TEAM05_2022.Controllers
             string mess = "";
             try
             {
+              
+                int check = db.import_inventory.Where(i => i.product_id == product.id && i.sold == 0).Count();
+                if (check <= 1)
+                {
+                    import_inventory inventory = db.import_inventory.Where(i => i.product_id == product.id && i.sold == 0).FirstOrDefault();
+                    db.import_inventory.Remove(inventory);
+                }
                 product product1 = db.products.Find(product.id);
                 db.products.Remove(product1);
                 db.SaveChanges();
-                mess = "Xóa nhóm hàng thành công";
+                mess = "Xóa sản phẩm thành công";
                 db.SaveChanges();
             }
             catch (Exception)
             {
 
                 status = false;
-                mess = "Xóa thất bại ! (Sản phẩm đang thuộc đơn hàng hoặc hóa đơn đã bán)";
+                mess = "Xóa thất bại ! (Sản phẩm đang được liên kết với chức năng khác trong hệ thống khác)";
             }
             return Json(new { status = status, message = mess }, JsonRequestBehavior.AllowGet);
         }

@@ -38,20 +38,17 @@ namespace CAP_TEAM05_2022.Models
         [StringLength(100, ErrorMessage = "Unit length must be between 1 and 100.", MinimumLength = 1)]
         public string unit { get; set; }
 
-        [Range(0, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
+        [Range(-1, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
         public int purchase_price { get; set; }
 
-        [Range(0, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
+        [Range(-1, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
         public int sell_price { get; set; }
 
-        [Range(0, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
+        [Range(-1, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
         public int quantity { get; set; }
         public int status { get; set; }
         public string note { get; set; }
         public int created_by { get; set; }
-        [Required(ErrorMessage = "Vui lòng nhập tên sản phẩm !")]
-
-        [StringLength(100, ErrorMessage = "Product length must be between 1 and 255.", MinimumLength = 1)]
         public Nullable<System.DateTime> created_at { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }
         public Nullable<System.DateTime> deleted_at { get; set; }
