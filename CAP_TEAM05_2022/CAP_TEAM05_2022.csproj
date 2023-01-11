@@ -470,6 +470,7 @@
     <Content Include="Template\assets\images\logo-old.png" />
     <Content Include="Template\assets\images\logo-thumb.png" />
     <Content Include="Template\assets\images\logo.png" />
+    <Content Include="Template\assets\images\logoTT.png" />
     <Content Include="Template\assets\images\maintance\404.png" />
     <Content Include="Template\assets\images\maintance\maintance.png" />
     <Content Include="Template\assets\images\maintance\sark.svg" />

@@ -11,7 +11,8 @@ namespace CAP_TEAM05_2022.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class sale
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,11 +23,16 @@ namespace CAP_TEAM05_2022.Models
         }
     
         public int id { get; set; }
+        [Required(ErrorMessage = "Sale code cannot be empty !")]
+        [StringLength(20, ErrorMessage = "Code sale length must be between 1 and 20.", MinimumLength = 1)]
         public string code { get; set; }
         public int customer_id { get; set; }
         public int method { get; set; }
+        [Range(0, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
         public int total { get; set; }
+        [Range(0, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
         public int discount { get; set; }
+        [Range(0, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
         public int vat { get; set; }
         public string note { get; set; }
         public int status { get; set; }

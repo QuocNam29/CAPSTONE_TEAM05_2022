@@ -11,13 +11,15 @@ namespace CAP_TEAM05_2022.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
     public partial class revenue
     {
         public int id { get; set; }
         public int inventory_id { get; set; }
         public int sale_details_id { get; set; }
+        [Range(0, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
         public int Price { get; set; }
+        [Range(0, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
         public int quantity { get; set; }
     
         public virtual import_inventory import_inventory { get; set; }

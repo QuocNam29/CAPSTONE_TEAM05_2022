@@ -20,7 +20,7 @@ namespace CAP_TEAM05_2022.Models
         {
             this.products = new HashSet<product>();
         }
-    
+
         public int id { get; set; }
         [Required(ErrorMessage = "Category code cannot be empty !")]
         [StringLength(100, ErrorMessage = "Code length must be between 1 and 50.", MinimumLength = 1)]
