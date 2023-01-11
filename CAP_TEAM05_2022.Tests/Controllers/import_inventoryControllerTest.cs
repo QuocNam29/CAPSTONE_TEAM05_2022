@@ -47,11 +47,11 @@ namespace CAP_TEAM05_2022.Controllers.Tests
             // Act          
             var model = new import_inventory()
             {
-                quantity = -1
+                quantity = -2
             };
 
             // Assert
-            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Please enter a value bigger than -1")).Count() > 0);
+            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Please enter a value bigger than 0")).Count() > 0);
         }
 
         [TestMethod()]
@@ -64,11 +64,11 @@ namespace CAP_TEAM05_2022.Controllers.Tests
             // Act          
             var model = new import_inventory()
             {
-                sold = -1
+                sold = -2
             };
 
             // Assert
-            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Please enter a value bigger than -1")).Count() > 0);
+            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Please enter a value bigger than 0")).Count() > 0);
         }
         [TestMethod()]
         public void Check_False_If_Price_Value_bigger_than_0_Test()
@@ -80,11 +80,11 @@ namespace CAP_TEAM05_2022.Controllers.Tests
             // Act          
             var model = new import_inventory()
             {
-                price_import = -1
+                price_import = -2
             };
 
             // Assert
-            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Please enter a value bigger than -1")).Count() > 0);
+            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Please enter a value bigger than 0")).Count() > 0);
         }
     }
 }

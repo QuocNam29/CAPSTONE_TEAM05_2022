@@ -28,11 +28,11 @@ namespace CAP_TEAM05_2022.Models
         public string code { get; set; }
         public int customer_id { get; set; }
         public int method { get; set; }
-        [Range(-1, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
+        [Range(-1, int.MaxValue, ErrorMessage = "Please enter a value bigger than 0")]
         public int total { get; set; }
-        [Range(-1, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
+        [Range(-1, int.MaxValue, ErrorMessage = "Please enter a value bigger than 0")]
         public int discount { get; set; }
-        [Range(-1, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
+        [Range(-1, int.MaxValue, ErrorMessage = "Please enter a value bigger than 0")]
         public int vat { get; set; }
         public string note { get; set; }
         public int status { get; set; }

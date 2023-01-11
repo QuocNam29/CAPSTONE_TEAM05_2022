@@ -23,13 +23,13 @@ namespace CAP_TEAM05_2022.Models
     
         public int id { get; set; }
         public int product_id { get; set; }
-        [Range(-1, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
+        [Range(-1, int.MaxValue, ErrorMessage = "Please enter a value bigger than 0")]
 
         public int quantity { get; set; }
-        [Range(-1, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
+        [Range(-1, int.MaxValue, ErrorMessage = "Please enter a value bigger than 0")]
 
         public int price_import { get; set; }
-        [Range(-1, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
+        [Range(-1, int.MaxValue, ErrorMessage = "Please enter a value bigger than 0")]
 
         public int sold { get; set; }
         public int created_by { get; set; }

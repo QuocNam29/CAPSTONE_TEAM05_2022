@@ -79,11 +79,11 @@ namespace CAP_TEAM05_2022.Controllers.Tests
             // Act          
             var model = new sale()
             {
-                total = -1
+                total = -2
             };
 
             // Assert
-            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Please enter a value bigger than -1")).Count() > 0);
+            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Please enter a value bigger than 0")).Count() > 0);
         }
         [TestMethod()]
         public void Check_False_If_Discount_Value_bigger_than_0_Test()
@@ -95,11 +95,11 @@ namespace CAP_TEAM05_2022.Controllers.Tests
             // Act          
             var model = new sale()
             {
-                discount = -1
+                discount = -2
             };
 
             // Assert
-            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Please enter a value bigger than -1")).Count() > 0);
+            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Please enter a value bigger than 0")).Count() > 0);
         }
         [TestMethod()]
         public void Check_False_If_VAT_Value_bigger_than_0_Test()
@@ -111,11 +111,11 @@ namespace CAP_TEAM05_2022.Controllers.Tests
             // Act          
             var model = new sale()
             {
-                vat = -1
+                vat = -2
             };
 
             // Assert
-            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Please enter a value bigger than -1")).Count() > 0);
+            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Please enter a value bigger than 0")).Count() > 0);
         }
     }
 }
