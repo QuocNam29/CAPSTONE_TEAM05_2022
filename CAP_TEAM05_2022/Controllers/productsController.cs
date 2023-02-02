@@ -125,7 +125,7 @@ namespace CAP_TEAM05_2022.Controllers
             {
 
                 status = false;
-                mess = "Xóa thất bại ! (Sản phẩm đang được liên kết với chức năng khác trong hệ thống khác)";
+                mess = "Xóa thất bại ! (Sản phẩm đang được liên kết với chức năng khác trong hệ thống)";
             }
             return Json(new { status = status, message = mess }, JsonRequestBehavior.AllowGet);
         }

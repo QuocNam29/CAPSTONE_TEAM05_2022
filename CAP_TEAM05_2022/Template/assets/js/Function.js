@@ -1736,6 +1736,11 @@ $('#URLgetOrderProduct')
         URLgetOrderProduct = $(this).val();
     })
     .keypress();
+$('#URLgetCartProduct')
+    .keypress(function () {
+        URLgetCartProduct = $(this).val();
+    })
+    .keypress();
 function openWin() {
     var curDate = new Date();
     // Ngày hiện tại
@@ -1900,7 +1905,7 @@ function PrintOrder(id, code, method, total, discount, vat, create_at, customer_
     });
     if (method == 1) {
         var form_method = "Đã thanh toán";
-    } else if (method == 1) {
+    } else if (method == 2) {
         var form_method = "Ghi nợ";
     }
 

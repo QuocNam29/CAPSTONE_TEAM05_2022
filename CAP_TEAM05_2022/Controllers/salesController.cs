@@ -143,20 +143,46 @@ namespace CAP_TEAM05_2022.Controllers
                     sale_Details.created_at = DateTime.Now;
                     db.sale_details.Add(sale_Details);
 
-                    import_inventory inventory = db.import_inventory.Where(i => i.product_id == item.product_id && i.sold <= i.quantity
-                                                                        && (i.quantity - i.sold) >= item.quantity).FirstOrDefault();
-                    inventory.sold += item.quantity;
-                    db.Entry(inventory).State = EntityState.Modified;
+                    int temp_quatity = item.quantity;
+                    while (temp_quatity > 0)
+                    {
+                        import_inventory inventory = db.import_inventory.Where(i => i.product_id == item.product_id && i.quantity != i.sold).FirstOrDefault();
 
-                    revenue revenue = new revenue();
-                    revenue.sale_details_id = sale_Details.id;
-                    revenue.inventory_id = inventory.id;
-                    revenue.Price = item.price / item.quantity;
-                    revenue.quantity = item.quantity;
-                    db.revenues.Add(revenue);
-                    cart cart1 = db.carts.Find(item.id);
-                    db.carts.Remove(cart1);
-                    db.SaveChanges();
+                        if (temp_quatity <= (inventory.quantity - inventory.sold))
+                        {
+                            inventory.sold += temp_quatity;
+                            db.Entry(inventory).State = EntityState.Modified;
+                            temp_quatity = 0;
+                            db.SaveChanges();
+
+                        }
+                        else
+                        {
+                            int temp_inventory = (inventory.quantity - inventory.sold);
+                            if (temp_quatity <= temp_inventory)
+                            {
+                                inventory.sold += temp_quatity;
+                                db.Entry(inventory).State = EntityState.Modified;
+                                temp_quatity = 0;
+                            }
+                            else
+                            {
+                                inventory.sold += temp_inventory;
+                                db.Entry(inventory).State = EntityState.Modified;
+                                temp_quatity -= temp_inventory;
+                            }
+                            db.SaveChanges();
+                        }
+                        revenue revenue = new revenue();
+                        revenue.sale_details_id = sale_Details.id;
+                        revenue.inventory_id = inventory.id;
+                        revenue.Price = item.price / item.quantity;
+                        revenue.quantity = item.quantity;
+                        db.revenues.Add(revenue);
+                        cart cart1 = db.carts.Find(item.id);
+                        db.carts.Remove(cart1);
+                        db.SaveChanges();
+                    }     
                 }
                 if (createSale.method > 0)
                 {
