@@ -1,0 +1,66 @@
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.AspNetUser>
+@{
+    int no = 0;
+}
+<table id="example" class="table table-hover ">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Tên nhân viên</th>
+            <th>Email</th>
+            <th>Điện thoại</th>
+            <th>Vai trò</th>
+            <th>Trạng thái</th>
+            <th>
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            no++;
+            string customswitch_User = "customswitch" + item.Id;
+            <tr>
+                <td>@no <input hidden type="text" name="record" value="@item.Id" /> </td>
+                <td>@item.UserName</td>
+                <td>@item.Email</td>
+                <td>@item.phone</td>              
+                <td class="text-center">
+                   @item.AspNetRoles.FirstOrDefault().Name
+                </td>
+              
+                <td class="text-center">
+                    @if (item.status == 1)
+                    {
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" checked class="custom-control-input" id="@customswitch_User">
+                            <label class="custom-control-label" for="@customswitch_User"></label>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="@customswitch_User">
+                            <label class="custom-control-label" for="@customswitch_User"></label>
+                        </div>
+                    }
+                    <input hidden type="text" id="URDEditStatus" value="@Url.Action("EditStatus_Customer", "customers")">
+                    <script language="javascript">
+                                                        document.getElementById('@customswitch_User').onclick = function (e) {
+                                                                EditStatus('@item.Id');
+                                                        };
+                    </script>
+                </td>
+                <td>
+                    <button class="btn btn-success" onclick="GetCustomer(this, '@item.Id')">
+                        <i class="feather icon-edit">
+                        </i>
+                    </button>
+                </td>
+            </tr>
+        }
+
+
+    </tbody>
+</table>
