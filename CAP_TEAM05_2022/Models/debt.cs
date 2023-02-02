@@ -18,7 +18,7 @@ namespace CAP_TEAM05_2022.Models
         public int sale_id { get; set; }
         public int paid { get; set; }
         public int total { get; set; }
-        public int created_by { get; set; }
+        public string created_by { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }
         public Nullable<System.DateTime> deleted_at { get; set; }

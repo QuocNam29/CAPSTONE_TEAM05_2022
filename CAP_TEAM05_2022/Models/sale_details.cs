@@ -11,8 +11,7 @@ namespace CAP_TEAM05_2022.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class sale_details
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -24,11 +23,8 @@ namespace CAP_TEAM05_2022.Models
         public int id { get; set; }
         public int sale_id { get; set; }
         public int product_id { get; set; }
-        [Range(-1, int.MaxValue, ErrorMessage = "Please enter a value bigger than 0")]
         public int price { get; set; }
-        [Range(-1, int.MaxValue, ErrorMessage = "Please enter a value bigger than 0")]
         public int discount { get; set; }
-        [Range(-1, int.MaxValue, ErrorMessage = "Please enter a value bigger than 0")]
         public int sold { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }

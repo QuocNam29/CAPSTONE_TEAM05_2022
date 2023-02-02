@@ -25,7 +25,7 @@ namespace CAP_TEAM05_2022.Models
             this.sales = new HashSet<sale>();
         }
     
-        public int id { get; set; }
+        public string id { get; set; }
         public string name { get; set; }
         public string email { get; set; }
         public Nullable<System.DateTime> email_verified_at { get; set; }

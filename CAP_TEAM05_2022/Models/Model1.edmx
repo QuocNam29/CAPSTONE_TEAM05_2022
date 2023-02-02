@@ -86,7 +86,7 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="code" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="created_by" Type="int" Nullable="false" />
+          <Property Name="created_by" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="slug" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="status" Type="int" Nullable="false" />
@@ -99,7 +99,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="created_by" Type="int" Nullable="false" />
+          <Property Name="created_by" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="email" Type="varchar" MaxLength="255" />
           <Property Name="phone" Type="varchar" MaxLength="11" Nullable="false" />
@@ -124,7 +124,7 @@
           <Property Name="sale_id" Type="int" Nullable="false" />
           <Property Name="paid" Type="int" Nullable="false" />
           <Property Name="total" Type="int" Nullable="false" />
-          <Property Name="created_by" Type="int" Nullable="false" />
+          <Property Name="created_by" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="created_at" Type="datetime2" Precision="0" />
           <Property Name="updated_at" Type="datetime2" Precision="0" />
           <Property Name="deleted_at" Type="datetime2" Precision="0" />
@@ -135,7 +135,7 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="code" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="created_by" Type="int" Nullable="false" />
+          <Property Name="created_by" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="slug" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="status" Type="int" Nullable="false" />
@@ -152,7 +152,7 @@
           <Property Name="quantity" Type="int" Nullable="false" />
           <Property Name="price_import" Type="int" Nullable="false" />
           <Property Name="sold" Type="int" Nullable="false" />
-          <Property Name="created_by" Type="int" Nullable="false" />
+          <Property Name="created_by" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="created_at" Type="datetime2" Precision="0" />
           <Property Name="updated_at" Type="datetime2" Precision="0" />
           <Property Name="deleted_at" Type="datetime2" Precision="0" />
@@ -197,7 +197,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="quantity" Type="int" Nullable="false" />
           <Property Name="status" Type="int" Nullable="false" />
           <Property Name="note" Type="nvarchar(max)" />
-          <Property Name="created_by" Type="int" Nullable="false" />
+          <Property Name="created_by" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="created_at" Type="datetime2" Precision="0" />
           <Property Name="updated_at" Type="datetime2" Precision="0" />
           <Property Name="deleted_at" Type="datetime2" Precision="0" />
@@ -241,7 +241,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="vat" Type="int" Nullable="false" />
           <Property Name="note" Type="nvarchar(max)" />
           <Property Name="status" Type="int" Nullable="false" />
-          <Property Name="created_by" Type="int" Nullable="false" />
+          <Property Name="created_by" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="created_at" Type="datetime2" Precision="0" />
           <Property Name="updated_at" Type="datetime2" Precision="0" />
           <Property Name="deleted_at" Type="datetime2" Precision="0" />
@@ -261,7 +261,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="250" />
           <Property Name="email" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="email_verified_at" Type="datetime2" Precision="0" />
@@ -734,7 +734,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="created_by" Type="Int32" Nullable="false" />
+          <Property Name="created_by" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="slug" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="status" Type="Int32" Nullable="false" />
@@ -749,7 +749,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="created_by" Type="Int32" Nullable="false" />
+          <Property Name="created_by" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="phone" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
@@ -776,7 +776,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="sale_id" Type="Int32" Nullable="false" />
           <Property Name="paid" Type="Int32" Nullable="false" />
           <Property Name="total" Type="Int32" Nullable="false" />
-          <Property Name="created_by" Type="Int32" Nullable="false" />
+          <Property Name="created_by" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="created_at" Type="DateTime" Precision="0" />
           <Property Name="updated_at" Type="DateTime" Precision="0" />
           <Property Name="deleted_at" Type="DateTime" Precision="0" />
@@ -789,7 +789,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="created_by" Type="Int32" Nullable="false" />
+          <Property Name="created_by" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="slug" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="status" Type="Int32" Nullable="false" />
@@ -808,7 +808,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="quantity" Type="Int32" Nullable="false" />
           <Property Name="price_import" Type="Int32" Nullable="false" />
           <Property Name="sold" Type="Int32" Nullable="false" />
-          <Property Name="created_by" Type="Int32" Nullable="false" />
+          <Property Name="created_by" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="created_at" Type="DateTime" Precision="0" />
           <Property Name="updated_at" Type="DateTime" Precision="0" />
           <Property Name="deleted_at" Type="DateTime" Precision="0" />
@@ -845,7 +845,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="quantity" Type="Int32" Nullable="false" />
           <Property Name="status" Type="Int32" Nullable="false" />
           <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="created_by" Type="Int32" Nullable="false" />
+          <Property Name="created_by" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="created_at" Type="DateTime" Precision="0" />
           <Property Name="updated_at" Type="DateTime" Precision="0" />
           <Property Name="deleted_at" Type="DateTime" Precision="0" />
@@ -900,7 +900,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="vat" Type="Int32" Nullable="false" />
           <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="status" Type="Int32" Nullable="false" />
-          <Property Name="created_by" Type="Int32" Nullable="false" />
+          <Property Name="created_by" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="created_at" Type="DateTime" Precision="0" />
           <Property Name="updated_at" Type="DateTime" Precision="0" />
           <Property Name="deleted_at" Type="DateTime" Precision="0" />
@@ -924,7 +924,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="email_verified_at" Type="DateTime" Precision="0" />

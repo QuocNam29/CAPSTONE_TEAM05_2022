@@ -11,8 +11,7 @@ namespace CAP_TEAM05_2022.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class import_inventory
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -23,16 +22,10 @@ namespace CAP_TEAM05_2022.Models
     
         public int id { get; set; }
         public int product_id { get; set; }
-        [Range(-1, int.MaxValue, ErrorMessage = "Please enter a value bigger than 0")]
-
         public int quantity { get; set; }
-        [Range(-1, int.MaxValue, ErrorMessage = "Please enter a value bigger than 0")]
-
         public int price_import { get; set; }
-        [Range(-1, int.MaxValue, ErrorMessage = "Please enter a value bigger than 0")]
-
         public int sold { get; set; }
-        public int created_by { get; set; }
+        public string created_by { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }
         public Nullable<System.DateTime> deleted_at { get; set; }

@@ -84,7 +84,7 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 case SignInStatus.Success:
                     user user = db.users.Where(u => u.email == model.Email).FirstOrDefault();
-                    Session["user_email"] = user.email;
+                   /* Session["user_email"] = user.email;*/
                     if (user.email_verified_at == null)
                     {
                         user.email_verified_at = DateTime.Now;
@@ -168,8 +168,8 @@ namespace CAP_TEAM05_2022.Controllers
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-
                     user users = new user();
+                    users.id = user.Id;
                     users.email = model.Email;
                     users.password = user.PasswordHash;
                     users.remember_token = user.SecurityStamp;
