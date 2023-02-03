@@ -65,34 +65,54 @@ namespace CAP_TEAM05_2022.Controllers
        
         public ActionResult Create_User(string email, string role_id, string fullName, string password, string phone, string address)
         {
-            var query_email = UserManager.FindByEmail(email);
-            var role = db.AspNetRoles.Find(role_id);
-            if (query_email == null)
+            try
             {
-               
-                ApplicationUser user = new ApplicationUser()
+                var query_email = UserManager.FindByEmail(email);
+                var role = db.AspNetRoles.Find(role_id);
+                if (query_email == null)
                 {
-                    Email = email,
-                    UserName = fullName,
-                    PhoneNumber = phone,
-                  /*  FullName = fullName,
-                    Address = address,
-                    DateCreated = DateTime.Now*/
-                };
 
-                IdentityResult result = UserManager.Create(user, password);
-                if (result.Succeeded)
-                {
-                    UserManager.AddToRole(user.Id, role.Name);
-                    return Json(new { status = true, message = "Thêm thành công!" }, JsonRequestBehavior.AllowGet);
+                    ApplicationUser user = new ApplicationUser()
+                    {
+                        Email = email,
+                        UserName = fullName,
+                        PhoneNumber = phone,
+                    };
+                    user users = new user();
+                    users.id = user.Id;
+                    users.email = email;
+                    users.password = user.PasswordHash;
+                    users.remember_token = user.SecurityStamp;
+                    users.created_at = DateTime.Now;
+                    users.status = 1;
+                    users.phone = phone;
+                    users.address = address;
+                    users.name = fullName;
+                    db.users.Add(users);
+                    db.SaveChanges();
+                    IdentityResult result = UserManager.Create(user, password);
+                    if (result.Succeeded)
+                    {
+                        UserManager.AddToRole(user.Id, role.Name);
+                        return Json(new { status = true, message = "Thêm thành công!" }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(new { status = false, message = result.Errors }, JsonRequestBehavior.AllowGet);
+                    }
                 }
                 else
                 {
-                    return Json(new { status = false, message = result.Errors }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = false, message = "Email đã tồn tại!" }, JsonRequestBehavior.AllowGet);
                 }
             }
+            catch (Exception e)
+            {
+                return Json(new { status = false, message = e.Message }, JsonRequestBehavior.AllowGet);
+            }
+            
 
-            return Json(new { status = false, message = "Email đã tồn tại!" }, JsonRequestBehavior.AllowGet);
+
         }
 
         // GET: AspNetUsers/Edit/5

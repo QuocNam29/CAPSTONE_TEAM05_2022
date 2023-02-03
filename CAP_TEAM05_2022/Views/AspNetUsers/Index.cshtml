@@ -59,7 +59,7 @@
 
 <div id="AddUser" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="AddGroupProductLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
-        <form class="needs-validation UserForm" method="post" action="@Url.Action("Create_User", "AspNetUsers")" novalidate>
+        <form class="needs-validation UserForm" method="post" oninput='confirmPassword.setCustomValidity(confirmPassword.value != password.value ? "Passwords do not match." : "")' action="@Url.Action("Create_User", "AspNetUsers")" novalidate>
      
             <div class="modal-content">
                 <div class="modal-header bg-primary">
@@ -108,7 +108,7 @@
                                     Mật khẩu<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input type="password" placeholder="********" id="password-user" name="password" class="form-control" required>
+                                    <input type="password" placeholder="********" id="password" name="password" class="form-control" required>
                                     <div class="invalid-feedback">
                                         Mật khẩu không được bỏ trống !
                                     </div>
@@ -122,7 +122,7 @@
                                     Nhập Lại Mật khẩu<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input type="password" placeholder="********" id="password-user" class="form-control" required>
+                                    <input type="password" placeholder="********" id="confirmPassword" name="confirmPassword"  class="form-control" required>
                                     <div class="invalid-feedback">
                                         Mật khẩu không trùng khớp !
                                     </div>
