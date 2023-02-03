@@ -77,23 +77,25 @@ namespace CAP_TEAM05_2022.Controllers
                         Email = email,
                         UserName = fullName,
                         PhoneNumber = phone,
+                        AccessFailedCount = 1,
                     };
-                    user users = new user();
-                    users.id = user.Id;
-                    users.email = email;
-                    users.password = user.PasswordHash;
-                    users.remember_token = user.SecurityStamp;
-                    users.created_at = DateTime.Now;
-                    users.status = 1;
-                    users.phone = phone;
-                    users.address = address;
-                    users.name = fullName;
-                    db.users.Add(users);
-                    db.SaveChanges();
+                    
                     IdentityResult result = UserManager.Create(user, password);
+                    
                     if (result.Succeeded)
                     {
                         UserManager.AddToRole(user.Id, role.Name);
+
+                        user users = new user();
+                        users.id = user.Id;
+                        users.email = email;
+                        users.remember_token = user.SecurityStamp;
+                        users.created_at = DateTime.Now;
+                        users.phone = phone;
+                        users.address = address;
+                        users.name = fullName;
+                        db.users.Add(users);
+                        db.SaveChanges();
                         return Json(new { status = true, message = "Thêm thành công!" }, JsonRequestBehavior.AllowGet);
                     }
                     else

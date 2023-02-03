@@ -25,13 +25,13 @@
                 <td>@no <input hidden type="text" name="record" value="@item.Id" /> </td>
                 <td>@item.UserName</td>
                 <td>@item.Email</td>
-                <td>@item.phone</td>              
+                <td>@item.PhoneNumber</td>              
                 <td class="text-center">
                    @item.AspNetRoles.FirstOrDefault().Name
                 </td>
               
                 <td class="text-center">
-                    @if (item.status == 1)
+                    @if (item.AccessFailedCount == 1)
                     {
                         <div class="custom-control custom-switch">
                             <input type="checkbox" checked class="custom-control-input" id="@customswitch_User">

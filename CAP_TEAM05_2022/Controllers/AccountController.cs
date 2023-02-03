@@ -85,12 +85,7 @@ namespace CAP_TEAM05_2022.Controllers
                 case SignInStatus.Success:
                     user user = db.users.Where(u => u.email == model.Email).FirstOrDefault();
                    /* Session["user_email"] = user.email;*/
-                    if (user.email_verified_at == null)
-                    {
-                        user.email_verified_at = DateTime.Now;
-                        db.Entry(user).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }
+                  
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -171,11 +166,8 @@ namespace CAP_TEAM05_2022.Controllers
                     user users = new user();
                     users.id = user.Id;
                     users.email = model.Email;
-                    users.password = user.PasswordHash;
                     users.remember_token = user.SecurityStamp;
                     users.created_at = DateTime.Now;
-                    users.role = 2;
-                    users.status = 1;
                     db.users.Add(users);
                     db.SaveChanges();
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771

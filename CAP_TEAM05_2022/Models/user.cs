@@ -28,13 +28,9 @@ namespace CAP_TEAM05_2022.Models
         public string id { get; set; }
         public string name { get; set; }
         public string email { get; set; }
-        public Nullable<System.DateTime> email_verified_at { get; set; }
-        public string password { get; set; }
         public string avatar { get; set; }
         public string phone { get; set; }
         public string address { get; set; }
-        public short role { get; set; }
-        public int status { get; set; }
         public string remember_token { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }
