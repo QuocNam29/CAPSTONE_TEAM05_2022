@@ -116,7 +116,21 @@ namespace CAP_TEAM05_2022.Controllers
 
 
         }
-
+        public ActionResult EditStatus_User(AspNetUser user)
+        {
+            AspNetUser asp_user = db.AspNetUsers.Find(user.Id);
+            if (asp_user.AccessFailedCount == 1)
+            {
+                asp_user.AccessFailedCount = 2;
+            }
+            else
+            {
+                asp_user.AccessFailedCount = 1;
+            }
+            db.Entry(asp_user).State = EntityState.Modified;
+            db.SaveChanges();
+            return Json("EditStatus_User", JsonRequestBehavior.AllowGet);
+        }
         // GET: AspNetUsers/Edit/5
         public ActionResult Edit(string id)
         {

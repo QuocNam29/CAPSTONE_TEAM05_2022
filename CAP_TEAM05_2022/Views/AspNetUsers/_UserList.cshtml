@@ -45,7 +45,7 @@
                             <label class="custom-control-label" for="@customswitch_User"></label>
                         </div>
                     }
-                    <input hidden type="text" id="URDEditStatus" value="@Url.Action("EditStatus_Customer", "customers")">
+                    <input hidden type="text" id="URDEditStatus" value="@Url.Action("EditStatus_User", "AspNetUsers")">
                     <script language="javascript">
                                                         document.getElementById('@customswitch_User').onclick = function (e) {
                                                                 EditStatus('@item.Id');
