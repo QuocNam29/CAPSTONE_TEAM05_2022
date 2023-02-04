@@ -833,7 +833,33 @@ function GetCustomer(ele, id) {
         }
     })
 }
+//----------------------LOAD FORM EDIT USER---------------------------------------
 
+$('#URLFindUser')
+    .keypress(function () {
+        URLFindUser = $(this).val();
+    })
+    .keypress();
+
+function GetUser(ele, id) {
+    row = $(ele).closest('tr');
+    $.ajax({
+        type: 'POST',
+        url: URLFindUser,
+        data: { "user_id": id },
+        success: function (response) {
+            $('#edit_id').val(response.id);
+            $('#edit_name_user').val(response.name);
+            $('#edit_phone_user').val(response.phone);
+            $('#edit_email_user').val(response.email);
+            $('#edit_role_user').val(response.remember_token);
+            $('#edit_address_user').val(response.address);
+
+            $('#EditUser .close').css('display', 'none');
+            $('#EditUser').modal('show');
+        }
+    })
+}
 //-------------------------------ADD CUSTOMER SALE--------------------------------
 
 $('.AddCustomerSaleFrom').submit(function (e) {

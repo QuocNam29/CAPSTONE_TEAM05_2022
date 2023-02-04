@@ -3,7 +3,9 @@
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
 }
 <input type="text" hidden id="URL_UserList" value="@Url.Action("_UserList", "AspNetUsers")" />
-<input type="text" hidden id="URLFindCustomer" value="@Url.Action("FindCustomer", "customers")/" />
+<input type="text" hidden id="URLFindUser" value="@Url.Action("FindUser", "AspNetUsers")/" />
+<input hidden type="text" id="URDEditStatus" value="@Url.Action("EditStatus_User", "AspNetUsers")">
+
 
 <section class="pcoded-main-container">
     <div class="pcoded-content">
@@ -39,7 +41,7 @@
                                 <div class="col-md-9">
                                     <h4>NHÂN VIÊN</h4>
                                 </div>
-                                
+
                             </div>
                         </div>
                         <div class="card-body table-border-style">
@@ -60,7 +62,7 @@
 <div id="AddUser" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="AddGroupProductLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <form class="needs-validation UserForm" method="post" oninput='confirmPassword.setCustomValidity(confirmPassword.value != password.value ? "Passwords do not match." : "")' action="@Url.Action("Create_User", "AspNetUsers")" novalidate>
-     
+
             <div class="modal-content">
                 <div class="modal-header bg-primary">
                     <h5 id="customModalTitle" class="modal-title white">Thêm mới khách hàng</h5>
@@ -76,9 +78,9 @@
                                     Địa chỉ Email<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input type="email" placeholder="Nhập địa chỉ Email" id="email_user" name="email" class="form-control"  pattern="^\w+([-+.']\w+)*@('@')\w+([-.]\w+)*\.\w+([-.]\w+)*$" required>
+                                    <input type="email" placeholder="Nhập địa chỉ Email" id="email_user" name="email" class="form-control" pattern="^\w+([-+.']\w+)*@('@')\w+([-.]\w+)*\.\w+([-.]\w+)*$" required>
                                     <div class="invalid-feedback">
-                                       Email không được bỏ trống hoặc sai định dạng!
+                                        Email không được bỏ trống hoặc sai định dạng!
                                     </div>
                                 </div>
                                 <!---->
@@ -122,7 +124,7 @@
                                     Nhập Lại Mật khẩu<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input type="password" placeholder="********" id="confirmPassword" name="confirmPassword"  class="form-control" required>
+                                    <input type="password" placeholder="********" id="confirmPassword" name="confirmPassword" class="form-control" required>
                                     <div class="invalid-feedback">
                                         Mật khẩu không trùng khớp !
                                     </div>
@@ -180,9 +182,9 @@
 
     </div>
 </div>
-<div id="EditCustomer" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="EditCustomerProductLabel" aria-hidden="true">
+<div id="EditUser" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="EditUserProductLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
-        <form class="needs-validation CusomerForm" method="post" action="@Url.Action("UpdateCustomer", "customers")" novalidate>
+        <form class="needs-validation UserForm" method="post" action="@Url.Action("UpdateUser", "AspNetUsers")" novalidate>
             <div class="modal-content">
                 <div class="modal-header bg-primary">
                     <h5 id="customModalTitle" class="modal-title white">Thay đổi thông tin khách hàng</h5>
@@ -191,99 +193,73 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <input hidden id="edit_id" name="user_id" />
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-6">
                             <div class="form-group">
-                                <input hidden id="edit_id" name="Customer_id" />
-                                <label>
+                                <label for="name-user">
                                     Họ và tên<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input type="text" placeholder="Nhập họ tên" id="edit_customer_name" name="customer_name" class="form-control" pattern="\S+.*" required>
+                                    <input type="text" placeholder="Nhập tên nhân viên" id="edit_name_user" name="fullName" class="form-control" required>
                                     <div class="invalid-feedback">
                                         Vui lòng nhập họ và tên !
                                     </div>
                                 </div>
-
                                 <!---->
                             </div>
+                        </div>
+                        <div class="col-6">
                             <div class="form-group">
-                                <label>
+                                <label for="email-user">
+                                    Địa chỉ Email<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <input type="email" placeholder="Nhập địa chỉ Email" id="edit_email_user" name="email" class="form-control" pattern="^\w+([-+.']\w+)*@('@')\w+([-.]\w+)*\.\w+([-.]\w+)*$" required>
+                                    <div class="invalid-feedback">
+                                        Email không được bỏ trống hoặc sai định dạng!
+                                    </div>
+                                </div>
+                                <!---->
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="phone-user">
                                     Số điện thoại<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input type="text" placeholder="Nhập số điện thoại" id="edit_customer_phone" name="customer_phone" class="form-control" pattern="\S+.*" required>
+                                    <input type="number" placeholder="Nhập số điện thoại" id="edit_phone_user" name="phone" class="form-control" required>
                                     <div class="invalid-feedback">
-                                        Vui lòng nhập số điện thoại !
+                                        Vui lòng nhập số điện thoại
                                     </div>
                                 </div>
                                 <!---->
                             </div>
-                            <div class="form-group">
-                                <label>Địa chỉ Email</label>
-                                <div class="position-relative">
-                                    <input type="email" placeholder="Nhập địa chỉ Email" id="edit_customer_email" name="customer_email" class="form-control">
-                                </div>
-                                <div class="invalid-feedback">
-                                    địa chỉ email không hợp lệ !
-                                </div>
-                                <!---->
-                            </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-6">
                             <div class="form-group">
-                                <label>Ngày sinh</label>
-                                <div class="position-relative">
-                                    <input type="date" id="customers_birth" name="customers_birth" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Số tài khoản ngân hàng</label>
-                                <div class="position-relative">
-                                    <input type="text" placeholder="Nhập số tài khoản" id="customer_account" name="customer_account" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Tên ngân hàng</label>
-                                <div class="position-relative">
-                                    <input type="text" placeholder="Nhập tên ngân hàng" id="customer_bank" name="customer_bank" class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>
-                                    Nhóm khách hàng<span class="text-danger">*</span>
+                                <label for="role-user">
+                                    Chức vụ<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <select id="edit_customer_type" name="customer_type" class="form-control" required>
-                                        <option value="" disabled="disabled" selected="selected">Chọn nhóm khách hàng</option>
-                                        <option value="0">Khách đơn lẻ</option>
-                                        <option value="1">Công ty (khách sỉ)</option>
-                                        <option value="2">Nhà cung cấp</option>
+                                    <select name="role_id" id="edit_role_user" class="form-control" required>
+                                        <option value="" selected="selected" disabled="disabled">Chọn chức vụ</option>
+                                        <option value="1">Quản trị viên</option>
+                                        <option value="2">Nhân viên</option>
                                     </select>
                                     <div class="invalid-feedback">
-                                        Vui lòng chọn nhóm khách hàng !
+                                        Vui lòng chọn chức vụ !
                                     </div>
                                 </div>
                                 <!---->
                             </div>
+                        </div>
+                        <div class="col-12">
                             <div class="form-group">
-                                <label>
-                                    Địa chỉ<span class="text-danger">*</span>
-                                </label>
+                                <label for="first-name-icon"> Địa chỉ </label>
                                 <div class="position-relative">
-                                    <textarea id="edit_customer_address" name="customer_address" placeholder="Nhập địa chỉ" rows="1" class="form-control" pattern="\S+.*" required></textarea>
-                                    <div class="invalid-feedback">
-                                        Vui lòng nhập đại chỉ !
-                                    </div>
-                                </div>
-                                <!---->
-                            </div>
-                            <div class="form-group">
-                                <label>Ghi chú</label>
-                                <div class="position-relative">
-                                    <textarea id="customer_note" name="customer_note" placeholder="Ghi chú" rows="1" class="form-control"></textarea>
+                                    <textarea placeholder="Nhập địa chỉ" id="edit_address_user" class="form-control" name="address"></textarea>
                                 </div>
                                 <!---->
                             </div>

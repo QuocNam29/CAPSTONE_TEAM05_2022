@@ -159,15 +159,9 @@ namespace CAP_TEAM05_2022.Controllers
             bool status = true;
             try
             {
-                int check = db.customers.Where(c => c.phone == customer_phone && c.id != Customer_id).Count();
-                if (check > 0)
+                customer customer = db.customers.Find(Customer_id);
+                if (customer.phone == customer_phone )
                 {
-                    status = false;
-                    message = "Khách hàng đã tồn tại !";
-                }
-                else
-                {
-                    customer customer = db.customers.Find(Customer_id);
                     customer.name = customer_name;
                     customer.phone = customer_phone;
                     if (!String.IsNullOrWhiteSpace(customer_email))
@@ -197,6 +191,47 @@ namespace CAP_TEAM05_2022.Controllers
                     db.SaveChanges();
                     message = "Cập nhật thông tin khách hàng thành công !";
                 }
+                else
+                {
+                    int check = db.customers.Where(c => c.phone == customer_phone).Count();
+                    if (check > 0)
+                    {
+                        status = false;
+                        message = "Khách hàng đã tồn tại !";
+                    }
+                    else
+                    {
+                        customer.name = customer_name;
+                        customer.phone = customer_phone;
+                        if (!String.IsNullOrWhiteSpace(customer_email))
+                        {
+                            customer.email = customer_email;
+                        }
+                        if (customers_birth != null)
+                        {
+                            customer.birthday = customers_birth;
+                        }
+                        if (!String.IsNullOrWhiteSpace(customer_account))
+                        {
+                            customer.account_number = customer_account;
+                        }
+                        if (!String.IsNullOrWhiteSpace(customer_bank))
+                        {
+                            customer.bank = customer_bank;
+                        }
+                        customer.type = customer_type;
+                        customer.address = customer_address;
+                        if (!String.IsNullOrWhiteSpace(customer_note))
+                        {
+                            customer.note = customer_note;
+                        }
+                        customer.updated_at = DateTime.Now;
+                        db.Entry(customer).State = EntityState.Modified;
+                        db.SaveChanges();
+                        message = "Cập nhật thông tin khách hàng thành công !";
+                    }
+                }
+             
             }
             catch (Exception e)
             {

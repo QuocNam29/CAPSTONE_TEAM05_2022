@@ -131,6 +131,77 @@ namespace CAP_TEAM05_2022.Controllers
             db.SaveChanges();
             return Json("EditStatus_User", JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
+        public JsonResult FindUser(string user_id)
+        {
+            user user = db.users.Find(user_id);
+            AspNetUser user1 = db.AspNetUsers.Find(user_id);
+
+            var emp = new user();
+            emp.id = user_id;
+            emp.name = user.name;
+            emp.phone = user.phone;
+            emp.email = user.email;
+            emp.address = user.address;
+            emp.remember_token = user1.AspNetRoles.FirstOrDefault().Id;
+            return Json(emp);
+        }
+        public JsonResult UpdateUser(string user_id, string role_id, string fullName, string phone, string address)
+        {
+            string message = "";
+            bool status = true;
+            try
+            {
+                user user = db.users.Find(user_id);
+                if (user.phone == phone)
+                {
+                    user.name = fullName;
+                    user.phone = phone;
+                    user.address = address;
+                    user.updated_at = DateTime.Now;
+                    db.Entry(user).State = EntityState.Modified;
+                    AspNetUser aspNetUser = db.AspNetUsers.Find(user_id);
+                    aspNetUser.PhoneNumber = phone;
+                    aspNetUser.UserName = fullName;
+                    aspNetUser.AccessFailedCount = int.Parse(role_id);
+                    db.SaveChanges();
+                    message = "Cập nhật thông tin nhân viên thành công !";
+                }
+                else
+                {
+                    int check = db.users.Where(c => c.phone == phone).Count();
+                    if (check > 0)
+                    {
+                        status = false;
+                        message = "Số điện thoại đã được sử dụng !";
+                    }
+                    else
+                    {
+
+                        user.name = fullName;
+                        user.phone = phone;
+                        user.address = address;
+                        user.updated_at = DateTime.Now;
+                        db.Entry(user).State = EntityState.Modified;
+                        AspNetUser aspNetUser = db.AspNetUsers.Find(user_id);
+                        aspNetUser.PhoneNumber = phone;
+                        aspNetUser.UserName = fullName;
+                        aspNetUser.AccessFailedCount = int.Parse(role_id);
+                        db.SaveChanges();
+                        message = "Cập nhật thông tin nhân viên thành công !";
+                    }
+                }
+               
+            }
+            catch (Exception e)
+            {
+
+                status = false;
+                message = e.Message;
+            }
+
+            return Json(new { status, message }, JsonRequestBehavior.AllowGet);
+        }
         // GET: AspNetUsers/Edit/5
         public ActionResult Edit(string id)
         {

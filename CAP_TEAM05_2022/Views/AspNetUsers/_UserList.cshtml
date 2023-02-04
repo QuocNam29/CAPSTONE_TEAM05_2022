@@ -45,7 +45,6 @@
                             <label class="custom-control-label" for="@customswitch_User"></label>
                         </div>
                     }
-                    <input hidden type="text" id="URDEditStatus" value="@Url.Action("EditStatus_User", "AspNetUsers")">
                     <script language="javascript">
                                                         document.getElementById('@customswitch_User').onclick = function (e) {
                                                                 EditStatus('@item.Id');
@@ -53,7 +52,7 @@
                     </script>
                 </td>
                 <td>
-                    <button class="btn btn-success" onclick="GetCustomer(this, '@item.Id')">
+                    <button class="btn btn-success" onclick="GetUser(this, '@item.Id')">
                         <i class="feather icon-edit">
                         </i>
                     </button>
