@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using CAP_TEAM05_2022.Models;
@@ -15,11 +16,28 @@ namespace CAP_TEAM05_2022.Controllers
     public class AspNetUsersController : Controller
     {
         private ApplicationUserManager _userManager;
+        private ApplicationSignInManager _signInManager;
         private CP25Team05Entities db = new CP25Team05Entities();
         public AspNetUsersController()
         {
         }
+        public AspNetUsersController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        {
+            UserManager = userManager;
+            SignInManager = signInManager;
+        }
 
+        public ApplicationSignInManager SignInManager
+        {
+            get
+            {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            }
+            private set
+            {
+                _signInManager = value;
+            }
+        }
         public AspNetUsersController(ApplicationUserManager userManager)
         {
             UserManager = userManager;
@@ -63,7 +81,7 @@ namespace CAP_TEAM05_2022.Controllers
         }
 
        
-        public ActionResult Create_User(string email, string role_id, string fullName, string password, string phone, string address)
+        public async Task<ActionResult> Create_User(string email, string role_id, string fullName, string password, string phone, string address)
         {
             try
             {
@@ -71,21 +89,20 @@ namespace CAP_TEAM05_2022.Controllers
                 var role = db.AspNetRoles.Find(role_id);
                 if (query_email == null)
                 {
-
-                    ApplicationUser user = new ApplicationUser()
+                    var user = new ApplicationUser
                     {
                         Email = email,
-                        UserName = fullName,
+                        UserName = email,
                         PhoneNumber = phone,
                         AccessFailedCount = 1,
                     };
-                    
-                    IdentityResult result = UserManager.Create(user, password);
-                    
+                    var result = await UserManager.CreateAsync(user, password);
+
                     if (result.Succeeded)
                     {
-                        UserManager.AddToRole(user.Id, role.Name);
+                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
+                        UserManager.AddToRole(user.Id, role.Name);
                         user users = new user();
                         users.id = user.Id;
                         users.email = email;
@@ -94,6 +111,7 @@ namespace CAP_TEAM05_2022.Controllers
                         users.phone = phone;
                         users.address = address;
                         users.name = fullName;
+                        users.asp_id = user.Id;
                         db.users.Add(users);
                         db.SaveChanges();
                         return Json(new { status = true, message = "Thêm thành công!" }, JsonRequestBehavior.AllowGet);

@@ -23,7 +23,7 @@
             string customswitch_User = "customswitch" + item.Id;
             <tr>
                 <td>@no <input hidden type="text" name="record" value="@item.Id" /> </td>
-                <td>@item.UserName</td>
+                <td>@item.users.FirstOrDefault().name</td>
                 <td>@item.Email</td>
                 <td>@item.PhoneNumber</td>              
                 <td class="text-center">

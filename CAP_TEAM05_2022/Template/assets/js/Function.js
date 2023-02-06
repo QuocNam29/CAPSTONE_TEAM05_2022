@@ -922,14 +922,14 @@ $('.AddCustomerSaleFrom').submit(function (e) {
 
 //-------------------------------KHÔNG CHO NHẬP KÍ TỰ ĐẶC BIỆC--------------------------------
 
-$('input').keypress(function (event) {
+/*$('input').keypress(function (event) {
     var character = String.fromCharCode(event.keyCode);
     return isValid(character);
 });
 
 function isValid(str) {
     return !/[~`!#$%\^&*+=\\[\]\\';,/{}|\\":<>\?]/g.test(str);
-}
+}*/
 
 //-------------------------------CHECK Người dùng đã có trong hệ thống--------------------------------
 

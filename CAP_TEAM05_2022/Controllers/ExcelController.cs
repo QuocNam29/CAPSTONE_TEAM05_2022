@@ -1,5 +1,6 @@
 ﻿using CAP_TEAM05_2022.Helper;
 using CAP_TEAM05_2022.Models;
+using Microsoft.AspNet.Identity;
 using OfficeOpenXml;
 using OfficeOpenXml.DataValidation;
 using OfficeOpenXml.Style;
@@ -381,8 +382,7 @@ namespace CAP_TEAM05_2022.Controllers
                                         int sell_price_product = int.Parse(Session["sell_price_product"].ToString().Trim());
                                         int purchase_price_product = int.Parse(Session["purchase_price_product"].ToString().Trim());
                                         int quantity_product = int.Parse(Session["quantity_product"].ToString().Trim());
-                                        string email = Session["user_email"].ToString();
-                                        user user = db.users.Where(u => u.email == email).FirstOrDefault();
+                                       
 
                                         var check_product = db.products.Where(c => c.name == name_product && c.group_id == group_id
                                         && c.category_id == category_id && c.status != 3).FirstOrDefault();
@@ -395,7 +395,7 @@ namespace CAP_TEAM05_2022.Controllers
                                             product.unit = unit_product;
                                             product.category_id = category_id;
                                             product.group_id = group_id;
-                                            product.created_by = user.id;
+                                            product.created_by = User.Identity.GetUserId();
                                             product.sell_price = sell_price_product;
                                             product.purchase_price = purchase_price_product;
                                             product.quantity = quantity_product;
@@ -407,7 +407,7 @@ namespace CAP_TEAM05_2022.Controllers
                                             inventory.quantity = quantity_product;
                                             inventory.price_import = purchase_price_product;
                                             inventory.sold = 0;
-                                            inventory.created_by = user.id;
+                                            inventory.created_by = User.Identity.GetUserId();
                                             inventory.created_at = DateTime.Now;
                                             db.import_inventory.Add(inventory);
                                             db.SaveChanges();
@@ -440,7 +440,7 @@ namespace CAP_TEAM05_2022.Controllers
                                             inventory.quantity = quantity_product;
                                             inventory.price_import = purchase_price_product;
                                             inventory.sold = 0;
-                                            inventory.created_by = user.id;
+                                            inventory.created_by = User.Identity.GetUserId();
                                             inventory.created_at = DateTime.Now;
                                             db.import_inventory.Add(inventory);
                                             db.SaveChanges();
@@ -665,15 +665,14 @@ namespace CAP_TEAM05_2022.Controllers
         public ActionResult ImportFail_continues(int id)
         {
             var import = Product_list.Where(x => x.id == id).FirstOrDefault();
-            string email = Session["user_email"].ToString();
-            user user = db.users.Where(u => u.email == email).FirstOrDefault();
+           
             var check_group = db.groups.Where(g => g.name == import.name_group && g.status != 3).FirstOrDefault();
             group GroupProduct = new group();
             if (check_group == null)
             {
                 
                 GroupProduct.name = import.name_group;
-                GroupProduct.created_by = user.id;
+                GroupProduct.created_by = User.Identity.GetUserId();
                 GroupProduct.status = 1;
                 GroupProduct.created_at = DateTime.Now;
                 GroupProduct.slug = import.name_group;
@@ -688,7 +687,7 @@ namespace CAP_TEAM05_2022.Controllers
                 
                 category.name = import.name_category;
                 category.status = 1;
-                category.created_by = user.id;
+                category.created_by = User.Identity.GetUserId();
                 category.created_at = DateTime.Now;
                 category.slug = import.name_category;
                 category.code = "DM" + CodeRandom.RandomCode();
@@ -717,7 +716,7 @@ namespace CAP_TEAM05_2022.Controllers
                 product.category_id = check_category.id;
             }
            
-            product.created_by = user.id;
+            product.created_by = User.Identity.GetUserId();
             product.sell_price = import.sell_price;
             product.purchase_price = import.purchase_price;
             product.quantity = import.quantity;
@@ -729,7 +728,7 @@ namespace CAP_TEAM05_2022.Controllers
             inventory.quantity = import.quantity;
             inventory.price_import = import.purchase_price;
             inventory.sold = 0;
-            inventory.created_by = user.id;
+            inventory.created_by = User.Identity.GetUserId();
             inventory.created_at = DateTime.Now;
             db.import_inventory.Add(inventory);
             db.SaveChanges();
@@ -743,15 +742,14 @@ namespace CAP_TEAM05_2022.Controllers
             foreach (var item in product_list)
             {
                 var import = Product_list.Where(x => x.id == item.id).FirstOrDefault();
-                string email = Session["user_email"].ToString();
-                user user = db.users.Where(u => u.email == email).FirstOrDefault();
+               
                 var check_group = db.groups.Where(g => g.name == import.name_group && g.status != 3).FirstOrDefault();
                 group GroupProduct = new group();
                 if (check_group == null)
                 {
 
                     GroupProduct.name = import.name_group;
-                    GroupProduct.created_by = user.id;
+                    GroupProduct.created_by = User.Identity.GetUserId();
                     GroupProduct.status = 1;
                     GroupProduct.created_at = DateTime.Now;
                     GroupProduct.slug = import.name_group;
@@ -766,7 +764,7 @@ namespace CAP_TEAM05_2022.Controllers
 
                     category.name = import.name_category;
                     category.status = 1;
-                    category.created_by = user.id;
+                    category.created_by = User.Identity.GetUserId();
                     category.created_at = DateTime.Now;
                     category.slug = import.name_category;
                     category.code = "DM" + CodeRandom.RandomCode();
@@ -795,7 +793,7 @@ namespace CAP_TEAM05_2022.Controllers
                     product.category_id = check_category.id;
                 }
 
-                product.created_by = user.id;
+                product.created_by = User.Identity.GetUserId();
                 product.sell_price = import.sell_price;
                 product.purchase_price = import.purchase_price;
                 product.quantity = import.quantity;
@@ -807,7 +805,7 @@ namespace CAP_TEAM05_2022.Controllers
                 inventory.quantity = import.quantity;
                 inventory.price_import = import.purchase_price;
                 inventory.sold = 0;
-                inventory.created_by = user.id;
+                inventory.created_by = User.Identity.GetUserId();
                 inventory.created_at = DateTime.Now;
                 db.import_inventory.Add(inventory);
                 db.SaveChanges();

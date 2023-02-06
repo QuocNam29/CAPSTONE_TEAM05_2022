@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using CAP_TEAM05_2022.Helper;
 using CAP_TEAM05_2022.Models;
+using Microsoft.AspNet.Identity;
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -48,8 +49,7 @@ namespace CAP_TEAM05_2022.Controllers
                 }
                 else
                 {
-                    string email = Session["user_email"].ToString();
-                    user user = db.users.Where(u => u.email == email).FirstOrDefault();
+                   
                     customer customer = new customer();
                     customer.name = customer_name;
                     customer.code = "MKH" + CodeRandom.RandomCode();
@@ -76,7 +76,7 @@ namespace CAP_TEAM05_2022.Controllers
                     {
                         customer.note = customer_note;
                     }
-                    customer.created_by = user.id;
+                    customer.created_by = User.Identity.GetUserId();
                     customer.created_at = DateTime.Now;
                     customer.status = 1;
                     db.customers.Add(customer);
@@ -312,8 +312,7 @@ namespace CAP_TEAM05_2022.Controllers
                 }
                 else
                 {
-                    string email = Session["user_email"].ToString();
-                    user user = db.users.Where(u => u.email == email).FirstOrDefault();
+                    
                     customer customer = new customer();
                     customer.name = customer_name;
                     customer.code = "MKH" + CodeRandom.RandomCode();
@@ -340,7 +339,7 @@ namespace CAP_TEAM05_2022.Controllers
                     {
                         customer.note = customer_note;
                     }
-                    customer.created_by = user.id;
+                    customer.created_by = User.Identity.GetUserId();
                     customer.created_at = DateTime.Now;
                     customer.status = 1;
                     db.customers.Add(customer);

@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using CAP_TEAM05_2022.Helper;
 using CAP_TEAM05_2022.Models;
+using Microsoft.AspNet.Identity;
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -108,8 +109,7 @@ namespace CAP_TEAM05_2022.Controllers
             bool status = true;
             try
             {
-                string email = Session["user_email"].ToString();
-                user user = db.users.Where(u => u.email == email).FirstOrDefault();
+                
                 sale sale = new sale();
                 sale.code = "MDH" + CodeRandom.RandomCode();
                 sale.customer_id = createSale.customer_id;
@@ -127,7 +127,7 @@ namespace CAP_TEAM05_2022.Controllers
                 sale.vat = createSale.vat;
                 sale.note = createSale.note;
                 sale.status = 1;
-                sale.created_by = user.id;
+                sale.created_by = User.Identity.GetUserId();
                 sale.created_at = DateTime.Now;
                 db.sales.Add(sale);
                 db.SaveChanges();
@@ -190,7 +190,7 @@ namespace CAP_TEAM05_2022.Controllers
                     debt.sale_id = sale.id;
                     debt.paid = createSale.method;
                     debt.created_at = DateTime.Now;
-                    debt.created_by = user.id;
+                    debt.created_by = User.Identity.GetUserId();
                     debt.total = createSale.method;
                     db.debts.Add(debt);
                     db.SaveChanges();

@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using CAP_TEAM05_2022.Helper;
 using CAP_TEAM05_2022.Models;
-
+using Microsoft.AspNet.Identity;
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -66,15 +66,14 @@ namespace CAP_TEAM05_2022.Controllers
                 }
                 else
                 {
-                    string email = Session["user_email"].ToString();
-                    user user = db.users.Where(u => u.email == email).FirstOrDefault();
+                   
                     product product = new product();
                     product.name = name_product;
                     product.status = 1;
                     product.unit = unit;
                     product.category_id = CategoryDropdown;
                     product.group_id = GroupProductDropdown;
-                    product.created_by = user.id;
+                    product.created_by = User.Identity.GetUserId();
                     product.sell_price = int.Parse(sell_price.Replace(",", "").Replace(".", ""));
                     product.purchase_price = int.Parse(purchase_price.Replace(",", "").Replace(".", ""));
                     product.quantity = quantity;
@@ -86,7 +85,7 @@ namespace CAP_TEAM05_2022.Controllers
                     inventory.quantity = quantity;
                     inventory.price_import = int.Parse(purchase_price.Replace(",", "").Replace(".", ""));
                     inventory.sold = 0;
-                    inventory.created_by = user.id;
+                    inventory.created_by = User.Identity.GetUserId();
                     inventory.created_at = DateTime.Now;
                     db.import_inventory.Add(inventory);
                     db.SaveChanges();
@@ -212,8 +211,7 @@ namespace CAP_TEAM05_2022.Controllers
             bool status = true;
             try
             {
-                string email = Session["user_email"].ToString();
-                user user = db.users.Where(u => u.email == email).FirstOrDefault();
+               
                 product product = db.products.Find(Product_id);
                 product.quantity += quantity;
                 product.updated_at = DateTime.Now;
@@ -224,7 +222,7 @@ namespace CAP_TEAM05_2022.Controllers
                 import.price_import = int.Parse(purchase_price.Replace(",", "").Replace(".", ""));
                 import.sold = 0;
                 import.created_at = DateTime.Now;
-                import.created_by = user.id;
+                import.created_by = User.Identity.GetUserId();
                 db.import_inventory.Add(import);
 
                 db.SaveChanges();

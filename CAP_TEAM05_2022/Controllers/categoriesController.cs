@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using CAP_TEAM05_2022.Helper;
 using CAP_TEAM05_2022.Models;
+using Microsoft.AspNet.Identity;
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -42,12 +43,11 @@ namespace CAP_TEAM05_2022.Controllers
                 }
                 else
                 {
-                    string email = Session["user_email"].ToString();
-                    user user = db.users.Where(u => u.email == email).FirstOrDefault();
+                    
                     category category = new category();
                     category.name = name_category;
                     category.status = 1;
-                    category.created_by = user.id;
+                    category.created_by = User.Identity.GetUserId();
                     category.created_at = DateTime.Now;
                     category.slug = name_category;
                     category.code = "DM" + CodeRandom.RandomCode();

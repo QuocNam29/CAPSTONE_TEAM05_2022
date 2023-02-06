@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using CAP_TEAM05_2022.Helper;
 using CAP_TEAM05_2022.Models;
+using Microsoft.AspNet.Identity;
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -41,11 +42,10 @@ namespace CAP_TEAM05_2022.Controllers
                 }
                 else
                 {
-                    string email = Session["user_email"].ToString();
-                    user user = db.users.Where(u => u.email == email).FirstOrDefault();
+                   
                     group GroupProduct = new group();
                     GroupProduct.name = Add_name;
-                    GroupProduct.created_by = user.id;
+                    GroupProduct.created_by = User.Identity.GetUserId();
                     GroupProduct.status = 1;
                     GroupProduct.created_at = DateTime.Now;
                     GroupProduct.slug = Add_name;
