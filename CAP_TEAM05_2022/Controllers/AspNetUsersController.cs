@@ -94,7 +94,7 @@ namespace CAP_TEAM05_2022.Controllers
                         Email = email,
                         UserName = email,
                         PhoneNumber = phone,
-                        AccessFailedCount = 1,
+                        PhoneNumberConfirmed = true,
                     };
                     var result = await UserManager.CreateAsync(user, password);
 
@@ -137,13 +137,13 @@ namespace CAP_TEAM05_2022.Controllers
         public ActionResult EditStatus_User(AspNetUser user)
         {
             AspNetUser asp_user = db.AspNetUsers.Find(user.Id);
-            if (asp_user.AccessFailedCount == 1)
+            if (asp_user.PhoneNumberConfirmed == true)
             {
-                asp_user.AccessFailedCount = 2;
+                asp_user.PhoneNumberConfirmed = false;
             }
             else
             {
-                asp_user.AccessFailedCount = 1;
+                asp_user.PhoneNumberConfirmed = true;
             }
             db.Entry(asp_user).State = EntityState.Modified;
             db.SaveChanges();
@@ -171,6 +171,9 @@ namespace CAP_TEAM05_2022.Controllers
             try
             {
                 user user = db.users.Find(user_id);
+                var aspNetUser = UserManager.FindById(user_id);
+                string oldRole = UserManager.GetRoles(user_id).FirstOrDefault();
+                AspNetRole role = db.AspNetRoles.Find(role_id);
                 if (user.phone == phone)
                 {
                     user.name = fullName;
@@ -178,7 +181,6 @@ namespace CAP_TEAM05_2022.Controllers
                     user.address = address;
                     user.updated_at = DateTime.Now;
                     db.Entry(user).State = EntityState.Modified;
-                    AspNetUser aspNetUser = db.AspNetUsers.Find(user_id);
                     aspNetUser.PhoneNumber = phone;
                     aspNetUser.UserName = fullName;
                     aspNetUser.AccessFailedCount = int.Parse(role_id);
@@ -201,15 +203,26 @@ namespace CAP_TEAM05_2022.Controllers
                         user.address = address;
                         user.updated_at = DateTime.Now;
                         db.Entry(user).State = EntityState.Modified;
-                        AspNetUser aspNetUser = db.AspNetUsers.Find(user_id);
                         aspNetUser.PhoneNumber = phone;
                         aspNetUser.UserName = fullName;
                         aspNetUser.AccessFailedCount = int.Parse(role_id);
                         db.SaveChanges();
                         message = "Cập nhật thông tin nhân viên thành công !";
                     }
+
                 }
-               
+                if (oldRole != null)
+                {
+                    // Update user role
+                    UserManager.RemoveFromRole(user_id, oldRole);
+                    UserManager.AddToRole(user_id, role.Name);
+                }
+                else
+                {
+                    // Add user to role
+                    UserManager.AddToRole(user_id, role.Name);
+                }
+
             }
             catch (Exception e)
             {

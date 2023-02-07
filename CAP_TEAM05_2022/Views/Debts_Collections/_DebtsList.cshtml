@@ -1,0 +1,52 @@
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.sale>
+@{
+    int no = 0;
+}
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th class="text-center">STT</th>
+            <th>Mã đơn hàng</th>
+            <th>Mã kháchh hàng</th>
+            <th class="text-center">Tổng nợ</th>
+            <th class="text-center">Đã thu</th>
+            <th class="text-center">Còn lại</th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+                {
+                    no++;
+            <tr class="point-custom">
+                <td class="text-center">
+                    @no
+                </td>
+                <td>@item.code</td>
+                <td>@item.customer.code</td>
+                <td class="text-center">
+                    @item.total.ToString("N0")
+                </td>
+                <td class="text-center">
+                    @item.debts.OrderByDescending(d => d.created_at).FirstOrDefault().paid.ToString("N0")
+                </td>
+                <td class="text-center">
+                    @((@item.total- item.debts.OrderByDescending(d => d.created_at).FirstOrDefault().total).ToString("N0"))
+                </td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-info">Chọn</button>
+                    <button type="button" title="Xem chi tiết" class="btn btn-secondary" onclick="GetList_orderDetails('@item.id', 1)">
+                        <span>
+                            <i class="fa icon-4 icon-custom fa-info">
+                            </i>
+                        </span>
+                    </button>
+                </td>
+            </tr>
+        }
+
+
+
+    </tbody>
+</table>

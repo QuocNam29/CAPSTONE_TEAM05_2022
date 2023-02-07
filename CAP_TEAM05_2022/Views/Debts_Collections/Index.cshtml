@@ -1,0 +1,515 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
+}
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
+}
+<style>
+    .table thead th {
+        background: #1abc9c !important;
+        color: white;
+    }
+    .total-sale {
+        padding: 10px;
+        background-color: yellow;
+        border-radius: 10px;
+        font-weight: bold;
+    }
+    .spending-detail {
+        padding: 10px;
+        background-color: yellowgreen;
+        border-radius: 10px;
+        font-weight: bold;
+    }
+</style>
+<section class="pcoded-main-container">
+    <div class="pcoded-content" data-select2-id="74">
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">Thu - Chi</h5>
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="https://dnqt.net">
+                                    <i class="feather icon-home">
+                                    </i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="javascript:void(0)">Thu - Chi</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-select2-id="73">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-body">
+                                <ul id="pills-tab" role="tablist" class="nav nav-pills mb-3">
+                                    <li class="nav-item">
+                                        <a id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="true" class="nav-link active">
+                                            Công nợ với khách hàng <input type="hidden" value="0">
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="false" class="nav-link">
+                                            Chi trả với nhà cung cấp <input type="hidden" value="0">
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div id="pills-tabContent" class="tab-content">
+                                    <div id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" class="tab-pane fade">
+                                        <div class="card">
+                                            <div class="card-body table-border-style">
+                                                <button class="btn btn-primary float-right mb-3">Tạo mới</button>
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-center">STT</th>
+                                                                <th>Mã sản phẩm</th>
+                                                                <th class="text-center">Tên sản phẩm</th>
+                                                                <th class="text-center">Số lượng</th>
+                                                                <th class="text-center">Tổng tiền</th>
+                                                                <th class="text-center">Đã trả</th>
+                                                                <th class="text-center">Ngày tháng</th>
+                                                                <th>
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="text-center">
+                                                                    1
+                                                                </td>
+                                                                <td>SPf6bb28349</td>
+                                                                <td class="text-center">	URE PHÚ MỸ</td>
+                                                                <td class="text-center">114</td>
+                                                                <td class="text-center">95,760,000</td>
+                                                                <td class="text-center">10,000</td>
+                                                                <td class="text-center">11:06 - 06/02/2023</td>
+                                                                <td class="text-center">
+                                                                    <button type="button" class="btn btn-info">Chọn</button>
+                                                                    <button type="button" title="Xem chi tiết" class="btn btn-secondary">
+                                                                        <span>
+                                                                            <i class="fa icon-2 icon-custom fa-minus">
+                                                                            </i>
+                                                                        </span>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="detail-debt-2">
+                                                                <td colspan="6">
+                                                                </td>
+                                                                <td colspan="2">
+                                                                    Đợt 1: 10,000
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tbody style="display: none;">
+                                                            <tr>
+                                                                <td colspan="7">
+                                                                    <div class="alert alert-warning">
+                                                                        <p class="text-center">Không tìm thấy dữ liệu</p>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div id="debtModal" tabindex="-1" aria-labelledby="debtModalTitle" class="modal fade" style="display: none;" data-select2-id="debtModal" aria-hidden="true">
+                                                <div role="document" class="modal-dialog">
+                                                    <form>
+                                                        <div class="modal-content">
+                                                            <div class="modal-header bg-primary">
+                                                                <h5 id="debtModalTitle" class="modal-title white">Thêm mới chi tiêu</h5>
+                                                                <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                                                                    <span aria-hidden="true">×</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <div class="form-group" data-select2-id="72">
+                                                                            <label>
+                                                                                Chọn sản phẩm<span class="text-danger">*</span>
+                                                                            </label>
+                                                                            <div data-select2-id="71">
+                                                                                <select id="" name="" class="form-control select2-hidden-accessible" tabindex="-1" aria-hidden="true" data-select2-id="3">
+                                                                                    <option value="736" data-select2-id="5">SP0bb59b6e6 -  APPENCARB SUPER - THUỐC ĐẶC TRỊ NẤM BÊNH CHO CÂY TRỒNG</option>
+                                                                                    <option value="777" data-select2-id="6">SP4047ceac6 - Bông lúa năng suất vàng</option>
+                                                                                    <option value="778" data-select2-id="7">SP0f5258b6c - Bông Lúa nở bụi</option>
+                                                                                    <option value="787" data-select2-id="8">SPc2283ef12 - ĐẠM PHÚ MỸ</option>
+                                                                                    <option value="786" data-select2-id="9">SP4f8bd9fde - ĐẠM PM+Kebo</option>
+                                                                                    <option value="784" data-select2-id="10">SP7aa29cb19 - KALI PHÚ MỸ</option>
+                                                                                    <option value="785" data-select2-id="11">SPe7b910148 - Kali Phú Mỹ bột MOP</option>
+                                                                                    <option value="751" data-select2-id="12">SPdd283f926 - LÂN SUPER</option>
+                                                                                    <option value="820" data-select2-id="13">SP2bb83e3e3 - NPK 11-11-17+13S+1,5CA+1MG+TE</option>
+                                                                                    <option value="819" data-select2-id="14">SP370582a02 - NPK 13-7-19+ 9S+1,5CA+1MG+TE</option>
+                                                                                    <option value="779" data-select2-id="15">SPded65692d - NPK 15-15+TE</option>
+                                                                                    <option value="776" data-select2-id="16">SP65cacefc9 - NPK 16-16-8+TE</option>
+                                                                                    <option value="775" data-select2-id="17">SPc005cc55f - NPK 16-6-20+TE</option>
+                                                                                    <option value="822" data-select2-id="18">SPb609d7fb2 - NPK 16-8-8+13S</option>
+                                                                                    <option value="780" data-select2-id="19">SPfc6d39787 - NPK 17-19-9 TE PHÚ MỸ</option>
+                                                                                    <option value="821" data-select2-id="20">SP14e119ab6 - NPK 17-6-17+10S+TE</option>
+                                                                                    <option value="818" data-select2-id="21">SP546c01344 - NPK 18-8-6+13S+TE</option>
+                                                                                    <option value="806" data-select2-id="22">SP4b55da7f2 - NPK AMAZON cuối vụ</option>
+                                                                                    <option value="804" data-select2-id="23">SPe68248ea9 - NPK AMAZON đầu vụ</option>
+                                                                                    <option value="803" data-select2-id="24">SP048470c15 - NPK AMAZON mùa khô</option>
+                                                                                    <option value="807" data-select2-id="25">SPf3827a317 - NPK AMAZON mùa mưa </option>
+                                                                                    <option value="799" data-select2-id="26">SP269374df2 - NPK BIGONE cà phê</option>
+                                                                                    <option value="798" data-select2-id="27">SPf720bd767 - NPK BIGONE đầu vụ</option>
+                                                                                    <option value="800" data-select2-id="28">SPbaa424b04 - NPK BIGONE mùa khô</option>
+                                                                                    <option value="794" data-select2-id="29">SP28b08545b - NPK HUMAX 20-20-15+TE</option>
+                                                                                    <option value="781" data-select2-id="30">SPb51e3cb0a - NPK Phú mỹ + BiOwish 16-16-8+13S+TE</option>
+                                                                                    <option value="789" data-select2-id="31">SPde5136e19 - NPK SEVEN CHẮC HẠT</option>
+                                                                                    <option value="788" data-select2-id="32">SP3484375b6 - NPK SEVEN HẠN CHẾ RỤNG TRÁI</option>
+                                                                                    <option value="790" data-select2-id="33">SP2821389a9 - NPK SEVEN TĂNG TRƯỞNG</option>
+                                                                                    <option value="747" data-select2-id="34">SP73c1864af - PHÂN BÓN CAO CẤP NPK 16-16-16+BO+TE</option>
+                                                                                    <option value="753" data-select2-id="35">SP99c93fa95 - PHÂN BÓN CD CHO CÀ PHÊ- TIÊU</option>
+                                                                                    <option value="817" data-select2-id="36">SP084ccfebf - PHÂN BÓN CD CHO THANH LONG</option>
+                                                                                    <option value="816" data-select2-id="37">SPe26a9c400 - PHÂN BÓN CHUYÊN DÙNG CHO CAO SU</option>
+                                                                                    <option value="814" data-select2-id="38">SP5ed4590a1 - PHÂN BÓN ĐẤT XANH KALI</option>
+                                                                                    <option value="750" data-select2-id="39">SPb31344e1d - PHÂN BÓN HỮU CƠ VI SINH</option>
+                                                                                    <option value="749" data-select2-id="40">SPa5c554c0a - PHÂN BÓN LÂN CANXI </option>
+                                                                                    <option value="805" data-select2-id="41">SPa87fd126f - Phân bón NPK Amazon Cao Su</option>
+                                                                                    <option value="801" data-select2-id="42">SP187e0de2d - Phân bón NPK BigOne Lúa F1</option>
+                                                                                    <option value="802" data-select2-id="43">SP780d38861 - Phân bón NPK BigOne Lúa F2</option>
+                                                                                    <option value="795" data-select2-id="44">SP9323b0e9e - Phân bón NPK Humax chuyên tiêu</option>
+                                                                                    <option value="793" data-select2-id="45">SPe8b1294ef - Phân bón NPK Humax Cuối Vụ </option>
+                                                                                    <option value="796" data-select2-id="46">SP87dc5834c - Phân bón NPK Humax Đầu Vụ</option>
+                                                                                    <option value="797" data-select2-id="47">SP0eb7c57de - Phân bón NPK Humax Rong Biển </option>
+                                                                                    <option value="792" data-select2-id="48">SPa5d53adeb - Phân bón NPK Seven cây ăn trái</option>
+                                                                                    <option value="791" data-select2-id="49">SPe035eccd4 - Phân bón NPK Seven lúa F2</option>
+                                                                                    <option value="754" data-select2-id="50">SPf652590f4 - PHÂN BÓN TRUNG VI LƯỢNG - HUMIC</option>
+                                                                                    <option value="748" data-select2-id="51">SP7e83d790b - PHÂN BÓN VÔI LÂN</option>
+                                                                                    <option value="752" data-select2-id="52">SP351bde25a - PHÂN BÓN VÔI LÂN - SONG MÃ</option>
+                                                                                    <option value="746" data-select2-id="53">SPbad9d96f4 - PHÂN HỮU CƠ KHOÁNG 16-8-18+BO+TE</option>
+                                                                                    <option value="815" data-select2-id="54">SPdda985360 - PHÂN HỮU CƠ VI SINH CAO CẤP</option>
+                                                                                    <option value="813" data-select2-id="55">SP22581a6be - PHÂN KHOÁNG CAO CẤP 20-9-20+BO+TE</option>
+                                                                                    <option value="782" data-select2-id="56">SPb92ca5aae - PHÂN NPK 16-16-8 PHÚ MỸ</option>
+                                                                                    <option value="739" data-select2-id="57">SP866fdfeb8 - Thuốc diệt kiến - KILLPEST</option>
+                                                                                    <option value="735" data-select2-id="58">SP49b911169 - THUỐC TRỊ NẤM BỆNH CHO CÂY TRỒNG</option>
+                                                                                    <option value="744" data-select2-id="59">SPbbd74b2a7 - Thuốc trừ bệnh - FUJIONE 40EC</option>
+                                                                                    <option value="743" data-select2-id="60">SPd858ccf3d - Thuốc trừ bệnh - VISEN 20SC</option>
+                                                                                    <option value="740" data-select2-id="61">SPb9d787327 - Thuốc trừ cỏ - VIFISO 300EC</option>
+                                                                                    <option value="734" data-select2-id="62">SP06271148c - Thuốc trừ nấm - CADILAC 75WG</option>
+                                                                                    <option value="738" data-select2-id="63">SPaa4233e11 - Thuốc trừ nấm hồng - Vizicop 50WP</option>
+                                                                                    <option value="737" data-select2-id="64">SP025301a6c - Thuốc trừ ốc - VINICLO 700WP</option>
+                                                                                    <option value="733" data-select2-id="65">SPdadcef764 - Thuốc trừ sâu - BIO GREEN</option>
+                                                                                    <option value="742" data-select2-id="66">SP2477d67b1 - Thuốc trừ sâu - VIBAMEC 1.8EC &amp; 3.6EC</option>
+                                                                                    <option value="741" data-select2-id="67">SP32612ccb0 - Thuốc trừ sâu - Vifu Super  5GR</option>
+                                                                                    <option value="745" data-select2-id="68">SP9cc1f9710 - Thuốc trừ sâu sinh học - neem nano</option>
+                                                                                    <option value="823" data-select2-id="69">SPc4c5b5573 - Xăng 95</option>
+                                                                                </select>
+                                                                                <span class="select2 select2-container select2-container--default select2-container--below" dir="ltr" data-select2-id="4" style="width: auto;">
+                                                                                    <span class="selection">
+                                                                                        <span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2--container">
+                                                                                            <span class="select2-selection__rendered" id="select2--container" role="textbox" aria-readonly="true">
+                                                                                                <span class="select2-selection__placeholder">Chọn sản phẩm</span>
+                                                                                            </span>
+                                                                                            <span class="select2-selection__arrow" role="presentation">
+                                                                                                <b role="presentation">
+                                                                                                </b>
+                                                                                            </span>
+                                                                                        </span>
+                                                                                    </span>
+                                                                                    <span class="dropdown-wrapper" aria-hidden="true">
+                                                                                    </span>
+                                                                                </span>
+                                                                            </div>
+                                                                            <!---->
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-12">
+                                                                        <div class="form-group">
+                                                                            <label>
+                                                                                Trả trước<span class="text-danger">*</span>
+                                                                            </label>
+                                                                            <input type="text" class="form-control" disabled="disabled">
+                                                                            <!---->
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="submit" class="btn btn-primary">Thêm mới</button>
+                                                                <button type="button" class="btn btn-secondary">Huỷ bỏ</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <div id="spendModal" tabindex="-1" aria-labelledby="spendModalTitle" class="modal fade" style="display: none;" aria-hidden="true">
+                                                <div role="document" class="modal-dialog modal-lg">
+                                                    <form>
+                                                        <div class="modal-content">
+                                                            <div class="modal-header bg-primary">
+                                                                <h5 id="spendModalTitle" class="modal-title white">Chi tiêu</h5>
+                                                                <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                                                                    <span aria-hidden="true">×</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label>Mã sản phẩm</label>
+                                                                            <input type="text" disabled="disabled" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label>Tên sản phẩm</label>
+                                                                            <input type="text" disabled="disabled" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label>Nhóm sản phẩm</label>
+                                                                            <input type="text" disabled="disabled" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label>Danh mục sản phẩm</label>
+                                                                            <input type="text" disabled="disabled" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-3">
+                                                                        <div class="form-group">
+                                                                            <label>Tổng nợ</label>
+                                                                            <input type="text" disabled="disabled" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-3">
+                                                                        <div class="form-group">
+                                                                            <label>Số lượng</label>
+                                                                            <input type="text" disabled="disabled" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-3">
+                                                                        <div class="form-group">
+                                                                            <label>Đã trả</label>
+                                                                            <input type="text" disabled="disabled" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-3">
+                                                                        <div class="form-group">
+                                                                            <label>Còn lại</label>
+                                                                            <input type="text" disabled="disabled" class="form-control">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label>
+                                                                                Trả nợ<span class="text-danger">*</span>
+                                                                            </label>
+                                                                            <input type="text" class="form-control">
+                                                                            <!---->
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label>Ghi chú</label>
+                                                                            <textarea rows="1" name="note" placeholder="..." class="form-control">
+</textarea>
+                                                                            <!---->
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="submit" class="btn btn-primary">Thêm mới</button>
+                                                                <button type="button" class="btn btn-secondary">Huỷ bỏ</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" class="tab-pane fade active show">
+                                        <div>
+                                            <div class="card">
+                                                <div class="card-body table-border-style">
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-4">
+                                                            <div class="mx-datepicker">
+                                                                <div class="mx-input-wrapper">
+                                                                    <input name="date" type="date" autocomplete="off" placeholder="" class="form-control custom-width">
+                                                                   
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="mx-datepicker">
+                                                                <div class="mx-input-wrapper">
+                                                                    <input name="date" type="date" autocomplete="off"  placeholder="" class="form-control custom-width">
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <button type="button" class="btn btn-warning float-left btn-block">Xem</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="table-responsive">
+                                                        @{ Html.RenderAction("_DebtsList", "Debts_Collections");}
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="debtCustomerModal" tabindex="-1" role="dialog" aria-labelledby="debtCustomerModalTitle" aria-hidden="true" class="modal fade bd-example-modal-lg">
+                                                <div role="document" class="modal-dialog modal-lg">
+                                                    <form>
+                                                        <div class="modal-content">
+                                                            <div class="modal-header bg-primary">
+                                                                <h5 id="debtCustomerModalTitle" class="modal-title white">Thu nợ</h5>
+                                                                <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                                                                    <span aria-hidden="true">×</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <form>
+                                                                            <div class="row">
+                                                                                <div class="col-md-4">
+                                                                                    <div class="form-group">
+                                                                                        <label>Đã thu lần trước</label>
+                                                                                        <div class="position-relative">
+                                                                                            <div class="input-group mb-3">
+                                                                                                <input type="text" disabled="disabled" class="form-control">
+                                                                                                <div class="input-group-append">
+                                                                                                    <span id="basic-addon2" class="input-group-text">₫</span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <label>Còn lại</label>
+                                                                                        <div class="position-relative">
+                                                                                            <div class="input-group mb-3">
+                                                                                                <input type="text" disabled="disabled" class="form-control">
+                                                                                                <div class="input-group-append">
+                                                                                                    <span id="basic-addon2" class="input-group-text">₫</span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-4">
+                                                                                    <div class="form-group">
+                                                                                        <label>Mã khách hàng</label>
+                                                                                        <div class="position-relative">
+                                                                                            <input type="text" placeholder="Mã khách hàng" disabled="disabled" class="form-control">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <label>Tên khách hàng</label>
+                                                                                        <div class="position-relative">
+                                                                                            <input type="text" placeholder="Tên khách hàng" disabled="disabled" class="form-control">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <label>SĐT khách hàng</label>
+                                                                                        <div class="position-relative">
+                                                                                            <input type="text" placeholder="Số điện thoại" disabled="disabled" class="form-control">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-4">
+                                                                                    <div class="form-group">
+                                                                                        <label>
+                                                                                            Nhập số tiền thu <span class="text-danger">*</span>
+                                                                                        </label>
+                                                                                        <div class="position-relative">
+                                                                                            <input type="text" aria-label="Recipient's username" aria-describedby="basic-addon2" class="form-control">
+                                                                                        </div>
+                                                                                        <!---->
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <label>Ghi chú</label>
+                                                                                        <div class="position-relative">
+<textarea id="first-name-icon" placeholder="Ghi chú" rows="6" class="form-control">
+</textarea>
+                                                                                        </div>
+                                                                                        <!---->
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-primary">Lưu</button>
+                                                                <button type="button" class="btn btn-secondary">Huỷ bỏ</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+<div id="dataContainer2">
+    @{ Html.RenderAction("_DebtsDetailsList", "Debts_Collections", new { order_id = 0 });}
+</div>
+<script>
+     var row;
+    $(document).ready(function () {
+        $('#example').DataTable({
+            pagingType: 'full_numbers',
+        });
+    });
+     function GetList_orderDetails(id, method) {
+            $.ajax({
+                url: '@Url.Action("_DebtsDetailsList", "Debts_Collections")',
+                data: {
+                    order_id: id,
+
+                }
+            }).done(function (result) {
+                $('#dataContainer2').html(result);
+                if (method ==1 ) {
+                    $('#detailModal.close').css('display', 'none');
+                    $('#detailModal').modal('show');
+                }
+                else if (method == 2) {
+                    $('#productSelectModal.close').css('display', 'none');
+                    $('#productSelectModal').modal('show');
+                }
+
+
+            }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(textStatus)
+                console.log(errorThrown)
+                alert("Something Went Wrong, Try Later");
+            });
+    }
+</script>
+
+
