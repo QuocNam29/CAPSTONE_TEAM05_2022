@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="CP25Team05Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CP25Team05Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -128,6 +128,7 @@
           <Property Name="created_at" Type="datetime2" Precision="0" />
           <Property Name="updated_at" Type="datetime2" Precision="0" />
           <Property Name="deleted_at" Type="datetime2" Precision="0" />
+          <Property Name="note" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="groups">
           <Key>
@@ -692,8 +693,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
             <End Role="sale_details" EntitySet="sale_details" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CP25Team05Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -748,7 +748,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
           <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
-          <Property Name="LockoutEndDateUtc" Type="DateTime" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
           <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
           <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
           <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
@@ -768,8 +768,8 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="price" Type="Int32" Nullable="false" />
           <Property Name="discount" Type="Int32" Nullable="false" />
           <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="created_at" Type="DateTime" />
-          <Property Name="updated_at" Type="DateTime" />
+          <Property Name="created_at" Type="DateTime" Precision="0" />
+          <Property Name="updated_at" Type="DateTime" Precision="0" />
           <NavigationProperty Name="product" Relationship="Self.carts_ibfk_1" FromRole="carts" ToRole="products" />
           <NavigationProperty Name="customer" Relationship="Self.carts_ibfk_2" FromRole="carts" ToRole="customers" />
         </EntityType>
@@ -783,9 +783,9 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="slug" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="status" Type="Int32" Nullable="false" />
-          <Property Name="created_at" Type="DateTime" />
-          <Property Name="updated_at" Type="DateTime" />
-          <Property Name="deleted_at" Type="DateTime" />
+          <Property Name="created_at" Type="DateTime" Precision="0" />
+          <Property Name="updated_at" Type="DateTime" Precision="0" />
+          <Property Name="deleted_at" Type="DateTime" Precision="0" />
           <NavigationProperty Name="user" Relationship="Self.FK_categories_users" FromRole="categories" ToRole="users" />
           <NavigationProperty Name="products" Relationship="Self.products_ibfk_4" FromRole="categories" ToRole="products" />
         </EntityType>
@@ -804,11 +804,11 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="account_number" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="bank" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="birthday" Type="DateTime" />
+          <Property Name="birthday" Type="DateTime" Precision="0" />
           <Property Name="price_level" Type="Int32" Nullable="false" />
-          <Property Name="created_at" Type="DateTime" />
-          <Property Name="updated_at" Type="DateTime" />
-          <Property Name="deleted_at" Type="DateTime" />
+          <Property Name="created_at" Type="DateTime" Precision="0" />
+          <Property Name="updated_at" Type="DateTime" Precision="0" />
+          <Property Name="deleted_at" Type="DateTime" Precision="0" />
           <Property Name="code" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="carts" Relationship="Self.carts_ibfk_2" FromRole="customers" ToRole="carts" />
           <NavigationProperty Name="sales" Relationship="Self.FK_sales_customers" FromRole="customers" ToRole="sales" />
@@ -822,11 +822,12 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="paid" Type="Int32" Nullable="false" />
           <Property Name="total" Type="Int32" Nullable="false" />
           <Property Name="created_by" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="created_at" Type="DateTime" />
-          <Property Name="updated_at" Type="DateTime" />
-          <Property Name="deleted_at" Type="DateTime" />
+          <Property Name="created_at" Type="DateTime" Precision="0" />
+          <Property Name="updated_at" Type="DateTime" Precision="0" />
+          <Property Name="deleted_at" Type="DateTime" Precision="0" />
           <NavigationProperty Name="sale" Relationship="Self.debts_ibfk_1" FromRole="debts" ToRole="sales" />
           <NavigationProperty Name="user" Relationship="Self.debts_ibfk_2" FromRole="debts" ToRole="users" />
+          <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="group">
           <Key>
@@ -838,9 +839,9 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="slug" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="status" Type="Int32" Nullable="false" />
-          <Property Name="created_at" Type="DateTime" />
-          <Property Name="updated_at" Type="DateTime" />
-          <Property Name="deleted_at" Type="DateTime" />
+          <Property Name="created_at" Type="DateTime" Precision="0" />
+          <Property Name="updated_at" Type="DateTime" Precision="0" />
+          <Property Name="deleted_at" Type="DateTime" Precision="0" />
           <NavigationProperty Name="user" Relationship="Self.FK_groups_users" FromRole="groups" ToRole="users" />
           <NavigationProperty Name="products" Relationship="Self.products_ibfk_5" FromRole="groups" ToRole="products" />
         </EntityType>
@@ -854,9 +855,9 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="price_import" Type="Int32" Nullable="false" />
           <Property Name="sold" Type="Int32" Nullable="false" />
           <Property Name="created_by" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="created_at" Type="DateTime" />
-          <Property Name="updated_at" Type="DateTime" />
-          <Property Name="deleted_at" Type="DateTime" />
+          <Property Name="created_at" Type="DateTime" Precision="0" />
+          <Property Name="updated_at" Type="DateTime" Precision="0" />
+          <Property Name="deleted_at" Type="DateTime" Precision="0" />
           <NavigationProperty Name="user" Relationship="Self.FK_import_inventory_users" FromRole="import_inventory" ToRole="users" />
           <NavigationProperty Name="revenues" Relationship="Self.FK_revenue_import_inventory" FromRole="import_inventory" ToRole="revenue" />
           <NavigationProperty Name="product" Relationship="Self.import_inventory_ibfk_2" FromRole="import_inventory" ToRole="products" />
@@ -871,9 +872,9 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="token" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="abilities" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="last_used_at" Type="DateTime" />
-          <Property Name="created_at" Type="DateTime" />
-          <Property Name="updated_at" Type="DateTime" />
+          <Property Name="last_used_at" Type="DateTime" Precision="0" />
+          <Property Name="created_at" Type="DateTime" Precision="0" />
+          <Property Name="updated_at" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="product">
           <Key>
@@ -891,9 +892,9 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="status" Type="Int32" Nullable="false" />
           <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="created_by" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="created_at" Type="DateTime" />
-          <Property Name="updated_at" Type="DateTime" />
-          <Property Name="deleted_at" Type="DateTime" />
+          <Property Name="created_at" Type="DateTime" Precision="0" />
+          <Property Name="updated_at" Type="DateTime" Precision="0" />
+          <Property Name="deleted_at" Type="DateTime" Precision="0" />
           <Property Name="name_group" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="name_category" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="carts" Relationship="Self.carts_ibfk_1" FromRole="products" ToRole="carts" />
@@ -925,9 +926,9 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="price" Type="Int32" Nullable="false" />
           <Property Name="discount" Type="Int32" Nullable="false" />
           <Property Name="sold" Type="Int32" Nullable="false" />
-          <Property Name="created_at" Type="DateTime" />
-          <Property Name="updated_at" Type="DateTime" />
-          <Property Name="deleted_at" Type="DateTime" />
+          <Property Name="created_at" Type="DateTime" Precision="0" />
+          <Property Name="updated_at" Type="DateTime" Precision="0" />
+          <Property Name="deleted_at" Type="DateTime" Precision="0" />
           <NavigationProperty Name="product" Relationship="Self.sale_details_ibfk_1" FromRole="sale_details" ToRole="products" />
           <NavigationProperty Name="revenues" Relationship="Self.FK_revenue_sale_details" FromRole="sale_details" ToRole="revenue" />
           <NavigationProperty Name="sale" Relationship="Self.sale_details_ibfk_2" FromRole="sale_details" ToRole="sales" />
@@ -946,9 +947,9 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="status" Type="Int32" Nullable="false" />
           <Property Name="created_by" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="created_at" Type="DateTime" />
-          <Property Name="updated_at" Type="DateTime" />
-          <Property Name="deleted_at" Type="DateTime" />
+          <Property Name="created_at" Type="DateTime" Precision="0" />
+          <Property Name="updated_at" Type="DateTime" Precision="0" />
+          <Property Name="deleted_at" Type="DateTime" Precision="0" />
           <Property Name="prepayment" Type="Int32" />
           <NavigationProperty Name="customer" Relationship="Self.FK_sales_customers" FromRole="sales" ToRole="customers" />
           <NavigationProperty Name="debts" Relationship="Self.debts_ibfk_1" FromRole="sales" ToRole="debts" />
@@ -976,9 +977,9 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="phone" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
           <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="remember_token" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="created_at" Type="DateTime" />
-          <Property Name="updated_at" Type="DateTime" />
-          <Property Name="deleted_at" Type="DateTime" />
+          <Property Name="created_at" Type="DateTime" Precision="0" />
+          <Property Name="updated_at" Type="DateTime" Precision="0" />
+          <Property Name="deleted_at" Type="DateTime" Precision="0" />
           <Property Name="asp_id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUser" Relationship="Self.FK_users_AspNetUsers" FromRole="users" ToRole="AspNetUsers" />
           <NavigationProperty Name="categories" Relationship="Self.FK_categories_users" FromRole="users" ToRole="categories" />
@@ -995,7 +996,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           </Key>
           <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="token" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="created_at" Type="DateTime" />
+          <Property Name="created_at" Type="DateTime" Precision="0" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
@@ -1467,6 +1468,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <EntitySetMapping Name="debts">
             <EntityTypeMapping TypeName="CP25Team05Model.debt">
               <MappingFragment StoreEntitySet="debts">
+                <ScalarProperty Name="note" ColumnName="note" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="sale_id" ColumnName="sale_id" />
                 <ScalarProperty Name="paid" ColumnName="paid" />

@@ -6,14 +6,23 @@
     int order_total = 0;
     double order_vat = 0;
     double order_discount = 0;
+    string MKH = "";
+    string Phone_KH = "";
+    string Name_KH = "";
+    int order_id = 0;
     if (TempData["order_code"] != null)
     {
         order_code = TempData["order_code"].ToString();
         order_total = int.Parse(TempData["order_total"].ToString());
         order_vat = double.Parse(TempData["order_vat"].ToString());
         order_discount = double.Parse(TempData["order_discount"].ToString());
+        MKH = Model.FirstOrDefault().sale.customer.code;
+        Phone_KH = Model.FirstOrDefault().sale.customer.phone;
+        Name_KH = Model.FirstOrDefault().sale.customer.name;
+        order_id = Model.FirstOrDefault().sale.id;
     }
     decimal debts_total = 0;
+
 }
 <div id="detailModal" tabindex="-1" aria-labelledby="detailModalTitle" class="modal fade bd-example-modal-lg" style="display: none;" aria-hidden="true">
     <div role="document" class="modal-dialog modal-lg">
@@ -153,3 +162,4 @@
 
     </div>
 </div>
+

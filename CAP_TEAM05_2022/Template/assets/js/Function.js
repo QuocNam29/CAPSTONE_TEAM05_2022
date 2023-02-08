@@ -736,7 +736,7 @@ function GetList_Inventory(date_start, date_end) {
         alert("Something Went Wrong, Try Later");
     });
 }
-//----------------------FILTER CUSTOMER------------------------------------------------
+//----------------------FILTER CusomerForm------------------------------------------------
 $('#URLCustomerList')
     .keypress(function () {
         URLCustomerList = $(this).val();
@@ -2089,4 +2089,89 @@ function GetList_UserList() {
         console.log(errorThrown)
         alert("Something Went Wrong, Try Later");
     });
+}
+//----------------------Add  DebtForm------------------------------------------------
+$('#URLDebtsList')
+    .keypress(function () {
+        URLDebtsList = $(this).val();
+    })
+    .keypress();
+console.log(URLDebtsList);
+$('.DebtsForm').submit(function (e) {
+    var form = $(this);
+    console.log("hihi")
+    // Check if form is valid then submit ajax
+    if (form[0].checkValidity()) {
+        e.preventDefault();
+        var url = form.attr('action');
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: form.serialize(),
+            success: function (data) {
+                // Hide bootstrap modal to prevent conflict
+                $('.modal').modal('hide');
+
+                if (data.status) {
+                    // Refresh table data
+                    GetList_Debt()
+                    sweetAlert
+                        ({
+                            title: "Thành công !",
+                            text: data.message,
+                            type: "success"
+                        })
+
+                    form[0].reset();
+                    form.removeClass('was-validated');
+                } else {
+                    swal({
+                        title: 'Lỗi !',
+                        text: data.message,
+                        type: 'error',
+
+                    }); // Show bootstrap modal again
+                }
+            }
+        });
+    }
+});
+function GetList_Debt() {
+    $.ajax({
+        url: URLDebtsList,
+        data: {
+        }
+    }).done(function (result) {
+        $('#dataContainer').html(result);
+        $('#example').DataTable();
+    }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        console.log(textStatus)
+        console.log(errorThrown)
+        alert("Something Went Wrong, Try Later");
+    });
+}
+$('#URLFindDebt')
+    .keypress(function () {
+        URLFindDebt = $(this).val();
+    })
+    .keypress();
+function DebtCollection(ele, id) {
+    row = $(ele).closest('tr');
+    $.ajax({
+        type: 'POST',
+        url: URLFindDebt,
+        data: { id: id },
+        success: function (response) {
+            $('#sale_id').val(response.id);
+            $('#order_total').val(response.total.toLocaleString());
+            $('#debts_total').val(response.prepayment.toLocaleString());
+            $('#Debt_conlai').val((response.total - response.prepayment).toLocaleString());
+            $('#MKH').val(response.code);
+            $('#Name_KH').val(response.note);
+            $('#phone_KH').val(response.created_by);
+          
+            $('#DebtCollectionModal .close').css('display', 'none');
+            $('#DebtCollectionModal').modal('show');
+        }
+    })
 }

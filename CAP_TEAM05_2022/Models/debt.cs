@@ -22,6 +22,7 @@ namespace CAP_TEAM05_2022.Models
         public Nullable<System.DateTime> created_at { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }
         public Nullable<System.DateTime> deleted_at { get; set; }
+        public string note { get; set; }
     
         public virtual sale sale { get; set; }
         public virtual user user { get; set; }
