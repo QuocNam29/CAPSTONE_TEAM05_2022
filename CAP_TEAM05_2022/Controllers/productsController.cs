@@ -181,8 +181,7 @@ namespace CAP_TEAM05_2022.Controllers
                 }
                 else
                 {
-                    string email = Session["user_email"].ToString();
-                    user user = db.users.Where(u => u.email == email).FirstOrDefault();
+                 
                     product product = db.products.Find(Product_id);
                     product.name = name_product;
                     product.unit = unit;
@@ -200,7 +199,7 @@ namespace CAP_TEAM05_2022.Controllers
             {
 
                 message = e.Message;
-                status = true;
+                status = false;
             }
 
             return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);

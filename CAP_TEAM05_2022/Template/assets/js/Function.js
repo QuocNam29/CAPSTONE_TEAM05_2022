@@ -2114,7 +2114,9 @@ $('.DebtsForm').submit(function (e) {
 
                 if (data.status) {
                     // Refresh table data
-                    GetList_Debt()
+                    var date_start = $("#debt_DateStart").val();
+                    var date_end = $("#debt_DateEnd").val();
+                    GetList_Debt(date_start, date_end);
                     sweetAlert
                         ({
                             title: "Thành công !",
@@ -2136,10 +2138,12 @@ $('.DebtsForm').submit(function (e) {
         });
     }
 });
-function GetList_Debt() {
+function GetList_Debt(date_start, date_end) {
     $.ajax({
         url: URLDebtsList,
         data: {
+            date_Start: date_start,
+            date_End: date_end,
         }
     }).done(function (result) {
         $('#dataContainer').html(result);
@@ -2175,3 +2179,37 @@ function DebtCollection(ele, id) {
         }
     })
 }
+//----------------------------Filter Debt----------------------------------
+$("#debt_DateStart").change(function () {
+    var date_start = $("#debt_DateStart").val();
+    var date_end = $("#debt_DateEnd").val();
+    if (date_start <= date_end) {
+        GetList_Debt(date_start, date_end);
+    } else {
+        sweetAlert
+            ({
+                title: "Lỗi",
+                text: "Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc !",
+                type: "error",
+                allowOutsideClick: true,
+
+            })
+    }
+
+});
+$("#debt_DateEnd").change(function () {
+    var date_start = $("#debt_DateStart").val();
+    var date_end = $("#debt_DateEnd").val();
+    if (date_start <= date_end) {
+        GetList_Debt(date_start, date_end);
+    } else {
+        sweetAlert
+            ({
+                title: "Lỗi",
+                text: "Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc !",
+                type: "error",
+                allowOutsideClick: true,
+
+            })
+    }
+});

@@ -182,7 +182,6 @@ namespace CAP_TEAM05_2022.Controllers
                     user.updated_at = DateTime.Now;
                     db.Entry(user).State = EntityState.Modified;
                     aspNetUser.PhoneNumber = phone;
-                    aspNetUser.UserName = fullName;
                     aspNetUser.AccessFailedCount = int.Parse(role_id);
                     db.SaveChanges();
                     message = "Cập nhật thông tin nhân viên thành công !";
@@ -204,7 +203,6 @@ namespace CAP_TEAM05_2022.Controllers
                         user.updated_at = DateTime.Now;
                         db.Entry(user).State = EntityState.Modified;
                         aspNetUser.PhoneNumber = phone;
-                        aspNetUser.UserName = fullName;
                         aspNetUser.AccessFailedCount = int.Parse(role_id);
                         db.SaveChanges();
                         message = "Cập nhật thông tin nhân viên thành công !";
