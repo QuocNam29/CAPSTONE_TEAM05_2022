@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CAP_TEAM05_2022.Helper;
+using CAP_TEAM05_2022.Models;
+using Microsoft.AspNet.Identity;
+using System;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using CAP_TEAM05_2022.Helper;
-using CAP_TEAM05_2022.Models;
-using Microsoft.AspNet.Identity;
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -21,20 +18,20 @@ namespace CAP_TEAM05_2022.Controllers
         // GET: sales
         public ActionResult Index()
         {
-            
+
             return View();
         }
         public ActionResult _OrderDetailsList(int order_id)
         {
             var sale = db.sales.Find(order_id);
-            if (sale!= null)
+            if (sale != null)
             {
                 TempData["order_code"] = sale.code;
                 TempData["order_vat"] = sale.vat;
                 TempData["order_discount"] = sale.discount;
                 TempData["order_total"] = sale.total;
             }
-           
+
             var OrderDetailsList = db.sale_details.Where(o => o.sale_id == order_id);
             return PartialView(OrderDetailsList.ToList());
         }
@@ -68,37 +65,37 @@ namespace CAP_TEAM05_2022.Controllers
         {
             if (date_Start == null)
             {
-                date_Start =(DateTime.Now);
+                date_Start = (DateTime.Now);
             }
             if (date_End == null)
             {
                 date_End = (DateTime.Now);
             }
-            var sales = db.sales.Include(s => s.customer).Include(s => s.user).Where(s => s.created_at >= date_Start && s.created_at <= date_End 
-                                                    || s.created_at.Value.Day == date_Start.Value.Day 
-                                                    && s.created_at.Value.Month == date_Start.Value.Month 
+            var sales = db.sales.Include(s => s.customer).Include(s => s.user).Where(s => s.created_at >= date_Start && s.created_at <= date_End
+                                                    || s.created_at.Value.Day == date_Start.Value.Day
+                                                    && s.created_at.Value.Month == date_Start.Value.Month
                                                     && s.created_at.Value.Year == date_Start.Value.Year
                                                     || s.created_at.Value.Day == date_End.Value.Day
                                                     && s.created_at.Value.Month == date_End.Value.Month
-                                                    &&s.created_at.Value.Year == date_End.Value.Year);
-          
+                                                    && s.created_at.Value.Year == date_End.Value.Year);
+
             return PartialView(sales.OrderByDescending(c => c.id).ToList());
         }
         public ActionResult _RevenueList_Month(DateTime? date_Start, DateTime? date_End)
         {
             if (date_Start == null)
             {
-                date_Start =DateTime.Now.AddDays((-DateTime.Now.Day) + 1);
+                date_Start = DateTime.Now.AddDays((-DateTime.Now.Day) + 1);
             }
             if (date_End == null)
             {
-                date_End =DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day));
+                date_End = DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day));
             }
             var sales = db.sales.Include(s => s.customer).Include(s => s.user);
-            
-                sales = sales.Where(s => s.created_at >= date_Start && s.created_at <= date_End
-                                                    ||s.created_at.Value.Month == date_Start.Value.Month && s.created_at.Value.Year == date_Start.Value.Year 
-                                                    || s.created_at.Value.Month == date_End.Value.Month && s.created_at.Value.Year == date_End.Value.Year);
+
+            sales = sales.Where(s => s.created_at >= date_Start && s.created_at <= date_End
+                                                || s.created_at.Value.Month == date_Start.Value.Month && s.created_at.Value.Year == date_Start.Value.Year
+                                                || s.created_at.Value.Month == date_End.Value.Month && s.created_at.Value.Year == date_End.Value.Year);
 
             return PartialView(sales.OrderByDescending(c => c.id).ToList());
         }
@@ -109,7 +106,7 @@ namespace CAP_TEAM05_2022.Controllers
             bool status = true;
             try
             {
-                
+
                 sale sale = new sale();
                 sale.code = "MDH" + CodeRandom.RandomCode();
                 sale.customer_id = createSale.customer_id;
@@ -150,6 +147,12 @@ namespace CAP_TEAM05_2022.Controllers
 
                         if (temp_quatity <= (inventory.quantity - inventory.sold))
                         {
+                            revenue revenue = new revenue();
+                            revenue.sale_details_id = sale_Details.id;
+                            revenue.inventory_id = inventory.id;
+                            revenue.Price = item.price / item.quantity;
+                            revenue.quantity = temp_quatity;
+                            db.revenues.Add(revenue);
                             inventory.sold += temp_quatity;
                             db.Entry(inventory).State = EntityState.Modified;
                             temp_quatity = 0;
@@ -163,26 +166,34 @@ namespace CAP_TEAM05_2022.Controllers
                             {
                                 inventory.sold += temp_quatity;
                                 db.Entry(inventory).State = EntityState.Modified;
+                                revenue revenue = new revenue();
+                                revenue.sale_details_id = sale_Details.id;
+                                revenue.inventory_id = inventory.id;
+                                revenue.Price = item.price / item.quantity;
+                                revenue.quantity = temp_inventory;
+                                db.revenues.Add(revenue);
                                 temp_quatity = 0;
                             }
                             else
                             {
                                 inventory.sold += temp_inventory;
                                 db.Entry(inventory).State = EntityState.Modified;
+                                revenue revenue = new revenue();
+                                revenue.sale_details_id = sale_Details.id;
+                                revenue.inventory_id = inventory.id;
+                                revenue.Price = item.price / item.quantity;
+                                revenue.quantity = temp_inventory;
+                                db.revenues.Add(revenue);
                                 temp_quatity -= temp_inventory;
                             }
                             db.SaveChanges();
                         }
-                        revenue revenue = new revenue();
-                        revenue.sale_details_id = sale_Details.id;
-                        revenue.inventory_id = inventory.id;
-                        revenue.Price = item.price / item.quantity;
-                        revenue.quantity = item.quantity;
-                        db.revenues.Add(revenue);
-                        cart cart1 = db.carts.Find(item.id);
-                        db.carts.Remove(cart1);
-                        db.SaveChanges();
-                    }     
+                       
+                        
+                    }
+                    cart cart1 = db.carts.Find(item.id);
+                    db.carts.Remove(cart1);
+                    db.SaveChanges();
                 }
                 if (createSale.method > 0)
                 {
@@ -196,20 +207,28 @@ namespace CAP_TEAM05_2022.Controllers
                     db.SaveChanges();
                 }
                 message = "Bạn có muốn in hóa đơn ?";
-                return Json(new { status, message, sale_id = sale.id,
-                sale_code = sale.code, sale_method = sale.method,
-                sale_total = sale.total, sale_discount = sale.discount,
-                sale_vat = sale.vat, sale_create = sale.created_at}, JsonRequestBehavior.AllowGet);
+                return Json(new
+                {
+                    status,
+                    message,
+                    sale_id = sale.id,
+                    sale_code = sale.code,
+                    sale_method = sale.method,
+                    sale_total = sale.total,
+                    sale_discount = sale.discount,
+                    sale_vat = sale.vat,
+                    sale_create = sale.created_at
+                }, JsonRequestBehavior.AllowGet);
 
             }
             catch (Exception e)
             {
                 message = e.Message;
-                 status = false;
+                status = false;
             }
-           
-          
-            return Json(new {  status,  message }, JsonRequestBehavior.AllowGet);
+
+
+            return Json(new { status, message }, JsonRequestBehavior.AllowGet);
         }
 
 

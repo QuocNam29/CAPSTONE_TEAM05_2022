@@ -156,10 +156,10 @@
                                                                             @item.sale_details.product.unit
                                                                         </td>
                                                                         <td class="text-center">
-                                                                            @item.sale_details.product.quantity
+                                                                            @item.import_inventory.quantity
                                                                         </td>
                                                                         <td class="text-center">
-                                                                            @(item.sale_details.product.purchase_price.ToString("N0") ) đ
+                                                                            @(item.import_inventory.price_import.ToString("N0") ) đ
                                                                         </td>
                                                                         @* <td class="text-center">
                                                                                 @(item.sale_details.product.purchase_price * item.sale_details.product.quantity)
@@ -176,7 +176,7 @@
                                                                         @if ((item.Price - item.sale_details.product.purchase_price) * item.quantity > 0)
                                                                         {
                                                                             <td class="text-right text-success">
-                                                                                + @String.Format("{0:0,00}", (((item.Price - item.sale_details.product.purchase_price) * item.quantity))) đ
+                                                                                + @String.Format("{0:0,00}", (((item.Price - item.import_inventory.price_import) * item.quantity))) đ
                                                                             </td>
                                                                         }
                                                                         else

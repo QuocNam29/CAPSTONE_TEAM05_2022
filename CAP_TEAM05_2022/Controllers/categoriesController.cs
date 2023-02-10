@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CAP_TEAM05_2022.Helper;
+using CAP_TEAM05_2022.Models;
+using Microsoft.AspNet.Identity;
+using System;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using CAP_TEAM05_2022.Helper;
-using CAP_TEAM05_2022.Models;
-using Microsoft.AspNet.Identity;
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -43,7 +40,7 @@ namespace CAP_TEAM05_2022.Controllers
                 }
                 else
                 {
-                    
+
                     category category = new category();
                     category.name = name_category;
                     category.status = 1;
