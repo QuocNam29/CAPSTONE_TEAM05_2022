@@ -144,49 +144,50 @@
                                                                     <th class="text-center">Đơn giá bán</th>
                                                                     @* <th class="text-center">Tổng Giá bán</th>*@
                                                                     <th class="text-center">Lợi nhuận</th>
+                                                                    <th class="text-center">Ngày giao dịch</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 @foreach (var item in Model)
                                                                 {
-                                                                    <tr>
-                                                                        <td>@item.sale_details.product.code</td>
-                                                                        <td>@item.sale_details.product.name</td>
-                                                                        <td class="text-center">
-                                                                            @item.sale_details.product.unit
+                                                                <tr>
+                                                                    <td>@item.sale_details.product.code</td>
+                                                                    <td>@item.sale_details.product.name</td>
+                                                                    <td class="text-center">
+                                                                        @item.sale_details.product.unit
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        @item.import_inventory.quantity
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        @(item.import_inventory.price_import.ToString("N0") ) đ
+                                                                    </td>
+                                                                    @* <td class="text-center">
+            @(item.sale_details.product.purchase_price * item.sale_details.product.quantity)
+        </td>*@
+                                                                    <td class="text-center">
+                                                                        @item.quantity
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        @String.Format("{0:0,00}", item.Price) đ
+                                                                    </td>
+                                                                 
+                                                                    @if ((item.Price - item.import_inventory.price_import) * item.quantity > 0)
+                                                                    {
+                                                                        <td class="text-right text-success">
+                                                                            + @String.Format("{0:0,00}", (((item.Price - item.import_inventory.price_import) * item.quantity))) đ
                                                                         </td>
-                                                                        <td class="text-center">
-                                                                            @item.import_inventory.quantity
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td class="text-right text-danger">
+                                                                            @String.Format("{0:0,00}", (((item.Price - item.import_inventory.price_import) * item.quantity))) đ
                                                                         </td>
-                                                                        <td class="text-center">
-                                                                            @(item.import_inventory.price_import.ToString("N0") ) đ
-                                                                        </td>
-                                                                        @* <td class="text-center">
-                                                                                @(item.sale_details.product.purchase_price * item.sale_details.product.quantity)
-                                                                            </td>*@
-                                                                        <td class="text-center">
-                                                                            @item.quantity
-                                                                        </td>
-                                                                        <td class="text-center">
-                                                                            @String.Format("{0:0,00}", item.Price) đ
-                                                                        </td>
-                                                                        @*<td class="text-center">
-                                                                                @(item.Price * item.quantity)
-                                                                            </td>*@
-                                                                        @if ((item.Price - item.sale_details.product.purchase_price) * item.quantity > 0)
-                                                                        {
-                                                                            <td class="text-right text-success">
-                                                                                + @String.Format("{0:0,00}", (((item.Price - item.import_inventory.price_import) * item.quantity))) đ
-                                                                            </td>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <td class="text-right text-danger">
-                                                                                @String.Format("{0:0,00}", (((item.Price - item.sale_details.product.purchase_price) * item.quantity))) đ
-                                                                            </td>
-                                                                        }
-
-                                                                    </tr>
+                                                                    }
+                                                                <td class="text-center">
+                                                                    @String.Format("{0:HH:mm - dd/MM/yyy}", item.sale_details.sale.created_at)
+                                                                </td>
+                                                                </tr>
                                                                 }
 
 

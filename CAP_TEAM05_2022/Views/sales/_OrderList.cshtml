@@ -51,7 +51,7 @@
                     @item.note
                 </td>
                 <td class="text-center">
-                    @String.Format("{0:HH:ss - dd/MM/yyy}", item.created_at)
+                    @String.Format("{0:HH:mm - dd/MM/yyy}", item.created_at)
                 </td>
                 <td>
                     <button title="Xem chi tiết" class="btn btn-info" onclick="GetList_orderDetails('@item.id', 1)">

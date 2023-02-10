@@ -126,7 +126,7 @@
                                         <td class="text-center">@item.product.purchase_price.ToString("N0")</td>
                                         <td class="text-center">@item.quantity</td>
                                         <td class="text-center">@((item.price_import * (item.quantity)).ToString("N0")) </td>
-                                        <td class="text-center"> @String.Format("{0:HH:ss - dd/MM/yyy}", item.created_at)</td>
+                                        <td class="text-center"> @String.Format("{0:HH:mm - dd/MM/yyy}", item.created_at)</td>
 
                                     </tr>
                                         total_import += (item.price_import * (item.quantity));
