@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace CAP_TEAM05_2022.Controllers
 {
-    /* [LoginVerification]*/
+    [CustomAuthorize(Roles = "Quản trị viên, Nhân viên")]
 
     public class salesController : Controller
     {

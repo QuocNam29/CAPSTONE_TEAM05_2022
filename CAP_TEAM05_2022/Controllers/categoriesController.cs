@@ -9,7 +9,8 @@ using System.Web.Mvc;
 
 namespace CAP_TEAM05_2022.Controllers
 {
-    /* [LoginVerification]*/
+    [CustomAuthorize(Roles = "Quản trị viên, Nhân viên")]
+
     public class categoriesController : Controller
     {
         private CP25Team05Entities db = new CP25Team05Entities();
