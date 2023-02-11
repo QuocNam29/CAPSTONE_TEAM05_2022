@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="CP25Team05Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="CP25Team05Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -75,7 +75,6 @@
           <Property Name="customer_id" Type="int" Nullable="false" />
           <Property Name="quantity" Type="int" Nullable="false" />
           <Property Name="price" Type="int" Nullable="false" />
-          <Property Name="discount" Type="int" Nullable="false" />
           <Property Name="note" Type="varchar(max)" />
           <Property Name="created_at" Type="datetime2" Precision="0" />
           <Property Name="updated_at" Type="datetime2" Precision="0" />
@@ -223,7 +222,6 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="sale_id" Type="int" Nullable="false" />
           <Property Name="product_id" Type="int" Nullable="false" />
           <Property Name="price" Type="int" Nullable="false" />
-          <Property Name="discount" Type="int" Nullable="false" />
           <Property Name="sold" Type="int" Nullable="false" />
           <Property Name="created_at" Type="date" />
           <Property Name="updated_at" Type="date" />
@@ -238,8 +236,6 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="customer_id" Type="int" Nullable="false" />
           <Property Name="method" Type="int" Nullable="false" />
           <Property Name="total" Type="int" Nullable="false" />
-          <Property Name="discount" Type="int" Nullable="false" />
-          <Property Name="vat" Type="int" Nullable="false" />
           <Property Name="note" Type="nvarchar(max)" />
           <Property Name="status" Type="int" Nullable="false" />
           <Property Name="created_by" Type="nvarchar" MaxLength="128" Nullable="false" />
@@ -693,7 +689,8 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
             <End Role="sale_details" EntitySet="sale_details" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CP25Team05Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -766,7 +763,6 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="customer_id" Type="Int32" Nullable="false" />
           <Property Name="quantity" Type="Int32" Nullable="false" />
           <Property Name="price" Type="Int32" Nullable="false" />
-          <Property Name="discount" Type="Int32" Nullable="false" />
           <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="created_at" Type="DateTime" Precision="0" />
           <Property Name="updated_at" Type="DateTime" Precision="0" />
@@ -825,9 +821,9 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="created_at" Type="DateTime" Precision="0" />
           <Property Name="updated_at" Type="DateTime" Precision="0" />
           <Property Name="deleted_at" Type="DateTime" Precision="0" />
+          <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="sale" Relationship="Self.debts_ibfk_1" FromRole="debts" ToRole="sales" />
           <NavigationProperty Name="user" Relationship="Self.debts_ibfk_2" FromRole="debts" ToRole="users" />
-          <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="group">
           <Key>
@@ -924,7 +920,6 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="sale_id" Type="Int32" Nullable="false" />
           <Property Name="product_id" Type="Int32" Nullable="false" />
           <Property Name="price" Type="Int32" Nullable="false" />
-          <Property Name="discount" Type="Int32" Nullable="false" />
           <Property Name="sold" Type="Int32" Nullable="false" />
           <Property Name="created_at" Type="DateTime" Precision="0" />
           <Property Name="updated_at" Type="DateTime" Precision="0" />
@@ -942,8 +937,6 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="customer_id" Type="Int32" Nullable="false" />
           <Property Name="method" Type="Int32" Nullable="false" />
           <Property Name="total" Type="Int32" Nullable="false" />
-          <Property Name="discount" Type="Int32" Nullable="false" />
-          <Property Name="vat" Type="Int32" Nullable="false" />
           <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="status" Type="Int32" Nullable="false" />
           <Property Name="created_by" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
@@ -1350,7 +1343,48 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(CP25Team05Model.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(CP25Team05Model.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
         </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1420,7 +1454,6 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
                 <ScalarProperty Name="customer_id" ColumnName="customer_id" />
                 <ScalarProperty Name="quantity" ColumnName="quantity" />
                 <ScalarProperty Name="price" ColumnName="price" />
-                <ScalarProperty Name="discount" ColumnName="discount" />
                 <ScalarProperty Name="note" ColumnName="note" />
                 <ScalarProperty Name="created_at" ColumnName="created_at" />
                 <ScalarProperty Name="updated_at" ColumnName="updated_at" />
@@ -1468,7 +1501,6 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <EntitySetMapping Name="debts">
             <EntityTypeMapping TypeName="CP25Team05Model.debt">
               <MappingFragment StoreEntitySet="debts">
-                <ScalarProperty Name="note" ColumnName="note" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="sale_id" ColumnName="sale_id" />
                 <ScalarProperty Name="paid" ColumnName="paid" />
@@ -1477,6 +1509,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
                 <ScalarProperty Name="created_at" ColumnName="created_at" />
                 <ScalarProperty Name="updated_at" ColumnName="updated_at" />
                 <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+                <ScalarProperty Name="note" ColumnName="note" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1566,7 +1599,6 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
                 <ScalarProperty Name="sale_id" ColumnName="sale_id" />
                 <ScalarProperty Name="product_id" ColumnName="product_id" />
                 <ScalarProperty Name="price" ColumnName="price" />
-                <ScalarProperty Name="discount" ColumnName="discount" />
                 <ScalarProperty Name="sold" ColumnName="sold" />
                 <ScalarProperty Name="created_at" ColumnName="created_at" />
                 <ScalarProperty Name="updated_at" ColumnName="updated_at" />
@@ -1582,8 +1614,6 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
                 <ScalarProperty Name="customer_id" ColumnName="customer_id" />
                 <ScalarProperty Name="method" ColumnName="method" />
                 <ScalarProperty Name="total" ColumnName="total" />
-                <ScalarProperty Name="discount" ColumnName="discount" />
-                <ScalarProperty Name="vat" ColumnName="vat" />
                 <ScalarProperty Name="note" ColumnName="note" />
                 <ScalarProperty Name="status" ColumnName="status" />
                 <ScalarProperty Name="created_by" ColumnName="created_by" />
@@ -1639,6 +1669,30 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="CP25Team05Model.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="CP25Team05Model.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="CP25Team05Model.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="CP25Team05Model.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CP25Team05Model.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="CP25Team05Model.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CP25Team05Model.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="CP25Team05Model.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="CP25Team05Model.Store.sp_upgraddiagrams" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

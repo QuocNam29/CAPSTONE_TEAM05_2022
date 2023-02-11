@@ -44,8 +44,6 @@ namespace CAP_TEAM05_2022.Controllers
             if (sale != null)
             {
                 TempData["order_code"] = sale.code;
-                TempData["order_vat"] = sale.vat;
-                TempData["order_discount"] = sale.discount;
                 TempData["order_total"] = sale.total;
             }
 

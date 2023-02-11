@@ -840,36 +840,30 @@ namespace CAP_TEAM05_2022.Controllers
             Sheet.DefaultColWidth = 20;
             Sheet.Cells.Style.WrapText = true;
             Sheet.Cells["A1"].Value = "Mã hóa đơn";
-            Sheet.Cells["B1"].Value = "Tên Tổng hóa đơn";
-            Sheet.Cells["C1"].Value = "VAT(%)";
-            Sheet.Cells["D1"].Value = "Chiết khấu(%)";
-            Sheet.Cells["E1"].Value = "Thành tiền";
-            Sheet.Cells["F1"].Value = "Trả trước(nếu có)";
-            Sheet.Cells["G1"].Value = "Còn nợ";
-            Sheet.Cells["H1"].Value = "Trạng thái";
-            Sheet.Cells["I1"].Value = "Ngày giao dịch";
+            Sheet.Cells["B1"].Value = "Tổng hóa đơn";
+            Sheet.Cells["C1"].Value = "Trả trước(nếu có)";
+            Sheet.Cells["D1"].Value = "Còn nợ";
+            Sheet.Cells["E1"].Value = "Trạng thái";
+            Sheet.Cells["F1"].Value = "Ngày giao dịch";
 
             int row = 2;// dòng bắt đầu ghi dữ liệu
             foreach (var item in sales)
             {
                
                     Sheet.Cells[string.Format("A{0}", row)].Value = item.code;
-                    Sheet.Cells[string.Format("B{0}", row)].Value = item.total / (1 + double.Parse(item.vat.ToString()) / 100 - double.Parse(item.discount.ToString()) / 100);
-                    Sheet.Cells[string.Format("C{0}", row)].Value = item.vat;
-                    Sheet.Cells[string.Format("D{0}", row)].Value = item.discount;
-                    Sheet.Cells[string.Format("E{0}", row)].Value = item.total;
-                    Sheet.Cells[string.Format("F{0}", row)].Value = item.prepayment;
-                    Sheet.Cells[string.Format("G{0}", row)].Value = item.total - item.prepayment;
+                    Sheet.Cells[string.Format("B{0}", row)].Value = item.total;
+                    Sheet.Cells[string.Format("C{0}", row)].Value = item.prepayment;
+                    Sheet.Cells[string.Format("D{0}", row)].Value = item.total - item.prepayment;
                 if (item.method == 1)
                 {
-                    Sheet.Cells[string.Format("H{0}", row)].Value = "Đã thanh toán";
+                    Sheet.Cells[string.Format("E{0}", row)].Value = "Đã thanh toán";
                 }
                 else if (item.method == 2)
                 {
-                    Sheet.Cells[string.Format("H{0}", row)].Value = "Ghi nợ";
+                    Sheet.Cells[string.Format("E{0}", row)].Value = "Ghi nợ";
                 }
                    
-                    Sheet.Cells[string.Format("I{0}", row)].Value = String.Format("{0:dd-MM-yyyy HH:mm:yy}", item.created_at); ;
+                    Sheet.Cells[string.Format("F{0}", row)].Value = String.Format("{0:dd-MM-yyyy HH:mm:yy}", item.created_at); ;
                     row++;
                 
             }
@@ -905,36 +899,30 @@ namespace CAP_TEAM05_2022.Controllers
             Sheet.DefaultColWidth = 20;
             Sheet.Cells.Style.WrapText = true;
             Sheet.Cells["A1"].Value = "Mã hóa đơn";
-            Sheet.Cells["B1"].Value = "Tên Tổng hóa đơn";
-            Sheet.Cells["C1"].Value = "VAT(%)";
-            Sheet.Cells["D1"].Value = "Chiết khấu(%)";
-            Sheet.Cells["E1"].Value = "Thành tiền";
-            Sheet.Cells["F1"].Value = "Trả trước(nếu có)";
-            Sheet.Cells["G1"].Value = "Còn nợ";
-            Sheet.Cells["H1"].Value = "Trạng thái";
-            Sheet.Cells["I1"].Value = "Ngày giao dịch";
+            Sheet.Cells["B1"].Value = "Tổng hóa đơn";
+            Sheet.Cells["C1"].Value = "Trả trước(nếu có)";
+            Sheet.Cells["D1"].Value = "Còn nợ";
+            Sheet.Cells["E1"].Value = "Trạng thái";
+            Sheet.Cells["F1"].Value = "Ngày giao dịch";
 
             int row = 2;// dòng bắt đầu ghi dữ liệu
             foreach (var item in sales)
             {
                
-                    Sheet.Cells[string.Format("A{0}", row)].Value = item.code;
-                    Sheet.Cells[string.Format("B{0}", row)].Value = item.total / (1 + double.Parse(item.vat.ToString()) / 100 - double.Parse(item.discount.ToString()) / 100);
-                    Sheet.Cells[string.Format("C{0}", row)].Value = item.vat;
-                    Sheet.Cells[string.Format("D{0}", row)].Value = item.discount;
-                    Sheet.Cells[string.Format("E{0}", row)].Value = item.total;
-                    Sheet.Cells[string.Format("F{0}", row)].Value = item.prepayment;
-                    Sheet.Cells[string.Format("G{0}", row)].Value = item.total - item.prepayment;
+                    Sheet.Cells[string.Format("A{0}", row)].Value = item.code;                  
+                    Sheet.Cells[string.Format("B{0}", row)].Value = item.total;
+                    Sheet.Cells[string.Format("C{0}", row)].Value = item.prepayment;
+                    Sheet.Cells[string.Format("D{0}", row)].Value = item.total - item.prepayment;
                 if (item.method == 1)
                 {
-                    Sheet.Cells[string.Format("H{0}", row)].Value = "Đã thanh toán";
+                    Sheet.Cells[string.Format("E{0}", row)].Value = "Đã thanh toán";
                 }
                 else if (item.method == 2)
                 {
-                    Sheet.Cells[string.Format("H{0}", row)].Value = "Ghi nợ";
+                    Sheet.Cells[string.Format("E{0}", row)].Value = "Ghi nợ";
                 }
                    
-                    Sheet.Cells[string.Format("I{0}", row)].Value = String.Format("{0:dd-MM-yyyy HH:mm:yy}",item.created_at);
+                    Sheet.Cells[string.Format("F{0}", row)].Value = String.Format("{0:dd-MM-yyyy HH:mm:yy}",item.created_at);
                     row++;
                 
             }

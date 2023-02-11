@@ -26,8 +26,6 @@ namespace CAP_TEAM05_2022.Models
         public int customer_id { get; set; }
         public int method { get; set; }
         public int total { get; set; }
-        public int discount { get; set; }
-        public int vat { get; set; }
         public string note { get; set; }
         public int status { get; set; }
         public string created_by { get; set; }

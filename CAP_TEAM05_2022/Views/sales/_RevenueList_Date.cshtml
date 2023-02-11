@@ -15,28 +15,11 @@
             </th>
             <th class="text-center">
                 <h5 class="custom-foot">
-                    @Model.Where(p => p.method == 1).Sum(t => (t.total/((1 + double.Parse(t.vat.ToString())/100 - double.Parse(t.discount.ToString()) / 100)))).ToString("N0")
-                    ₫
-                </h5>
-            </th>
-            <th class="text-center">
-                <h5 class="custom-foot">
-                    @Model.Where(p => p.method == 1).Sum(t => (t.total / (1 + double.Parse(t.vat.ToString())/100 - double.Parse(t.discount.ToString())/100))*(double.Parse(t.vat.ToString()) / 100)).ToString("N0")
-                    ₫
-                </h5>
-            </th>
-            <th class="text-center">
-                <h5 class="custom-foot">
-                    @Model.Where(p => p.method == 1).Sum(t => (t.total / (1 + double.Parse(t.vat.ToString()) / 100 - double.Parse(t.discount.ToString()) / 100)) * (double.Parse(t.discount.ToString()) / 100)).ToString("N0")
-                    ₫
-                </h5>
-            </th>
-            <th class="text-center">
-                <h5 class="custom-foot">
                     @Model.Where(p => p.method == 1).Sum(t => t.total).ToString("N0")
                     ₫
                 </h5>
             </th>
+
             <th colspan="2">
                 <h5 class="totalPaid">@Model.Where(p => p.method == 1).Sum(t => t.total).ToString("N0") ₫</h5>
             </th>
@@ -46,9 +29,6 @@
             <th class="text-center">STT</th>
             <th>Mã hoá đơn</th>
             <th class="text-center">Tổng hoá đơn</th>
-            <th class="text-center">VAT</th>
-            <th class="text-center">Chiết khấu</th>
-            <th class="text-center">Thành tiền</th>
             <th class="text-center">Trạng thái</th>
             <th class="text-center">Ngày giao dịch</th>
         </tr>
@@ -62,9 +42,7 @@
                     @no
                 </td>
                 <td>@item.code</td>
-                <td class="text-center">@((item.total/(1 + double.Parse(item.vat.ToString())/100 - double.Parse(item.discount.ToString()) / 100)).ToString("N0"))</td>
-                <td class="text-center">@item.vat%</td>
-                <td class="text-center">@item.discount%</td>
+                
                 <td class="text-center">
                     @item.total.ToString("N0")
                 </td>
@@ -88,24 +66,7 @@
                     Ghi nợ (@Model.Where(p => p.method == 2).Count())
                 </h5>
             </th>
-            <th class="text-center">
-                <h5 class="custom-foot">
-                    @Model.Where(p => p.method == 2).Sum(t => (t.total / ((1 + double.Parse(t.vat.ToString()) / 100 - double.Parse(t.discount.ToString()) / 100)))).ToString("N0")
-                    ₫
-                </h5>
-            </th>
-            <th class="text-center">
-                <h5 class="custom-foot">
-                    @Model.Where(p => p.method == 2).Sum(t => (t.total / (1 + double.Parse(t.vat.ToString()) / 100 - double.Parse(t.discount.ToString()) / 100)) * (double.Parse(t.vat.ToString()) / 100)).ToString("N0")
-                    ₫
-                </h5>
-            </th>
-            <th class="text-center">
-                <h5 class="custom-foot">
-                    @Model.Where(p => p.method == 2).Sum(t => (t.total / (1 + double.Parse(t.vat.ToString()) / 100 - double.Parse(t.discount.ToString()) / 100)) * (double.Parse(t.discount.ToString()) / 100)).ToString("N0")
-                    ₫
-                </h5>
-            </th>
+           
             <th class="text-center">
                 <h5 class="custom-foot">
                     @Model.Where(p => p.method == 2).Sum(t => t.total).ToString("N0")
@@ -127,10 +88,7 @@
         <tr>
             <th class="text-center">STT</th>
             <th>Mã hoá đơn</th>
-            <th class="text-center">Tổng hoá đơn</th>
-            <th class="text-center">VAT</th>
-            <th class="text-center">Chiết khấu</th>
-            <th class="text-center">Thành tiền</th>
+            <th class="text-center">Tổng hoá đơn</th>          
             <th class="text-center">Trạng thái</th>
             <th class="text-center">Ngày giao dịch</th>
         </tr>
@@ -144,9 +102,6 @@
                @no1
             </td>
             <td>@item.code</td>
-            <td class="text-center">@((item.total/(1 + double.Parse(item.vat.ToString())/100 - double.Parse(item.discount.ToString()) / 100)).ToString("N0"))</td>
-            <td class="text-center">@item.vat%</td>
-            <td class="text-center">@item.discount%</td>
             <td class="text-center">
                 @item.total.ToString("N0")
             </td>

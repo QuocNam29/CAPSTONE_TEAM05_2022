@@ -1087,7 +1087,6 @@ function Create_Cart() {
     cart_create.customer_id = $('#customer_id').val();
     cart_create.quantity = $('#product_quantity').val();
     cart_create.price = Number($('#sum_price').val().replace(/\,/g, '').replace(/\./g, ''));
-    cart_create.discount = $('#product_discount').val();
     cart_create.note = $('#cart_note').val();   
     console.log(Number($('#sum_price').val().replace(/\,/g, '').replace(/\./g, '')));
         $.ajax({
@@ -1142,13 +1141,10 @@ function GetList_Cart(customer_id) {
     });
 }
 $("#product_quantity").change(function () {
-    var sum_price = Number($('#product_price').val().replace(/\,/g, '').replace(/\./g, '')) * Number($('#product_quantity').val()) * (1 - (parseFloat($('#product_discount').val()) / 100));
+    var sum_price = Number($('#product_price').val().replace(/\,/g, '').replace(/\./g, '')) * Number($('#product_quantity').val());
     $('#sum_price').val(sum_price.toLocaleString());
 });
-$("#product_discount").change(function () {
-    var sum_price = Number($('#product_price').val().replace(/\,/g, '').replace(/\./g, ''))* Number($('#product_quantity').val()) * (1 - (parseFloat($('#product_discount').val()) / 100));
-    $('#sum_price').val(sum_price.toLocaleString());
-});
+
 
 //-------------------------Import data fail one-----------------------
 var URLImportFail_continues = "";
@@ -1446,7 +1442,7 @@ function LoadDataProduct(id) {
             $('#product_code').val(response.code);
             $('#product_unit').val(response.note);
             $('#product_price').val(response.name);
-            var sum_price = Number($('#product_price').val().replace(/\,/g, '').replace(/\./g, '')) * Number($('#product_quantity').val()) * (1 - (parseFloat($('#product_discount').val()) / 100));
+            var sum_price = Number($('#product_price').val().replace(/\,/g, '').replace(/\./g, '')) * Number($('#product_quantity').val()) ;
             $('#sum_price').val(sum_price.toLocaleString());
 
         }
@@ -1463,8 +1459,6 @@ function Payment_order() {
     var sale = {};
     sale.customer_id = $('#customer_id').val();
     sale.total = Number($('#total').val().replace(/\,/g, '').replace(/\./g, ''));
-    sale.discount = $('#cart_discount').val();
-    sale.vat = $('#cart_vat').val();
     sale.note = $('#cart_note').val();
     sale.method = Number($('#cart_Prepay').val().replace(/\,/g, '').replace(/\./g, ''));
     $.ajax({
@@ -1490,8 +1484,7 @@ function Payment_order() {
                         function (isConfirm) {
                             if (isConfirm) {
                                 PrintOrder(response.sale_id, response.sale_code, response.sale_method,
-                                    response.sale_total, response.sale_discount, response.sale_vat,
-                                    response.sale_create, $('#customer_code').val());
+                                    response.sale_total, response.sale_create, $('#customer_code').val());
                             }
                         })
             } else {
@@ -1543,7 +1536,6 @@ function Update_Cart() {
     cart_create.customer_id = $('#customer_id').val();
     cart_create.quantity = $('#product_quantity').val();
     cart_create.price = Number($('#sum_price').val().replace(/\,/g, '').replace(/\./g, ''));
-    cart_create.discount = $('#product_discount').val();
     cart_create.note = $('#cart_note').val();
 
     console.log(cart_create);
@@ -1780,10 +1772,7 @@ function openWin() {
     var curTime = curDate.getHours() + ":" + curDate.getMinutes() + ":" + curDate.getSeconds();
     var customer_id = $('#customer_id').val();
     var customer_code = $('#customer_code').val();
-    var cart_total = $('#cart_total').val();
     var total = $('#total').val();
-    var cart_vat = $('#cart_vat').val();
-    var cart_discount = $('#cart_discount').val();
     var s = "";
     $.ajax({
         type: "GET",
@@ -1803,7 +1792,6 @@ function openWin() {
                         <td>`+ data[i].cartName + `</td>
                         <td class="text-center">`+ data[i].cartUnit + `</td>
                         <td class="text-center">`+ data[i].cartQuantity + `</td>
-                        <td class="text-center">`+ data[i].cartDiscount + `%</td>
                         <td class="text-center">`+ data[i].cartPrice.toLocaleString() + `</td>
                         <td class="text-center">`+ data[i].cartTotal.toLocaleString() + `</td>
                         <td>`+ note + `</td>
@@ -1841,7 +1829,6 @@ function openWin() {
                             <th>Tên hàng hàng</th>
                             <th class="text-center">Đơn vị</th>
                             <th class="text-center">Số lượng</th>
-                            <th class="text-center">Chiết khấu</th>
                             <th class="text-center">Đơn giá</th>
                             <th class="text-center">Thành tiền</th>
                             <th>Ghi chú</th>
@@ -1849,30 +1836,6 @@ function openWin() {
                     </thead>
                         <tbody>` + s + `</tbody >
                     <tfoot>
-                        <tr>
-                            <td colspan="7" class="text-right">
-                                <h5>Tạm tính</h5>
-                            </td>
-                            <td colspan="2" class="text-left">
-                                <h5>`+ cart_total + `₫</h5>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="7" class="text-right">
-                                <h5>VAT (%)</h5>
-                            </td>
-                            <td colspan="2" class="text-left">
-                                <h5>`+ cart_vat + `%</h5>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="7" class="text-right">
-                                <h5>Chiết khấu (%)</h5>
-                            </td>
-                            <td colspan="2" class="text-left">
-                                <h5>`+ cart_discount + `%</h5>
-                            </td>
-                        </tr>
                         <tr>
                             <td colspan="7" class="text-right">
                                 <h5>Hình thức</h5>
@@ -1902,7 +1865,7 @@ function openWin() {
     myWindow.focus();
 }
 
-function PrintOrder(id, code, method, total, discount, vat, create_at, customer_code) {
+function PrintOrder(id, code, method, total, create_at, customer_code) {
     
    
     var s = "";
@@ -1923,7 +1886,6 @@ function PrintOrder(id, code, method, total, discount, vat, create_at, customer_
                         <td>`+ data[i].cartName + `</td>
                         <td class="text-center">`+ data[i].cartUnit + `</td>
                         <td class="text-center">`+ data[i].cartQuantity + `</td>
-                        <td class="text-center">`+ data[i].cartDiscount + `%</td>
                         <td class="text-center">`+ data[i].cartPrice.toLocaleString() + `</td>
                         <td class="text-center">`+ data[i].cartTotal.toLocaleString() + `</td>
                     </tr>`
@@ -1967,37 +1929,13 @@ function PrintOrder(id, code, method, total, discount, vat, create_at, customer_
                             <th>Tên hàng hàng</th>
                             <th class="text-center">Đơn vị</th>
                             <th class="text-center">Số lượng</th>
-                            <th class="text-center">Chiết khấu</th>
                             <th class="text-center">Đơn giá</th>
                             <th class="text-center">Thành tiền</th>
                         </tr>
                     </thead>
                         <tbody>` + s + `</tbody >
                     <tfoot>
-                        <tr>
-                            <td colspan="7" class="text-right">
-                                <h5>Tạm tính</h5>
-                            </td>
-                            <td colspan="2" class="text-left">
-                                <h5>`+ (total / (1 + vat / 100 - discount / 100)).toLocaleString() + `₫</h5>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="7" class="text-right">
-                                <h5>VAT (%)</h5>
-                            </td>
-                            <td colspan="2" class="text-left">
-                                <h5>`+ vat + `%</h5>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="7" class="text-right">
-                                <h5>Chiết khấu (%)</h5>
-                            </td>
-                            <td colspan="2" class="text-left">
-                                <h5>`+ discount + `%</h5>
-                            </td>
-                        </tr>
+                       
                         <tr>
                             <td colspan="7" class="text-right">
                                 <h5>Hình thức</h5>

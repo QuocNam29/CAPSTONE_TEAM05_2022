@@ -4,8 +4,7 @@
     int no_debts = 0;
     string order_code = "";
     int order_total = 0;
-    double order_vat = 0;
-    double order_discount = 0;
+    
     string MKH = "";
     string Phone_KH = "";
     string Name_KH = "";
@@ -14,8 +13,7 @@
     {
         order_code = TempData["order_code"].ToString();
         order_total = int.Parse(TempData["order_total"].ToString());
-        order_vat = double.Parse(TempData["order_vat"].ToString());
-        order_discount = double.Parse(TempData["order_discount"].ToString());
+       
         MKH = Model.FirstOrDefault().sale.customer.code;
         Phone_KH = Model.FirstOrDefault().sale.customer.phone;
         Name_KH = Model.FirstOrDefault().sale.customer.name;
@@ -83,30 +81,6 @@
 
                                 </tbody>
                                 <tfoot>
-                                    <tr>
-                                        <td colspan="6" class="text-right">
-                                            <h5>Tạm tính</h5>
-                                        </td>
-                                        <td class="text-left">
-                                            <h5>  @String.Format("{0:0,00}", order_total / (1 + order_vat / 100 - order_discount / 100))₫</h5>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6" class="text-right">
-                                            <h5>VAT (%)</h5>
-                                        </td>
-                                        <td class="text-left">
-                                            <h5>@order_vat%</h5>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6" class="text-right">
-                                            <h5>Chiết khấu (%)</h5>
-                                        </td>
-                                        <td class="text-left">
-                                            <h5>@order_discount%</h5>
-                                        </td>
-                                    </tr>
                                     <tr>
                                         <td colspan="6" class="text-right ">
                                             <h5><span class="">Tổng đơn hàng</span></h5>

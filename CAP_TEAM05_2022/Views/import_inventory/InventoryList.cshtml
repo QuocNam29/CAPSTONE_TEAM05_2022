@@ -53,7 +53,7 @@
                                                 </i>
                                             </span>
                                         </th>
-
+                                        <th class="text-center">Ngày giao dịch</th>
                                     </tr>
 
 
@@ -61,20 +61,27 @@
                                 <tbody>
                                     @foreach (var item in Model.Where(s => s.sold > 0))
                                     {
-                                        no_sell++;
+                                        var revenues = item.revenues.ToList();
+                                        foreach (var item1 in revenues)
+                                        {
+                                            no_sell++;
 
                                     <tr>
                                         <td class="text-center">@no_sell</td>
-                                        <td class="text-center">@item.product.code</td>
-                                        <td class="text-center">@item.product.name</td>
-                                        <td class="text-center">@item.product.unit</td>
-                                        <td class="text-center">@item.product.sell_price.ToString("N0")</td>
-                                        <td class="text-center">@item.sold</td>
+                                        <td class="text-center">@item1.sale_details.product.code</td>
+                                        <td class="text-center">@item1.sale_details.product.name</td>
+                                        <td class="text-center">@item1.sale_details.product.unit</td>
+                                        <td class="text-center">@item1.Price.ToString("N0")</td>
+                                        <td class="text-center">@item1.quantity</td>
                                         @*<td class="text-center">@((item.product.sell_price * (item.sold)).ToString("N0")) </td>*@
-                                        <td class="text-center">@item.revenues.Sum(s => s.Price * s.quantity).ToString("N0") </td>
+                                        <td class="text-center">@((item1.Price * item1.quantity).ToString("N0")) </td>
+                                        <td class="text-center"> @String.Format("{0:HH:mm - dd/MM/yyy}", item1.sale_details.sale.created_at)</td>
                                     </tr>
-                                        total_sell += item.revenues.Sum(s => s.Price * s.quantity);
 
+
+                                        }
+                                        total_sell += item.revenues.Sum(s => s.Price * s.quantity);
+                                        
                                     }
 
                                 </tbody>
@@ -92,7 +99,7 @@
                 <div class="card">
                     <div class="card-body table-border-style">
                         <div class="table-responsive">
-                            <table id="example2" class="table table-hover card-scroll">
+                            <table id="example2" class="table table-hover ">
                                 <thead>
                                     <tr>
                                         <th >STT</th>

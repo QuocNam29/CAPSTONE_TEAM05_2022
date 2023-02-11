@@ -28,9 +28,7 @@ namespace CAP_TEAM05_2022.Controllers
                 cartName = x.product.name,
                 cartUnit = x.product.unit,
                 cartQuantity = x.sold,
-                cartPrice = x.price/ x.sold,
-                cartDiscount = x.discount,
-                cartTotal = x.price,
+                cartPrice = x.price/ x.sold,                cartTotal = x.price,
             }).ToList(), JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
@@ -41,7 +39,6 @@ namespace CAP_TEAM05_2022.Controllers
             emp.product.code = details.product.code;
             emp.product.name = details.product.name;
             emp.sold = details.sold;
-            emp.discount = details.discount;
             return Json(emp);
         }
         // GET: sale_details/Details/5

@@ -26,9 +26,7 @@ namespace CAP_TEAM05_2022.Controllers
             var sale = db.sales.Find(order_id);
             if (sale != null)
             {
-                TempData["order_code"] = sale.code;
-                TempData["order_vat"] = sale.vat;
-                TempData["order_discount"] = sale.discount;
+                TempData["order_code"] = sale.code;           
                 TempData["order_total"] = sale.total;
             }
 
@@ -120,8 +118,6 @@ namespace CAP_TEAM05_2022.Controllers
                     sale.method = 1;
                 }
                 sale.total = createSale.total;
-                sale.discount = createSale.discount;
-                sale.vat = createSale.vat;
                 sale.note = createSale.note;
                 sale.status = 1;
                 sale.created_by = User.Identity.GetUserId();
@@ -136,7 +132,6 @@ namespace CAP_TEAM05_2022.Controllers
                     sale_Details.product_id = item.product_id;
                     sale_Details.sold = item.quantity;
                     sale_Details.price = item.price;
-                    sale_Details.discount = item.discount;
                     sale_Details.created_at = DateTime.Now;
                     db.sale_details.Add(sale_Details);
 
@@ -215,8 +210,7 @@ namespace CAP_TEAM05_2022.Controllers
                     sale_code = sale.code,
                     sale_method = sale.method,
                     sale_total = sale.total,
-                    sale_discount = sale.discount,
-                    sale_vat = sale.vat,
+                    
                     sale_create = sale.created_at
                 }, JsonRequestBehavior.AllowGet);
 

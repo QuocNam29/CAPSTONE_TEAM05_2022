@@ -30,7 +30,6 @@ namespace CAP_TEAM05_2022.Controllers
                 cartUnit = x.product.unit,
                 cartQuantity = x.quantity,
                 cartPrice = x.product.sell_price,
-                cartDiscount = x.discount,
                 cartTotal = x.price,             
                 cartNote = x.note,
             }).ToList(), JsonRequestBehavior.AllowGet);
@@ -45,8 +44,7 @@ namespace CAP_TEAM05_2022.Controllers
                 bool status1 = true;
                 return Json(new { status = status1, message = message1 }, JsonRequestBehavior.AllowGet);
             }
-            cart cart_check = db.carts.Where(c => c.customer_id == cart_create.customer_id && c.product_id == cart_create.product_id
-            && c.discount == cart_create.discount).FirstOrDefault();
+            cart cart_check = db.carts.Where(c => c.customer_id == cart_create.customer_id && c.product_id == cart_create.product_id).FirstOrDefault();
             if (cart_check == null)
             {
                 cart cart = new cart();
@@ -54,7 +52,6 @@ namespace CAP_TEAM05_2022.Controllers
                 cart.customer_id = cart_create.customer_id;
                 cart.quantity = cart_create.quantity;
                 cart.price = cart_create.price;
-                cart.discount = cart_create.discount;
                 cart.note = cart_create.note;
                 db.carts.Add(cart);
                 db.SaveChanges();
@@ -90,7 +87,6 @@ namespace CAP_TEAM05_2022.Controllers
             
             cart.quantity = cart_create.quantity;
             cart.price = cart_create.price;
-            cart.discount = cart_create.discount;
             cart.note = cart_create.note;
             db.Entry(cart).State = EntityState.Modified;
             db.SaveChanges();
