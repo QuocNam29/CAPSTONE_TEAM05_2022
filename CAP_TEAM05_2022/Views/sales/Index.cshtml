@@ -31,6 +31,7 @@
                 </div>
             </div>
         </div>
+
         <div class="row">
             <div class="col-md-12">
                 <div id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" class="tab-pane fade active show">
@@ -74,6 +75,7 @@
 <div id="dataContainer2">
     @{ Html.RenderAction("_OrderDetailsList", "sales", new { order_id = 0 });}
 </div>
+
 <script type="text/javascript">
     var row;
     $(document).ready(function () {
@@ -111,17 +113,25 @@
         $('#productSelectModal').modal('hide');
         $('#productExchangeModal.close').css('display', 'none');
         $('#productExchangeModal').modal('show');
-        console.log(id);
         $.ajax({
             type: 'POST',
-            url: '@Url.Action("FindSaleDetails", "sale_details")',
+            url: '@Url.Action("FindSaleDetails", "sale_details")/',
             data: { "id": id },
             success: function (response) {
-                console.log("hihi");
-                $('#product_Current').val(response.product.code + " - " + response.product.name);
+                $('#product_Current').val(response.note);
+                $('#quality_OD').val(response.total);
+                document.getElementById("quality_OD").setAttribute("max", response.total);
+                $('#price_PCurrent').val(response.prepayment.toLocaleString());
+                document.getElementsByClassName('price_current')[0].innerHTML = "Sản phẩm hiện tại x " + response.total + " = " + (response.prepayment * response.total).toLocaleString();
 
             }
         })
     }
+   
 
+    function Return2() {
+        $(".return_product").hide();
+    } function Return1() {
+        $(".return_product").show();
+    }
 </script>

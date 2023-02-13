@@ -2034,7 +2034,6 @@ $('#URLDebtsList')
         URLDebtsList = $(this).val();
     })
     .keypress();
-console.log(URLDebtsList);
 $('.DebtsForm').submit(function (e) {
     var form = $(this);
     console.log("hihi")

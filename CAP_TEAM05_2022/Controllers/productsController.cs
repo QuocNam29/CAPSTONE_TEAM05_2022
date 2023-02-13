@@ -260,24 +260,27 @@ namespace CAP_TEAM05_2022.Controllers
             emp.code = product.code;
             emp.name = product.sell_price.ToString("N0");
             emp.note = "Đơn vị: " + product.unit + " - SL tồn: " + product.quantity;
+            emp.quantity = product.quantity;
+            emp.unit = product.unit;
             return Json(emp);
         }
 
-        /*   public ActionResult getProduct()
-           {
+        public JsonResult GetProductList(string searchTerm)
+        {
+            var productList = db.products.ToList();
 
-               return Json(db.products.Select(x => new
-               {
-                   productID = x.id,
-                   productName = x.name,
-                   productUnit = x.unit,
-                   productQuatity = x.quantity,
-                   productSell_price = x.sell_price,
-                   productPurchase_price = x.purchase_price,
-                   productGroup_id = x.group_id,
-                   productCategory_id = x.category_id,
-               }).ToList(), JsonRequestBehavior.AllowGet) ;
-           }*/
+            if (searchTerm != null)
+            {
+                productList = db.products.Where(x => x.name.Contains(searchTerm)).ToList();
+            }
+
+            var modifiedData = productList.Select(x => new
+            {
+                id = x.id,
+                text = x.name
+            });
+            return Json(modifiedData, JsonRequestBehavior.AllowGet);
+        }
 
         protected override void Dispose(bool disposing)
         {

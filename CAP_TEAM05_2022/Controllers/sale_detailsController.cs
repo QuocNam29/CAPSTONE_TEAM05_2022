@@ -28,17 +28,18 @@ namespace CAP_TEAM05_2022.Controllers
                 cartName = x.product.name,
                 cartUnit = x.product.unit,
                 cartQuantity = x.sold,
-                cartPrice = x.price/ x.sold,                cartTotal = x.price,
+                cartPrice = x.price/ x.sold,                
+                cartTotal = x.price,
             }).ToList(), JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public JsonResult FindSaleDetails(int id)
         {
             sale_details details = db.sale_details.Find(id);
-            var emp = new sale_details();
-            emp.product.code = details.product.code;
-            emp.product.name = details.product.name;
-            emp.sold = details.sold;
+            var emp = new sale();
+            emp.note = details.product.code + " - " + details.product.name;       
+            emp.total = details.sold;
+            emp.prepayment = details.price / details.sold;
             return Json(emp);
         }
         // GET: sale_details/Details/5

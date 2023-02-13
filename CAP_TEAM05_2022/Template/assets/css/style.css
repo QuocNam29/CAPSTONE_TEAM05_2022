@@ -30373,3 +30373,7 @@ body {
     padding: 5px;
     border-radius: 10px;
 }
+.select2-container {
+    width: 100% !important;
+    text-align: left;
+}

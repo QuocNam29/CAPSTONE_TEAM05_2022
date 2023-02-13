@@ -5,12 +5,12 @@
     int no_return = 0;
     string order_code = "";
     int order_total = 0;
-   
+
     if (TempData["order_code"] != null)
     {
         order_code = TempData["order_code"].ToString();
         order_total = int.Parse(TempData["order_total"].ToString());
-       
+
     }
 
 }
@@ -52,7 +52,7 @@
                                                 @item.product.code
                                             </td>
                                             <td class="text-center">
-                                            @item.product.name
+                                                @item.product.name
                                             </td>
                                             <td class="text-center">
                                                 @item.product.unit
@@ -72,7 +72,7 @@
 
 
                                 </tbody>
-                                <tfoot>                                 
+                                <tfoot>
                                     <tr>
                                         <td colspan="6" class="text-right">
                                             <h5>Thành tiền</h5>
@@ -123,27 +123,27 @@
                                         @foreach (var item in Model)
                                         {
                                             no_return++;
-                                        <tr>
-                                            <td class="text-center">
-                                                @no_return
-                                            </td>
-                                            <td class="text-center">
-                                                @item.product.code
-                                            </td>
-                                            <td class="text-center">
-                                                @item.product.name
-                                            </td>
+                                            <tr>
+                                                <td class="text-center">
+                                                    @no_return
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.product.code
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.product.name
+                                                </td>
 
-                                            <td class="text-center">
-                                                @item.sold
-                                            </td>
-                                            <td class="text-center">
-                                                @String.Format("{0:0,00}", item.price)
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-primary"  onclick="Get_ReturnProduct('@item.id')">Chọn</button>
-                                            </td>
-                                        </tr>
+                                                <td class="text-center">
+                                                    @item.sold
+                                                </td>
+                                                <td class="text-center">
+                                                    @String.Format("{0:0,00}", item.price)
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-primary" onclick="Get_ReturnProduct('@item.id')">Chọn</button>
+                                                </td>
+                                            </tr>
                                         }
 
                                     </tbody>
@@ -174,7 +174,7 @@
                             <div class="form-group">
                                 <label>Sản phẩm hiện tại</label>
                                 <div class="position-relative">
-                                    <input type="text" id="product_Current" disabled="disabled" class="form-control">
+                                    <input type="text" id="product_Current" disabled="disabled" value="" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -182,109 +182,114 @@
                             <div class="form-group">
                                 <label>Số lượng</label>
                                 <div class="position-relative">
-                                    <input type="text" class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Chiết khấu(%)</label>
-                                <div class="position-relative">
-                                    <input type="text" disabled="disabled" class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label>
-                                    Lựa chọn<span class="text-danger">*</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <input type="radio" value="0"> Đổi mới
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <input type="radio" value="1"> Trả hàng
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <!---->
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>
-                                    Chọn sản phẩm mới<span class="text-danger">*</span>
-                                </label>
-                                <div>
-                                    <select id="" name="" class="form-control select2-hidden-accessible" data-select2-id="1" tabindex="-1" aria-hidden="true">
-                                    </select>
-                                    <span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="2" style="width: auto;">
-                                        <span class="selection">
-                                            <span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2--container">
-                                                <span class="select2-selection__rendered" id="select2--container" role="textbox" aria-readonly="true">
-                                                    <span class="select2-selection__placeholder">Chọn sản phẩm</span>
-                                                </span>
-                                                <span class="select2-selection__arrow" role="presentation">
-                                                    <b role="presentation">
-                                                    </b>
-                                                </span>
+                                    <div class="input-group">
+                                        <input type="number" min="0" id="quality_OD" class="form-control">
+                                        <div class="input-group-append">
+                                            <span id="unit" class="input-group-text">
+                                                kg
                                             </span>
-                                        </span>
-                                        <span class="dropdown-wrapper" aria-hidden="true">
-                                        </span>
-                                    </span>
+                                        </div>
+                                    </div>
                                 </div>
+                            </div>
+                        </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Giá bán</label>
+                                    <div class="position-relative">
+                                        <div class="input-group">
+                                            <input type="number" id="price_PCurrent" disabled class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>
+                                        Lựa chọn<span class="text-danger">*</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <input type="radio" value="0" checked name="return_option" onclick="Return1();"> Đổi mới
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <input type="radio" value="1" name="return_option" onclick="Return2();"> Trả hàng
+                                </div>
+                            </div>
+                            <div class="col-md-6">
                                 <!---->
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>
-                                    Số lượng<span class="text-danger">*</span>
-                                </label>
-                                <input type="number" placeholder="Số lượng sản phẩm" disabled="disabled" class="form-control">
-                                <!---->
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Giá sản phẩm</label>
-                                <div class="input-group">
-                                    <div class="input-group-append">
-                                        <span id="basic-addon2" class="input-group-text">
-                                            Số lượng còn: 0
-                                        </span>
+                            <div class="col-md-6 return_product">
+                                <div class="form-group">
+                                    <label>
+                                        Chọn sản phẩm mới<span class="text-danger">*</span>
+                                    </label>
+                                    <div>
+                                        <input type="hidden" class="ProductID" />
+                                        <select class="form-control returnProduct_List"></select>
                                     </div>
-                                    <input type="text" disabled="disabled" class="form-control">
+
+
+                                    <!---->
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Giá chênh lệch hiện tại và muốn đổi</label>
-                                <div class="input-group">
-                                    <div class="input-group-append">
-                                        <span id="basic-addon1" class="input-group-text">
-                                            Thu thêm
-                                        </span>
+                            <div class="col-md-6 return_product">
+                                <div class="form-group">
+                                    <label>
+                                        Số lượng<span class="text-danger">*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="number" value="0" min="0" placeholder="Số lượng sản phẩm" id="input_qualityProduct" disabled="disabled" class="form-control">
+                                        <div class="input-group-append">
+                                            <span id="unitProduct" class="input-group-text unitProduct">
+                                            </span>
+                                        </div>
+
                                     </div>
-                                    <input type="text" disabled="disabled" class="form-control">
+
+                                    <!---->
                                 </div>
                             </div>
+                            <div class="col-md-6 return_product">
+                                <div class="form-group">
+                                    <label>Giá sản phẩm</label>
+                                    <div class="input-group">
+                                        <div class="input-group-append">
+                                            <span id="qualityProduct" class="input-group-text qualityProduct">
+                                                Số lượng còn: 0
+                                            </span>
+                                        </div>
+                                        <input type="text" id="priceProduct" disabled="disabled" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 return_product">
+                                <div class="form-group">
+                                    <label>Giá chênh lệch hiện tại và muốn đổi</label>
+                                    <div class="input-group">
+                                        <div class="input-group-append">
+                                            <span id="basic-addon1" class="input-group-text">
+                                                Thu thêm
+                                            </span>
+                                        </div>
+                                        <input type="text" id="collect" disabled="disabled" class="form-control" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 return_product">
+                                <p class="text-danger price_current">
+                                    Sản phẩm hiện tại x 0 = 0
+                                </p>
+                                <p class="text-danger price_return" >
+                                    Sản phẩm muốn đổi x 0 = 0
+                                </p>
+                            </div>
                         </div>
-                        <div class="col-md-12">
-                            <p class="text-danger">
-                                Sản phẩm hiện tại x 0 = 0
-                            </p>
-                            <p class="text-danger" style="display: none;">
-                                Sản phẩm muốn đổi x 0 = 0
-                            </p>
-                        </div>
-                    </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary me-1 mb-1">Trờ lại</button>
                         <button type="submit" class="btn btn-primary me-1 mb-1">Lưu</button>
@@ -294,3 +299,61 @@
         </form>
     </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".returnProduct_List").select2({
+        dropdownParent: $("#productExchangeModal"),
+        placeholder: "Chọn sản phẩm",
+        ajax: {
+            url: "@Url.Action("GetProductList", "products")",
+            dataType: "json",
+            data: function (params) {
+                return {
+                    searchTerm: params.term
+                };
+            },
+            processResults: function (data, params) {
+                return {
+                    results: data
+                };
+            }
+        }
+    });
+    });
+    $(".returnProduct_List").on("change", function () {
+        var ProductID = $(this).val();
+        $(".ProductID").val(ProductID);
+        $.ajax({
+            url: "@Url.Action("FindProduct_name", "products")",
+            data: { "product_id": ProductID },
+            dataType: 'json',
+            type: 'post',
+            success: function (data) {
+                document.getElementsByClassName('qualityProduct')[0].innerHTML = "Số lượng còn: " + data.quantity;
+                document.getElementsByClassName('unitProduct')[0].innerHTML = data.unit;
+                document.querySelector("#input_qualityProduct").disabled = false;
+                $("#priceProduct").val(data.name);
+                var input_qualityProduct = $('#input_qualityProduct').val();
+                document.getElementsByClassName('price_return')[0].innerHTML = "Sản phẩm muốn đổi x " + input_qualityProduct + " = " + (input_qualityProduct * data.name).toLocaleString();
+
+                var price_PCurrent = $('#price_PCurrent').val().replace(/\,/g, '').replace(/\./g, '');
+                var quality_OD = $('#quality_OD').val();
+                var priceProduct = $('#priceProduct').val().replace(/\,/g, '').replace(/\./g, '');
+                var input_qualityProduct = $('#input_qualityProduct').val();
+                $('#collect').val();
+
+            }
+        });
+    });
+    $("#quality_OD").change(function () {
+        var price_PCurrent = $('#price_PCurrent').val().replace(/\,/g, '').replace(/\./g, '');
+        var quality_OD = $('#quality_OD').val();
+        document.getElementsByClassName('price_current')[0].innerHTML = "Sản phẩm hiện tại x " + quality_OD + " = " + (quality_OD * price_PCurrent).toLocaleString();
+    });
+    $("#input_qualityProduct").change(function () {
+        var priceProduct = $('#priceProduct').val().replace(/\,/g, '').replace(/\./g, '');
+        var input_qualityProduct = $('#input_qualityProduct').val();
+        document.getElementsByClassName('price_return')[0].innerHTML = "Sản phẩm muốn đổi x " + input_qualityProduct + " = " + (input_qualityProduct * priceProduct).toLocaleString();
+    });
+   
+</script>
