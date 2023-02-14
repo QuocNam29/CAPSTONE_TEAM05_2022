@@ -122,7 +122,7 @@
                 $('#quality_OD').val(response.total);
                 document.getElementById("quality_OD").setAttribute("max", response.total);
                 $('#price_PCurrent').val(response.prepayment.toLocaleString());
-                document.getElementsByClassName('price_current')[0].innerHTML = "Sản phẩm hiện tại x " + response.total + " = " + (response.prepayment * response.total).toLocaleString();
+                document.getElementsByClassName('price_current')[0].innerHTML = "Sản phẩm hiện tại: " + response.prepayment.toLocaleString() + " x " + response.total + " = " + (response.prepayment * response.total).toLocaleString();
 
             }
         })

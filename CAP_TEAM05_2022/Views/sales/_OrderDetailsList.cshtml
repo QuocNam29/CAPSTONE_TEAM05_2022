@@ -272,7 +272,7 @@
                                     <label>Giá chênh lệch hiện tại và muốn đổi</label>
                                     <div class="input-group">
                                         <div class="input-group-append">
-                                            <span id="basic-addon1" class="input-group-text">
+                                            <span id="basic-addon1" class="input-group-text spCollect">
                                                 Thu thêm
                                             </span>
                                         </div>
@@ -282,10 +282,10 @@
                             </div>
                             <div class="col-md-12 return_product">
                                 <p class="text-danger price_current">
-                                    Sản phẩm hiện tại x 0 = 0
+                                    Sản phẩm hiện tại: 0 x 0 = 0
                                 </p>
                                 <p class="text-danger price_return" >
-                                    Sản phẩm muốn đổi x 0 = 0
+                                    Sản phẩm muốn đổi: 0 x 0 = 0
                                 </p>
                             </div>
                         </div>
@@ -334,13 +334,22 @@
                 document.querySelector("#input_qualityProduct").disabled = false;
                 $("#priceProduct").val(data.name);
                 var input_qualityProduct = $('#input_qualityProduct').val();
-                document.getElementsByClassName('price_return')[0].innerHTML = "Sản phẩm muốn đổi x " + input_qualityProduct + " = " + (input_qualityProduct * data.name).toLocaleString();
+                document.getElementsByClassName('price_return')[0].innerHTML = "Sản phẩm muốn đổi: " + data.name.toLocaleString() + " x " + input_qualityProduct + " = " + (input_qualityProduct * data.name).toLocaleString();
 
                 var price_PCurrent = $('#price_PCurrent').val().replace(/\,/g, '').replace(/\./g, '');
                 var quality_OD = $('#quality_OD').val();
                 var priceProduct = $('#priceProduct').val().replace(/\,/g, '').replace(/\./g, '');
                 var input_qualityProduct = $('#input_qualityProduct').val();
-                $('#collect').val();
+                var total = (price_PCurrent * quality_OD) - (priceProduct * input_qualityProduct);
+                if (total > 0) {
+                    document.getElementsByClassName('spCollect')[0].innerHTML = "Hoàn lại";
+                    $('#collect').val(total.toLocaleString());
+                }
+                else {
+                    document.getElementsByClassName('spCollect')[0].innerHTML = "Thu thêm";
+                    $('#collect').val((total * (-1)).toLocaleString());
+                }
+                
 
             }
         });
@@ -348,12 +357,36 @@
     $("#quality_OD").change(function () {
         var price_PCurrent = $('#price_PCurrent').val().replace(/\,/g, '').replace(/\./g, '');
         var quality_OD = $('#quality_OD').val();
-        document.getElementsByClassName('price_current')[0].innerHTML = "Sản phẩm hiện tại x " + quality_OD + " = " + (quality_OD * price_PCurrent).toLocaleString();
-    });
-    $("#input_qualityProduct").change(function () {
         var priceProduct = $('#priceProduct').val().replace(/\,/g, '').replace(/\./g, '');
         var input_qualityProduct = $('#input_qualityProduct').val();
-        document.getElementsByClassName('price_return')[0].innerHTML = "Sản phẩm muốn đổi x " + input_qualityProduct + " = " + (input_qualityProduct * priceProduct).toLocaleString();
+        var total = (price_PCurrent * quality_OD) - (priceProduct * input_qualityProduct);
+
+        if (total > 0) {
+            document.getElementsByClassName('spCollect')[0].innerHTML = "Hoàn lại";
+            $('#collect').val(total.toLocaleString());
+        }
+        else {
+            document.getElementsByClassName('spCollect')[0].innerHTML = "Thu thêm";
+            $('#collect').val((total * (-1)).toLocaleString());
+        }
+        document.getElementsByClassName('price_current')[0].innerHTML = "Sản phẩm hiện tại: " + price_PCurrent.toLocaleString() +" x " + quality_OD + " = " + (quality_OD * price_PCurrent).toLocaleString();
+    });
+    $("#input_qualityProduct").change(function () {
+        var price_PCurrent = $('#price_PCurrent').val().replace(/\,/g, '').replace(/\./g, '');
+        var quality_OD = $('#quality_OD').val();
+        var priceProduct = $('#priceProduct').val().replace(/\,/g, '').replace(/\./g, '');
+        var input_qualityProduct = $('#input_qualityProduct').val();
+        var total = (price_PCurrent * quality_OD) - (priceProduct * input_qualityProduct);
+
+        if (total > 0) {
+            document.getElementsByClassName('spCollect')[0].innerHTML = "Hoàn lại";
+            $('#collect').val(total.toLocaleString());
+        }
+        else {
+            document.getElementsByClassName('spCollect')[0].innerHTML = "Thu thêm";
+            $('#collect').val((total * (-1)).toLocaleString());
+        }
+        document.getElementsByClassName('price_return')[0].innerHTML = "Sản phẩm muốn đổi: " + priceProduct.toLocaleString() +" x " + input_qualityProduct + " = " + (input_qualityProduct * priceProduct).toLocaleString();
     });
    
 </script>
