@@ -236,26 +236,82 @@
                                 </div> <!---->
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label>
-                                    Đơn vị tính<span class="text-danger">*</span>
+                                    số lượng sản phẩm<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input type="text" placeholder="Nhập đơn vị tính " id="add_unit" class="form-control" name="unit" pattern="\S+.*" required>
-                                    <div class="invalid-feedback">
-                                        Vui lòng nhập tên đơn vị tính !
+                                    <div class="input-group mb-3">
+                                        <input type="number" data-model="quantity" placeholder="Nhập số lượng" id="add_quantity" name="quantity" max="999999999999" aria-describedby="quantity-buy" class="form-control" required>
+                                        <div class="input-group-append">
+                                            <select id="quantity-buy" class="input-group-text select-unit">
+                                                <option disabled="disabled" value="" selected>Đơn vị</option>
+                                                <optgroup label="Khối lượng">
+                                                    <option data-name="tấn" value="1">
+                                                        tấn
+                                                    </option>
+                                                    <option data-name="tạ" value="2">
+                                                        tạ
+                                                    </option>
+                                                    <option data-name="yến" value="3">
+                                                        yến
+                                                    </option>
+                                                    <option data-name="kg" value="4">
+                                                        kg
+                                                    </option>
+                                                    <option data-name="hg" value="5">
+                                                        hg
+                                                    </option>
+                                                    <option data-name="dag" value="6">
+                                                        dag
+                                                    </option>
+                                                    <option data-name="gam" value="7">
+                                                        gam
+                                                    </option>
+                                                </optgroup>
+                                                <optgroup label="Độ dài">
+                                                    <option data-name="km" value="8">
+                                                        km
+                                                    </option>
+                                                    <option data-name="hm" value="9">
+                                                        hm
+                                                    </option>
+                                                    <option data-name="dam" value="10">
+                                                        dam
+                                                    </option>
+                                                    <option data-name="mét" value="11">
+                                                        mét
+                                                    </option>
+                                                    <option data-name="dm" value="12">
+                                                        dm
+                                                    </option>
+                                                    <option data-name="cm" value="13">
+                                                        cm
+                                                    </option>
+                                                    <option data-name="mm" value="14">
+                                                        mm
+                                                    </option>
+                                                </optgroup>
+                                                <optgroup label="Thể tích">
+                                                    <option data-name="lít" value="15">
+                                                        lít
+                                                    </option>
+                                                    <option data-name="ml" value="16">
+                                                        ml
+                                                    </option>
+                                                </optgroup>
+                                                <optgroup label="Khác">
+                                                    <option data-name="bao" value="17">
+                                                        bao
+                                                    </option>
+                                                    <option data-name="chai" value="18">
+                                                        chai
+                                                    </option>
+                                                </optgroup>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div> <!---->
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>
-                                    Số lượng sản phẩm<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    <input type="number" placeholder="Nhập số lượng sản phẩm" min="0" id="add_quantity" class="form-control" name="quantity" required>
                                     <div class="invalid-feedback">
                                         Vui lòng nhập số lượng sản phẩm và lớn hơn 0 !
                                     </div>
@@ -318,6 +374,76 @@
                                 <!---->
                             </div>
                         </div>
+                        <div class="col-md-12 mt-2">
+                            <div class="form-group">
+                                <input type="checkbox" id="swap" name="swap" value="0">
+                                <label for="swap">Quy đổi sang đơn vị khác</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3" style="">
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <div class="input-group mb-3">
+                                        <input type="number" data-model="unit_current_quantity" id="unit-quantity-current" aria-describedby="basic-addon2" class="form-control" required="required">
+                                        <div class="input-group-append">
+                                            <span id="basic-addon2" class="input-group-text">tấn</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1 col-icon" style="">
+                            <div class="form-group">
+                                <i aria-hidden="true" class="feather icon-arrow-right icon-swap">
+                                </i>
+                            </div>
+                        </div>
+                        <div class="col-md-4" style="">
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <div class="input-group mb-3">
+                                        <input type="number" data-model="unit_swap_quantity" placeholder="Nhập số lượng" id="unit-quantity-input" max="999999999999" aria-describedby="unit-quantity" class="form-control" required="required">
+                                        <div class="input-group-append">
+                                            <select id="unit-quantity" class="input-group-text select-unit">
+                                                <option disabled="disabled" value="">Đơn vị</option>
+                                                <optgroup label="Khối lượng">
+                                                    <option data-name="tấn" value="1">tấn</option>
+                                                    <option data-name="tạ" value="2">tạ</option>
+                                                    <option data-name="yến" value="3">yến</option>
+                                                    <option data-name="kg" value="4">kg</option>
+                                                    <option data-name="hg" value="5">hg</option>
+                                                    <option data-name="dag" value="6">dag</option>
+                                                    <option data-name="gam" value="7">gam</option>
+                                                </optgroup>
+                                                <optgroup label="Độ dài">
+                                                    <option data-name="km" value="8">km</option>
+                                                    <option data-name="hm" value="9">hm</option>
+                                                    <option data-name="dam" value="10">dam</option>
+                                                    <option data-name="mét" value="11">mét</option>
+                                                    <option data-name="dm" value="12">dm</option>
+                                                    <option data-name="cm" value="13">cm</option>
+                                                    <option data-name="mm" value="14">mm</option>
+                                                </optgroup>
+                                                <optgroup label="Thể tích">
+                                                    <option data-name="lít" value="15">lít</option>
+                                                    <option data-name="ml" value="16">ml</option>
+                                                </optgroup>
+                                                <optgroup label="Khác">
+                                                    <option data-name="bao" value="17">bao</option>
+                                                    <option data-name="chai" value="18">chai</option>
+                                                </optgroup>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4" style="">
+                            <div class="form-group">
+                                <input type="text" placeholder="Nhập giá tiền" id="product-price-swap" max="999999999999" data-model="unit_price" class="form-control" required="required">
+                            </div>
+                        </div>
+
                     </div>
 
 

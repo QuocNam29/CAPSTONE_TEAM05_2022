@@ -19,6 +19,8 @@ namespace CAP_TEAM05_2022.Models
         {
             this.carts = new HashSet<cart>();
             this.import_inventory = new HashSet<import_inventory>();
+            this.return_details = new HashSet<return_details>();
+            this.return_details1 = new HashSet<return_details>();
             this.sale_details = new HashSet<sale_details>();
         }
     
@@ -28,8 +30,8 @@ namespace CAP_TEAM05_2022.Models
         public int group_id { get; set; }
         public int category_id { get; set; }
         public string unit { get; set; }
-        public int purchase_price { get; set; }
-        public int sell_price { get; set; }
+        public decimal purchase_price { get; set; }
+        public decimal sell_price { get; set; }
         public int quantity { get; set; }
         public int status { get; set; }
         public string note { get; set; }
@@ -47,6 +49,10 @@ namespace CAP_TEAM05_2022.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<import_inventory> import_inventory { get; set; }
         public virtual user user { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<return_details> return_details { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<return_details> return_details1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<sale_details> sale_details { get; set; }
     }

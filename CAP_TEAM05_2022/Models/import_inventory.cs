@@ -23,7 +23,7 @@ namespace CAP_TEAM05_2022.Models
         public int id { get; set; }
         public int product_id { get; set; }
         public int quantity { get; set; }
-        public int price_import { get; set; }
+        public decimal price_import { get; set; }
         public int sold { get; set; }
         public string created_by { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }

@@ -2036,7 +2036,6 @@ $('#URLDebtsList')
     .keypress();
 $('.DebtsForm').submit(function (e) {
     var form = $(this);
-    console.log("hihi")
     // Check if form is valid then submit ajax
     if (form[0].checkValidity()) {
         e.preventDefault();
@@ -2148,5 +2147,46 @@ $("#debt_DateEnd").change(function () {
                 allowOutsideClick: true,
 
             })
+    }
+});
+//--------------------------------
+$('.ReturnForm').submit(function (e) {
+    var form = $(this);
+    
+
+    // Check if form is valid then submit ajax
+    if (form[0].checkValidity()) {
+        e.preventDefault();
+        var url = form.attr('action');
+        console.log(form.serialize());
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: form.serialize(),
+            success: function (data) {
+                // Hide bootstrap modal to prevent conflict
+                $('.modal').modal('hide');
+
+                if (data.status) {
+                    // Refresh table data
+                    sweetAlert
+                        ({
+                            title: "Thành công !",
+                            text: data.message,
+                            type: "success"
+                        })
+
+                    form[0].reset();
+                    form.removeClass('was-validated');
+                } else {
+                    swal({
+                        title: 'Lỗi !',
+                        text: data.message,
+                        type: 'error',
+
+                    }); // Show bootstrap modal again
+                }
+            }
+        });
     }
 });

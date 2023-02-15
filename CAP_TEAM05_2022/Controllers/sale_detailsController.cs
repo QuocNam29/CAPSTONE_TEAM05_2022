@@ -40,6 +40,8 @@ namespace CAP_TEAM05_2022.Controllers
             emp.note = details.product.code + " - " + details.product.name;       
             emp.total = details.sold;
             emp.prepayment = details.price / details.sold;
+            emp.id = details.id;
+            emp.method = details.product_id;
             return Json(emp);
         }
         // GET: sale_details/Details/5

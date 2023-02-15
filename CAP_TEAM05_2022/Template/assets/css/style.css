@@ -30377,3 +30377,16 @@ body {
     width: 100% !important;
     text-align: left;
 }
+.product-code {
+    font-size: 11px;
+}
+.col-icon{
+    padding: 0;
+    margin: 0;
+}
+.icon-swap{
+    font-size: 30px;
+    position: relative;
+    top: 6px;
+    left: 18px;
+}

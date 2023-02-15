@@ -1,13 +1,12 @@
 ﻿@model IEnumerable<CAP_TEAM05_2022.Models.product>
-@{ 
+@{
     int no = 0;
 }
 <table id="example" class="table table-hover card-scroll">
     <thead>
         <tr>
             <th class="sticky-col first-col">#</th>
-            <th class="sticky-col first-col">Mã sản phẩm</th>
-            <th class="sticky-col second-col">Tên sản phẩm</th>
+            <th class="sticky-col first-col">Tên sản phẩm</th>
             <th>Nhóm hàng</th>
             <th>Danh mục</th>
             <th class="text-center">Đơn vị</th>
@@ -26,60 +25,66 @@
             string customswitch_SP = "customswitch" + item.id;
 
             no++;
-        <tr>
-            <td class="sticky-col first-col">@no  <input hidden type="text" name="record" value="@item.code"></td>
-            <td class="sticky-col first-col">@item.code</td>
-            <td class="sticky-col second-col">@item.name</td>
-            <td>@item.group.name</td>
-            <td>@item.category.name</td>
-            <td class="text-center">@item.unit</td>
-            <td class="text-center">@item.quantity.ToString("N0")</td>
-            <td class="text-center">@item.sell_price.ToString("N0")</td>
-            <td class="text-center">@item.import_inventory.Where(i => i.product_id == item.id).Sum(s => s.sold)</td>
-            <td class="text-center">
-                @if (item.status == 1)
-                {
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" checked class="custom-control-input" id="@customswitch_SP">
-                        <label class="custom-control-label" for="@customswitch_SP"></label>
+            <tr>
+                <td class="sticky-col first-col">@no  <input hidden type="text" name="record" value="@item.code"></td>
+                <td class="sticky-col first-col">
+                    <div class="product-code">
+                        @item.code
                     </div>
-                }
-                else
-                {
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="@customswitch_SP">
-                        <label class="custom-control-label" for="@customswitch_SP"></label>
+                    <div class="product-name">
+                        @item.name
                     </div>
-                }
-                <input hidden type="text" id="URDEditStatus" value="@Url.Action("EditStatus_Product", "products")">
-                <script language="javascript">
+                </td>
+                <td>@item.group.name</td>
+                <td>@item.category.name</td>
+                <td class="text-center">@item.unit</td>
+                <td class="text-center">@item.quantity.ToString("N0")</td>
+                <td class="text-center">@item.sell_price.ToString("N0")</td>
+                <td class="text-center">@item.import_inventory.Where(i => i.product_id == item.id).Sum(s => s.sold)</td>
+                <td class="text-center">
+                    @if (item.status == 1)
+                    {
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" checked class="custom-control-input" id="@customswitch_SP">
+                            <label class="custom-control-label" for="@customswitch_SP"></label>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="@customswitch_SP">
+                            <label class="custom-control-label" for="@customswitch_SP"></label>
+                        </div>
+                    }
+                    <input hidden type="text" id="URDEditStatus" value="@Url.Action("EditStatus_Product", "products")">
+                    <script language="javascript">
                          document.getElementById('@customswitch_SP').onclick = function (e) {
                                                                 EditStatus(@item.id);
                                                         };
-                </script>
-            </td>
-            <td>
-                <button title="Thêm số lượng" class="btn btn-success" onclick="GetProduct_Stock(this, @item.id, '@item.code', '@item.name')">
-                    <i class="feather icon-plus-square">
-                    </i>
-                </button>
-                <button title="Sao chép" class="btn btn-primary" onclick="CopyProduct(this, @item.id)">
-                    <i class="feather icon-copy">
-                    </i>
-                </button>
-                <button title="Cập nhật" class="btn btn-success" onclick="GetProduct(this, @item.id)">
-                    <i class="feather icon-edit">
-                    </i>
-                </button>
+                    </script>
+                </td>
+                <td>
+                    <button title="Thêm số lượng" class="btn btn-success" onclick="GetProduct_Stock(this, @item.id, '@item.code', '@item.name')">
+                        <i class="feather icon-plus-square">
+                        </i>
+                    </button>
+                    <button title="Sao chép" class="btn btn-primary" onclick="CopyProduct(this, @item.id)">
+                        <i class="feather icon-copy">
+                        </i>
+                    </button>
+                    <button title="Cập nhật" class="btn btn-success" onclick="GetProduct(this, @item.id)">
+                        <i class="feather icon-edit">
+                        </i>
+                    </button>
 
 
-                <input hidden type="text" id="URLDelete" value="@Url.Action("Delete_Product", "products")">
-                <button class="btn btn-danger" onclick="deleteAlert('@item.id', '@item.code')" id="Delete">
-                    <i class="feather icon-trash-2">
-                    </i>
-                </button>
-            </td>
-        </tr>
+                    <input hidden type="text" id="URLDelete" value="@Url.Action("Delete_Product", "products")">
+                    <button class="btn btn-danger" onclick="deleteAlert('@item.id', '@item.code')" id="Delete">
+                        <i class="feather icon-trash-2">
+                        </i>
+                    </button>
+                </td>
+            </tr>
         }
 
     </tbody>

@@ -12,19 +12,22 @@ namespace CAP_TEAM05_2022.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class debt
+    public partial class return_sale
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public return_sale()
+        {
+            this.return_details = new HashSet<return_details>();
+        }
+    
         public int id { get; set; }
         public int sale_id { get; set; }
-        public decimal paid { get; set; }
-        public decimal total { get; set; }
-        public string created_by { get; set; }
-        public Nullable<System.DateTime> created_at { get; set; }
-        public Nullable<System.DateTime> updated_at { get; set; }
-        public Nullable<System.DateTime> deleted_at { get; set; }
-        public string note { get; set; }
+        public int method { get; set; }
+        public System.DateTime create_at { get; set; }
+        public decimal difference { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<return_details> return_details { get; set; }
         public virtual sale sale { get; set; }
-        public virtual user user { get; set; }
     }
 }

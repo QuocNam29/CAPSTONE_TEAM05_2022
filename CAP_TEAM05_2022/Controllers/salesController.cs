@@ -26,7 +26,7 @@ namespace CAP_TEAM05_2022.Controllers
             var sale = db.sales.Find(order_id);
             if (sale != null)
             {
-                TempData["order_code"] = sale.code;           
+                TempData["order_code"] = sale.code;
                 TempData["order_total"] = sale.total;
             }
 
@@ -183,8 +183,8 @@ namespace CAP_TEAM05_2022.Controllers
                             }
                             db.SaveChanges();
                         }
-                       
-                        
+
+
                     }
                     cart cart1 = db.carts.Find(item.id);
                     db.carts.Remove(cart1);
@@ -210,7 +210,7 @@ namespace CAP_TEAM05_2022.Controllers
                     sale_code = sale.code,
                     sale_method = sale.method,
                     sale_total = sale.total,
-                    
+
                     sale_create = sale.created_at
                 }, JsonRequestBehavior.AllowGet);
 

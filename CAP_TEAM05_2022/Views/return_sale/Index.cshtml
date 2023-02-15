@@ -1,0 +1,52 @@
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.return_sale>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.method)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.create_at)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.difference)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.sale.code)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.method)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.create_at)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.difference)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sale.code)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>

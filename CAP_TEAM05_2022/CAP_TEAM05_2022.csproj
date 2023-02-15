@@ -197,6 +197,7 @@
     <Compile Include="Controllers\import_inventoryController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\productsController.cs" />
+    <Compile Include="Controllers\return_saleController.cs" />
     <Compile Include="Controllers\salesController.cs" />
     <Compile Include="Controllers\sale_detailsController.cs" />
     <Compile Include="Controllers\SweetController.cs" />
@@ -268,6 +269,12 @@
     <Compile Include="Models\product.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\return_details.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\return_sale.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\revenue.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -275,12 +282,6 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sale_details.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sp_helpdiagrams_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sysdiagram.cs">
@@ -686,6 +687,11 @@
     <Content Include="Views\Debts_Collections\Index.cshtml" />
     <Content Include="Views\Debts_Collections\_DebtsList.cshtml" />
     <Content Include="Views\Debts_Collections\_DebtsDetailsList.cshtml" />
+    <Content Include="Views\return_sale\Create.cshtml" />
+    <Content Include="Views\return_sale\Delete.cshtml" />
+    <Content Include="Views\return_sale\Details.cshtml" />
+    <Content Include="Views\return_sale\Edit.cshtml" />
+    <Content Include="Views\return_sale\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
