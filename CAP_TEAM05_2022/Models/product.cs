@@ -41,6 +41,10 @@ namespace CAP_TEAM05_2022.Models
         public Nullable<System.DateTime> deleted_at { get; set; }
         public string name_group { get; set; }
         public string name_category { get; set; }
+        public string unit_swap { get; set; }
+        public Nullable<int> quantity_swap { get; set; }
+        public Nullable<int> quantity_remaning { get; set; }
+        public Nullable<decimal> sell_price_swap { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cart> carts { get; set; }
