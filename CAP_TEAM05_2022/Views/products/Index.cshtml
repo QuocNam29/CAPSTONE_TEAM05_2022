@@ -338,7 +338,7 @@
                                     Đơn giá bán<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input type="text" placeholder="Nhập giá tiền" id="product-price-sold" max="999999999999" class="form-control "
+                                    <input type="text" placeholder="Nhập giá tiền" id="product-price-sold" max="999999999999" class="form-control Price"
                                            pattern="[0-9.,]+" data-type="number" name="sell_price" required>
                                     <div class="invalid-feedback">
                                         Giá tiền bán không được để trống !
@@ -353,7 +353,7 @@
                                     Đơn giá nhập<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input type="text" placeholder="Nhập giá tiền" id="product-price-buy" max="999999999999" class="form-control"
+                                    <input type="text" placeholder="Nhập giá tiền" id="product-price-buy" max="999999999999" class="form-control Price"
                                            pattern="[0-9.,]+" data-type="number" name="purchase_price" required>
                                     <div class="invalid-feedback">
                                         Giá tiền nhập không được để trống !
@@ -453,7 +453,7 @@
                         </div>
                         <div class="col-md-4 swap" style="display: none;">
                             <div class="form-group">
-                                <input type="text" name="price_swap" placeholder="Nhập giá tiền" id="product-price-swap" max="999999999999" data-model="unit_price" class="form-control" >
+                                <input type="text" name="price_swap" placeholder="Nhập giá tiền" id="product-price-swap" max="999999999999" data-model="unit_price" class="form-control Price" >
                             </div>
                         </div>
 
@@ -553,7 +553,7 @@
                                     Đơn giá bán<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input type="text" placeholder="Nhập giá tiền" id="edit_sell_price" max="999999999999" class="form-control "
+                                    <input type="text" placeholder="Nhập giá tiền" id="edit_sell_price" max="999999999999" class="form-control Price"
                                            pattern="[0-9.,]+" data-type="number" name="sell_price" required>
                                     <div class="invalid-feedback">
                                         Giá tiền bán không được để trống !
@@ -562,21 +562,7 @@
 
                             </div>
                         </div>
-                        <!--<div class="col-md-6">
-                            <div class="form-group">
-                                <label for="product-price-import">
-                                    Đơn giá nhập<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    <input type="text" placeholder="Nhập giá tiền" id="edit_purchase_price" max="999999999999" class="form-control"
-                                           pattern="[0-9.,]+" data-type="number" name="purchase_price" required>
-                                    <div class="invalid-feedback">
-                                        Giá tiền nhập không được để trống !
-                                    </div>
-                                </div>-->
-                                <!---->
-                            <!--</div>
-                        </div>-->
+                      
                     </div>
 
 
@@ -647,7 +633,7 @@
                                     Đơn giá nhập<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input type="text" placeholder="Nhập giá tiền" id="stock_pPurchasePrice" max="999999999999" class="form-control"
+                                    <input type="text" placeholder="Nhập giá tiền" id="stock_pPurchasePrice" max="999999999999" class="form-control Price"
                                            pattern="[0-9.,]+" data-type="number" name="purchase_price" required>
                                     <div class="invalid-feedback">
                                         Giá tiền nhập không được để trống !
@@ -687,4 +673,8 @@
             $(".swap").hide();
         }
     };
+    $("#unit_buy").change(function () {
+        var unit_buy = $("#unit_buy").val()
+        document.getElementsByClassName('unit_current')[0].innerHTML = unit_buy;
+    });
 </script>

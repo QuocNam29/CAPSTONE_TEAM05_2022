@@ -67,45 +67,54 @@ namespace CAP_TEAM05_2022.Controllers
                 }
                 else
                 {
-                    if (check_swap == 1 && (quantity_swap == null || String.IsNullOrEmpty(unit_swap) || String.IsNullOrEmpty(price_swap)))
+                    if (String.IsNullOrEmpty(unit))
                     {
                         status = false;
-                        message = "Thông tin quy đổi còn trống !";
+                        message = "Vui lòng chọn đơn vị của sản phẩm !";
                     }
                     else
                     {
-
-
-                        product product = new product();
-                        product.name = name_product;
-                        product.status = 1;
-                        product.unit = unit;
-                        product.category_id = CategoryDropdown;
-                        product.group_id = GroupProductDropdown;
-                        product.created_by = User.Identity.GetUserId();
-                        product.sell_price = decimal.Parse(sell_price.Replace(",", "").Replace(".", ""));
-                        product.purchase_price = decimal.Parse(purchase_price.Replace(",", "").Replace(".", ""));
-                        product.quantity = quantity;
-                        product.created_at = DateTime.Now;
-                        product.code = "SP" + CodeRandom.RandomCode();
-                        product.quantity_swap = quantity_swap;
-                        product.unit_swap = unit_swap;
-                        if (!String.IsNullOrEmpty(price_swap))
+                        if (check_swap == 1 && (quantity_swap == null || String.IsNullOrEmpty(unit_swap) || String.IsNullOrEmpty(price_swap)))
                         {
-                            product.sell_price_swap = decimal.Parse(price_swap.Replace(",", "").Replace(".", ""));
+                            status = false;
+                            message = "Thông tin quy đổi còn trống !";
                         }
-                        db.products.Add(product);
-                        import_inventory inventory = new import_inventory();
-                        inventory.product_id = product.id;
-                        inventory.quantity = quantity;
-                        inventory.price_import = int.Parse(purchase_price.Replace(",", "").Replace(".", ""));
-                        inventory.sold = 0;
-                        inventory.created_by = User.Identity.GetUserId();
-                        inventory.created_at = DateTime.Now;
-                        db.import_inventory.Add(inventory);
-                        db.SaveChanges();
-                        message = "Tạo sản phẩm thành công";
+                        else
+                        {
+
+
+                            product product = new product();
+                            product.name = name_product;
+                            product.status = 1;
+                            product.unit = unit;
+                            product.category_id = CategoryDropdown;
+                            product.group_id = GroupProductDropdown;
+                            product.created_by = User.Identity.GetUserId();
+                            product.sell_price = decimal.Parse(sell_price.Replace(",", "").Replace(".", ""));
+                            product.purchase_price = decimal.Parse(purchase_price.Replace(",", "").Replace(".", ""));
+                            product.quantity = quantity;
+                            product.created_at = DateTime.Now;
+                            product.code = "SP" + CodeRandom.RandomCode();
+                            product.quantity_swap = quantity_swap;
+                            product.unit_swap = unit_swap;
+                            if (!String.IsNullOrEmpty(price_swap))
+                            {
+                                product.sell_price_swap = decimal.Parse(price_swap.Replace(",", "").Replace(".", ""));
+                            }
+                            db.products.Add(product);
+                            import_inventory inventory = new import_inventory();
+                            inventory.product_id = product.id;
+                            inventory.quantity = quantity;
+                            inventory.price_import = int.Parse(purchase_price.Replace(",", "").Replace(".", ""));
+                            inventory.sold = 0;
+                            inventory.created_by = User.Identity.GetUserId();
+                            inventory.created_at = DateTime.Now;
+                            db.import_inventory.Add(inventory);
+                            db.SaveChanges();
+                            message = "Tạo sản phẩm thành công";
+                        }
                     }
+                    
                 }
             }
             catch (Exception e)

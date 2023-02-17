@@ -239,59 +239,8 @@ function EditStatus(id) {
 }
 
 //-----------------------Định dạng giá-------------------------------------
-$('#product-price-sold').keydown(function (e) {
-    setTimeout(() => {
-        let parts = $(this).val().split(".");
-        let v = parts[0].replace(/\D/g, ""),
-            dec = parts[1]
-        let calc_num = Number((dec !== undefined ? v + "." + dec : v));
-        // use this for numeric calculations
-        // console.log('number for calculations: ', calc_num);
-        let n = new Intl.NumberFormat('en-EN').format(v);
-        n = dec !== undefined ? n + "." + dec : n;
-        $(this).val(n);
-    })
-})
-$('#product-price-buy').keydown(function (e) {
-    setTimeout(() => {
-        let parts = $(this).val().split(".");
-        let v = parts[0].replace(/\D/g, ""),
-            dec = parts[1]
-        let calc_num = Number((dec !== undefined ? v + "." + dec : v));
-        // use this for numeric calculations
-        // console.log('number for calculations: ', calc_num);
-        let n = new Intl.NumberFormat('en-EN').format(v);
-        n = dec !== undefined ? n + "." + dec : n;
-        $(this).val(n);
-    })
-})
-$('#edit_sell_price').keydown(function (e) {
-    setTimeout(() => {
-        let parts = $(this).val().split(".");
-        let v = parts[0].replace(/\D/g, ""),
-            dec = parts[1]
-        let calc_num = Number((dec !== undefined ? v + "." + dec : v));
-        // use this for numeric calculations
-        // console.log('number for calculations: ', calc_num);
-        let n = new Intl.NumberFormat('en-EN').format(v);
-        n = dec !== undefined ? n + "." + dec : n;
-        $(this).val(n);
-    })
-})
-$('#edit_purchase_price').keydown(function (e) {
-    setTimeout(() => {
-        let parts = $(this).val().split(".");
-        let v = parts[0].replace(/\D/g, ""),
-            dec = parts[1]
-        let calc_num = Number((dec !== undefined ? v + "." + dec : v));
-        // use this for numeric calculations
-        // console.log('number for calculations: ', calc_num);
-        let n = new Intl.NumberFormat('en-EN').format(v);
-        n = dec !== undefined ? n + "." + dec : n;
-        $(this).val(n);
-    })
-})
-$('#stock_pPurchasePrice').keydown(function (e) {
+
+$('.Price').keydown(function (e) {
     setTimeout(() => {
         let parts = $(this).val().split(".");
         let v = parts[0].replace(/\D/g, ""),
