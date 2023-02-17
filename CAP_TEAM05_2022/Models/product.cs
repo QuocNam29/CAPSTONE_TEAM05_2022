@@ -43,7 +43,7 @@ namespace CAP_TEAM05_2022.Models
         public string name_category { get; set; }
         public string unit_swap { get; set; }
         public Nullable<int> quantity_swap { get; set; }
-        public Nullable<int> quantity_remaning { get; set; }
+        public int quantity_remaning { get; set; }
         public Nullable<decimal> sell_price_swap { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

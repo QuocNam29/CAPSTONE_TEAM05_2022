@@ -99,11 +99,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label>Số lượng</label>
                                 <div class="position-relative">
                                     <div class="input-group">
+                                        <input type="text" hidden id="price_PCurrent" name="price_PCurrent" class="form-control">
                                         <input type="number" min="0" id="quality_OD" name="quality_OD" class="form-control">
                                         <div class="input-group-append">
                                             <span id="unit" class="input-group-text">
@@ -114,14 +115,16 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-12 return_product_1">
                             <div class="form-group">
-                                <label>Giá bán</label>
-                                <div class="position-relative">
-                                    <div class="input-group">
-                                        <input type="text" hidden id="price_PCurrent" name="price_PCurrent" class="form-control">
-
+                                <label>Giá chênh lệch hiện tại và muốn đổi</label>
+                                <div class="input-group">
+                                    <div class="input-group-append">
+                                        <span id="basic-addon1" class="input-group-text spCollect">
+                                            Thu thêm
+                                        </span>
                                     </div>
+                                    <input type="text" id="collect" disabled="disabled" class="form-control" value="0">
                                 </div>
                             </div>
                         </div>
@@ -152,7 +155,7 @@
                                 </label>
                                 <div>
                                     <input type="hidden" class="ProductID" />
-                                    <select class="form-control returnProduct_List" ></select>
+                                    <select class="form-control returnProduct_List"></select>
                                 </div>
 
 
@@ -165,7 +168,7 @@
                                     Số lượng<span class="text-danger">*</span>
                                 </label>
                                 <div class="input-group">
-                                    <input type="number" value="1" min="0" placeholder="Số lượng sản phẩm" id="input_qualityProduct" disabled="disabled" class="form-control" >
+                                    <input type="number" value="1" min="0" placeholder="Số lượng sản phẩm" id="input_qualityProduct" disabled="disabled" class="form-control">
                                     <div class="input-group-append">
                                         <span id="unitProduct" class="input-group-text unitProduct">
                                         </span>

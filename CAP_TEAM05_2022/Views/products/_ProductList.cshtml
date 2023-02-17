@@ -9,8 +9,7 @@
             <th class="sticky-col first-col">Tên sản phẩm</th>
             <th>Nhóm hàng</th>
             <th>Danh mục</th>
-            <th class="text-center">Đơn vị</th>
-            <th class="text-center">Số lượng</th>
+            <th class="text-center">Số lượng nhập</th>
             <th class="text-center">Giá bán</th>
             <th class="text-center">Đã bán</th>
             <th class="text-center">Trạng thái</th>
@@ -37,9 +36,18 @@
                 </td>
                 <td>@item.group.name</td>
                 <td>@item.category.name</td>
-                <td class="text-center">@item.unit</td>
-                <td class="text-center">@item.quantity.ToString("N0")</td>
-                <td class="text-center">@item.sell_price.ToString("N0")</td>
+                <td class="text-center">
+                    @item.quantity.ToString("N0")<span class="txt-unit">@item.unit</span>
+                </td>
+                <td class="text-center">
+                    <div>@item.sell_price.ToString("N0")<span class="txt-unit">/@item.unit</span></div>
+                    @if (item.unit_swap != null)
+                    {
+                <div> @String.Format("{0:0,00}", item.sell_price_swap)<span class="txt-unit">/@item.unit_swap</span></div>
+
+                    }
+                </td>
+
                 <td class="text-center">@item.import_inventory.Where(i => i.product_id == item.id).Sum(s => s.sold)</td>
                 <td class="text-center">
                     @if (item.status == 1)

@@ -27,7 +27,7 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 cartCode = x.product.code,
                 cartName = x.product.name,
-                cartUnit = x.product.unit,
+                cartUnit = x.unit,
                 cartQuantity = x.quantity,
                 cartPrice = x.product.sell_price,
                 cartTotal = x.price,             
@@ -38,13 +38,26 @@ namespace CAP_TEAM05_2022.Controllers
         public JsonResult CreateCart(cart cart_create)
         {
             product product = db.products.Find(cart_create.product_id);
-            if (cart_create.quantity > product.quantity)
+            if (cart_create.unit == product.unit)
             {
-                string message1 = product.quantity.ToString();
-                bool status1 = true;
-                return Json(new { status = status1, message = message1 }, JsonRequestBehavior.AllowGet);
+                if (cart_create.quantity > product.quantity)
+                {
+                    string message1 = product.quantity.ToString();
+                    bool status1 = true;
+                    return Json(new { status = status1, message = message1 }, JsonRequestBehavior.AllowGet);
+                }
             }
-            cart cart_check = db.carts.Where(c => c.customer_id == cart_create.customer_id && c.product_id == cart_create.product_id).FirstOrDefault();
+            else
+            {
+                if (cart_create.quantity > (product.quantity * product.quantity_swap))
+                {
+                    string message1 = product.quantity.ToString();
+                    bool status1 = true;
+                    return Json(new { status = status1, message = message1 }, JsonRequestBehavior.AllowGet);
+                }
+            }
+           
+            cart cart_check = db.carts.Where(c => c.customer_id == cart_create.customer_id && c.product_id == cart_create.product_id && c.unit == cart_create.unit).FirstOrDefault();
             if (cart_check == null)
             {
                 cart cart = new cart();
@@ -53,6 +66,7 @@ namespace CAP_TEAM05_2022.Controllers
                 cart.quantity = cart_create.quantity;
                 cart.price = cart_create.price;
                 cart.note = cart_create.note;
+                cart.unit = cart_create.unit;
                 db.carts.Add(cart);
                 db.SaveChanges();
             }
@@ -63,9 +77,48 @@ namespace CAP_TEAM05_2022.Controllers
                 db.Entry(cart_check).State = EntityState.Modified;
                 db.SaveChanges();
             }
-            
-            
-            product.quantity -= cart_create.quantity;
+
+            if (cart_create.unit == product.unit)
+            {
+                product.quantity -= cart_create.quantity;
+            }
+            else
+            {
+                int check_quantity = cart_create.quantity;
+                while (check_quantity > 0)
+                {
+                    if (check_quantity <= product.quantity_remaning)
+                    {
+                        product.quantity_remaning -= check_quantity;
+                        check_quantity = 0;
+                    }
+                    else
+                    {
+                        if (product.quantity_remaning > 0)
+                        {
+                            check_quantity -= product.quantity_remaning;
+                            product.quantity_remaning = 0;
+                        }
+                        else
+                        {
+                            int temp_1 = (int)(check_quantity / product.quantity_swap);
+                            double temp_2 = (double)((check_quantity* 1.0000000) / product.quantity_swap) - temp_1;
+                            if (temp_2 > 0) 
+                            {
+                                product.quantity -= (temp_1 + 1);
+                                int temp = (int)(product.quantity_swap *(1 - temp_2));
+                                product.quantity_remaning +=  temp;
+                            }
+                            else
+                            {
+                                product.quantity -= temp_1;
+                            }
+                            check_quantity = 0;
+                        }
+                    }
+                }
+              
+            }
             db.Entry(product).State = EntityState.Modified;
             db.SaveChanges();
             string message = "Record Saved Successfully";

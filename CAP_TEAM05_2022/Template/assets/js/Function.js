@@ -1037,6 +1037,7 @@ function Create_Cart() {
     cart_create.quantity = $('#product_quantity').val();
     cart_create.price = Number($('#sum_price').val().replace(/\,/g, '').replace(/\./g, ''));
     cart_create.note = $('#cart_note').val();   
+    cart_create.unit = $('#unit_product_swap').val();   
     console.log(Number($('#sum_price').val().replace(/\,/g, '').replace(/\./g, '')));
         $.ajax({
             url: URLCreateCart,
@@ -1393,7 +1394,14 @@ function LoadDataProduct(id) {
             $('#product_price').val(response.name);
             var sum_price = Number($('#product_price').val().replace(/\,/g, '').replace(/\./g, '')) * Number($('#product_quantity').val()) ;
             $('#sum_price').val(sum_price.toLocaleString());
-
+            
+            var s = ' <option value="' + response.unit + '" data-type="other" selected>' + response.unit + '</option>';
+            if (response.unit_swap != null) {
+              
+                s += ' <option value="' + response.unit_swap + '" data-type="other">' + response.unit_swap + '</option>';
+               
+            }
+            $("#unit_product_swap").html(s);
         }
     })
 }

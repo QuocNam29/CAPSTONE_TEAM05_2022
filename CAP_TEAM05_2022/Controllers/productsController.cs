@@ -283,9 +283,20 @@ namespace CAP_TEAM05_2022.Controllers
             emp.id = product.id;
             emp.code = product.code;
             emp.name = product.sell_price.ToString("N0");
-            emp.note = "Đơn vị: " + product.unit + " - SL tồn: " + product.quantity;
+            emp.note = "Số lượng tồn: " + product.quantity + product.unit;
+            if (product.quantity_swap != null)
+            {
+                emp.note += "/" + product.quantity_swap + product.unit_swap;
+                if (product.quantity_remaning != null)
+                {
+                    emp.note += " và " + product.quantity_remaning + "/" + product.unit_swap + " lẻ";
+                }
+            }
+           
+                
             emp.quantity = product.quantity;
             emp.unit = product.unit;
+            emp.unit_swap = product.unit_swap;
             return Json(emp);
         }
 

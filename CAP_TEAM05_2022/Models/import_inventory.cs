@@ -29,6 +29,8 @@ namespace CAP_TEAM05_2022.Models
         public Nullable<System.DateTime> created_at { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }
         public Nullable<System.DateTime> deleted_at { get; set; }
+        public Nullable<int> sold_swap { get; set; }
+        public Nullable<int> quantity_remaining { get; set; }
     
         public virtual user user { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
