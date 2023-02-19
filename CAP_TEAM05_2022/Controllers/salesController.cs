@@ -151,6 +151,7 @@ namespace CAP_TEAM05_2022.Controllers
                                 revenue.inventory_id = inventory.id;
                                 revenue.Price = item.price / item.quantity;
                                 revenue.quantity = temp_quatity;
+                                revenue.unit = item.unit;
                                 db.revenues.Add(revenue);
                                 inventory.sold += temp_quatity;
                                 db.Entry(inventory).State = EntityState.Modified;
@@ -170,6 +171,7 @@ namespace CAP_TEAM05_2022.Controllers
                                     revenue.inventory_id = inventory.id;
                                     revenue.Price = item.price / item.quantity;
                                     revenue.quantity = temp_inventory;
+                                    revenue.unit = item.unit;
                                     db.revenues.Add(revenue);
                                     temp_quatity = 0;
                                 }
@@ -182,6 +184,7 @@ namespace CAP_TEAM05_2022.Controllers
                                     revenue.inventory_id = inventory.id;
                                     revenue.Price = item.price / item.quantity;
                                     revenue.quantity = temp_inventory;
+                                    revenue.unit = item.unit;
                                     db.revenues.Add(revenue);
                                     temp_quatity -= temp_inventory;
                                 }
