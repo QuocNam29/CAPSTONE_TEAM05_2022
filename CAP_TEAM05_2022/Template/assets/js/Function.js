@@ -1396,15 +1396,23 @@ function LoadDataProduct(id) {
             $('#sum_price').val(sum_price.toLocaleString());
             
             var s = ' <option value="' + response.unit + '" data-type="other" selected>' + response.unit + '</option>';
-            if (response.unit_swap != null) {
-              
+            if (response.unit_swap != null) {          
                 s += ' <option value="' + response.unit_swap + '" data-type="other">' + response.unit_swap + '</option>';
-               
+                $('#product_price_swap').val(response.name_group);
             }
             $("#unit_product_swap").html(s);
         }
     })
 }
+$("#unit_product_swap").change(function () {
+    var product_price = $('#product_price').val();
+    var product_price_swap = $('#product_price_swap').val();
+    $('#product_price').val(product_price_swap);
+    $('#product_price_swap').val(product_price);
+    var sum_price = Number($('#product_price').val().replace(/\,/g, '').replace(/\./g, '')) * Number($('#product_quantity').val());
+    $('#sum_price').val(sum_price.toLocaleString());
+
+});
 //------------------------Payment / Debit-------------------------------------
 var URLCreateSale = "";
 $('#URLCreateSale')

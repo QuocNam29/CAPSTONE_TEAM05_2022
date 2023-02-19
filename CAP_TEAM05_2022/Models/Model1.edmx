@@ -208,7 +208,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="name_category" Type="nvarchar" MaxLength="255" />
           <Property Name="unit_swap" Type="nvarchar" MaxLength="100" />
           <Property Name="quantity_swap" Type="int" />
-          <Property Name="quantity_remaning" Type="int" />
+          <Property Name="quantity_remaning" Type="int" Nullable="false" />
           <Property Name="sell_price_swap" Type="money" />
         </EntityType>
         <EntityType Name="return_details">
@@ -244,6 +244,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="sale_details_id" Type="int" Nullable="false" />
           <Property Name="Price" Type="money" Nullable="false" />
           <Property Name="quantity" Type="int" Nullable="false" />
+          <Property Name="unit" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="sale_details">
           <Key>
@@ -1004,7 +1005,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <NavigationProperty Name="sale_details" Relationship="Self.sale_details_ibfk_1" FromRole="products" ToRole="sale_details" />
           <Property Name="unit_swap" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="quantity_swap" Type="Int32" />
-          <Property Name="quantity_remaning" Type="Int32" />
+          <Property Name="quantity_remaning" Type="Int32" Nullable="false" />
           <Property Name="sell_price_swap" Type="Decimal" Precision="19" Scale="4" />
         </EntityType>
         <EntityType Name="return_details">
@@ -1047,6 +1048,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="quantity" Type="Int32" Nullable="false" />
           <NavigationProperty Name="import_inventory" Relationship="Self.FK_revenue_import_inventory" FromRole="revenue" ToRole="import_inventory" />
           <NavigationProperty Name="sale_details" Relationship="Self.FK_revenue_sale_details" FromRole="revenue" ToRole="sale_details" />
+          <Property Name="unit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="sale_details">
           <Key>
@@ -1822,6 +1824,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <EntitySetMapping Name="revenues">
             <EntityTypeMapping TypeName="CP25Team05Model.revenue">
               <MappingFragment StoreEntitySet="revenue">
+                <ScalarProperty Name="unit" ColumnName="unit" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="inventory_id" ColumnName="inventory_id" />
                 <ScalarProperty Name="sale_details_id" ColumnName="sale_details_id" />

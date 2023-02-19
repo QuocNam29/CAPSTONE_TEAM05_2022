@@ -19,6 +19,7 @@ namespace CAP_TEAM05_2022.Models
         public int sale_details_id { get; set; }
         public decimal Price { get; set; }
         public int quantity { get; set; }
+        public string unit { get; set; }
     
         public virtual import_inventory import_inventory { get; set; }
         public virtual sale_details sale_details { get; set; }

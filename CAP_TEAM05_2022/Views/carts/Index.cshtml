@@ -60,7 +60,7 @@
                                     <td>@item.product.name</td>
                                     <td class="text-center">@item.unit</td>
                                     <td class="text-center">@item.quantity</td>
-                                    <td class="text-center">@item.product.sell_price.ToString("N0")</td>
+                                    <td class="text-center">@((item.price/ item.quantity).ToString("N0"))</td>
                                     
                                     <td class="text-center">@item.price.ToString("N0")</td>
                                     <td>@item.note</td>

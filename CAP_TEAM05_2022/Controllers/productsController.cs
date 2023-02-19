@@ -107,6 +107,7 @@ namespace CAP_TEAM05_2022.Controllers
                             inventory.quantity = quantity;
                             inventory.price_import = int.Parse(purchase_price.Replace(",", "").Replace(".", ""));
                             inventory.sold = 0;
+                            inventory.sold_swap = 0;
                             inventory.created_by = User.Identity.GetUserId();
                             inventory.created_at = DateTime.Now;
                             db.import_inventory.Add(inventory);
@@ -286,10 +287,11 @@ namespace CAP_TEAM05_2022.Controllers
             emp.note = "Số lượng tồn: " + product.quantity + product.unit;
             if (product.quantity_swap != null)
             {
+                emp.name_group = string.Format("{0:0,00}", product.sell_price_swap);
                 emp.note += "/" + product.quantity_swap + product.unit_swap;
                 if (product.quantity_remaning != null)
                 {
-                    emp.note += " và " + product.quantity_remaning + "/" + product.unit_swap + " lẻ";
+                    emp.note += " và " + product.quantity_remaning  + product.unit_swap + " lẻ";
                 }
             }
            

@@ -132,59 +132,189 @@ namespace CAP_TEAM05_2022.Controllers
                     sale_Details.product_id = item.product_id;
                     sale_Details.sold = item.quantity;
                     sale_Details.price = item.price;
+                    sale_Details.unit = item.unit;
                     sale_Details.created_at = DateTime.Now;
                     db.sale_details.Add(sale_Details);
 
                     int temp_quatity = item.quantity;
                     while (temp_quatity > 0)
                     {
-                        import_inventory inventory = db.import_inventory.Where(i => i.product_id == item.product_id && i.quantity != i.sold).FirstOrDefault();
 
-                        if (temp_quatity <= (inventory.quantity - inventory.sold))
+                        import_inventory inventory = db.import_inventory.Where(i => (i.product_id == item.product_id && i.quantity != i.sold)
+                        || (i.product_id == item.product_id && i.product.unit_swap == item.unit && i.quantity_remaining > 0)).FirstOrDefault();
+                        if (item.unit == inventory.product.unit)
                         {
-                            revenue revenue = new revenue();
-                            revenue.sale_details_id = sale_Details.id;
-                            revenue.inventory_id = inventory.id;
-                            revenue.Price = item.price / item.quantity;
-                            revenue.quantity = temp_quatity;
-                            db.revenues.Add(revenue);
-                            inventory.sold += temp_quatity;
-                            db.Entry(inventory).State = EntityState.Modified;
-                            temp_quatity = 0;
-                            db.SaveChanges();
-
-                        }
-                        else
-                        {
-                            int temp_inventory = (inventory.quantity - inventory.sold);
-                            if (temp_quatity <= temp_inventory)
+                            if (temp_quatity <= (inventory.quantity - inventory.sold))
                             {
-                                inventory.sold += temp_quatity;
-                                db.Entry(inventory).State = EntityState.Modified;
                                 revenue revenue = new revenue();
                                 revenue.sale_details_id = sale_Details.id;
                                 revenue.inventory_id = inventory.id;
                                 revenue.Price = item.price / item.quantity;
-                                revenue.quantity = temp_inventory;
+                                revenue.quantity = temp_quatity;
                                 db.revenues.Add(revenue);
+                                inventory.sold += temp_quatity;
+                                db.Entry(inventory).State = EntityState.Modified;
                                 temp_quatity = 0;
+                                db.SaveChanges();
+
                             }
                             else
                             {
-                                inventory.sold += temp_inventory;
-                                db.Entry(inventory).State = EntityState.Modified;
+                                int temp_inventory = (inventory.quantity - inventory.sold);
+                                if (temp_quatity <= temp_inventory)
+                                {
+                                    inventory.sold += temp_quatity;
+                                    db.Entry(inventory).State = EntityState.Modified;
+                                    revenue revenue = new revenue();
+                                    revenue.sale_details_id = sale_Details.id;
+                                    revenue.inventory_id = inventory.id;
+                                    revenue.Price = item.price / item.quantity;
+                                    revenue.quantity = temp_inventory;
+                                    db.revenues.Add(revenue);
+                                    temp_quatity = 0;
+                                }
+                                else
+                                {
+                                    inventory.sold += temp_inventory;
+                                    db.Entry(inventory).State = EntityState.Modified;
+                                    revenue revenue = new revenue();
+                                    revenue.sale_details_id = sale_Details.id;
+                                    revenue.inventory_id = inventory.id;
+                                    revenue.Price = item.price / item.quantity;
+                                    revenue.quantity = temp_inventory;
+                                    db.revenues.Add(revenue);
+                                    temp_quatity -= temp_inventory;
+                                }
+                                db.SaveChanges();
+                            }
+                        }
+                        else
+                        {
+                            if (temp_quatity <= inventory.quantity_remaining)
+                            {
                                 revenue revenue = new revenue();
                                 revenue.sale_details_id = sale_Details.id;
                                 revenue.inventory_id = inventory.id;
                                 revenue.Price = item.price / item.quantity;
-                                revenue.quantity = temp_inventory;
+                                revenue.quantity = temp_quatity;
+                                revenue.unit = item.unit;
                                 db.revenues.Add(revenue);
-                                temp_quatity -= temp_inventory;
+                                inventory.sold_swap += temp_quatity;
+                                inventory.quantity_remaining -= temp_quatity;
+                                db.Entry(inventory).State = EntityState.Modified;
+                                temp_quatity = 0;
+                                db.SaveChanges();
+
                             }
-                            db.SaveChanges();
+                            else
+                            {
+                                int temp_inventory = (inventory.quantity - inventory.sold);
+
+                                int quantity_remaining = (int)inventory.quantity_remaining;
+                                if (temp_quatity <= quantity_remaining)
+                                {
+                                    inventory.sold_swap += temp_quatity;
+                                    inventory.quantity_remaining -= temp_quatity;
+                                    db.Entry(inventory).State = EntityState.Modified;
+                                    revenue revenue = new revenue();
+                                    revenue.sale_details_id = sale_Details.id;
+                                    revenue.inventory_id = inventory.id;
+                                    revenue.Price = item.price / item.quantity;
+                                    revenue.quantity = quantity_remaining;
+                                    revenue.unit = item.unit;
+                                    db.revenues.Add(revenue);
+                                    temp_quatity = 0;
+                                }
+                                else if (temp_quatity > quantity_remaining && quantity_remaining > 0)
+                                {
+                                    inventory.sold_swap += temp_quatity;
+                                    inventory.quantity_remaining = 0;
+                                    db.Entry(inventory).State = EntityState.Modified;
+                                    revenue revenue = new revenue();
+                                    revenue.sale_details_id = sale_Details.id;
+                                    revenue.inventory_id = inventory.id;
+                                    revenue.Price = item.price / item.quantity;
+                                    revenue.quantity = quantity_remaining;
+                                    revenue.unit = item.unit;
+                                    db.revenues.Add(revenue);
+                                    temp_quatity -= quantity_remaining;
+                                }
+                                else
+                                {
+                                    int temp_1 = (int)(temp_quatity / inventory.product.quantity_swap);
+                                    int temp_check = (int)(temp_quatity  % inventory.product.quantity_swap);
+                                    
+                                    if (temp_check > 0)
+                                    {
+                                        double temp_2 = (double)((temp_quatity * 1.0000000) / inventory.product.quantity_swap) - temp_1;
+                                        if (temp_inventory >= (temp_1 +1))
+                                        {
+                                            inventory.sold += (temp_1 + 1);
+                                            int temp = (int)(inventory.product.quantity_swap * (1 - temp_2));
+                                            inventory.quantity_remaining += temp;
+                                            inventory.sold_swap += temp_quatity;
+                                            revenue revenue = new revenue();
+                                            revenue.sale_details_id = sale_Details.id;
+                                            revenue.inventory_id = inventory.id;
+                                            revenue.Price = item.price / item.quantity;
+                                            revenue.quantity = temp_quatity;
+                                            revenue.unit = item.unit;
+                                            db.revenues.Add(revenue);
+                                            temp_quatity = 0;
+
+                                        }
+                                        else
+                                        {
+                                            inventory.sold += temp_inventory;
+                                            int temp = (int)(inventory.product.quantity_swap * temp_inventory);
+                                            inventory.sold_swap += temp;
+                                            revenue revenue = new revenue();
+                                            revenue.sale_details_id = sale_Details.id;
+                                            revenue.inventory_id = inventory.id;
+                                            revenue.Price = item.price / item.quantity;
+                                            revenue.quantity = temp;
+                                            revenue.unit = item.unit;
+                                            db.revenues.Add(revenue);
+                                            temp_quatity -= temp;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (temp_inventory >= temp_1)
+                                        {
+                                            inventory.sold += temp_1;
+                                            int temp_remaining = (int)(inventory.product.quantity_swap * temp_1);
+                                            inventory.sold_swap += temp_remaining;
+                                            revenue revenue = new revenue();
+                                            revenue.sale_details_id = sale_Details.id;
+                                            revenue.inventory_id = inventory.id;
+                                            revenue.Price = item.price / item.quantity;
+                                            revenue.quantity = temp_remaining;
+                                            revenue.unit = item.unit;
+                                            db.revenues.Add(revenue);
+                                            temp_quatity = 0;
+                                        }
+                                        else
+                                        {
+                                            inventory.sold += temp_inventory;
+                                            int temp = (int)(inventory.product.quantity_swap * temp_inventory);
+                                            inventory.sold_swap += temp;
+                                            revenue revenue = new revenue();
+                                            revenue.sale_details_id = sale_Details.id;
+                                            revenue.inventory_id = inventory.id;
+                                            revenue.Price = item.price / item.quantity;
+                                            revenue.quantity = temp;
+                                            revenue.unit = item.unit;
+                                            db.revenues.Add(revenue);
+                                            temp_quatity -= temp;
+                                        }
+                                    }
+                                    db.Entry(inventory).State = EntityState.Modified;
+                                   
+                                }
+                                db.SaveChanges();
+                            }
                         }
-
-
                     }
                     cart cart1 = db.carts.Find(item.id);
                     db.carts.Remove(cart1);

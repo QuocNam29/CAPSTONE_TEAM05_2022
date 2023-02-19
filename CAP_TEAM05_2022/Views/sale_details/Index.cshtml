@@ -125,6 +125,7 @@
                                                         <span id="basic-addon2" class="input-group-text">Giá bán:</span>
                                                     </div>
                                                     <input type="text" placeholder="Giá bán" id="product_price" disabled="disabled" class="form-control">
+                                                    <input type="text" placeholder="Giá bán" hidden id="product_price_swap" disabled="disabled" class="form-control">
                                                 </div>
                                             </div>
                                             <!---->
@@ -147,7 +148,7 @@
                                                     <input type="number" id="product_quantity" aria-label="Recipient's username" aria-describedby="basic-addon2" min="1" class="form-control" value="1" required>
                                                     <div class="input-group-append">
                                                         <select name="choose-quantity" id="unit_product_swap" class="input-group-text unit_product_swap">
-                                                            <option disabled="disabled" value="" >Đơn vị</option>
+                                                            <option disabled="disabled" selected value="" >Đơn vị</option>
 
                                                         </select>
                                                     </div>
