@@ -108,6 +108,7 @@ namespace CAP_TEAM05_2022.Controllers
                             inventory.price_import = int.Parse(purchase_price.Replace(",", "").Replace(".", ""));
                             inventory.sold = 0;
                             inventory.sold_swap = 0;
+                            inventory.quantity_remaining = 0;
                             inventory.created_by = User.Identity.GetUserId();
                             inventory.created_at = DateTime.Now;
                             db.import_inventory.Add(inventory);
@@ -245,6 +246,8 @@ namespace CAP_TEAM05_2022.Controllers
                 import.quantity = quantity;
                 import.price_import = int.Parse(purchase_price.Replace(",", "").Replace(".", ""));
                 import.sold = 0;
+                import.sold_swap = 0;
+                import.quantity_remaining = 0;
                 import.created_at = DateTime.Now;
                 import.created_by = User.Identity.GetUserId();
                 db.import_inventory.Add(import);
