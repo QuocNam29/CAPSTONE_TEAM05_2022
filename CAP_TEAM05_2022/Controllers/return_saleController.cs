@@ -28,12 +28,13 @@ namespace CAP_TEAM05_2022.Controllers
             bool status = true;
             try
             {
+                string unit = "";
                 int quality_OD_revenue = quality_OD;
                 sale_details sale_Details = db.sale_details.Find(sale_details_id);
                 sale sale = db.sales.Find(sale_Details.sale_id);
                 product product = db.products.Find(sale_Details.product_id);
                 var revenue = db.revenues.Where(r => r.sale_details_id == sale_details_id).OrderByDescending(o => o.id).ToList();
-
+                unit = sale_Details.unit;
                 decimal price_PCurrent1 = decimal.Parse(price_PCurrent.Replace(",", "").Replace(".", ""));
                 if (return_option == 2)
                 {
@@ -54,21 +55,40 @@ namespace CAP_TEAM05_2022.Controllers
                     {
                         while (quality_OD_revenue > 0)
                         {
+                           
                             if (item.quantity > quality_OD_revenue)
                             {
                                 item.quantity -= quality_OD_revenue;
                                 import_inventory import_Inventory = db.import_inventory.Find(item.inventory_id);
-                                import_Inventory.sold -= quality_OD_revenue;
+                               
+                                if (item.unit == import_Inventory.product.unit)
+                                {
+                                    import_Inventory.sold -= quality_OD_revenue;
+                                    db.Entry(import_Inventory).State = EntityState.Modified;
+                                }
+                                else
+                                {
+                                    import_Inventory.quantity_remaining += quality_OD_revenue;
+                                    db.Entry(import_Inventory).State = EntityState.Modified;
+                                }
                                 db.Entry(item).State = EntityState.Modified;
-                                db.Entry(import_Inventory).State = EntityState.Modified;
+                               
                                 quality_OD_revenue = 0;
                             }
                             else
                             {
                                 quality_OD_revenue -= item.quantity;
                                 import_inventory import_Inventory = db.import_inventory.Find(item.inventory_id);
-                                import_Inventory.sold -= quality_OD_revenue;
-                                db.Entry(import_Inventory).State = EntityState.Modified;
+                                if (item.unit == import_Inventory.product.unit)
+                                {
+                                    import_Inventory.sold -= quality_OD_revenue;
+                                    db.Entry(import_Inventory).State = EntityState.Modified;
+                                }
+                                else
+                                {
+                                    import_Inventory.quantity_remaining += quality_OD_revenue;
+                                    db.Entry(import_Inventory).State = EntityState.Modified;
+                                }
                                 db.revenues.Remove(item);
                             }
                             db.SaveChanges();
@@ -101,8 +121,17 @@ namespace CAP_TEAM05_2022.Controllers
                             db.SaveChanges();
                         }                      
                     }
-                    product.quantity += quality_OD;
-                    db.Entry(product).State = EntityState.Modified;
+                    if (unit == product.unit)
+                    {
+                        product.quantity += quality_OD;
+                        db.Entry(product).State = EntityState.Modified;
+                    }
+                    else if (unit == product.unit_swap)
+                    {
+                        product.quantity_remaning += quality_OD;
+                        db.Entry(product).State = EntityState.Modified;
+                    }
+                    
                     db.SaveChanges();
                    
                     message = "Trả sản phẩm thành công";

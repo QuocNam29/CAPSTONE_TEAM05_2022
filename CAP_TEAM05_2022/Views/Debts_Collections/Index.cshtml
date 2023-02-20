@@ -258,7 +258,7 @@
                                     Nhập số tiền thu <span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input type="number" name="paid" value="0" min="1" class="form-control" required>
+                                    <input type="text" name="paid" value="0" class="form-control Price" required>
                                     <div class="invalid-feedback">
                                         Số tiền thu phải lớn hơn 0 và không quá số tiền còn nợ !
                                     </div>
@@ -297,15 +297,9 @@
                 }
             }).done(function (result) {
                 $('#dataContainer2').html(result);
-                if (method ==1 ) {
                     $('#detailModal.close').css('display', 'none');
-                    $('#detailModal').modal('show');
-                }
-                else if (method == 2) {
-                    $('#DebtCollectionModal.close').css('display', 'none');
-                    $('#DebtCollectionModal').modal('show');
-
-                }
+                    $('#detailModal').modal('show');               
+              
 
 
             }).fail(function (XMLHttpRequest, textStatus, errorThrown) {

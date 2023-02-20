@@ -61,11 +61,11 @@
                                             </td>
                                            
                                             <td class="text-center">
-                                                @String.Format("{0:0,00}", item.price / item.sold)/@item.unit
+                                                @String.Format("{0:0,00}", item.price / item.sold)₫/<span class="txt-unit">@item.unit</span>
                                             </td>
                                             <td class="text-center">
-                                                @item.sold @item.unit
-                                            </td>
+                                                @item.sold<span class="txt-unit"> @item.unit</span>
+</td>
                                             <td class="text-center">
                                                 @String.Format("{0:0,00}", item.price)₫
                                             </td>
@@ -81,12 +81,12 @@
                                         <td colspan="2" class="text-left">
                                             <div class="total-div">
                                                 <div>
+                                                    Thành tiền:
                                                     <b>
-                                                        Thành tiền:
                                                         <span class="text">
                                                             @String.Format("{0:0,00}", order_total)₫
                                                         </span>
-                                                    </b>  
+                                                    </b>
                                                 </div>
                                                 @if (order_prepayment >= 0)
                                                 {
@@ -160,7 +160,7 @@
                                                 </td>
 
                                                 <td class="text-center">
-                                                    @item.sold
+                                                    @item.sold<span class="txt-unit"> @item.unit</span>
                                                 </td>
                                                 <td class="text-center">
                                                     @String.Format("{0:0,00}", item.price)

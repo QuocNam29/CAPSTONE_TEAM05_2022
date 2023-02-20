@@ -107,7 +107,7 @@
                                         <input type="text" hidden id="price_PCurrent" name="price_PCurrent" class="form-control">
                                         <input type="number" min="0" id="quality_OD" name="quality_OD" class="form-control">
                                         <div class="input-group-append">
-                                            <span id="unit" class="input-group-text">
+                                            <span id="unit" class="input-group-text unitCurrent">
                                                 kg
                                             </span>
                                         </div>
@@ -115,13 +115,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12 return_product_1">
+                        <div class="col-md-12 return_product_1" style="display: none">
                             <div class="form-group">
-                                <label>Giá chênh lệch hiện tại và muốn đổi</label>
+                                <label>Giá chênh lệch hiện </label>
                                 <div class="input-group">
                                     <div class="input-group-append">
                                         <span id="basic-addon1" class="input-group-text spCollect">
-                                            Thu thêm
+                                            Hoàn lại
                                         </span>
                                     </div>
                                     <input type="text" id="collect" disabled="disabled" class="form-control" value="0">
@@ -273,7 +273,9 @@
                 document.getElementById("quality_OD").setAttribute("max", response.total);
                 $('#price_PCurrent').val(response.prepayment.toLocaleString());
                 document.getElementsByClassName('price_current')[0].innerHTML = "Sản phẩm hiện tại: " + response.prepayment.toLocaleString() + " x " + response.total + " = " + (response.prepayment * response.total).toLocaleString();
-
+                document.getElementsByClassName('unitCurrent')[0].innerHTML = response.code;
+                $('#product_Current_id').val(response.method);
+                $('#collect').val((response.prepayment * response.total).toLocaleString());
             }
         })
     }
@@ -281,7 +283,10 @@
 
     function Return2() {
         $(".return_product").hide();
+        $(".return_product_1").show();
     } function Return1() {
         $(".return_product").show();
+        $(".return_product_1").hide();
+        
     }
 </script>

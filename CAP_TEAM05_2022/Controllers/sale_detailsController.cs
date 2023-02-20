@@ -42,6 +42,7 @@ namespace CAP_TEAM05_2022.Controllers
             emp.prepayment = details.price / details.sold;
             emp.id = details.id;
             emp.method = details.product_id;
+            emp.code = details.unit;
             return Json(emp);
         }
         // GET: sale_details/Details/5

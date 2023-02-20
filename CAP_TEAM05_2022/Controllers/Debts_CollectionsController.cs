@@ -64,24 +64,25 @@ namespace CAP_TEAM05_2022.Controllers
             
             return Json(emp);
         }
-        public ActionResult Create_Debts(int sale_id, int paid,  string note)
+        public ActionResult Create_Debts(int sale_id, string paid,  string note)
         {
             string message = "";
             bool status = true;
             try
             {
+                decimal paid_temp = decimal.Parse(paid.Replace(",", "").Replace(".", ""));
                 sale sale = db.sales.Find(sale_id);
                 debt debt = new debt();
                 debt.sale_id = sale_id;
                 debt.created_by = User.Identity.GetUserId();
                 debt.created_at = DateTime.Now;
-                debt.paid = paid;
-                debt.total = (int)(sale.prepayment + paid);
+                debt.paid = paid_temp;
+                debt.total = (decimal)(sale.prepayment + paid_temp);
                 debt.note = note;
                 db.debts.Add(debt);
                 message = "Thu nợ thành công";
                 
-                sale.prepayment += paid;
+                sale.prepayment += paid_temp;
                 db.Entry(sale).State = EntityState.Modified;
                 db.SaveChanges();
 
