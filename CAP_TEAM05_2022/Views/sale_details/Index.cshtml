@@ -188,15 +188,18 @@
                                         </button>
 
                                         <hr>
-                                        <button type="button" id="payment_btn" disabled="disabled" onclick="Payment_order()" class="btn btn-warning btn-block">
+                                        <button type="button" id="payment_btn" style="display: none;" onclick="Payment_order()" class="btn btn-warning btn-block">
                                             Thanh toán
                                         </button>
-                                        <button type="button" disabled="disabled" onclick="Payment_order()" class="btn btn-dark btn-block" id="btn_debit">
+                                        <button type="button" style="display: none;" onclick="Payment_order()" class="btn btn-dark btn-block" id="btn_debit">
                                             Ghi nợ
                                         </button>
                                         <hr>
-                                        <button type="button" id="order_btn" disabled="disabled" class="btn btn-success btn-block" onclick="openWin()">
+                                        <button type="button" id="order_btn" style="display: none;" class="btn btn-success btn-block" onclick="openWin()">
                                             Xem hoá đơn
+                                        </button> 
+                                        <button type="button" id="history_btn" style="display: none;" class="btn btn-danger btn-block" onclick="GetList_History()">
+                                            Xem lịch sử mua hàng
                                         </button>
 
 
@@ -332,8 +335,26 @@
 
     </div>
 </div>
-
+<div id="dataContainer2">
+    @{ Html.RenderAction("_HistoryOrder", "sales", new { order_customer = 0 });}
+</div>
 <script>
-
+    function GetList_History() {       
+        var id = $('#customer_id').val();
+            $.ajax({
+                url: '@Url.Action("_HistoryOrder", "sales")',
+                data: {
+                    order_customer: id,
+                }
+            }).done(function (result) {
+                $('#dataContainer2').html(result);            
+                $('#historyModal.close').css('display', 'none');
+                $('#historyModal').modal('show');             
+            }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(textStatus)
+                console.log(errorThrown)
+                alert("Something Went Wrong, Try Later");
+            });
+    }
 
 </script>

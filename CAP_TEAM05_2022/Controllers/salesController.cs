@@ -37,6 +37,11 @@ namespace CAP_TEAM05_2022.Controllers
             var OrderDetailsList = db.sale_details.Where(o => o.sale_id == order_id);
             return PartialView(OrderDetailsList.ToList());
         }
+        public ActionResult _HistoryOrder(int order_customer)
+        {
+            var HistoryOrder = db.sales.Where(o => o.customer_id == order_customer).OrderByDescending(o => o.id);
+            return PartialView(HistoryOrder.ToList());
+        }
         public ActionResult _OrderList(DateTime? date_Start, DateTime? date_End)
         {
             if (date_Start == null)

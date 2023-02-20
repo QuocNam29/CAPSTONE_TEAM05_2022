@@ -70,6 +70,8 @@ $(document).ready(function () {
             $('#product_name').val('');
             $('#sum_price').val('');
             $('#cart_note').val('');
+            $('#history_btn').hide();
+
             form.classList.remove('was-validated');
         })
         $('#Cancel_Cart').on('click', function () {
@@ -852,11 +854,11 @@ $('.AddCustomerSaleFrom').submit(function (e) {
                         $('#customer_type').val("Nhà cung cấp");
                     }
                     if ($("#total").val() != undefined) {
-                        $("#payment_btn").prop("disabled", false);
-                        $("#order_btn").prop("disabled", false);
+                        $("#payment_btn").show();
+$("#order_btn").show();
                     } else {
-                        $("#payment_btn").prop("disabled", true);
-                        $("#order_btn").prop("disabled", true);
+$("#payment_btn").hide();
+$("#order_btn").hide();
                     }
                 } else {
                     swal({
@@ -1050,7 +1052,7 @@ function Create_Cart() {
             success: function (response) {
                 if (response.message == "Record Saved Successfully") {
                     GetList_Cart($('#customer_id').val());
-                    $("#payment_btn").prop("disabled", false);
+                    $("#payment_btn").show();
                     LoadDataProduct($('#product_id').val());
                     sweetAlert
                         ({
@@ -1200,11 +1202,11 @@ function ButtonDebit() {
     var cart_Prepay1 = $('#cart_Prepay').val();
     
     if (cart_Prepay1 != undefined && cart_Prepay1 != '0') {
-        $("#btn_debit").prop("disabled", false);
-        $("#payment_btn").prop("disabled", true);
+        $("#btn_debit").show();
+        $("#payment_btn").hide();
     } else {
-        $("#btn_debit").prop("disabled", true);
-        $("#payment_btn").prop("disabled", false);
+        $("#btn_debit").hide();
+        $("#payment_btn").show();
     }
 }
 
@@ -1265,13 +1267,13 @@ $(function () {
                     $('#customer_type').val(response.note);
                     $('#count_sale').val(response.status);
                     $('#debit_sum').val(response.type.toLocaleString());
+                    $("#history_btn").show();
                     if ($("#total").val() != undefined) {
-
-                        $("#payment_btn").prop("disabled", false);
-                        $("#order_btn").prop("disabled", false);
+                        $("#payment_btn").show();
+                        $("#order_btn").show();
                     } else {
-                        $("#payment_btn").prop("disabled", true);
-                        $("#order_btn").prop("disabled", true);
+$("#payment_btn").hide();
+$("#order_btn").hide();
                     }
                 }
             })
@@ -1323,11 +1325,11 @@ $(function () {
                     $('#count_sale').val(response.status);
                     $('#debit_sum').val(response.type.toLocaleString());
                     if ($("#total").val() != undefined) {
-                        $("#payment_btn").prop("disabled", false);
-                        $("#order_btn").prop("disabled", false);
+                        $("#payment_btn").show();
+    $("#order_btn").show();
                     } else {
-                        $("#payment_btn").prop("disabled", true);
-                        $("#order_btn").prop("disabled", true);
+$("#payment_btn").hide();
+$("#order_btn").hide();
                     }
                 }
             })

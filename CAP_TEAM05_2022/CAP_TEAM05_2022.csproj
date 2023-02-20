@@ -698,6 +698,7 @@
     <Content Include="Views\return_sale\Details.cshtml" />
     <Content Include="Views\return_sale\Edit.cshtml" />
     <Content Include="Views\return_sale\Index.cshtml" />
+    <Content Include="Views\sales\_HistoryOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
