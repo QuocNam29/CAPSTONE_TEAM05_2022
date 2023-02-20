@@ -4,6 +4,7 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
 }
+
 <input type="text" hidden id="URLgetOrderProduct" value="@Url.Action("getCartProduct", "sale_details")" />
 <input type="text" hidden id="URL_OrderList" value="@Url.Action("_OrderList", "sales")" />
 
@@ -120,11 +121,11 @@
                                 <label>Giá chênh lệch hiện </label>
                                 <div class="input-group">
                                     <div class="input-group-append">
-                                        <span id="basic-addon1" class="input-group-text spCollect">
+                                        <span id="basic-addon1" class="input-group-text ">
                                             Hoàn lại
                                         </span>
                                     </div>
-                                    <input type="text" id="collect" disabled="disabled" class="form-control" value="0">
+                                    <input type="text" id="collect_return" disabled="disabled" class="form-control" value="0">
                                 </div>
                             </div>
                         </div>
@@ -155,7 +156,7 @@
                                 </label>
                                 <div>
                                     <input type="hidden" class="ProductID" />
-                                    <select class="form-control returnProduct_List"></select>
+                                    <select class="form-control returnProduct_List" name="product_id" required></select>
                                 </div>
 
 
@@ -168,10 +169,12 @@
                                     Số lượng<span class="text-danger">*</span>
                                 </label>
                                 <div class="input-group">
-                                    <input type="number" value="1" min="0" placeholder="Số lượng sản phẩm" id="input_qualityProduct" disabled="disabled" class="form-control">
+                                    <input type="number" value="1" min="0" placeholder="Số lượng sản phẩm" id="input_qualityProduct" name="input_qualityProduct" disabled="disabled" class="form-control">
                                     <div class="input-group-append">
-                                        <span id="unitProduct" class="input-group-text unitProduct">
-                                        </span>
+                                        <select name="choose_unit" id="unit_swap_return" class="input-group-text unit_swap_return">
+                                            <option disabled="disabled" selected value="">Đơn vị</option>
+
+                                        </select>
                                     </div>
 
                                 </div>
@@ -189,6 +192,8 @@
                                         </span>
                                     </div>
                                     <input type="text" id="priceProduct" disabled="disabled" class="form-control">
+                                    <input type="text" placeholder="Giá bán" hidden id="priceProduct_swap" disabled="disabled" class="form-control">
+
                                 </div>
                             </div>
                         </div>
@@ -275,7 +280,9 @@
                 document.getElementsByClassName('price_current')[0].innerHTML = "Sản phẩm hiện tại: " + response.prepayment.toLocaleString() + " x " + response.total + " = " + (response.prepayment * response.total).toLocaleString();
                 document.getElementsByClassName('unitCurrent')[0].innerHTML = response.code;
                 $('#product_Current_id').val(response.method);
-                $('#collect').val((response.prepayment * response.total).toLocaleString());
+                $('#collect_return').val((response.prepayment * response.total).toLocaleString());
+
+              
             }
         })
     }
@@ -286,7 +293,6 @@
         $(".return_product_1").show();
     } function Return1() {
         $(".return_product").show();
-        $(".return_product_1").hide();
-        
+        $(".return_product_1").hide();      
     }
 </script>

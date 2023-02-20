@@ -212,8 +212,7 @@
             dataType: 'json',
             type: 'post',
             success: function (data) {
-                document.getElementsByClassName('qualityProduct')[0].innerHTML = "Số lượng còn: " + data.quantity;
-                document.getElementsByClassName('unitProduct')[0].innerHTML = data.unit;
+                document.getElementsByClassName('qualityProduct')[0].innerHTML =  data.note;
                 document.querySelector("#input_qualityProduct").disabled = false;
                 $("#priceProduct").val(data.name);
                 var input_qualityProduct = $('#input_qualityProduct').val();
@@ -232,16 +231,31 @@
                     document.getElementsByClassName('spCollect')[0].innerHTML = "Thu thêm";
                     $('#collect').val((total * (-1)).toLocaleString());
                 }
-                
+
+                var s = ' <option value="' + data.unit + '" data-type="other" selected>' + data.unit + '</option>';
+                if (data.unit_swap != null) {
+                    s += ' <option value="' + data.unit_swap + '" data-type="other">' + data.unit_swap + '</option>';
+                    $('#priceProduct_swap').val(data.name_group);
+                }
+                $("#unit_swap_return").html(s);
 
             }
         });
+    });
+    $("#unit_swap_return").change(function () {
+        var priceProduct = $('#priceProduct').val();
+        var priceProduct_swap = $('#priceProduct_swap').val();
+        $('#priceProduct').val(priceProduct_swap);
+        $('#priceProduct_swap').val(priceProduct);      
     });
     $("#quality_OD").change(function () {
         var price_PCurrent = $('#price_PCurrent').val().replace(/\,/g, '').replace(/\./g, '');
         var quality_OD = $('#quality_OD').val();
         var priceProduct = $('#priceProduct').val().replace(/\,/g, '').replace(/\./g, '');
         var input_qualityProduct = $('#input_qualityProduct').val();
+        
+        $('#collect_return').val((price_PCurrent * quality_OD).toLocaleString());
+
         var total = (price_PCurrent * quality_OD) - (priceProduct * input_qualityProduct);
 
         if (total > 0) {

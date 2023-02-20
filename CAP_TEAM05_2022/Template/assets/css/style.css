@@ -30400,3 +30400,6 @@ body {
     padding: 10px;
     border: 1px solid;
 }
+.modal-lg {
+    max-width: 1200px;
+}

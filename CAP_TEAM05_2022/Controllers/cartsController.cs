@@ -42,7 +42,11 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 if (cart_create.quantity > product.quantity)
                 {
-                    string message1 = product.quantity.ToString();
+                    string message1 = product.quantity.ToString() + " " + product.unit;
+                    if (product.unit_swap != null)
+                    {
+                        message1 += " và " + (product.quantity * product.quantity_swap + product.quantity_remaning) + " " + product.unit_swap;
+                    }
                     bool status1 = true;
                     return Json(new { status = status1, message = message1 }, JsonRequestBehavior.AllowGet);
                 }
@@ -51,7 +55,11 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 if (cart_create.quantity > (product.quantity * product.quantity_swap))
                 {
-                    string message1 = product.quantity.ToString();
+                    string message1 = product.quantity.ToString() + " " + product.unit;
+                    if (product.unit_swap != null)
+                    {
+                        message1 += " và " + (product.quantity * product.quantity_swap + product.quantity_remaning) + " " + product.unit_swap;
+                    }
                     bool status1 = true;
                     return Json(new { status = status1, message = message1 }, JsonRequestBehavior.AllowGet);
                 }

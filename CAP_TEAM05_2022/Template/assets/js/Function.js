@@ -1056,6 +1056,7 @@ function Create_Cart() {
                     LoadDataProduct($('#product_id').val());
                     sweetAlert
                         ({
+                            title: "Thành công",
                             title: "Thêm giỏ hàng thành công !",
                             type: "success",
                             allowOutsideClick: true,
@@ -1064,7 +1065,8 @@ function Create_Cart() {
                 } else {
                     sweetAlert
                         ({
-                            title: "Số lượng sản phẩm chỉ còn: " + response.message + " sản phẩm !",
+                            title: "Lỗi",
+                            text: "Số lượng sản phẩm chỉ còn: " + response.message + " !",
                             type: "error",
                             allowOutsideClick: true,
 

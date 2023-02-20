@@ -63,7 +63,6 @@ namespace CAP_TEAM05_2022.Controllers
             return PartialView(sales.OrderByDescending(c => c.id).ToList());
         }
 
-
         public ActionResult Revenue()
         {
             return View(db.revenues.OrderByDescending(c => c.id).ToList());
@@ -113,7 +112,6 @@ namespace CAP_TEAM05_2022.Controllers
             bool status = true;
             try
             {
-
                 sale sale = new sale();
                 sale.code = "MDH" + CodeRandom.RandomCode();
                 sale.customer_id = createSale.customer_id;
@@ -144,11 +142,9 @@ namespace CAP_TEAM05_2022.Controllers
                     sale_Details.unit = item.unit;
                     sale_Details.created_at = DateTime.Now;
                     db.sale_details.Add(sale_Details);
-
                     int temp_quatity = item.quantity;
                     while (temp_quatity > 0)
                     {
-
                         import_inventory inventory = db.import_inventory.Where(i => (i.product_id == item.product_id && i.quantity != i.sold)
                         || (i.product_id == item.product_id && i.product.unit_swap == item.unit && i.quantity_remaining > 0)).FirstOrDefault();
                         if (item.unit == inventory.product.unit)
@@ -166,7 +162,6 @@ namespace CAP_TEAM05_2022.Controllers
                                 db.Entry(inventory).State = EntityState.Modified;
                                 temp_quatity = 0;
                                 db.SaveChanges();
-
                             }
                             else
                             {
@@ -216,7 +211,6 @@ namespace CAP_TEAM05_2022.Controllers
                                 db.Entry(inventory).State = EntityState.Modified;
                                 temp_quatity = 0;
                                 db.SaveChanges();
-
                             }
                             else
                             {
@@ -273,7 +267,6 @@ namespace CAP_TEAM05_2022.Controllers
                                             revenue.unit = item.unit;
                                             db.revenues.Add(revenue);
                                             temp_quatity = 0;
-
                                         }
                                         else
                                         {
@@ -321,8 +314,7 @@ namespace CAP_TEAM05_2022.Controllers
                                             temp_quatity -= temp;
                                         }
                                     }
-                                    db.Entry(inventory).State = EntityState.Modified;
-                                   
+                                    db.Entry(inventory).State = EntityState.Modified;                                   
                                 }
                                 db.SaveChanges();
                             }
