@@ -851,10 +851,12 @@ $('.AddCustomerSaleFrom').submit(function (e) {
                     } else if (data.customer.type == 3) {
                         $('#customer_type').val("Nhà cung cấp");
                     }
-                    if ($("#cart_total").val() != undefined) {
-                        console.log($("#cart_total").val());
+                    if ($("#total").val() != undefined) {
                         $("#payment_btn").prop("disabled", false);
                         $("#order_btn").prop("disabled", false);
+                    } else {
+                        $("#payment_btn").prop("disabled", true);
+                        $("#order_btn").prop("disabled", true);
                     }
                 } else {
                     swal({
@@ -1263,10 +1265,13 @@ $(function () {
                     $('#customer_type').val(response.note);
                     $('#count_sale').val(response.status);
                     $('#debit_sum').val(response.type.toLocaleString());
-                    if ($("#cart_total").val() != undefined) {
-                        console.log($("#cart_total").val());
+                    if ($("#total").val() != undefined) {
+
                         $("#payment_btn").prop("disabled", false);
                         $("#order_btn").prop("disabled", false);
+                    } else {
+                        $("#payment_btn").prop("disabled", true);
+                        $("#order_btn").prop("disabled", true);
                     }
                 }
             })
@@ -1317,10 +1322,12 @@ $(function () {
                     $('#customer_type').val(response.note);
                     $('#count_sale').val(response.status);
                     $('#debit_sum').val(response.type.toLocaleString());
-                    if ($("#cart_total").val() != undefined) {
-                        console.log($("#cart_total").val());
+                    if ($("#total").val() != undefined) {
                         $("#payment_btn").prop("disabled", false);
                         $("#order_btn").prop("disabled", false);
+                    } else {
+                        $("#payment_btn").prop("disabled", true);
+                        $("#order_btn").prop("disabled", true);
                     }
                 }
             })

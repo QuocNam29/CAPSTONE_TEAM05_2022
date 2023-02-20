@@ -28,6 +28,10 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 TempData["order_code"] = sale.code;
                 TempData["order_total"] = sale.total;
+                if (sale.prepayment != null)
+                {
+                    TempData["order_prepayment"] = sale.prepayment;
+                }
             }
 
             var OrderDetailsList = db.sale_details.Where(o => o.sale_id == order_id);

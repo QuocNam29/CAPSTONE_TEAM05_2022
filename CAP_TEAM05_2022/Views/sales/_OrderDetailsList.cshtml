@@ -5,11 +5,17 @@
     int no_return = 0;
     string order_code = "";
     decimal order_total = 0;
+    decimal order_prepayment = -1;
 
     if (TempData["order_code"] != null)
     {
         order_code = TempData["order_code"].ToString();
         order_total = decimal.Parse(TempData["order_total"].ToString());
+
+    }
+    if (TempData["order_prepayment"] != null)
+    {
+        order_prepayment = decimal.Parse(TempData["order_prepayment"].ToString());
 
     }
 
@@ -34,7 +40,6 @@
                                         <th class="text-center">STT</th>
                                         <th class="text-center">Mã sản phẩm</th>
                                         <th class="text-center">Tên sản phẩm</th>
-                                        <th class="text-center">Đơn vị</th>
                                         <th class="text-center">Đơn giá</th>
                                         <th class="text-center">Số lượng</th>
                                         <th class="text-center">Thành tiền</th>
@@ -54,33 +59,53 @@
                                             <td class="text-center">
                                                 @item.product.name
                                             </td>
-                                            <td class="text-center">
-                                                @item.product.unit
-                                            </td>
+                                           
                                             <td class="text-center">
                                                 @String.Format("{0:0,00}", item.price / item.sold)
                                             </td>
                                             <td class="text-center">
-                                                @item.sold
+                                                @item.sold @item.unit
                                             </td>
                                             <td class="text-center">
-                                                @String.Format("{0:0,00}", item.price)
+                                                @String.Format("{0:0,00}", item.price)₫
                                             </td>
                                         </tr>
                                     }
-
-
-
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="6" class="text-right">
-                                            <h5>Thành tiền</h5>
+                                        <td colspan="4" class="text-right">
+                                            
                                         </td>
-                                        <td class="text-left">
-                                            <h5>
-                                                @String.Format("{0:0,00}", order_total)₫
-                                            </h5>
+                                      
+                                        <td colspan="2" class="text-left">
+                                            <div class="total-div">
+                                                <div>
+                                                    <b>
+                                                        Thành tiền:
+                                                        <span class="text">
+                                                            @String.Format("{0:0,00}", order_total)₫
+                                                        </span>
+                                                    </b>  
+                                                </div>
+                                                @if (order_prepayment >= 0)
+                                                {
+                                                    <div>
+                                                       Đã thanh toán: 
+                                                        <span class="text-success">
+                                                            @String.Format("{0:0,00}", order_prepayment)₫
+                                                        </span>
+                                                    </div>
+                                                    <div>
+                                                        Còn nợ:
+                                                        <span class="text-danger">
+                                                            @String.Format("{0:0,00}", order_total- order_prepayment)₫
+                                                        </span>
+                                                    </div>
+                                                }
+
+
+                                            </div>
                                         </td>
                                     </tr>
                                 </tfoot>
