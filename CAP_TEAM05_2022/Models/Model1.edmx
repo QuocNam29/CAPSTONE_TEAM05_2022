@@ -219,10 +219,12 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="return_id" Type="int" Nullable="false" />
           <Property Name="product_current_id" Type="int" Nullable="false" />
           <Property Name="quantity_current" Type="int" Nullable="false" />
+          <Property Name="unit_current" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="total_current" Type="money" Nullable="false" />
           <Property Name="product_return_id" Type="int" />
           <Property Name="quantity_return" Type="int" />
           <Property Name="total_return" Type="money" />
+          <Property Name="unit_return" Type="nvarchar" MaxLength="50" />
           <Property Name="difference" Type="money" Nullable="false" />
         </EntityType>
         <EntityType Name="return_sale">
@@ -1024,6 +1026,8 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <NavigationProperty Name="product" Relationship="Self.FK_return_details_products" FromRole="return_details" ToRole="products" />
           <NavigationProperty Name="product1" Relationship="Self.FK_return_details_products1" FromRole="return_details" ToRole="products" />
           <NavigationProperty Name="return_sale" Relationship="Self.FK_return_details_return" FromRole="return_details" ToRole="return_sale" />
+          <Property Name="unit_current" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="unit_return" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="return_sale">
           <Key>
@@ -1798,6 +1802,8 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <EntitySetMapping Name="return_details">
             <EntityTypeMapping TypeName="CP25Team05Model.return_details">
               <MappingFragment StoreEntitySet="return_details">
+                <ScalarProperty Name="unit_return" ColumnName="unit_return" />
+                <ScalarProperty Name="unit_current" ColumnName="unit_current" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="return_id" ColumnName="return_id" />
                 <ScalarProperty Name="product_current_id" ColumnName="product_current_id" />

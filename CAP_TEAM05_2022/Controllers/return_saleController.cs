@@ -19,7 +19,7 @@ namespace CAP_TEAM05_2022.Controllers
             return View(return_sale.ToList());
         }
         public ActionResult Create_Return(int sale_details_id, int product_Current_id, int quality_OD,
-            string price_PCurrent, int return_option, int product_id, int input_qualityProduct, string choose_unit)
+            string price_PCurrent, int return_option, int? product_id, int? input_qualityProduct, string choose_unit)
         {
             string message = "";
             bool status = true;
@@ -46,6 +46,8 @@ namespace CAP_TEAM05_2022.Controllers
                     return_Details.product_current_id = product_Current_id;
                     return_Details.quantity_current = quality_OD;
                     return_Details.total_current = price_PCurrent1 * quality_OD;
+                    return_Details.difference = (decimal)return_Details.total_current;
+                    return_Details.unit_current = sale_Details.unit;
                     db.return_details.Add(return_Details);
                     db.SaveChanges();
                     foreach (var item in revenue)
@@ -165,12 +167,12 @@ namespace CAP_TEAM05_2022.Controllers
 
                     sale_details sale_Details_return = new sale_details();
                     sale_Details_return.sale_id = sale.id;
-                    sale_Details_return.product_id = product_id;
-                    sale_Details_return.sold = input_qualityProduct;
+                    sale_Details_return.product_id = (int)product_id;
+                    sale_Details_return.sold = (int)input_qualityProduct;
                     if (product_check.unit == choose_unit)
                     {
-                        sale_Details_return.price = product_check.sell_price * input_qualityProduct;
-                        sale.total += product_check.sell_price * input_qualityProduct;
+                        sale_Details_return.price = (decimal)(product_check.sell_price * input_qualityProduct);
+                        sale.total += (decimal)(product_check.sell_price * input_qualityProduct);
                     }
                     else
                     {
@@ -180,7 +182,7 @@ namespace CAP_TEAM05_2022.Controllers
                     sale_Details_return.unit = choose_unit;
                     sale_Details_return.created_at = DateTime.Now;
                     db.sale_details.Add(sale_Details_return);
-                    int temp_quatity = input_qualityProduct;
+                    int temp_quatity = (int)input_qualityProduct;
                     while (temp_quatity > 0)
                     {
                         import_inventory inventory = db.import_inventory.Where(i => (i.product_id == product_id && i.quantity != i.sold)
@@ -452,6 +454,19 @@ namespace CAP_TEAM05_2022.Controllers
                     return_Details.product_current_id = product_Current_id;
                     return_Details.quantity_current = quality_OD;
                     return_Details.total_current = price_PCurrent1 * quality_OD;
+                    return_Details.product_return_id = product_id;
+                    return_Details.quantity_return = input_qualityProduct;
+                    return_Details.unit_current = sale_Details.unit;
+                    return_Details.unit_return = choose_unit;
+                    if (product_check.unit == choose_unit)
+                    {
+                        return_Details.total_return = product_check.sell_price * input_qualityProduct;
+                    }
+                    else
+                    {
+                        return_Details.total_return = (decimal)(product_check.sell_price_swap * input_qualityProduct);
+                    }
+                    return_Details.difference = (decimal)(return_Details.total_current - return_Details.total_return);
                     db.return_details.Add(return_Details);
                     db.SaveChanges();
                     foreach (var item in revenue)

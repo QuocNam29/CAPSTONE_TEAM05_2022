@@ -23,6 +23,8 @@ namespace CAP_TEAM05_2022.Models
         public Nullable<int> quantity_return { get; set; }
         public Nullable<decimal> total_return { get; set; }
         public decimal difference { get; set; }
+        public string unit_current { get; set; }
+        public string unit_return { get; set; }
     
         public virtual product product { get; set; }
         public virtual product product1 { get; set; }
