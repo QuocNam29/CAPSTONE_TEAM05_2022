@@ -154,7 +154,7 @@
                                                                     <td>
                                                                             <p>Hoàn lại</p>
                                                                             <span class="text-danger">
-                                                                                @String.Format("{0:0,00}", item.difference)
+                                                                                @String.Format("{0:0,00}", item.difference)₫
                                                                             </span>
                                                                     </td>
                                                                 </tr>
@@ -191,15 +191,15 @@
                                                             @if (item.difference > 0)
                                                             {
                                                                 <p>Hoàn lại:</p>
-                                                                <span class="text-success">
-                                                                    @String.Format("{0:0,00}", item.difference)
+                                                                <span class="text-danger">
+                                                                    @String.Format("{0:0,00}", item.difference)₫
                                                                 </span>
                                                             }
                                                             else
                                                             {
                                                                 <p>Thu thêm:</p>
                                                                 <span class="text-success">
-                                                                    @String.Format("{0:0,00}", item.difference)
+                                                                    @String.Format("{0:0,00}", (-1 * item.difference))₫
                                                                 </span>
                                                             }
                                                         </td>

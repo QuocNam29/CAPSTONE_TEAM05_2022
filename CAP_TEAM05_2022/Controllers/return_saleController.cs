@@ -441,13 +441,21 @@ namespace CAP_TEAM05_2022.Controllers
                     }
 
                     db.SaveChanges();
-
+                    decimal total_return = 0;
+                    if (product_check.unit == choose_unit)
+                    {
+                         total_return = (decimal)(product_check.sell_price * input_qualityProduct);
+                    }
+                    else
+                    {
+                        total_return = (decimal)(product_check.sell_price_swap * input_qualityProduct);
+                    }
 
                     return_sale return_Sale = new return_sale();
                     return_Sale.sale_id = sale_Details.sale_id;
                     return_Sale.method = return_option;
                     return_Sale.create_at = DateTime.Now;
-                    return_Sale.difference = price_PCurrent1 * quality_OD;
+                    return_Sale.difference = (price_PCurrent1 * quality_OD) - total_return;
                     db.return_sale.Add(return_Sale);
                     return_details return_Details = new return_details();
                     return_Details.return_id = return_Sale.id;
@@ -457,15 +465,8 @@ namespace CAP_TEAM05_2022.Controllers
                     return_Details.product_return_id = product_id;
                     return_Details.quantity_return = input_qualityProduct;
                     return_Details.unit_current = sale_Details.unit;
-                    return_Details.unit_return = choose_unit;
-                    if (product_check.unit == choose_unit)
-                    {
-                        return_Details.total_return = product_check.sell_price * input_qualityProduct;
-                    }
-                    else
-                    {
-                        return_Details.total_return = (decimal)(product_check.sell_price_swap * input_qualityProduct);
-                    }
+                    return_Details.unit_return = choose_unit;                   
+                    return_Details.total_return = total_return;                 
                     return_Details.difference = (decimal)(return_Details.total_current - return_Details.total_return);
                     db.return_details.Add(return_Details);
                     db.SaveChanges();
