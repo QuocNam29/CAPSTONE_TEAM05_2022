@@ -357,6 +357,15 @@ namespace CAP_TEAM05_2022.Controllers
             }
             return Json(new { status, message }, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult getSupplier()
+        {
+
+            return Json(db.customers.Where(c => c.status == 1 && c.type == 2).OrderByDescending(c => c.id).Select(x => new
+            {
+                supplierID = x.id,
+                supplierName = x.name
+            }).ToList(), JsonRequestBehavior.AllowGet);
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

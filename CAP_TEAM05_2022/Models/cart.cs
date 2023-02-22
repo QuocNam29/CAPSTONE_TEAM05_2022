@@ -17,12 +17,12 @@ namespace CAP_TEAM05_2022.Models
         public int id { get; set; }
         public int product_id { get; set; }
         public int customer_id { get; set; }
+        public string unit { get; set; }
         public int quantity { get; set; }
         public int price { get; set; }
         public string note { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }
-        public string unit { get; set; }
     
         public virtual product product { get; set; }
         public virtual customer customer { get; set; }

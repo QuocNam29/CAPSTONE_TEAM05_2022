@@ -70,6 +70,79 @@
         </div>
     </div>
 </section>
+<div id="exchangeSupplierModal" tabindex="-1" aria-labelledby="exchangeSupplierModalTitle" class="modal fade bd-example-modal-lg" aria-modal="true" role="dialog">
+    <div role="document" class="modal-dialog modal-lg">
+        <form class="needs-validation Return_Supplier" method="post" action="@Url.Action("Create_returnSupplier", "return_supplier")" novalidate>
+            <input type="number" id="id_inventory" name="id_inventory" hidden class="form-control">
+
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 id="exchangeSupplierModalTitle" class="modal-title white">Trả sản phẩm</h5>
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Sản phẩm<span class="text-danger">(*)</span>
+                                </label>
+                                <input type="text" disabled id="productName_inventory" class="form-control">
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Nhà cung cấp<span class="text-danger">(*)</span>
+                                </label>
+                                <input type="text" disabled id="name_supplier" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Số lượng còn <span class="text-danger">(*)</span>
+                                </label>
+                                <div class="position-relative">
+                                    <input type="number" disabled id="quantity_stock" class="form-control">
+                                   
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Số lượng trả <span class="text-danger">(*)</span>
+                                </label>
+                                <div class="position-relative">
+                                    <input type="number" name="quantity" class="form-control" placeholder="Số lượng trả" required>
+                                    <div class="error-quantity text-danger mb-3 d-none">
+                                        Vui lòng nhập số lượng lớn hơn 0
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label>
+                                Ghi chú:
+                            </label>
+                            <div class="form-group">
+                                <textarea name="note" id="note" cols="10" rows="10" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary me-1 mb-1">Trờ lại</button>
+                        <button type="submit" class="btn btn-primary me-1 mb-1">Lưu</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
@@ -79,6 +152,44 @@
         $('#example').DataTable({
             pagingType: 'full_numbers',
         });
+    });
+    $('.Return_Supplier').submit(function (e) {
+        var form = $(this);
+
+        // Check if form is valid then submit ajax
+        if (form[0].checkValidity()) {
+            e.preventDefault();
+            var url = form.attr('action');
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: form.serialize(),
+                success: function (data) {
+                    // Hide bootstrap modal to prevent conflict
+                    $('.modal').modal('hide');
+
+                    if (data.status) {
+                        // Refresh table data
+                        sweetAlert
+                            ({
+                                title: "Thành công !",
+                                text: data.message,
+                                type: "success"
+                            })
+
+                        form[0].reset();
+                        form.removeClass('was-validated');
+                    } else {
+                        swal({
+                            title: 'Lỗi !',
+                            text: data.message,
+                            type: 'error',
+
+                        }); // Show bootstrap modal again
+                    }
+                }
+            });
+        }
     });
 </script>
 <script type="text/javascript">

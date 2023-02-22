@@ -50,7 +50,7 @@ namespace CAP_TEAM05_2022.Controllers
         public ActionResult Create_Product(string name_product, string unit,
             int quantity, int GroupProductDropdown, int CategoryDropdown,
             string sell_price, string purchase_price, int? quantity_swap, string unit_swap,
-            string price_swap, int check_swap )
+            string price_swap, int check_swap, int SupplierDropdown)
         {
             string message = "";
             bool status = true;
@@ -97,6 +97,7 @@ namespace CAP_TEAM05_2022.Controllers
                             product.code = "SP" + CodeRandom.RandomCode();
                             product.quantity_swap = quantity_swap;
                             product.unit_swap = unit_swap;
+                            
                             if (!String.IsNullOrEmpty(price_swap))
                             {
                                 product.sell_price_swap = decimal.Parse(price_swap.Replace(",", "").Replace(".", ""));
@@ -111,6 +112,7 @@ namespace CAP_TEAM05_2022.Controllers
                             inventory.quantity_remaining = 0;
                             inventory.created_by = User.Identity.GetUserId();
                             inventory.created_at = DateTime.Now;
+                            inventory.supplier_id = SupplierDropdown;
                             db.import_inventory.Add(inventory);
                             db.SaveChanges();
                             message = "Tạo sản phẩm thành công";

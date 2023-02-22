@@ -270,6 +270,11 @@ $('#URLgetCategory')
         URLgetCategory = $(this).val();
     })
     .keypress();
+$('#URLgetSupplier')
+    .keypress(function () {
+        URLgetSupplier = $(this).val();
+    })
+    .keypress();
 
 $.ajax({
     type: "GET",
@@ -293,6 +298,18 @@ $.ajax({
             s += '<option value="' + data[i].categoryID + '">' + data[i].categoryName + '</option>';
         }
         $("#CategoryDropdown").html(s);
+    }
+});
+$.ajax({
+    type: "GET",
+    url: URLgetSupplier,
+    data: "{}",
+    success: function (data) {
+        var s = '<option value="" disabled="disabled" selected="selected">Chọn nhà cung cấp</option>';
+        for (var i = 0; i < data.length; i++) {
+            s += '<option value="' + data[i].supplierID + '">' + data[i].supplierName + '</option>';
+        }
+        $("#SupplierDropdown").html(s);
     }
 });
 
@@ -2166,3 +2183,14 @@ $('.ReturnForm').submit(function (e) {
         });
     }
 });
+//---------------------------------Trả sản phẩm cho nhà cung cấp------------------
+function Get_exchangeSupplier(id, product_name, quantity_stock, supplier) {
+    $("#id_inventory").val(id);
+    $("#productName_inventory").val(product_name);
+    $("#quantity_stock").val(quantity_stock);
+    $("#name_supplier").val(supplier);
+          
+    $('#exchangeSupplierModal .close').css('display', 'none');
+    $('#exchangeSupplierModal').modal('show');
+       
+}

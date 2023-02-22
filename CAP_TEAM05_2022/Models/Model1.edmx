@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="CP25Team05Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="CP25Team05Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -159,31 +159,7 @@
           <Property Name="deleted_at" Type="datetime2" Precision="0" />
           <Property Name="sold_swap" Type="int" />
           <Property Name="quantity_remaining" Type="int" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="password_resets">
-          <Key>
-            <PropertyRef Name="email" />
-            <PropertyRef Name="token" />
-          </Key>
-          <Property Name="email" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="token" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="created_at" Type="datetime2" Precision="0" />
-        </EntityType>
-        <EntityType Name="personal_access_tokens">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="tokenable_type" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="tokenable_id" Type="bigint" Nullable="false" />
-          <Property Name="name" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="token" Type="varchar" MaxLength="64" Nullable="false" />
-          <Property Name="abilities" Type="varchar(max)" />
-          <Property Name="last_used_at" Type="datetime2" Precision="0" />
-          <Property Name="created_at" Type="datetime2" Precision="0" />
-          <Property Name="updated_at" Type="datetime2" Precision="0" />
+          <Property Name="supplier_id" Type="int" />
         </EntityType>
         <EntityType Name="products">
           <Key>
@@ -236,6 +212,17 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="method" Type="int" Nullable="false" />
           <Property Name="create_at" Type="datetime" Nullable="false" />
           <Property Name="difference" Type="money" Nullable="false" />
+        </EntityType>
+        <EntityType Name="return_supplier">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="inventory_id" Type="int" Nullable="false" />
+          <Property Name="quantity" Type="int" Nullable="false" />
+          <Property Name="note" Type="nvarchar" MaxLength="255" />
+          <Property Name="cost_difference" Type="money" Nullable="false" />
+          <Property Name="created_at" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="revenue">
           <Key>
@@ -434,6 +421,18 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_import_inventory_customers">
+          <End Role="customers" Type="Self.customers" Multiplicity="0..1" />
+          <End Role="import_inventory" Type="Self.import_inventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="import_inventory">
+              <PropertyRef Name="supplier_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_import_inventory_users">
           <End Role="users" Type="Self.users" Multiplicity="1" />
           <End Role="import_inventory" Type="Self.import_inventory" Multiplicity="*" />
@@ -503,6 +502,18 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
             </Principal>
             <Dependent Role="return_sale">
               <PropertyRef Name="sale_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_return_supplier_import_inventory">
+          <End Role="import_inventory" Type="Self.import_inventory" Multiplicity="1" />
+          <End Role="return_supplier" Type="Self.return_supplier" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="import_inventory">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="return_supplier">
+              <PropertyRef Name="inventory_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -670,22 +681,15 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <EntitySet Name="debts" EntityType="Self.debts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="groups" EntityType="Self.groups" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="import_inventory" EntityType="Self.import_inventory" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="personal_access_tokens" EntityType="Self.personal_access_tokens" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="products" EntityType="Self.products" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="return_details" EntityType="Self.return_details" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="return_sale" EntityType="Self.return_sale" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="return_supplier" EntityType="Self.return_supplier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="revenue" EntityType="Self.revenue" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sale_details" EntityType="Self.sale_details" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sales" EntityType="Self.sales" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="password_resets" EntityType="Self.password_resets" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [password_resets].[email] AS [email], 
-    [password_resets].[token] AS [token], 
-    [password_resets].[created_at] AS [created_at]
-    FROM [dbo].[password_resets] AS [password_resets]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="carts_ibfk_1" Association="Self.carts_ibfk_1">
             <End Role="products" EntitySet="products" />
             <End Role="carts" EntitySet="carts" />
@@ -726,6 +730,10 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
             <End Role="users" EntitySet="users" />
             <End Role="groups" EntitySet="groups" />
           </AssociationSet>
+          <AssociationSet Name="FK_import_inventory_customers" Association="Self.FK_import_inventory_customers">
+            <End Role="customers" EntitySet="customers" />
+            <End Role="import_inventory" EntitySet="import_inventory" />
+          </AssociationSet>
           <AssociationSet Name="FK_import_inventory_users" Association="Self.FK_import_inventory_users">
             <End Role="users" EntitySet="users" />
             <End Role="import_inventory" EntitySet="import_inventory" />
@@ -749,6 +757,10 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <AssociationSet Name="FK_return_sales" Association="Self.FK_return_sales">
             <End Role="sales" EntitySet="sales" />
             <End Role="return_sale" EntitySet="return_sale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_return_supplier_import_inventory" Association="Self.FK_return_supplier_import_inventory">
+            <End Role="import_inventory" EntitySet="import_inventory" />
+            <End Role="return_supplier" EntitySet="return_supplier" />
           </AssociationSet>
           <AssociationSet Name="FK_revenue_import_inventory" Association="Self.FK_revenue_import_inventory">
             <End Role="import_inventory" EntitySet="import_inventory" />
@@ -791,7 +803,8 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
             <End Role="sale_details" EntitySet="sale_details" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CP25Team05Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -862,6 +875,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="product_id" Type="Int32" Nullable="false" />
           <Property Name="customer_id" Type="Int32" Nullable="false" />
+          <Property Name="unit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="quantity" Type="Int32" Nullable="false" />
           <Property Name="price" Type="Int32" Nullable="false" />
           <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
@@ -869,7 +883,6 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="updated_at" Type="DateTime" Precision="0" />
           <NavigationProperty Name="product" Relationship="Self.carts_ibfk_1" FromRole="carts" ToRole="products" />
           <NavigationProperty Name="customer" Relationship="Self.carts_ibfk_2" FromRole="carts" ToRole="customers" />
-          <Property Name="unit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="category">
           <Key>
@@ -909,6 +922,7 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="deleted_at" Type="DateTime" Precision="0" />
           <Property Name="code" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="carts" Relationship="Self.carts_ibfk_2" FromRole="customers" ToRole="carts" />
+          <NavigationProperty Name="import_inventory" Relationship="Self.FK_import_inventory_customers" FromRole="customers" ToRole="import_inventory" />
           <NavigationProperty Name="sales" Relationship="Self.FK_sales_customers" FromRole="customers" ToRole="sales" />
         </EntityType>
         <EntityType Name="debt">
@@ -956,25 +970,14 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="created_at" Type="DateTime" Precision="0" />
           <Property Name="updated_at" Type="DateTime" Precision="0" />
           <Property Name="deleted_at" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="user" Relationship="Self.FK_import_inventory_users" FromRole="import_inventory" ToRole="users" />
-          <NavigationProperty Name="revenues" Relationship="Self.FK_revenue_import_inventory" FromRole="import_inventory" ToRole="revenue" />
-          <NavigationProperty Name="product" Relationship="Self.import_inventory_ibfk_2" FromRole="import_inventory" ToRole="products" />
           <Property Name="sold_swap" Type="Int32" />
           <Property Name="quantity_remaining" Type="Int32" />
-        </EntityType>
-        <EntityType Name="personal_access_tokens">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="tokenable_type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="tokenable_id" Type="Int64" Nullable="false" />
-          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="token" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="abilities" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="last_used_at" Type="DateTime" Precision="0" />
-          <Property Name="created_at" Type="DateTime" Precision="0" />
-          <Property Name="updated_at" Type="DateTime" Precision="0" />
+          <Property Name="supplier_id" Type="Int32" />
+          <NavigationProperty Name="customer" Relationship="Self.FK_import_inventory_customers" FromRole="import_inventory" ToRole="customers" />
+          <NavigationProperty Name="user" Relationship="Self.FK_import_inventory_users" FromRole="import_inventory" ToRole="users" />
+          <NavigationProperty Name="return_supplier" Relationship="Self.FK_return_supplier_import_inventory" FromRole="import_inventory" ToRole="return_supplier" />
+          <NavigationProperty Name="revenues" Relationship="Self.FK_revenue_import_inventory" FromRole="import_inventory" ToRole="revenue" />
+          <NavigationProperty Name="product" Relationship="Self.import_inventory_ibfk_2" FromRole="import_inventory" ToRole="products" />
         </EntityType>
         <EntityType Name="product">
           <Key>
@@ -997,6 +1000,10 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="deleted_at" Type="DateTime" Precision="0" />
           <Property Name="name_group" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="name_category" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="unit_swap" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="quantity_swap" Type="Int32" />
+          <Property Name="quantity_remaning" Type="Int32" Nullable="false" />
+          <Property Name="sell_price_swap" Type="Decimal" Precision="19" Scale="4" />
           <NavigationProperty Name="carts" Relationship="Self.carts_ibfk_1" FromRole="products" ToRole="carts" />
           <NavigationProperty Name="category" Relationship="Self.products_ibfk_4" FromRole="products" ToRole="categories" />
           <NavigationProperty Name="group" Relationship="Self.products_ibfk_5" FromRole="products" ToRole="groups" />
@@ -1005,10 +1012,6 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <NavigationProperty Name="return_details" Relationship="Self.FK_return_details_products" FromRole="products" ToRole="return_details" />
           <NavigationProperty Name="return_details1" Relationship="Self.FK_return_details_products1" FromRole="products" ToRole="return_details" />
           <NavigationProperty Name="sale_details" Relationship="Self.sale_details_ibfk_1" FromRole="products" ToRole="sale_details" />
-          <Property Name="unit_swap" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="quantity_swap" Type="Int32" />
-          <Property Name="quantity_remaning" Type="Int32" Nullable="false" />
-          <Property Name="sell_price_swap" Type="Decimal" Precision="19" Scale="4" />
         </EntityType>
         <EntityType Name="return_details">
           <Key>
@@ -1018,16 +1021,16 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="return_id" Type="Int32" Nullable="false" />
           <Property Name="product_current_id" Type="Int32" Nullable="false" />
           <Property Name="quantity_current" Type="Int32" Nullable="false" />
+          <Property Name="unit_current" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="total_current" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
           <Property Name="product_return_id" Type="Int32" />
           <Property Name="quantity_return" Type="Int32" />
           <Property Name="total_return" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="unit_return" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="difference" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
           <NavigationProperty Name="product" Relationship="Self.FK_return_details_products" FromRole="return_details" ToRole="products" />
           <NavigationProperty Name="product1" Relationship="Self.FK_return_details_products1" FromRole="return_details" ToRole="products" />
           <NavigationProperty Name="return_sale" Relationship="Self.FK_return_details_return" FromRole="return_details" ToRole="return_sale" />
-          <Property Name="unit_current" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="unit_return" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="return_sale">
           <Key>
@@ -1041,6 +1044,18 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <NavigationProperty Name="return_details" Relationship="Self.FK_return_details_return" FromRole="return_sale" ToRole="return_details" />
           <NavigationProperty Name="sale" Relationship="Self.FK_return_sales" FromRole="return_sale" ToRole="sales" />
         </EntityType>
+        <EntityType Name="return_supplier">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="inventory_id" Type="Int32" Nullable="false" />
+          <Property Name="quantity" Type="Int32" Nullable="false" />
+          <Property Name="note" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cost_difference" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="created_at" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="import_inventory" Relationship="Self.FK_return_supplier_import_inventory" FromRole="return_supplier" ToRole="import_inventory" />
+        </EntityType>
         <EntityType Name="revenue">
           <Key>
             <PropertyRef Name="id" />
@@ -1050,9 +1065,9 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="sale_details_id" Type="Int32" Nullable="false" />
           <Property Name="Price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
           <Property Name="quantity" Type="Int32" Nullable="false" />
+          <Property Name="unit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="import_inventory" Relationship="Self.FK_revenue_import_inventory" FromRole="revenue" ToRole="import_inventory" />
           <NavigationProperty Name="sale_details" Relationship="Self.FK_revenue_sale_details" FromRole="revenue" ToRole="sale_details" />
-          <Property Name="unit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="sale_details">
           <Key>
@@ -1061,16 +1076,16 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="sale_id" Type="Int32" Nullable="false" />
           <Property Name="product_id" Type="Int32" Nullable="false" />
+          <Property Name="unit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
           <Property Name="sold" Type="Int32" Nullable="false" />
+          <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="created_at" Type="DateTime" Precision="0" />
           <Property Name="updated_at" Type="DateTime" Precision="0" />
           <Property Name="deleted_at" Type="DateTime" Precision="0" />
           <NavigationProperty Name="product" Relationship="Self.sale_details_ibfk_1" FromRole="sale_details" ToRole="products" />
           <NavigationProperty Name="revenues" Relationship="Self.FK_revenue_sale_details" FromRole="sale_details" ToRole="revenue" />
           <NavigationProperty Name="sale" Relationship="Self.sale_details_ibfk_2" FromRole="sale_details" ToRole="sales" />
-          <Property Name="unit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="sale">
           <Key>
@@ -1126,15 +1141,6 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <NavigationProperty Name="import_inventory" Relationship="Self.FK_import_inventory_users" FromRole="users" ToRole="import_inventory" />
           <NavigationProperty Name="products" Relationship="Self.FK_products_users" FromRole="users" ToRole="products" />
           <NavigationProperty Name="sales" Relationship="Self.FK_sales_users" FromRole="users" ToRole="sales" />
-        </EntityType>
-        <EntityType Name="password_resets">
-          <Key>
-            <PropertyRef Name="email" />
-            <PropertyRef Name="token" />
-          </Key>
-          <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="token" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="created_at" Type="DateTime" Precision="0" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
@@ -1224,6 +1230,18 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_import_inventory_customers">
+          <End Role="customers" Type="Self.customer" Multiplicity="0..1" />
+          <End Role="import_inventory" Type="Self.import_inventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="import_inventory">
+              <PropertyRef Name="supplier_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_sales_customers">
           <End Role="customers" Type="Self.customer" Multiplicity="1" />
           <End Role="sales" Type="Self.sale" Multiplicity="*" />
@@ -1293,6 +1311,18 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
             </Principal>
             <Dependent Role="import_inventory">
               <PropertyRef Name="created_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_return_supplier_import_inventory">
+          <End Role="import_inventory" Type="Self.import_inventory" Multiplicity="1" />
+          <End Role="return_supplier" Type="Self.return_supplier" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="import_inventory">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="return_supplier">
+              <PropertyRef Name="inventory_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1444,16 +1474,15 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <EntitySet Name="debts" EntityType="Self.debt" />
           <EntitySet Name="groups" EntityType="Self.group" />
           <EntitySet Name="import_inventory" EntityType="Self.import_inventory" />
-          <EntitySet Name="personal_access_tokens" EntityType="Self.personal_access_tokens" />
           <EntitySet Name="products" EntityType="Self.product" />
           <EntitySet Name="return_details" EntityType="Self.return_details" />
           <EntitySet Name="return_sale" EntityType="Self.return_sale" />
+          <EntitySet Name="return_supplier" EntityType="Self.return_supplier" />
           <EntitySet Name="revenues" EntityType="Self.revenue" />
           <EntitySet Name="sale_details" EntityType="Self.sale_details" />
           <EntitySet Name="sales" EntityType="Self.sale" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="users" EntityType="Self.user" />
-          <EntitySet Name="password_resets" EntityType="Self.password_resets" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -1482,6 +1511,10 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
             <End Role="categories" EntitySet="categories" />
             <End Role="products" EntitySet="products" />
           </AssociationSet>
+          <AssociationSet Name="FK_import_inventory_customers" Association="Self.FK_import_inventory_customers">
+            <End Role="customers" EntitySet="customers" />
+            <End Role="import_inventory" EntitySet="import_inventory" />
+          </AssociationSet>
           <AssociationSet Name="FK_sales_customers" Association="Self.FK_sales_customers">
             <End Role="customers" EntitySet="customers" />
             <End Role="sales" EntitySet="sales" />
@@ -1505,6 +1538,10 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <AssociationSet Name="FK_import_inventory_users" Association="Self.FK_import_inventory_users">
             <End Role="users" EntitySet="users" />
             <End Role="import_inventory" EntitySet="import_inventory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_return_supplier_import_inventory" Association="Self.FK_return_supplier_import_inventory">
+            <End Role="import_inventory" EntitySet="import_inventory" />
+            <End Role="return_supplier" EntitySet="return_supplier" />
           </AssociationSet>
           <AssociationSet Name="FK_revenue_import_inventory" Association="Self.FK_revenue_import_inventory">
             <End Role="import_inventory" EntitySet="import_inventory" />
@@ -1660,10 +1697,10 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <EntitySetMapping Name="carts">
             <EntityTypeMapping TypeName="CP25Team05Model.cart">
               <MappingFragment StoreEntitySet="carts">
-                <ScalarProperty Name="unit" ColumnName="unit" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="product_id" ColumnName="product_id" />
                 <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="unit" ColumnName="unit" />
                 <ScalarProperty Name="quantity" ColumnName="quantity" />
                 <ScalarProperty Name="price" ColumnName="price" />
                 <ScalarProperty Name="note" ColumnName="note" />
@@ -1743,8 +1780,6 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
           <EntitySetMapping Name="import_inventory">
             <EntityTypeMapping TypeName="CP25Team05Model.import_inventory">
               <MappingFragment StoreEntitySet="import_inventory">
-                <ScalarProperty Name="quantity_remaining" ColumnName="quantity_remaining" />
-                <ScalarProperty Name="sold_swap" ColumnName="sold_swap" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="product_id" ColumnName="product_id" />
                 <ScalarProperty Name="quantity" ColumnName="quantity" />
@@ -1754,31 +1789,15 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
                 <ScalarProperty Name="created_at" ColumnName="created_at" />
                 <ScalarProperty Name="updated_at" ColumnName="updated_at" />
                 <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="personal_access_tokens">
-            <EntityTypeMapping TypeName="CP25Team05Model.personal_access_tokens">
-              <MappingFragment StoreEntitySet="personal_access_tokens">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="tokenable_type" ColumnName="tokenable_type" />
-                <ScalarProperty Name="tokenable_id" ColumnName="tokenable_id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="token" ColumnName="token" />
-                <ScalarProperty Name="abilities" ColumnName="abilities" />
-                <ScalarProperty Name="last_used_at" ColumnName="last_used_at" />
-                <ScalarProperty Name="created_at" ColumnName="created_at" />
-                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+                <ScalarProperty Name="sold_swap" ColumnName="sold_swap" />
+                <ScalarProperty Name="quantity_remaining" ColumnName="quantity_remaining" />
+                <ScalarProperty Name="supplier_id" ColumnName="supplier_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="products">
             <EntityTypeMapping TypeName="CP25Team05Model.product">
               <MappingFragment StoreEntitySet="products">
-                <ScalarProperty Name="sell_price_swap" ColumnName="sell_price_swap" />
-                <ScalarProperty Name="quantity_remaning" ColumnName="quantity_remaning" />
-                <ScalarProperty Name="quantity_swap" ColumnName="quantity_swap" />
-                <ScalarProperty Name="unit_swap" ColumnName="unit_swap" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="code" ColumnName="code" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -1796,22 +1815,26 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
                 <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
                 <ScalarProperty Name="name_group" ColumnName="name_group" />
                 <ScalarProperty Name="name_category" ColumnName="name_category" />
+                <ScalarProperty Name="unit_swap" ColumnName="unit_swap" />
+                <ScalarProperty Name="quantity_swap" ColumnName="quantity_swap" />
+                <ScalarProperty Name="quantity_remaning" ColumnName="quantity_remaning" />
+                <ScalarProperty Name="sell_price_swap" ColumnName="sell_price_swap" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="return_details">
             <EntityTypeMapping TypeName="CP25Team05Model.return_details">
               <MappingFragment StoreEntitySet="return_details">
-                <ScalarProperty Name="unit_return" ColumnName="unit_return" />
-                <ScalarProperty Name="unit_current" ColumnName="unit_current" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="return_id" ColumnName="return_id" />
                 <ScalarProperty Name="product_current_id" ColumnName="product_current_id" />
                 <ScalarProperty Name="quantity_current" ColumnName="quantity_current" />
+                <ScalarProperty Name="unit_current" ColumnName="unit_current" />
                 <ScalarProperty Name="total_current" ColumnName="total_current" />
                 <ScalarProperty Name="product_return_id" ColumnName="product_return_id" />
                 <ScalarProperty Name="quantity_return" ColumnName="quantity_return" />
                 <ScalarProperty Name="total_return" ColumnName="total_return" />
+                <ScalarProperty Name="unit_return" ColumnName="unit_return" />
                 <ScalarProperty Name="difference" ColumnName="difference" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1827,28 +1850,40 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="return_supplier">
+            <EntityTypeMapping TypeName="CP25Team05Model.return_supplier">
+              <MappingFragment StoreEntitySet="return_supplier">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="inventory_id" ColumnName="inventory_id" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+                <ScalarProperty Name="note" ColumnName="note" />
+                <ScalarProperty Name="cost_difference" ColumnName="cost_difference" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="revenues">
             <EntityTypeMapping TypeName="CP25Team05Model.revenue">
               <MappingFragment StoreEntitySet="revenue">
-                <ScalarProperty Name="unit" ColumnName="unit" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="inventory_id" ColumnName="inventory_id" />
                 <ScalarProperty Name="sale_details_id" ColumnName="sale_details_id" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="quantity" ColumnName="quantity" />
+                <ScalarProperty Name="unit" ColumnName="unit" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="sale_details">
             <EntityTypeMapping TypeName="CP25Team05Model.sale_details">
               <MappingFragment StoreEntitySet="sale_details">
-                <ScalarProperty Name="note" ColumnName="note" />
-                <ScalarProperty Name="unit" ColumnName="unit" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="sale_id" ColumnName="sale_id" />
                 <ScalarProperty Name="product_id" ColumnName="product_id" />
+                <ScalarProperty Name="unit" ColumnName="unit" />
                 <ScalarProperty Name="price" ColumnName="price" />
                 <ScalarProperty Name="sold" ColumnName="sold" />
+                <ScalarProperty Name="note" ColumnName="note" />
                 <ScalarProperty Name="created_at" ColumnName="created_at" />
                 <ScalarProperty Name="updated_at" ColumnName="updated_at" />
                 <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
@@ -1898,15 +1933,6 @@ warning 6002: The table/view 'CP25Team05.dbo.password_resets' does not have a pr
                 <ScalarProperty Name="updated_at" ColumnName="updated_at" />
                 <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
                 <ScalarProperty Name="asp_id" ColumnName="asp_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="password_resets">
-            <EntityTypeMapping TypeName="CP25Team05Model.password_resets">
-              <MappingFragment StoreEntitySet="password_resets">
-                <ScalarProperty Name="email" ColumnName="email" />
-                <ScalarProperty Name="token" ColumnName="token" />
-                <ScalarProperty Name="created_at" ColumnName="created_at" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -105,7 +105,7 @@
                             <table id="example2" class="table table-hover ">
                                 <thead>
                                     <tr>
-                                        <th >STT</th>
+                                        <th>STT</th>
                                         <th>Mã sản phẩm</th>
                                         <th>Tên sản phẩm</th>
                                         <th class="text-center">Số lượng nhập</th>
@@ -117,7 +117,9 @@
                                                 </i>
                                             </span>
                                         </th>
+                                        <th class="text-center">Nhà cung cấp</th>
                                         <th class="text-center">Ngày nhập hàng</th>
+                                        <th></th>
                                     </tr>
 
 
@@ -144,8 +146,11 @@
                                         </td>
                                         <td class="text-center">@item.product.purchase_price.ToString("N0")</td>
                                         <td class="text-center">@((item.price_import * (item.quantity)).ToString("N0")) </td>
+                                        <td class="text-center">@item.customer.name</td>
                                         <td class="text-center"> @String.Format("{0:HH:mm - dd/MM/yyy}", item.created_at)</td>
-
+                                        <td class="text-center">
+                                            <button type="button" class="btn btn-danger"  onclick="Get_exchangeSupplier('@item.id', '@item.product.name', '@(item.quantity-item.sold)', '@item.customer.name')">Trả sản phẩm</button>
+                                        </td>
                                     </tr>
                                         total_import += (item.price_import * (item.quantity));
 

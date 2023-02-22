@@ -12,16 +12,15 @@ namespace CAP_TEAM05_2022.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class personal_access_tokens
+    public partial class return_supplier
     {
-        public long id { get; set; }
-        public string tokenable_type { get; set; }
-        public long tokenable_id { get; set; }
-        public string name { get; set; }
-        public string token { get; set; }
-        public string abilities { get; set; }
-        public Nullable<System.DateTime> last_used_at { get; set; }
-        public Nullable<System.DateTime> created_at { get; set; }
-        public Nullable<System.DateTime> updated_at { get; set; }
+        public int id { get; set; }
+        public int inventory_id { get; set; }
+        public int quantity { get; set; }
+        public string note { get; set; }
+        public decimal cost_difference { get; set; }
+        public System.DateTime created_at { get; set; }
+    
+        public virtual import_inventory import_inventory { get; set; }
     }
 }
