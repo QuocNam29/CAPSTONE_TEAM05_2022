@@ -87,7 +87,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>
-                                    Sản phẩm<span class="text-danger">(*)</span>
+                                    Sản phẩm
                                 </label>
                                 <input type="text" disabled id="productName_inventory" class="form-control">
 
@@ -96,7 +96,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>
-                                    Nhà cung cấp<span class="text-danger">(*)</span>
+                                    Nhà cung cấp
                                 </label>
                                 <input type="text" disabled id="name_supplier" class="form-control">
                             </div>
@@ -104,11 +104,22 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>
-                                    Số lượng còn <span class="text-danger">(*)</span>
+                                    Số lượng còn
                                 </label>
                                 <div class="position-relative">
-                                    <input type="number" disabled id="quantity_stock" class="form-control">
-                                   
+                                    <input type="text" disabled id="quantity_stock" class="form-control">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Đơn giá sản phẩm 
+                                </label>
+                                <div class="position-relative">
+                                    <input type="text" disabled id="price_product_stock" class="form-control">
+
                                 </div>
                             </div>
                         </div>
@@ -118,10 +129,25 @@
                                     Số lượng trả <span class="text-danger">(*)</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input type="number" name="quantity" class="form-control" placeholder="Số lượng trả" required>
+                                    <input type="number" name="quantity" id="quantity" value="1" min="1" class="form-control" placeholder="Số lượng trả" required>
                                     <div class="error-quantity text-danger mb-3 d-none">
                                         Vui lòng nhập số lượng lớn hơn 0
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                   Số tiền hoàn lại cho nhà cung cấp
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group-append">
+                                        <span id="basic-addon1" class="input-group-text spCollect">
+                                            Hoàn lại:
+                                        </span>
+                                    </div>
+                                    <input type="text" id="cost_return" disabled="disabled" class="form-control" value="0">
                                 </div>
                             </div>
                         </div>
@@ -130,7 +156,7 @@
                                 Ghi chú:
                             </label>
                             <div class="form-group">
-                                <textarea name="note" id="note" cols="10" rows="10" class="form-control"></textarea>
+                                <textarea name="note" id="note" cols="10" rows="5" class="form-control"></textarea>
                             </div>
                         </div>
                     </div>
@@ -191,6 +217,12 @@
             });
         }
     });
+    $("#quantity").change(function () {
+        var quantity = $("#quantity").val();
+        var price_product = $("#price_product_stock").val().replace(/\,/g, '').replace(/\./g, '');
+        var total = quantity * price_product;
+        $("#cost_return").val(total.toLocaleString());
+    });
 </script>
 <script type="text/javascript">
     var row;
@@ -199,6 +231,7 @@
             pagingType: 'full_numbers',
         });
     });
+
 </script>
 <script type="text/javascript">
     var row;

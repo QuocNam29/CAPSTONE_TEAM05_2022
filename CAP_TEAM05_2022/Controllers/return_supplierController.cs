@@ -45,8 +45,8 @@ namespace CAP_TEAM05_2022.Controllers
                     return_Supplier.cost_difference = inventory.price_import * quantity;
                     return_Supplier.created_at = DateTime.Now;
                     db.return_supplier.Add(return_Supplier);
-                    inventory.quantity -= quantity;
-                    db.Entry(inventory).State = EntityState.Modified;
+                    inventory.quantity -= quantity;                   
+                    db.Entry(inventory).State = EntityState.Modified;                 
                     product product = db.products.Find(inventory.product_id);
                     product.quantity -= quantity;
                     db.Entry(product).State = EntityState.Modified;

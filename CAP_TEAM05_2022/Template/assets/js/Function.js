@@ -309,7 +309,7 @@ $.ajax({
         for (var i = 0; i < data.length; i++) {
             s += '<option value="' + data[i].supplierID + '">' + data[i].supplierName + '</option>';
         }
-        $("#SupplierDropdown").html(s);
+        $(".SupplierDropdown").html(s);
     }
 });
 
@@ -2184,11 +2184,16 @@ $('.ReturnForm').submit(function (e) {
     }
 });
 //---------------------------------Trả sản phẩm cho nhà cung cấp------------------
-function Get_exchangeSupplier(id, product_name, quantity_stock, supplier) {
+function Get_exchangeSupplier(id, product_name, quantity_stock, supplier, price_product_stock) {
     $("#id_inventory").val(id);
     $("#productName_inventory").val(product_name);
     $("#quantity_stock").val(quantity_stock);
     $("#name_supplier").val(supplier);
+    $("#price_product_stock").val(price_product_stock.toLocaleString()); 
+    var quantity = $("#quantity").val();
+    var price_product = price_product_stock.replace(/\,/g, '').replace(/\./g, '');
+    var total = quantity * price_product;
+    $("#cost_return").val(total.toLocaleString());
           
     $('#exchangeSupplierModal .close').css('display', 'none');
     $('#exchangeSupplierModal').modal('show');

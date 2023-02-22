@@ -232,7 +232,7 @@ namespace CAP_TEAM05_2022.Controllers
 
             return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult Import_Stock(int Product_id, int quantity, string purchase_price)
+        public JsonResult Import_Stock(int Product_id, int quantity, string purchase_price, int SupplierDropdown)
         {
             string message = "";
             bool status = true;
@@ -251,6 +251,7 @@ namespace CAP_TEAM05_2022.Controllers
                 import.sold_swap = 0;
                 import.quantity_remaining = 0;
                 import.created_at = DateTime.Now;
+                import.supplier_id = SupplierDropdown;
                 import.created_by = User.Identity.GetUserId();
                 db.import_inventory.Add(import);
 
@@ -294,7 +295,9 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 emp.name_group = string.Format("{0:0,00}", product.sell_price_swap);
                 emp.note += "/" + product.quantity_swap + product.unit_swap;
+#pragma warning disable CS0472 // The result of the expression is always the same since a value of this type is never equal to 'null'
                 if (product.quantity_remaning != null)
+#pragma warning restore CS0472 // The result of the expression is always the same since a value of this type is never equal to 'null'
                 {
                     emp.note += " và " + product.quantity_remaning  + product.unit_swap + " lẻ";
                 }
