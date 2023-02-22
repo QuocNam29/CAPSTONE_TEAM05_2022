@@ -1,0 +1,66 @@
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.return_supplier>
+@{ 
+    Layout = null;
+}
+<div id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" class="tab-pane fade">
+    <div class="card">
+        <div class="card-body table-border-style">
+            <div class="table-responsive">
+                <table id="example1" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nhà cung cấp</th>
+                            <th>Sản phẩm</th>
+                            <th class="text-center">Số lượng</th>
+                            <th class="text-center">Ngày</th>
+                            <th>Thao tác</th>
+                            <th>Ghi chú</th>
+                            <th>Chênh lệch</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <div>@item.import_inventory.customer.name</div>
+                                    <div class="txt-second">@item.import_inventory.customer.phone</div>
+                                </td>
+                                <td>
+                                    <div class="txt-second">@item.import_inventory.product.code</div>
+                                    <div>@item.import_inventory.product.name</div>
+                                </td>
+                                <td class="text-center">@item.quantity <span class="txt-unit">@item.import_inventory.product.unit</span></td>
+                                <td class="text-center">@String.Format("{0:HH:mm - dd/MM/yyy}",item.created_at)</td>
+                                <td>
+                                    <div>
+                                        Trả hàng
+                                    </div>
+                                </td>
+                                <td>@item.note</td>
+                                <td class="text-right">
+                                    <div>
+                                        Thu về:
+                                        <span class="text-success">
+                                            @String.Format("{0:0,00}", item.cost_difference)₫
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#example1').DataTable({
+            pagingType: 'full_numbers',
+        });
+    });
+</script>

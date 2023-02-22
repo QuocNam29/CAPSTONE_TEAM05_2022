@@ -35,84 +35,7 @@
                                 <li class="nav-item"><a id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true" class="nav-link">Nhà cung cấp <input type="hidden" value="1"></a></li>
                             </ul>
                             <div id="pills-tabContent" class="tab-content">
-                                <div id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" class="tab-pane fade">
-                                    <div class="card">
-                                        <div class="card-body table-border-style">
-                                            <div class="table-responsive">
-                                                <table class="table table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Nhà cung cấp</th>
-                                                            <th>Sản phẩm</th>
-                                                            <th class="text-center">Số lượng</th>
-                                                            <th class="text-center">Ngày</th>
-                                                            <th>Thao tác</th>
-                                                            <th>Ghi chú</th>
-                                                            <th>Chênh lệch</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                <div>Nhà cung cấp Xăng</div>
-                                                                <div class="txt-second">09876152111</div>
-                                                            </td>
-                                                            <td>
-                                                                <div class="txt-second">SPc4c5b5573</div>
-                                                                <div>Xăng 95</div>
-                                                            </td>
-                                                            <td class="text-center">2015</td>
-                                                            <td class="text-center">01:32 - 05/02/2023</td>
-                                                            <td>
-                                                                <div>
-                                                                    Trả hàng
-                                                                </div>
-                                                            </td>
-                                                            <td>Xăng thơm không đúng</td>
-                                                            <td>
-                                                                400,000
-                                                            </td>
-                                                        </tr>
-                                                        <tr style="display: none;"><td colspan="9"><div class="alert alert-warning"><p class="text-center">Không tìm thấy dữ liệu</p></div></td></tr>
-                                                    </tbody>
-                                                </table>
-                                                <div class="between:flex bottom:margin-3 ml-2" style="">
-                                                    <div class="center:flex-items">
-                                                        <span class="right:marign-1">Hiển thị</span>
-                                                        <select id="form-select" class="select form-control select-entities">
-                                                            <option value="5">
-                                                                5
-                                                            </option>
-                                                            <option value="10">
-                                                                10
-                                                            </option>
-                                                            <option value="25">
-                                                                25
-                                                            </option>
-                                                            <option value="50">
-                                                                50
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <nav aria-label="..." style="display: none;">
-                                                    <ul class="pagination justify-content-center">
-                                                        <li class="page-item disabled"><a class="page-link"> &lt;&lt; </a></li>
-                                                        <li class="page-item disabled"><a class="page-link"> &lt; </a></li>
-                                                        <li class="page-item active">
-                                                            <a class="page-link">
-                                                                1
-                                                                <span class="sr-only"></span>
-                                                            </a>
-                                                        </li>
-                                                        <li class="page-item disabled"><a class="page-link"> &gt; </a></li>
-                                                        <li class="page-item disabled"><a class="page-link"> &gt;&gt; </a></li>
-                                                    </ul>
-                                                </nav>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                @{ Html.RenderAction("_ReturnSupplier", "return_supplier");}
                                 <div id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" class="tab-pane fade active show">
                                     <div class="card">
                                         <div class="card-body table-border-style">
@@ -137,25 +60,25 @@
                                                                 <tr>
                                                                     <td>@item.sale.code</td>
                                                                     <td>Trả hàng</td>
-                                                                    <td>                                                                    
-                                                                            <div>
-                                                                                @detail.product.name
-                                                                            </div>
+                                                                    <td>
+                                                                        <div>
+                                                                            @detail.product.name
+                                                                        </div>
                                                                     </td>
                                                                     <td class="text-center">
-                                                                      
-                                                                            <div>
-                                                                                @detail.quantity_current<span class="txt-unit"> @detail.unit_current</span>
-                                                                            </div>                                                                      
+
+                                                                        <div>
+                                                                            @detail.quantity_current<span class="txt-unit"> @detail.unit_current</span>
+                                                                        </div>
                                                                     </td>
                                                                     <td>
                                                                         @String.Format("{0:HH:mm - dd/MM/yyy}", item.create_at)
                                                                     </td>
                                                                     <td>
-                                                                            <p>Hoàn lại</p>
-                                                                            <span class="text-danger">
-                                                                                @String.Format("{0:0,00}", item.difference)₫
-                                                                            </span>
+                                                                        <p>Hoàn lại</p>
+                                                                        <span class="text-danger">
+                                                                            @String.Format("{0:0,00}", item.difference)₫
+                                                                        </span>
                                                                     </td>
                                                                 </tr>
                                                             }
@@ -163,51 +86,51 @@
                                                             {
                                                                 var detail = item.return_details.FirstOrDefault();
 
-                                                    <tr>
-                                                        <td>@item.sale.code</td>
-                                                        <td>Đổi sản phẩm</td>
-                                                        <td>
-                                                            <div>
-                                                                <p class="text-danger">Sản phẩm cũ:</p>
-                                                               @detail.product.name
-                                                                <hr>
-                                                                <p class="text-success">Sản phẩm mới:</p>
-                                                                <p>@detail.product1.name</p>
-                                                            </div>
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <div>
-                                                                <p class="text-danger">Sản phẩm cũ:</p>
-                                                                <p>1<span class="txt-unit"> @detail.unit_current</span></p>
-                                                                <hr>
-                                                                <p class="text-success">Sản phẩm mới:</p>
-                                                                <p>2<span class="txt-unit"> @detail.unit_return</span></p>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            @String.Format("{0:HH:mm - dd/MM/yyy}", item.create_at)
-                                                        </td>
-                                                        <td>
-                                                            @if (item.difference > 0)
-                                                            {
-                                                                <p>Hoàn lại:</p>
-                                                                <span class="text-danger">
-                                                                    @String.Format("{0:0,00}", item.difference)₫
-                                                                </span>
-                                                            }
-                                                            else
-                                                            {
-                                                                <p>Thu thêm:</p>
-                                                                <span class="text-success">
-                                                                    @String.Format("{0:0,00}", (-1 * item.difference))₫
-                                                                </span>
-                                                            }
-                                                        </td>
-                                                    </tr>
+                                                                <tr>
+                                                                    <td>@item.sale.code</td>
+                                                                    <td>Đổi sản phẩm</td>
+                                                                    <td>
+                                                                        <div>
+                                                                            <p class="text-danger">Sản phẩm cũ:</p>
+                                                                            @detail.product.name
+                                                                            <hr>
+                                                                            <p class="text-success">Sản phẩm mới:</p>
+                                                                            <p>@detail.product1.name</p>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        <div>
+                                                                            <p class="text-danger">Sản phẩm cũ:</p>
+                                                                            <p>1<span class="txt-unit"> @detail.unit_current</span></p>
+                                                                            <hr>
+                                                                            <p class="text-success">Sản phẩm mới:</p>
+                                                                            <p>2<span class="txt-unit"> @detail.unit_return</span></p>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        @String.Format("{0:HH:mm - dd/MM/yyy}", item.create_at)
+                                                                    </td>
+                                                                    <td>
+                                                                        @if (item.difference > 0)
+                                                                        {
+                                                                            <p>Hoàn lại:</p>
+                                                                            <span class="text-danger">
+                                                                                @String.Format("{0:0,00}", item.difference)₫
+                                                                            </span>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <p>Thu thêm:</p>
+                                                                            <span class="text-success">
+                                                                                @String.Format("{0:0,00}", (-1 * item.difference))₫
+                                                                            </span>
+                                                                        }
+                                                                    </td>
+                                                                </tr>
                                                             }
                                                         }
                                                     </tbody>
-                                                </table>                                               
+                                                </table>
                                             </div>
                                         </div>
                                     </div>

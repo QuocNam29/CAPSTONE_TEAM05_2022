@@ -30403,3 +30403,7 @@ body {
 .modal-lg {
     max-width: 1200px;
 }
+.txt-second {
+    color: grey;
+    font-size: 11px;
+}
