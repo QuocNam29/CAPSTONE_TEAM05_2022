@@ -1,14 +1,10 @@
-﻿using System;
+﻿using CAP_TEAM05_2022.Helper;
+using CAP_TEAM05_2022.Models;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
-using CAP_TEAM05_2022.Helper;
-using CAP_TEAM05_2022.Models;
 
 namespace CAP_TEAM05_2022.Controllers
 {

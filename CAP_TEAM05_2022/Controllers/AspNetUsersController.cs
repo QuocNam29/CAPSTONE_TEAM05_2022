@@ -232,18 +232,19 @@ namespace CAP_TEAM05_2022.Controllers
             return Json(new { status, message }, JsonRequestBehavior.AllowGet);
         }
         // GET: AspNetUsers/Edit/5
-        public ActionResult Edit(string id)
+        public ActionResult Edit()
         {
+            string id = User.Identity.GetUserId();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AspNetUser aspNetUser = db.AspNetUsers.Find(id);
-            if (aspNetUser == null)
+            user user = db.users.Find(id);
+            if (user == null)
             {
                 return HttpNotFound();
             }
-            return View(aspNetUser);
+            return View(user);
         }
 
         // POST: AspNetUsers/Edit/5
@@ -251,15 +252,15 @@ namespace CAP_TEAM05_2022.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName,avatar,phone,address,status,created_at,updated_at,deleted_at")] AspNetUser aspNetUser)
+        public ActionResult Edit(user user)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(aspNetUser).State = EntityState.Modified;
+                db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Edit");
             }
-            return View(aspNetUser);
+            return View(user);
         }
 
         // GET: AspNetUsers/Delete/5

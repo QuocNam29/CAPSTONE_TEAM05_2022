@@ -25,6 +25,7 @@ namespace CAP_TEAM05_2022.Controllers
             bool status = true;
             try
             {
+               
                 string unit = "";
                 int quality_OD_revenue = quality_OD;
                 sale_details sale_Details = db.sale_details.Find(sale_details_id);
@@ -67,8 +68,23 @@ namespace CAP_TEAM05_2022.Controllers
                                 }
                                 else
                                 {
-                                    import_Inventory.quantity_remaining += quality_OD_revenue;
-                                    db.Entry(import_Inventory).State = EntityState.Modified;
+                                    int temp_1 = (int)(quality_OD_revenue / import_Inventory.product.quantity_swap);
+                                    int temp_check = (int)(quality_OD_revenue % import_Inventory.product.quantity_swap);
+
+                                    if (temp_check > 0)
+                                    {
+                                        double temp_2 = (double)((quality_OD_revenue * 1.0000000) / import_Inventory.product.quantity_swap) - temp_1;
+
+                                        import_Inventory.sold -= temp_1;
+
+                                        import_Inventory.quantity_remaining += (int)(import_Inventory.product.quantity_swap * temp_2);
+                                        db.Entry(import_Inventory).State = EntityState.Modified;
+                                    }
+                                    else
+                                    {
+                                        import_Inventory.sold -= temp_1;
+                                        db.Entry(import_Inventory).State = EntityState.Modified;
+                                    }
                                 }
                                 db.Entry(item).State = EntityState.Modified;
 
@@ -76,7 +92,6 @@ namespace CAP_TEAM05_2022.Controllers
                             }
                             else
                             {
-                                quality_OD_revenue -= item.quantity;
                                 import_inventory import_Inventory = db.import_inventory.Find(item.inventory_id);
                                 if (item.unit == import_Inventory.product.unit)
                                 {
@@ -85,10 +100,27 @@ namespace CAP_TEAM05_2022.Controllers
                                 }
                                 else
                                 {
-                                    import_Inventory.quantity_remaining += quality_OD_revenue;
-                                    db.Entry(import_Inventory).State = EntityState.Modified;
+                                    int temp_1 = (int)(quality_OD_revenue / import_Inventory.product.quantity_swap);
+                                    int temp_check = (int)(quality_OD_revenue % import_Inventory.product.quantity_swap);
+
+                                    if (temp_check > 0)
+                                    {
+                                        double temp_2 = (double)((quality_OD_revenue * 1.0000000) / import_Inventory.product.quantity_swap) - temp_1;
+                                       
+                                            import_Inventory.sold -= temp_1;
+
+                                            import_Inventory.quantity_remaining +=(int)(import_Inventory.product.quantity_swap*temp_2);
+                                            db.Entry(import_Inventory).State = EntityState.Modified;
+                                        }
+                                    else
+                                    {
+                                        import_Inventory.sold -= temp_1;
+                                        db.Entry(import_Inventory).State = EntityState.Modified;
+                                    }
                                 }
                                 db.revenues.Remove(item);
+                                quality_OD_revenue -= item.quantity;
+
                             }
                             db.SaveChanges();
                         }
@@ -104,21 +136,13 @@ namespace CAP_TEAM05_2022.Controllers
                         db.SaveChanges();
                     }
                     else
-                    {
-                        if (sale.sale_details.Count() == 1)
-                        {
+                    {                      
                             decimal price = (sale_Details.price / sale_Details.sold) * quality_OD;
                             sale.total -= price;
                             db.Entry(sale).State = EntityState.Modified;
                             db.sale_details.Remove(sale_Details);
                             db.SaveChanges();
-                        }
-                        else
-                        {
-                            db.sale_details.Remove(sale_Details);
-                            db.sales.Remove(sale);
-                            db.SaveChanges();
-                        }
+                     
                     }
                     if (unit == product.unit)
                     {
@@ -137,6 +161,13 @@ namespace CAP_TEAM05_2022.Controllers
                 }
                 else if (return_option == 1)
                 {
+                    if (product_id == null)
+                    {
+                        string message1 = "Bạn chưa chọn sản phẩm đổi mới !";
+                      
+                        bool status1 = false;
+                        return Json(new { status = status1, message = message1 }, JsonRequestBehavior.AllowGet);
+                    }
                     product product_check = db.products.Find(product_id);
                     if (choose_unit == product_check.unit)
                     {
@@ -487,8 +518,23 @@ namespace CAP_TEAM05_2022.Controllers
                                 }
                                 else
                                 {
-                                    import_Inventory.quantity_remaining += quality_OD_revenue;
-                                    db.Entry(import_Inventory).State = EntityState.Modified;
+                                    int temp_1 = (int)(quality_OD_revenue / import_Inventory.product.quantity_swap);
+                                    int temp_check = (int)(quality_OD_revenue % import_Inventory.product.quantity_swap);
+
+                                    if (temp_check > 0)
+                                    {
+                                        double temp_2 = (double)((quality_OD_revenue * 1.0000000) / import_Inventory.product.quantity_swap) - temp_1;
+
+                                        import_Inventory.sold -= temp_1;
+
+                                        import_Inventory.quantity_remaining += (int)(import_Inventory.product.quantity_swap * temp_2);
+                                        db.Entry(import_Inventory).State = EntityState.Modified;
+                                    }
+                                    else
+                                    {
+                                        import_Inventory.sold -= temp_1;
+                                        db.Entry(import_Inventory).State = EntityState.Modified;
+                                    }
                                 }
                                 db.Entry(item).State = EntityState.Modified;
 
@@ -496,7 +542,6 @@ namespace CAP_TEAM05_2022.Controllers
                             }
                             else
                             {
-                                quality_OD_revenue -= item.quantity;
                                 import_inventory import_Inventory = db.import_inventory.Find(item.inventory_id);
                                 if (item.unit == import_Inventory.product.unit)
                                 {
@@ -505,10 +550,27 @@ namespace CAP_TEAM05_2022.Controllers
                                 }
                                 else
                                 {
-                                    import_Inventory.quantity_remaining += quality_OD_revenue;
-                                    db.Entry(import_Inventory).State = EntityState.Modified;
+                                    int temp_1 = (int)(quality_OD_revenue / import_Inventory.product.quantity_swap);
+                                    int temp_check = (int)(quality_OD_revenue % import_Inventory.product.quantity_swap);
+
+                                    if (temp_check > 0)
+                                    {
+                                        double temp_2 = (double)((quality_OD_revenue * 1.0000000) / import_Inventory.product.quantity_swap) - temp_1;
+
+                                        import_Inventory.sold -= temp_1;
+
+                                        import_Inventory.quantity_remaining += (int)(import_Inventory.product.quantity_swap * temp_2);
+                                        db.Entry(import_Inventory).State = EntityState.Modified;
+                                    }
+                                    else
+                                    {
+                                        import_Inventory.sold -= temp_1;
+                                        db.Entry(import_Inventory).State = EntityState.Modified;
+                                    }
                                 }
                                 db.revenues.Remove(item);
+                                quality_OD_revenue -= item.quantity;
+
                             }
                             db.SaveChanges();
                         }
@@ -525,20 +587,13 @@ namespace CAP_TEAM05_2022.Controllers
                     }
                     else
                     {
-                        if (sale.sale_details.Count() == 1)
-                        {
+                       
                             decimal price = (sale_Details.price / sale_Details.sold) * quality_OD;
                             sale.total -= price;
                             db.Entry(sale).State = EntityState.Modified;
                             db.sale_details.Remove(sale_Details);
                             db.SaveChanges();
-                        }
-                        else
-                        {
-                            db.sale_details.Remove(sale_Details);
-                            db.sales.Remove(sale);
-                            db.SaveChanges();
-                        }
+                       
                     }
                     if (unit == product.unit)
                     {
