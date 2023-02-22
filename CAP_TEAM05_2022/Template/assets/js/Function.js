@@ -96,7 +96,137 @@ $(document).ready(function () {
     }, false);
 })
 
+//---------------------load customer sale----------------------------
+var URLGetSearchValue = "";
+$('#URLGetSearchValue')
+    .keypress(function () {
+        URLGetSearchValue = $(this).val();
+    })
+    .keypress();
+var URLGetSearch_phoneValue = "";
+$('#URLGetSearch_phoneValue')
+    .keypress(function () {
+        URLGetSearch_phoneValue = $(this).val();
+    })
+    .keypress();
+var URLFindCustomer_name = "";
+$('#URLFindCustomer_name')
+    .keypress(function () {
+        URLFindCustomer_name = $(this).val();
+    })
+    .keypress();
+$(function () {
+    $("#customer_name").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: URLGetSearchValue,
+                data: "{ 'search': '" + request.term + "'}",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return item;
 
+                    }))
+
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        },
+        select: function (e, i) {
+            $('#customer_id').val(i.item.val);
+            GetList_Cart(i.item.val);
+            $.ajax({
+                type: 'POST',
+                url: URLFindCustomer_name,
+                data: { "customer_id": i.item.val },
+                success: function (response) {
+                    $('#customer_code').val(response.code);
+                    $('#customer_phone').val(response.phone);
+                    $('#customer_type').val(response.note);
+                    $('#count_sale').val(response.status);
+                    $('#debit_sum').val(response.type.toLocaleString());
+                    $("#history_btn").show();
+                    if ($("#total").val() != undefined) {
+                        $("#payment_btn").show();
+                        $("#order_btn").show();
+                    } else {
+                        $("#payment_btn").hide();
+                        $("#order_btn").hide();
+                    }
+                }
+            })
+        },
+        minLength: 0
+    }).focus(function () {
+        if ($(this).autocomplete("widget").is(":visible")) {
+            return;
+        }
+        $(this).data("autocomplete").search($(this).val());
+    });
+});
+$(function () {
+    $("#customer_phone").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: URLGetSearch_phoneValue,
+                data: "{ 'search': '" + request.term + "'}",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return item;
+
+                    }))
+
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        },
+        select: function (e, i) {
+            $('#customer_id').val(i.item.val);
+            GetList_Cart(i.item.val);
+            $.ajax({
+                type: 'POST',
+                url: URLFindCustomer_name,
+                data: { "customer_id": i.item.val },
+                success: function (response) {
+                    $('#customer_name').val(response.name);
+                    $('#customer_code').val(response.code);
+                    $('#customer_phone').val(response.phone);
+                    $('#customer_type').val(response.note);
+                    $('#count_sale').val(response.status);
+                    $('#debit_sum').val(response.type.toLocaleString());
+                    if ($("#total").val() != undefined) {
+                        $("#payment_btn").show();
+                        $("#order_btn").show();
+                    } else {
+                        $("#payment_btn").hide();
+                        $("#order_btn").hide();
+                    }
+                }
+            })
+        },
+        minLength: 0
+    })/*.focus(function () {
+        if ($(this).autocomplete("widget").is(":visible")) {
+            return;
+        }
+        $(this).data("autocomplete").search($(this).val());
+    });*/
+});
 //--------------------------Add, Update Product----------------------------------
 $('.ProductForm').submit(function (e) {
     var form = $(this);
@@ -260,6 +390,7 @@ $('.Price').keydown(function (e) {
 
 var URLgetGroupProduct = "";
 var URLgetCategory = "";
+var URLgetSupplier = "";
 $('#URLgetGroupProduct')
     .keypress(function () {
         URLgetGroupProduct = $(this).val();
@@ -789,7 +920,7 @@ function GetCustomer(ele, id) {
             $('#edit_customer_name').val(response.name);
             $('#edit_customer_phone').val(response.phone);
             $('#edit_customer_email').val(response.email);
-            $('#customers_birth').val(response.birthday);
+            $('#edit_customers_birth').val(response.birthday);
             $('#edit_customer_account').val(response.account_number);
             $('#edit_customer_bank').val(response.bank);
             $('#edit_customer_type').val(response.type);
@@ -1230,137 +1361,7 @@ function ButtonDebit() {
 }
 
 
-//---------------------load customer sale----------------------------
-var URLGetSearchValue = "";
-$('#URLGetSearchValue')
-    .keypress(function () {
-        URLGetSearchValue = $(this).val();
-    })
-    .keypress();
-var URLGetSearch_phoneValue = "";
-$('#URLGetSearch_phoneValue')
-    .keypress(function () {
-        URLGetSearch_phoneValue = $(this).val();
-    })
-    .keypress();
-var URLFindCustomer_name = "";
-$('#URLFindCustomer_name')
-    .keypress(function () {
-        URLFindCustomer_name = $(this).val();
-    })
-    .keypress();
-$(function () {
-    $("#customer_name").autocomplete({
-        source: function (request, response) {
-            $.ajax({
-                url: URLGetSearchValue,
-                data: "{ 'search': '" + request.term + "'}",
-                dataType: "json",
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    response($.map(data, function (item) {
-                        return item;
 
-                    }))
-
-                },
-                error: function (response) {
-                    alert(response.responseText);
-                },
-                failure: function (response) {
-                    alert(response.responseText);
-                }
-            });
-        },
-        select: function (e, i) {
-            $('#customer_id').val(i.item.val);
-            GetList_Cart(i.item.val);
-            $.ajax({
-                type: 'POST',
-                url: URLFindCustomer_name,
-                data: { "customer_id": i.item.val },
-                success: function (response) {
-                    $('#customer_code').val(response.code);
-                    $('#customer_phone').val(response.phone);
-                    $('#customer_type').val(response.note);
-                    $('#count_sale').val(response.status);
-                    $('#debit_sum').val(response.type.toLocaleString());
-                    $("#history_btn").show();
-                    if ($("#total").val() != undefined) {
-                        $("#payment_btn").show();
-                        $("#order_btn").show();
-                    } else {
-$("#payment_btn").hide();
-$("#order_btn").hide();
-                    }
-                }
-            })
-        },
-        minLength: 0
-    }).focus(function () {
-        if ($(this).autocomplete("widget").is(":visible")) {
-            return;
-        }
-        $(this).data("autocomplete").search($(this).val());
-    });
-});
-$(function () {
-    $("#customer_phone").autocomplete({
-        source: function (request, response) {
-            $.ajax({
-                url: URLGetSearch_phoneValue,
-                data: "{ 'search': '" + request.term + "'}",
-                dataType: "json",
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    response($.map(data, function (item) {
-                        return item;
-
-                    }))
-
-                },
-                error: function (response) {
-                    alert(response.responseText);
-                },
-                failure: function (response) {
-                    alert(response.responseText);
-                }
-            });
-        },
-        select: function (e, i) {
-            $('#customer_id').val(i.item.val);
-            GetList_Cart(i.item.val);
-            $.ajax({
-                type: 'POST',
-                url: URLFindCustomer_name,
-                data: { "customer_id": i.item.val },
-                success: function (response) {
-                    $('#customer_name').val(response.name);
-                    $('#customer_code').val(response.code);
-                    $('#customer_phone').val(response.phone);
-                    $('#customer_type').val(response.note);
-                    $('#count_sale').val(response.status);
-                    $('#debit_sum').val(response.type.toLocaleString());
-                    if ($("#total").val() != undefined) {
-                        $("#payment_btn").show();
-    $("#order_btn").show();
-                    } else {
-$("#payment_btn").hide();
-$("#order_btn").hide();
-                    }
-                }
-            })
-        },
-        minLength: 0
-    })/*.focus(function () {
-        if ($(this).autocomplete("widget").is(":visible")) {
-            return;
-        }
-        $(this).data("autocomplete").search($(this).val());
-    });*/
-});
 //---------------------load product sale----------------------------
 
 var URLGetSearchValue_product = "";

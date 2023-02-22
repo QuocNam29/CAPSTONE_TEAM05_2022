@@ -272,7 +272,7 @@ namespace CAP_TEAM05_2022.Controllers
         public JsonResult GetSearchValue(string search)
         {
             var product = (from Product in db.products
-                           where Product.name.StartsWith(search) && Product.status != 3 && Product.@group.status != 3 && Product.category.status != 3
+                           where Product.name.StartsWith(search) && Product.status != 3
                            select new
                            {
                                label = Product.name,

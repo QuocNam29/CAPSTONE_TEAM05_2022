@@ -246,7 +246,7 @@ namespace CAP_TEAM05_2022.Controllers
         public JsonResult GetSearchValue(string search)
         {
             var customers = (from customer in db.customers
-                             where customer.name.Contains(search) && customer.status != 3
+                             where customer.name.Contains(search) && customer.status != 3 && customer.type != 2
                              select new
                              {
                                  label = customer.name,
