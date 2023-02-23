@@ -26,7 +26,7 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 cartCode = x.product.code,
                 cartName = x.product.name,
-                cartUnit = x.product.unit,
+                cartUnit = x.unit,
                 cartQuantity = x.sold,
                 cartPrice = x.price/ x.sold,                
                 cartTotal = x.price,

@@ -343,10 +343,10 @@ namespace CAP_TEAM05_2022.Controllers
                     sale_id = sale.id,
                     sale_code = sale.code,
                     sale_method = sale.method,
-                    sale_total = sale.total,
-
+                    sale_total = String.Format("{0:0,00}", sale.total),
+                    sale_prepayment = String.Format("{0:0,00}", sale.prepayment),
                     sale_create = sale.created_at
-                }, JsonRequestBehavior.AllowGet);
+                }, JsonRequestBehavior.AllowGet) ;
 
             }
             catch (Exception e)

@@ -53,7 +53,7 @@ namespace CAP_TEAM05_2022.Controllers
             }
             else
             {
-                if (cart_create.quantity > (product.quantity * product.quantity_swap))
+                if (cart_create.quantity > (product.quantity * product.quantity_swap + product.quantity_remaning))
                 {
                     string message1 = product.quantity.ToString() + " " + product.unit;
                     if (product.unit_swap != null)

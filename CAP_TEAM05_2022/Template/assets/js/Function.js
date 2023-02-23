@@ -1478,7 +1478,7 @@ function Payment_order() {
                         function (isConfirm) {
                             if (isConfirm) {
                                 PrintOrder(response.sale_id, response.sale_code, response.sale_method,
-                                    response.sale_total, response.sale_create, $('#customer_code').val());
+                                    response.sale_total, response.sale_create, $('#customer_code').val(), response.sale_prepayment);
                             }
                         })
             } else {
@@ -1818,11 +1818,9 @@ function openWin() {
                         <td class="text-center">`+ (i + 1) + `</td>
                         <td>`+ data[i].cartCode + `</td>
                         <td>`+ data[i].cartName + `</td>
-                        <td class="text-center">`+ data[i].cartUnit + `</td>
-                        <td class="text-center">`+ data[i].cartQuantity + `</td>
-                        <td class="text-center">`+ data[i].cartPrice.toLocaleString() + `</td>
-                        <td class="text-center">`+ data[i].cartTotal.toLocaleString() + `</td>
-                        <td>`+ note + `</td>
+                        <td class="text-center">`+ data[i].cartPrice.toLocaleString() + `₫/<span class="txt-unit">` + data[i].cartUnit +`</span>`+ `</td>
+                        <td class="text-center">`+ data[i].cartQuantity + `<span class="txt-unit">` + data[i].cartUnit + `</span>` + `</td>
+                        <td class="text-center">`+ data[i].cartTotal.toLocaleString() + `₫</td>
                     </tr>`
             }
         }
@@ -1851,32 +1849,30 @@ function openWin() {
                 </div>
                 <table class="table table-hover">
                     <thead>
-                        <tr>
-                            <th class="text-center">STT</th>
-                            <th>Mã hàng</th>
-                            <th>Tên hàng hàng</th>
-                            <th class="text-center">Đơn vị</th>
-                            <th class="text-center">Số lượng</th>
-                            <th class="text-center">Đơn giá</th>
-                            <th class="text-center">Thành tiền</th>
-                            <th>Ghi chú</th>
+                       <tr>
+                                        <th class="text-center">STT</th>
+                                        <th class="text-center">Mã sản phẩm</th>
+                                        <th class="text-center">Tên sản phẩm</th>
+                                        <th class="text-center">Đơn giá</th>
+                                        <th class="text-center">Số lượng</th>
+                                        <th class="text-center">Thành tiền</th>
                         </tr>
                     </thead>
                         <tbody>` + s + `</tbody >
                     <tfoot>
                         <tr>
-                            <td colspan="7" class="text-right">
+                            <td colspan="5" class="text-right">
                                 <h5>Hình thức</h5>
                             </td>
-                            <td colspan="2" class="text-left">
+                            <td colspan="1" class="text-left">
                                 Xem trước (Chưa thanh toán)
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="7" class="text-right">
+                            <td colspan="5" class="text-right">
                                 <h5>Thành tiền</h5>
                             </td>
-                            <td colspan="2" class="text-left">
+                            <td colspan="1" class="text-left">
                                 <h5>
                                     `+ total + `₫
                                 </h5>
@@ -1893,10 +1889,12 @@ function openWin() {
     myWindow.focus();
 }
 
-function PrintOrder(id, code, method, total, create_at, customer_code) {
+function PrintOrder(id, code, method, total, create_at, customer_code, prepayment) {
     
    
     var s = "";
+    var debt = "";
+
     $.ajax({
         type: "GET",
         async: false,
@@ -1912,10 +1910,9 @@ function PrintOrder(id, code, method, total, create_at, customer_code) {
                         <td class="text-center">`+ (i + 1) + `</td>
                         <td>`+ data[i].cartCode + `</td>
                         <td>`+ data[i].cartName + `</td>
-                        <td class="text-center">`+ data[i].cartUnit + `</td>
-                        <td class="text-center">`+ data[i].cartQuantity + `</td>
-                        <td class="text-center">`+ data[i].cartPrice.toLocaleString() + `</td>
-                        <td class="text-center">`+ data[i].cartTotal.toLocaleString() + `</td>
+                        <td class="text-center">`+ data[i].cartPrice.toLocaleString() + `₫/<span class="txt-unit">` + data[i].cartUnit + `</span>` + `</td>
+                        <td class="text-center">`+ data[i].cartQuantity + `<span class="txt-unit">` + data[i].cartUnit + `</span>` + `</td>
+                        <td class="text-center">`+ data[i].cartTotal.toLocaleString() + `₫</td>
                     </tr>`
             }
         }
@@ -1924,6 +1921,29 @@ function PrintOrder(id, code, method, total, create_at, customer_code) {
         var form_method = "Đã thanh toán";
     } else if (method == 2) {
         var form_method = "Ghi nợ";
+        var prepayment_1 = prepayment.replace(/\,/g, '').replace(/\./g, '');
+        var total_1 = total.replace(/\,/g, '').replace(/\./g, '');
+        var total_debt = total_1 - prepayment_1
+        debt = ` <tr>
+                            <td colspan="5" class="text-right">
+                                <h5> Đã thanh toán: </h5>
+                            </td>
+                            <td colspan="1" class="text-left">
+                                <h5>
+             `+ prepayment +`₫
+                                </h5>
+                            </td>
+                        </tr>
+                         <tr>
+                            <td colspan="5" class="text-right">
+                                <h5>còn lại</h5>
+                            </td>
+                            <td colspan="1" class="text-left">
+                                <h5>
+            `+ total_debt.toLocaleString() +`₫
+                                </h5>
+                            </td>
+                        </tr>`;
     }
 
     var myWindow = window.open('', '', 'width=1200,height=800');
@@ -1952,36 +1972,35 @@ function PrintOrder(id, code, method, total, create_at, customer_code) {
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th class="text-center">STT</th>
-                            <th>Mã hàng</th>
-                            <th>Tên hàng hàng</th>
-                            <th class="text-center">Đơn vị</th>
-                            <th class="text-center">Số lượng</th>
-                            <th class="text-center">Đơn giá</th>
-                            <th class="text-center">Thành tiền</th>
+                           <th class="text-center">STT</th>
+                                        <th class="text-center">Mã sản phẩm</th>
+                                        <th class="text-center">Tên sản phẩm</th>
+                                        <th class="text-center">Đơn giá</th>
+                                        <th class="text-center">Số lượng</th>
+                                        <th class="text-center">Thành tiền</th>
                         </tr>
                     </thead>
                         <tbody>` + s + `</tbody >
                     <tfoot>
                        
                         <tr>
-                            <td colspan="7" class="text-right">
+                            <td colspan="5" class="text-right">
                                 <h5>Hình thức</h5>
                             </td>
-                            <td colspan="2" class="text-left">
+                            <td colspan="1" class="text-left">
                                `+ form_method +`
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="7" class="text-right">
+                            <td colspan="5" class="text-right">
                                 <h5>Thành tiền</h5>
                             </td>
-                            <td colspan="2" class="text-left">
+                            <td colspan="1" class="text-left">
                                 <h5>
                                     `+ total.toLocaleString() + `₫
                                 </h5>
                             </td>
-                        </tr>
+                        </tr>`+debt+`
                     </tfoot>
                 </table>
             </div>

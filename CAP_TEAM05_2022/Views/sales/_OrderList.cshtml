@@ -67,7 +67,7 @@
                         </span>
                     </button>
                   
-                    <button title="In hoá đơn" class="btn btn-secondary" onclick="PrintOrder('@item.id', '@item.code', '@item.method', '@item.total', '@item.created_at', '@item.customer.code')">
+                    <button title="In hoá đơn" class="btn btn-secondary" onclick="PrintOrder('@item.id', '@item.code', '@item.method', '@String.Format("{0:0,00}",item.total)', '@item.created_at', '@item.customer.code', '@String.Format("{0:0,00}",item.prepayment)')">
                         <span class="pcoded-micon">
                             <i class="fas fa-print">
                             </i>
