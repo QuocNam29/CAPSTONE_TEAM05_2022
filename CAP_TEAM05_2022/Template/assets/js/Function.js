@@ -1494,11 +1494,11 @@ function Payment_order() {
     });
 }
 
-function FillProduct_cart(id, masp, tensp, soluong) {
+function FillProduct_cart(id, masp, tensp, soluong, unit) {
     $('#product_name').val(tensp);
     $('#product_quantity').val(soluong);
-    $('#cart_id').val(id);
     $('#product_id').val(masp);
+    $('#cart_id').val(id);
 
     document.querySelector("#customer_name").disabled = true;
     document.querySelector("#product_name").disabled = true;
@@ -1507,11 +1507,44 @@ function FillProduct_cart(id, masp, tensp, soluong) {
     $("#refresh_cart").hide();
     $("#submit_updateCart").show();
     $("#Cancel_Cart").show();
-    LoadDataProduct(masp);
+    LoadDataProduct_editCart(masp, unit);
    
     window.scrollTo({
         top: 0,
         behavior: `smooth`
+    })
+}
+function LoadDataProduct_editCart(id,unit) {
+    $.ajax({
+        type: 'POST',
+        url: URLFindProduct_name,
+        data: { "product_id": id },
+        success: function (response) {        
+            if (unit == response.unit) {
+                $('#product_code').val(response.code);
+                $('#product_unit').val(response.note);
+                $('#product_price').val(response.name);
+                var sum_price = Number($('#product_price').val().replace(/\,/g, '').replace(/\./g, '')) * Number($('#product_quantity').val());
+                $('#sum_price').val(sum_price.toLocaleString());
+                var s = ' <option value="' + response.unit + '" data-type="other" selected>' + response.unit + '</option>';
+                if (response.unit_swap != null) {
+                    s += ' <option value="' + response.unit_swap + '" data-type="other">' + response.unit_swap + '</option>';
+                    $('#product_price_swap').val(response.name_group);
+                }
+            } else {
+                $('#product_code').val(response.code);
+                $('#product_unit').val(response.note);
+                $('#product_price').val(response.name_group);
+                var sum_price = Number($('#product_price').val().replace(/\,/g, '').replace(/\./g, '')) * Number($('#product_quantity').val());
+                $('#sum_price').val(sum_price.toLocaleString());
+                var s = ' <option value="' + response.unit + '" data-type="other" >' + response.unit + '</option>';
+                if (response.unit_swap != null) {
+                    s += ' <option value="' + response.unit_swap + '" data-type="other" selected>' + response.unit_swap + '</option>';
+                    $('#product_price_swap').val(response.name);
+                }
+            }
+            $("#unit_product_swap").html(s);
+        }
     })
 }
 //-------------------Update cart-------------------------------
@@ -1531,6 +1564,7 @@ function Update_Cart() {
     cart_create.quantity = $('#product_quantity').val();
     cart_create.price = Number($('#sum_price').val().replace(/\,/g, '').replace(/\./g, ''));
     cart_create.note = $('#cart_note').val();
+    cart_create.unit = $('#unit_product_swap').val();   
 
     console.log(cart_create);
     $.ajax({
@@ -1563,7 +1597,7 @@ function Update_Cart() {
             } else {
                 sweetAlert
                     ({
-                        title: "Số lượng sản phẩm chỉ còn: " + response.message + " sản phẩm !",
+                        title: "Số lượng sản phẩm chỉ còn: " + response.message + " !",
                         type: "error"
                     })
             }
