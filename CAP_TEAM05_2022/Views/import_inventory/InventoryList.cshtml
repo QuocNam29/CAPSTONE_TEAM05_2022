@@ -77,7 +77,7 @@
                                             <div> @item1.Price.ToString("N0")<span class="txt-unit">/@item1.unit</span></div>
                                         </td>
                                         @*<td class="text-center">@((item.product.sell_price * (item.sold)).ToString("N0")) </td>*@
-                                        <td class="text-center">@((item1.Price * item1.quantity).ToString("N0")) </td>
+                                    <td class="text-center">@((item1.Price * item1.quantity).ToString("N0"))₫ </td>
                                         <td class="text-center"> @String.Format("{0:HH:mm - dd/MM/yyy}", item1.sale_details.sale.created_at)</td>
                                     </tr>
 
@@ -91,7 +91,7 @@
                             </table>
                             <div class="total-price-btn">
                                 <h5 class="total-price-name">Tổng</h5>
-                                <h5 class="total-price">@total_sell.ToString("N0")</h5>
+                                <h5 class="total-price">@total_sell.ToString("N0")₫</h5>
                             </div>
                         </div>
                     </div>

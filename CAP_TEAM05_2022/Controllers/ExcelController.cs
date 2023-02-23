@@ -43,7 +43,7 @@ namespace CAP_TEAM05_2022.Controllers
 
         public void ExportExcel(int group_id, int category_id)
         {
-            string nameFile = "SP_"+DateTime.Now+ ".xlsx";
+            string nameFile = "SP_" + DateTime.Now + ".xlsx";
             var list = from l in db.products
                        where l.@group.status == 1 && l.category.status == 1
                        select l;
@@ -130,38 +130,38 @@ namespace CAP_TEAM05_2022.Controllers
             }
             Sheet.Cells["A:AZ"].AutoFitColumns();
             Response.Clear();
-          /*  ExcelWorksheet Sheet_group = ep.Workbook.Worksheets.Add("NhomHang");
-            FormatExcel(Sheet_group, 2);
-            Sheet_group.DefaultColWidth = 20;
-            Sheet_group.Cells.Style.WrapText = true;
+            /*  ExcelWorksheet Sheet_group = ep.Workbook.Worksheets.Add("NhomHang");
+              FormatExcel(Sheet_group, 2);
+              Sheet_group.DefaultColWidth = 20;
+              Sheet_group.Cells.Style.WrapText = true;
 
-            Sheet_group.Cells["A1"].Value = "Mã nhóm hàng";
-            Sheet_group.Cells["B1"].Value = "Tên nhóm hàng";
+              Sheet_group.Cells["A1"].Value = "Mã nhóm hàng";
+              Sheet_group.Cells["B1"].Value = "Tên nhóm hàng";
 
 
-            int row_group = 2;// dòng bắt đầu ghi dữ liệu
-            foreach (var item in list_group)
-            {
-                Sheet_group.Cells[string.Format("A{0}", row_group)].Value = item.code;
-                Sheet_group.Cells[string.Format("B{0}", row_group)].Value = item.name;
-                row_group++;
-            }
-            Sheet_group.Cells["A:AZ"].AutoFitColumns();
-            Response.Clear();
+              int row_group = 2;// dòng bắt đầu ghi dữ liệu
+              foreach (var item in list_group)
+              {
+                  Sheet_group.Cells[string.Format("A{0}", row_group)].Value = item.code;
+                  Sheet_group.Cells[string.Format("B{0}", row_group)].Value = item.name;
+                  row_group++;
+              }
+              Sheet_group.Cells["A:AZ"].AutoFitColumns();
+              Response.Clear();
 
-            ExcelWorksheet Sheet_category = ep.Workbook.Worksheets.Add("DanhMuc");
-            FormatExcel(Sheet_category, 2);
-            Sheet_category.Cells["A1"].Value = "Mã danh mục";
-            Sheet_category.Cells["B1"].Value = "Tên danh mục";
-            int row_category = 2;// dòng bắt đầu ghi dữ liệu
-            foreach (var item in list_category)
-            {
-                Sheet_category.Cells[string.Format("A{0}", row_category)].Value = item.code;
-                Sheet_category.Cells[string.Format("B{0}", row_category)].Value = item.name;
-                row_category++;
-            }
-            Sheet_category.Cells["A:AZ"].AutoFitColumns();
-            Response.Clear();*/
+              ExcelWorksheet Sheet_category = ep.Workbook.Worksheets.Add("DanhMuc");
+              FormatExcel(Sheet_category, 2);
+              Sheet_category.Cells["A1"].Value = "Mã danh mục";
+              Sheet_category.Cells["B1"].Value = "Tên danh mục";
+              int row_category = 2;// dòng bắt đầu ghi dữ liệu
+              foreach (var item in list_category)
+              {
+                  Sheet_category.Cells[string.Format("A{0}", row_category)].Value = item.code;
+                  Sheet_category.Cells[string.Format("B{0}", row_category)].Value = item.name;
+                  row_category++;
+              }
+              Sheet_category.Cells["A:AZ"].AutoFitColumns();
+              Response.Clear();*/
             Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             Response.AddHeader("content-disposition", "attachment; filename=" + nameFile);
             Response.BinaryWrite(ep.GetAsByteArray());
@@ -175,7 +175,7 @@ namespace CAP_TEAM05_2022.Controllers
             if (i == 1)
             {
                 // Lấy range vào tạo format cho range đó ở đây là từ A1 tới I1
-                using (var range = Sheet.Cells["A1:I1"])
+                using (var range = Sheet.Cells["A1:J1"])
                 {
 
                     // Canh giữa cho các text
@@ -370,10 +370,10 @@ namespace CAP_TEAM05_2022.Controllers
                                 if (Session["unit_product"] != null)
                                 {
                                     string name_group = Session["group_product"].ToString();
-                                string name_category = Session["category_product"].ToString();
-                                var check_group = db.groups.Where(g => g.name == name_group && g.status != 3).FirstOrDefault();
-                                var check_category = db.categories.Where(g => g.name == name_category && g.status != 3).FirstOrDefault();
-                                
+                                    string name_category = Session["category_product"].ToString();
+                                    var check_group = db.groups.Where(g => g.name == name_group && g.status != 3).FirstOrDefault();
+                                    var check_category = db.categories.Where(g => g.name == name_category && g.status != 3).FirstOrDefault();
+
                                     if (check_group != null && check_category != null)
                                     {
                                         int group_id = check_group.id;
@@ -382,13 +382,13 @@ namespace CAP_TEAM05_2022.Controllers
                                         int sell_price_product = int.Parse(Session["sell_price_product"].ToString().Trim());
                                         int purchase_price_product = int.Parse(Session["purchase_price_product"].ToString().Trim());
                                         int quantity_product = int.Parse(Session["quantity_product"].ToString().Trim());
-                                       
+
 
                                         var check_product = db.products.Where(c => c.name == name_product && c.group_id == group_id
                                         && c.category_id == category_id && c.status != 3).FirstOrDefault();
                                         if (check_product == null)
                                         {
-                                            
+
                                             product product = new product();
                                             product.name = name_product;
                                             product.status = 1;
@@ -425,7 +425,7 @@ namespace CAP_TEAM05_2022.Controllers
                                                 sell_price = sell_price_product,
                                                 quantity = quantity_product,
 
-                                            }) ;
+                                            });
                                         }
                                         else
                                         {
@@ -457,7 +457,7 @@ namespace CAP_TEAM05_2022.Controllers
                                                 sell_price = sell_price_product,
                                                 quantity = check_product.quantity,
                                                 note = quantity_current.ToString()
-                                            }) ;
+                                            });
                                         }
                                     }
                                     else
@@ -489,7 +489,7 @@ namespace CAP_TEAM05_2022.Controllers
                                         id = row_excel,
                                         name = name_product,
                                         status = 6
-                                    }) ;
+                                    });
                                 }
 
 
@@ -555,7 +555,7 @@ namespace CAP_TEAM05_2022.Controllers
         }
         public void ExportExcel_Inventory(DateTime? date_start, DateTime? date_end)
         {
-            string nameFile = "Kho_Hang_từ_" + String.Format("{0:yyyy-MM-dd}", date_start) + "_đến_" + String.Format("{0:yyyy-MM-dd}", date_end) + ".xlsx";
+            string nameFile = "Kho_Hàng_từ_" + String.Format("{0:yyyy-MM-dd}", date_start) + "_đến_" + String.Format("{0:yyyy-MM-dd}", date_end) + ".xlsx";
             var import_inventory = db.import_inventory.Include(i => i.user).Include(i => i.product).Where(s => s.created_at >= date_start && s.created_at <= date_end
                                                     || s.created_at.Value.Day == date_start.Value.Day
                                                     && s.created_at.Value.Month == date_start.Value.Month
@@ -572,13 +572,14 @@ namespace CAP_TEAM05_2022.Controllers
             Sheet.Cells.Style.WrapText = true;
             Sheet.Cells["A1"].Value = "Mã sản phẩm";
             Sheet.Cells["B1"].Value = "Tên sản phẩm";
-            Sheet.Cells["C1"].Value = "Đơn vị";
+            Sheet.Cells["C1"].Value = "Số lượng nhập";
             Sheet.Cells["D1"].Value = "Đơn giá nhập";
-            Sheet.Cells["E1"].Value = "Số lượng nhập";
-            Sheet.Cells["F1"].Value = "Đơn giá bán";
+            Sheet.Cells["E1"].Value = "Đơn giá bán";
+            Sheet.Cells["F1"].Value = "Đơn giá bán lẻ";
             Sheet.Cells["G1"].Value = "Số lượng bán";
             Sheet.Cells["H1"].Value = "Tồn tổng";
-            Sheet.Cells["I1"].Value = "Thành tiền";
+            Sheet.Cells["I1"].Value = "Tồn lẻ (nếu có)";
+            Sheet.Cells["J1"].Value = "Thành tiền";
 
             int row = 2;// dòng bắt đầu ghi dữ liệu
             foreach (var item in product)
@@ -590,13 +591,38 @@ namespace CAP_TEAM05_2022.Controllers
                 {
                     Sheet.Cells[string.Format("A{0}", row)].Value = item.code;
                     Sheet.Cells[string.Format("B{0}", row)].Value = item.name;
-                    Sheet.Cells[string.Format("C{0}", row)].Value = item.unit;
-                    Sheet.Cells[string.Format("D{0}", row)].Value = item1.Key;
-                    Sheet.Cells[string.Format("E{0}", row)].Value = inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity);
-                    Sheet.Cells[string.Format("F{0}", row)].Value = item.sell_price;
-                    Sheet.Cells[string.Format("G{0}", row)].Value = inventory.Where(i => i.price_import == item1.Key).Sum(i => i.sold);
-                    Sheet.Cells[string.Format("H{0}", row)].Value = inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity - i.sold);
-                    Sheet.Cells[string.Format("I{0}", row)].Value = item1.Key * (inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity - i.sold));
+                    Sheet.Cells[string.Format("C{0}", row)].Value = inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity) + " " + item.unit + "(" +item.quantity_swap + item.unit_swap+")";
+                    Sheet.Cells[string.Format("D{0}", row)].Value = item1.Key.ToString("N0") + "/" + item.unit;
+                    Sheet.Cells[string.Format("E{0}", row)].Value = item.sell_price.ToString("N0") + "/" + item.unit;
+                    if (item.unit_swap == null)
+                    {
+                        Sheet.Cells[string.Format("F{0}", row)].Value = 0;
+                    }
+                    else
+                    {
+                        Sheet.Cells[string.Format("F{0}", row)].Value = ((decimal)item.sell_price_swap).ToString("N0") + "/" + item.unit_swap;
+                    }
+                    Sheet.Cells[string.Format("G{0}", row)].Value = inventory.Where(i => i.price_import == item1.Key).Sum(i => i.sold) + " " + item.unit;
+                    Sheet.Cells[string.Format("H{0}", row)].Value = inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity - i.sold) + " " + item.unit;
+                    if (item.unit_swap == null)
+                    {
+                        Sheet.Cells[string.Format("I{0}", row)].Value = 0;
+                    }
+                    else
+                    {
+                        Sheet.Cells[string.Format("I{0}", row)].Value = inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity_remaining) + " " + item.unit_swap;
+                    }
+                    if (item.unit_swap == null)
+                    {
+                        Sheet.Cells[string.Format("J{0}", row)].Value = item1.Key * (inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity - i.sold));
+                    }
+                    else
+                    {
+                        decimal temp1 = item1.Key * (inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity - i.sold));
+                        decimal temp2 = (decimal)(item1.Key / item.quantity_swap * (inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity_remaining)));
+                        Sheet.Cells[string.Format("J{0}", row)].Value = temp1 + temp2;
+
+                    }
                     row++;
                 }
             }
@@ -608,23 +634,27 @@ namespace CAP_TEAM05_2022.Controllers
             Sheet_sell.Cells.Style.WrapText = true;
             Sheet_sell.Cells["A1"].Value = "Mã sản phẩm";
             Sheet_sell.Cells["B1"].Value = "Tên sản phẩm";
-            Sheet_sell.Cells["C1"].Value = "Đơn vị";
+            Sheet_sell.Cells["C1"].Value = "Số lượng bán";
             Sheet_sell.Cells["D1"].Value = "Đơn giá bán";
-            Sheet_sell.Cells["E1"].Value = "Số lượng bán";
-            Sheet_sell.Cells["F1"].Value = "Thành tiền";
-          
+            Sheet_sell.Cells["E1"].Value = "Thành tiền";
+            Sheet_sell.Cells["F1"].Value = "Ngày giao dịch";
+
 
             int row_sell = 2;// dòng bắt đầu ghi dữ liệu
             foreach (var item in import_inventory.Where(s => s.sold > 0))
             {
-                Sheet_sell.Cells[string.Format("A{0}", row_sell)].Value = item.product.code;
-                Sheet_sell.Cells[string.Format("B{0}", row_sell)].Value = item.product.name;
-                Sheet_sell.Cells[string.Format("C{0}", row_sell)].Value = item.product.unit;
-                Sheet_sell.Cells[string.Format("D{0}", row_sell)].Value = item.product.sell_price;
-                Sheet_sell.Cells[string.Format("E{0}", row_sell)].Value = item.sold;
-                Sheet_sell.Cells[string.Format("F{0}", row_sell)].Value = item.product.sell_price * (item.sold);
+                var revenues = item.revenues.ToList();
+                foreach (var item1 in revenues)
+                {
+                    Sheet_sell.Cells[string.Format("A{0}", row_sell)].Value = item1.sale_details.product.code;
+                    Sheet_sell.Cells[string.Format("B{0}", row_sell)].Value = item1.sale_details.product.name;
+                    Sheet_sell.Cells[string.Format("C{0}", row_sell)].Value = item1.quantity + " " + item1.unit;
+                    Sheet_sell.Cells[string.Format("D{0}", row_sell)].Value = item1.Price.ToString("N0") + "/" + item1.unit;
+                    Sheet_sell.Cells[string.Format("E{0}", row_sell)].Value = (item1.Price * item1.quantity);
+                    Sheet_sell.Cells[string.Format("F{0}", row_sell)].Value = String.Format("{0:HH:mm - dd/MM/yyy}", item1.sale_details.sale.created_at);
 
-                row_sell++;
+                    row_sell++;
+                }
             }
             Sheet_sell.Cells["A:AZ"].AutoFitColumns();
             Response.Clear();
@@ -635,10 +665,11 @@ namespace CAP_TEAM05_2022.Controllers
             Sheet_import.Cells.Style.WrapText = true;
             Sheet_import.Cells["A1"].Value = "Mã sản phẩm";
             Sheet_import.Cells["B1"].Value = "Tên sản phẩm";
-            Sheet_import.Cells["C1"].Value = "Đơn vị";
+            Sheet_import.Cells["C1"].Value = "Số lượng nhập";
             Sheet_import.Cells["D1"].Value = "Đơn giá nhập";
-            Sheet_import.Cells["E1"].Value = "Số lượng nhập";
-            Sheet_import.Cells["F1"].Value = "Thành tiền";
+            Sheet_import.Cells["E1"].Value = "Thành tiền";
+            Sheet_import.Cells["F1"].Value = "Nhà cung cấp";
+            Sheet_import.Cells["G1"].Value = "Ngày nhập";
 
 
             int row_import = 2;// dòng bắt đầu ghi dữ liệu
@@ -646,10 +677,11 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 Sheet_import.Cells[string.Format("A{0}", row_import)].Value = item.product.code;
                 Sheet_import.Cells[string.Format("B{0}", row_import)].Value = item.product.name;
-                Sheet_import.Cells[string.Format("C{0}", row_import)].Value = item.product.unit;
-                Sheet_import.Cells[string.Format("D{0}", row_import)].Value = item.price_import;
-                Sheet_import.Cells[string.Format("E{0}", row_import)].Value = item.quantity;
-                Sheet_import.Cells[string.Format("F{0}", row_import)].Value = item.price_import * (item.quantity);
+                Sheet_import.Cells[string.Format("C{0}", row_import)].Value = item.quantity + " "+ item.product.unit + "(" + item.product.quantity_swap + item.product.unit_swap + ")";
+                Sheet_import.Cells[string.Format("D{0}", row_import)].Value = item.price_import.ToString("N0")+ "/" + item.product.unit;
+                Sheet_import.Cells[string.Format("E{0}", row_import)].Value = item.price_import * (item.quantity);
+                Sheet_import.Cells[string.Format("F{0}", row_import)].Value = item.customer.name;
+                Sheet_import.Cells[string.Format("G{0}", row_import)].Value = String.Format("{0:HH:mm - dd/MM/yyy}", item.created_at);
 
                 row_import++;
             }
@@ -665,12 +697,12 @@ namespace CAP_TEAM05_2022.Controllers
         public ActionResult ImportFail_continues(int id)
         {
             var import = Product_list.Where(x => x.id == id).FirstOrDefault();
-           
+
             var check_group = db.groups.Where(g => g.name == import.name_group && g.status != 3).FirstOrDefault();
             group GroupProduct = new group();
             if (check_group == null)
             {
-                
+
                 GroupProduct.name = import.name_group;
                 GroupProduct.created_by = User.Identity.GetUserId();
                 GroupProduct.status = 1;
@@ -684,7 +716,7 @@ namespace CAP_TEAM05_2022.Controllers
             category category = new category();
             if (check_category == null)
             {
-                
+
                 category.name = import.name_category;
                 category.status = 1;
                 category.created_by = User.Identity.GetUserId();
@@ -715,7 +747,7 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 product.category_id = check_category.id;
             }
-           
+
             product.created_by = User.Identity.GetUserId();
             product.sell_price = import.sell_price;
             product.purchase_price = import.purchase_price;
@@ -742,7 +774,7 @@ namespace CAP_TEAM05_2022.Controllers
             foreach (var item in product_list)
             {
                 var import = Product_list.Where(x => x.id == item.id).FirstOrDefault();
-               
+
                 var check_group = db.groups.Where(g => g.name == import.name_group && g.status != 3).FirstOrDefault();
                 group GroupProduct = new group();
                 if (check_group == null)
@@ -809,7 +841,7 @@ namespace CAP_TEAM05_2022.Controllers
                 inventory.created_at = DateTime.Now;
                 db.import_inventory.Add(inventory);
                 db.SaveChanges();
-               
+
             }
             foreach (var item in product_list)
             {
@@ -823,7 +855,7 @@ namespace CAP_TEAM05_2022.Controllers
         {
 
             string nameFile = "Doanh thu" + String.Format("{0:dd-MM-yyyy}", date_Start) + " đến " + String.Format("{0:dd-MM-yyyy}", date_End) + ".xlsx";
-           
+
             var sales = db.sales.Include(s => s.customer).Include(s => s.user).Where(s => s.created_at >= date_Start && s.created_at <= date_End
                                                     || s.created_at.Value.Day == date_Start.Value.Day
                                                     && s.created_at.Value.Month == date_Start.Value.Month
@@ -832,7 +864,7 @@ namespace CAP_TEAM05_2022.Controllers
                                                     && s.created_at.Value.Month == date_End.Value.Month
                                                     && s.created_at.Value.Year == date_End.Value.Year)
                 .OrderByDescending(o => o.id);
-          
+
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ExcelPackage ep = new ExcelPackage();
             ExcelWorksheet Sheet = ep.Workbook.Worksheets.Add("TonKho");
@@ -849,11 +881,11 @@ namespace CAP_TEAM05_2022.Controllers
             int row = 2;// dòng bắt đầu ghi dữ liệu
             foreach (var item in sales)
             {
-               
-                    Sheet.Cells[string.Format("A{0}", row)].Value = item.code;
-                    Sheet.Cells[string.Format("B{0}", row)].Value = item.total;
-                    Sheet.Cells[string.Format("C{0}", row)].Value = item.prepayment;
-                    Sheet.Cells[string.Format("D{0}", row)].Value = item.total - item.prepayment;
+
+                Sheet.Cells[string.Format("A{0}", row)].Value = item.code;
+                Sheet.Cells[string.Format("B{0}", row)].Value = item.total;
+                Sheet.Cells[string.Format("C{0}", row)].Value = item.prepayment;
+                Sheet.Cells[string.Format("D{0}", row)].Value = item.total - item.prepayment;
                 if (item.method == 1)
                 {
                     Sheet.Cells[string.Format("E{0}", row)].Value = "Đã thanh toán";
@@ -862,13 +894,13 @@ namespace CAP_TEAM05_2022.Controllers
                 {
                     Sheet.Cells[string.Format("E{0}", row)].Value = "Ghi nợ";
                 }
-                   
-                    Sheet.Cells[string.Format("F{0}", row)].Value = String.Format("{0:dd-MM-yyyy HH:mm:yy}", item.created_at); ;
-                    row++;
-                
+
+                Sheet.Cells[string.Format("F{0}", row)].Value = String.Format("{0:dd-MM-yyyy HH:mm:yy}", item.created_at); ;
+                row++;
+
             }
             Sheet.Cells["A:AZ"].AutoFitColumns();
-            Response.Clear();          
+            Response.Clear();
             Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             Response.AddHeader("content-disposition", "attachment; filename=" + nameFile);
             Response.BinaryWrite(ep.GetAsByteArray());
@@ -890,8 +922,8 @@ namespace CAP_TEAM05_2022.Controllers
             var sales = db.sales.Include(s => s.customer).Include(s => s.user).Where(s => s.created_at >= date_Start && s.created_at <= date_End
                                                     || s.created_at.Value.Month == date_Start.Value.Month && s.created_at.Value.Year == date_Start.Value.Year
                                                     || s.created_at.Value.Month == date_End.Value.Month && s.created_at.Value.Year == date_End.Value.Year)
-                .OrderByDescending(o => o.id);    
-          
+                .OrderByDescending(o => o.id);
+
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ExcelPackage ep = new ExcelPackage();
             ExcelWorksheet Sheet = ep.Workbook.Worksheets.Add("TonKho");
@@ -908,11 +940,11 @@ namespace CAP_TEAM05_2022.Controllers
             int row = 2;// dòng bắt đầu ghi dữ liệu
             foreach (var item in sales)
             {
-               
-                    Sheet.Cells[string.Format("A{0}", row)].Value = item.code;                  
-                    Sheet.Cells[string.Format("B{0}", row)].Value = item.total;
-                    Sheet.Cells[string.Format("C{0}", row)].Value = item.prepayment;
-                    Sheet.Cells[string.Format("D{0}", row)].Value = item.total - item.prepayment;
+
+                Sheet.Cells[string.Format("A{0}", row)].Value = item.code;
+                Sheet.Cells[string.Format("B{0}", row)].Value = item.total;
+                Sheet.Cells[string.Format("C{0}", row)].Value = item.prepayment;
+                Sheet.Cells[string.Format("D{0}", row)].Value = item.total - item.prepayment;
                 if (item.method == 1)
                 {
                     Sheet.Cells[string.Format("E{0}", row)].Value = "Đã thanh toán";
@@ -921,13 +953,13 @@ namespace CAP_TEAM05_2022.Controllers
                 {
                     Sheet.Cells[string.Format("E{0}", row)].Value = "Ghi nợ";
                 }
-                   
-                    Sheet.Cells[string.Format("F{0}", row)].Value = String.Format("{0:dd-MM-yyyy HH:mm:yy}",item.created_at);
-                    row++;
-                
+
+                Sheet.Cells[string.Format("F{0}", row)].Value = String.Format("{0:dd-MM-yyyy HH:mm:yy}", item.created_at);
+                row++;
+
             }
             Sheet.Cells["A:AZ"].AutoFitColumns();
-            Response.Clear();          
+            Response.Clear();
             Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             Response.AddHeader("content-disposition", "attachment; filename=" + nameFile);
             Response.BinaryWrite(ep.GetAsByteArray());
@@ -937,7 +969,7 @@ namespace CAP_TEAM05_2022.Controllers
         public void ExportExcel_profit()
         {
             string nameFile = "Lợi nhuận xuất  " + String.Format("{0:dd-MM-yyyy}", DateTime.Now) + ".xlsx";
-           
+
 
             var revenues = db.revenues.OrderByDescending(c => c.id).ToList();
 
@@ -967,7 +999,7 @@ namespace CAP_TEAM05_2022.Controllers
                 Sheet.Cells[string.Format("E{0}", row)].Value = item.sale_details.product.purchase_price;
                 Sheet.Cells[string.Format("F{0}", row)].Value = item.quantity;
                 Sheet.Cells[string.Format("G{0}", row)].Value = item.Price;
-                Sheet.Cells[string.Format("H{0}", row)].Value = (item.Price - item.sale_details.product.purchase_price) *item.quantity;
+                Sheet.Cells[string.Format("H{0}", row)].Value = (item.Price - item.sale_details.product.purchase_price) * item.quantity;
 
                 row++;
 
