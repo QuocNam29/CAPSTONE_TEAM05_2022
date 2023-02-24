@@ -30407,3 +30407,8 @@ body {
     color: grey;
     font-size: 11px;
 }
+.avatar-img {
+    height: 150px;
+    width: 150px;
+    border-radius: 100%;
+}

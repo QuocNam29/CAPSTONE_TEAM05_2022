@@ -3,6 +3,15 @@
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
+    string avt = "";
+    if (Model.avatar == null)
+    {
+        avt = "~/Template/assets/images/default-avatar.png";
+    }
+    else
+    {
+        avt = "~/Template/assets/images/" + Model.avatar;
+    }
 }
 <section class="pcoded-main-container">
     <div class="pcoded-content">
@@ -34,17 +43,27 @@
                     <div class="card-body">
                         <h5>Thông tin cá nhân</h5>
                         <hr>
-                        <form accept-charset="utf-8">
+                        @using (Html.BeginForm("EditUser", "AspNetUsers", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.id)
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <div class="image-upload center">
                                             <div class="text-center">
                                                 <label for="file-input">
-                                                    <img src="images/user/user_avatar_70c639df5e30bdee440e4cdf599fec2b63674bf401061.png" alt="profile" class="avatar-img">
+                                                    <img id="output" src="@Url.Content(avt)" alt="profile" class="avatar-img">
                                                 </label>
                                             </div>
-                                            <input type="file" id="file-input" name="admin_avatar" class="form-control">
+                                            <input type="file"   id="file-input" name="file" class="form-control" accept="image/x-png,image/gif,image/jpeg" onchange="loadFile_edit(event)">
+                                            <script>
+                                                var loadFile_edit = function (event) {
+                                                    var image = document.getElementById('output');
+                                                    image.src = URL.createObjectURL(event.target.files[0]);
+                                                };
+                                            </script>
                                         </div>
                                         <!---->
                                     </div>
@@ -52,144 +71,46 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="name">Họ và tên</label>
-                                        <input type="text" id="name" name="name" aria-describedby="name" class="form-control">
-                                        <!---->
+                                        @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập họ và tên" } })
+                                        @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })                                        <!---->
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="email">Địa chỉ Email</label>
-                                        <input type="email" id="email" name="email" aria-describedby="email" class="form-control">
+                                        <input type="email" id="email" name="email" disabled value="@Model.email" aria-describedby="email" class="form-control">
                                         <!---->
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="phone">Số điện thoại</label>
-                                        <input type="number" id="phone" name="phone" class="form-control">
-                                        <!---->
+                                        @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập số điện thoại" } })
+                                        @Html.ValidationMessageFor(model => model.phone, "", new { @class = "text-danger" })                                        <!---->
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="role">Chức vụ</label>
-                                        <input type="text" id="role" name="role" disabled="disabled" class="form-control">
+                                        <input type="text" id="role" name="role" value="@Model.AspNetUser.AspNetRoles.FirstOrDefault().Name" disabled="disabled" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="address">Địa chỉ nơi ở</label>
-<textarea type="text" id="address" name="address" class="form-control">
-</textarea>
+                                        @Html.TextAreaFor(model => model.address, new { @class = "form-control", @placeholder = "Nhập địa chỉ" })
+                                        @Html.ValidationMessageFor(model => model.address, "", new { @class = "text-danger" })
                                         <!---->
                                     </div>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary float-right">Lưu</button>
-                        </form>
+                        }
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
-
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-        <h4>user</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.id)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.email, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.avatar, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.avatar, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.avatar, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.phone, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.phone, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.address, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.address, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.address, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.remember_token, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.remember_token, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.remember_token, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.created_at, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.created_at, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.created_at, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.updated_at, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.updated_at, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.updated_at, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.deleted_at, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.deleted_at, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.deleted_at, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 

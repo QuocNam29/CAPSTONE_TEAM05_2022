@@ -152,13 +152,13 @@
                         <div class="dropdown-menu dropdown-menu-right profile-notification">
                             <ul class="pro-body">
                                 <li>
-                                    <a href="https://tancool.net/thong-tin-ca-nhan" class="dropdown-item">
+                                    <a href="@Url.Action("Edit","AspNetUsers")" class="dropdown-item">
                                         <i class="feather icon-user"></i>
                                         Thông tin cá nhân
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="https://tancool.net/thay-doi-mat-khau" class="dropdown-item">
+                                    <a href="@Url.Action("ChangePassword","Manage")" class="dropdown-item">
                                         <i class="feather icon-lock"></i>
                                         Đổi mật khẩu
                                     </a>
@@ -197,7 +197,7 @@
     <script src="~/Scripts/jquery-ui.min.js"></script>
     <script src="~/Template/assets/js/plugins/bootstrap.min.js"></script>
     <script src="~/Template/assets/js/pcoded.min.js"></script>
-
+    <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Template/assets/js/flatpickr.min.js"></script>
     <!-- Sweet Alert -->
     <script src="~/Template/assets/js/SweetAlert/sweetalert.js"></script>

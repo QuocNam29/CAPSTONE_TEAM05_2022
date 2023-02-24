@@ -10,6 +10,7 @@ using CAP_TEAM05_2022.Models;
 
 namespace CAP_TEAM05_2022.Controllers
 {
+    [CustomAuthorize(Roles = "Quản trị viên, Nhân viên")]
     public class cartsController : Controller
     {
         private CP25Team05Entities db = new CP25Team05Entities();

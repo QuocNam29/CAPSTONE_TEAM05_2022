@@ -238,7 +238,7 @@ namespace CAP_TEAM05_2022.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
-                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+                return RedirectToAction("Edit", "AspNetUsers");
             }
             AddErrors(result);
             return View(model);

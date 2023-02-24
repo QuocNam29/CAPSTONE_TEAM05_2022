@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using Microsoft.AspNet.Identity.Owin;
 
 namespace CAP_TEAM05_2022.Controllers
 {
+    [CustomAuthorize(Roles = "Quản trị viên, Nhân viên")]
     public class AspNetUsersController : Controller
     {
         private ApplicationUserManager _userManager;
@@ -252,11 +254,67 @@ namespace CAP_TEAM05_2022.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(user user)
+        public ActionResult EditUser(user user, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(user).State = EntityState.Modified;
+                user user1 = db.users.Find(user.id);
+                if (user1.avatar != null)
+                {
+                    Session["imgPath"] = user1.avatar;
+
+                }
+                else
+                {
+                    Session["imgPath"] = "default-avatar.png";
+                }
+                user1.name = user.name; 
+                user1.address = user.address;
+                user1.phone = user.phone;
+                user1.updated_at = DateTime.Now;
+                if (file != null)
+                {
+                    string filename = Path.GetFileName(file.FileName);
+                    string _filename = DateTime.Now.ToString("yymmssfff") + filename;
+
+                    string extension = Path.GetExtension(file.FileName);
+
+                    string path = Path.Combine(Server.MapPath("~/Template/assets/images/"), _filename);
+
+                    user1.avatar = _filename;
+
+                    if (extension.ToLower() == ".jpg" || extension.ToLower() == ".jpeg" || extension.ToLower() == ".png")
+                    {
+                        if (file.ContentLength <= 4000000)
+                        {
+                            db.Entry(user1).State = EntityState.Modified;
+                            string oldImgPath = Request.MapPath(Session["imgPath"].ToString());
+
+                            if (db.SaveChanges() > 0)
+                            {
+                                file.SaveAs(path);
+                                if (System.IO.File.Exists(oldImgPath))
+                                {
+                                    System.IO.File.Delete(oldImgPath);
+                                }
+                                return RedirectToAction("Edit");
+                            }
+                        }
+                        else
+                        {
+                            ViewBag.msg = "Hình ảnh phải lớn hơn hoặc bằng 4MB!";
+                        }
+                    }
+                    else
+                    {
+                        ViewBag.msg = "Định dạng file không hợp lệ!";
+                    }
+                }
+                else
+                {
+                    user1.avatar = Session["imgPath"].ToString();
+                }
+                db.Entry(user1).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Edit");
             }
