@@ -704,6 +704,7 @@
     <Content Include="Views\return_supplier\Edit.cshtml" />
     <Content Include="Views\return_supplier\Index.cshtml" />
     <Content Include="Views\return_supplier\_ReturnSupplier.cshtml" />
+    <Content Include="Views\Home\Error404.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

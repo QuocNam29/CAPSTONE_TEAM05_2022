@@ -1463,7 +1463,6 @@ function Payment_order() {
         contentType: "application/json; charset=UTF-8",
         dataType: "json",
         success: function (response) {
-            console.log(response);
             if (response.status) {
                 GetList_Cart($('#customer_id').val());
                 sweetAlert
@@ -1891,7 +1890,6 @@ function openWin() {
 
 function PrintOrder(id, code, method, total, create_at, customer_code, prepayment) {
     
-   
     var s = "";
     var debt = "";
 

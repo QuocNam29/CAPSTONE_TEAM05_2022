@@ -25,6 +25,10 @@ namespace CAP_TEAM05_2022.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        } 
+        public ActionResult Error404()
+        {
+            return View();
         }
     }
 }

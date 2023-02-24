@@ -345,7 +345,7 @@ namespace CAP_TEAM05_2022.Controllers
                     sale_method = sale.method,
                     sale_total = String.Format("{0:0,00}", sale.total),
                     sale_prepayment = String.Format("{0:0,00}", sale.prepayment),
-                    sale_create = sale.created_at
+                    sale_create = String.Format("{0:HH:mm - dd/MM/yyy}", sale.created_at)
                 }, JsonRequestBehavior.AllowGet) ;
 
             }
