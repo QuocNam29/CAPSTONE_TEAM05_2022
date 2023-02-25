@@ -6,6 +6,8 @@
     var first_item = Model.FirstOrDefault();
 
 }
+@if (Model.Count() > 0)
+{
 <table class="table table-hover">
     <thead>
         <tr class="background-success">
@@ -13,11 +15,11 @@
                 <h5>
                     Đã thanh toán (@Model.Where(p => p.method == 1).Count())
                 </h5>
-            </th>s 
+            </th>
             <th class="text-center">
                 <h5 class="custom-foot">
-                    @Model.Where(p => p.method == 1).Sum(t => t.total).ToString("N0")
-                    ₫
+                    @Model.Where(p => p.method == 1).Sum(t => t.total).ToString("N0")₫
+
                 </h5>
             </th>
             <th colspan="2">
@@ -37,7 +39,7 @@
         @foreach (var item in Model.Where(m => m.method == 1))
         {
             no++;
-            <tr class="click-hover">
+            <tr class="click-hover" onclick="GetList_orderDetails('@item.id', 1)">
                 <td class="text-center">
                     @no
                 </td>
@@ -64,7 +66,7 @@
                 <h5>
                     Ghi nợ (@Model.Where(p => p.method == 2).Count())
                 </h5>
-            </th>           
+            </th>
             <th class="text-center">
                 <h5 class="custom-foot">
                     @Model.Where(p => p.method == 2).Sum(t => t.total).ToString("N0")
@@ -95,7 +97,7 @@
         @foreach (var item in Model.Where(p => p.method == 2))
         {
             no1++;
-            <tr class="click-hover">
+            <tr class="click-hover" onclick="GetList_orderDetails('@item.id', 1)">
                 <td class="text-center">
                     @no1
                 </td>
@@ -115,4 +117,16 @@
 
     </tbody>
 </table>
- 
+ }
+else
+{
+<div class="card-body table-border-style">
+    <div class="table-responsive">
+        <div>
+            <div class="alert alert-warning text-center">
+                <p>Không tìm thấy dữ liệu</p>
+            </div>
+        </div>
+    </div>
+</div>
+}

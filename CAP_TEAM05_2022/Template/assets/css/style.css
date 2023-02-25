@@ -30412,3 +30412,6 @@ body {
     width: 150px;
     border-radius: 100%;
 }
+.click-hover {
+    cursor: pointer;
+}

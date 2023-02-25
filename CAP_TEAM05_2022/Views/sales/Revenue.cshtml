@@ -248,89 +248,13 @@
                     </div>
 
                 </div>
-            </div> <div id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalTitle" aria-hidden="true" class="modal fade bd-example-modal-lg">
-                <div role="document" class="modal-dialog modal-lg">
-                    <form>
-                        <div class="modal-content">
-                            <div class="modal-header bg-primary">
-                                <h5 id="detailModalTitle" class="modal-title white">Chi tiết</h5> <button type="button" data-dismiss="modal" aria-label="Close" class="close">
-                                    <span aria-hidden="true">×</span>
-                                </button>
-                            </div> <div class="modal-body">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="table-responsive">
-                                            <table class="table table-hover">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="text-center">STT</th>
-                                                        <th>Ngày</th>
-                                                        <th>Mã sản phẩm</th>
-                                                        <th>Tên sản phẩm</th>
-                                                        <th class="text-center">Đơn vị</th>
-                                                        <th class="text-center">Đơn giá</th>
-                                                        <th class="text-center">Số lượng</th>
-                                                        <th class="text-center">Thành tiền</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td colspan="9">
-                                                            <div class="alert alert-warning">
-                                                                <p class="text-center">Không tìm thấy dữ liệu</p>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                                <tfoot>
-                                                    <tr>
-                                                        <td colspan="7" class="text-right">
-                                                            <h5>Tạm tính</h5>
-                                                        </td>
-                                                        <td class="text-left">
-                                                            <h5>0 ₫</h5>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="7" class="text-right">
-                                                            <h5>VAT (%)</h5>
-                                                        </td>
-                                                        <td class="text-left">
-                                                            <h5>%</h5>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="7" class="text-right">
-                                                            <h5>Chiết khấu (%)</h5>
-                                                        </td>
-                                                        <td class="text-left">
-                                                            <h5>%</h5>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="7" class="text-right">
-                                                            <h5>Thành tiền</h5>
-                                                        </td>
-                                                        <td class="text-left">
-                                                            <h5>
-                                                                0
-                                                                ₫
-                                                            </h5>
-                                                        </td>
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            </div> 
         </div>
     </div>
 </section>
+<div id="dataContainer2">
+    @{ Html.RenderAction("_OrderDetailsList", "sales", new { order_id = 0 });}
+</div>
 <script type="text/javascript">
     var row;
     $(document).ready(function () {
@@ -355,5 +279,30 @@
         $("#RevenueDate").hide();
         $("#RevenueMonth").hide();
         $("#ProfitAndLoss").show();
+    }
+    function GetList_orderDetails(id, method) {
+            $.ajax({
+                url: '@Url.Action("_OrderDetailsList", "sales")',
+                data: {
+                    order_id: id,
+
+                }
+            }).done(function (result) {
+                $('#dataContainer2').html(result);
+                if (method ==1 ) {
+                    $('#detailModal.close').css('display', 'none');
+                    $('#detailModal').modal('show');
+                }
+                else if (method == 2) {
+                    $('#productSelectModal.close').css('display', 'none');
+                    $('#productSelectModal').modal('show');
+                }
+
+
+            }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(textStatus)
+                console.log(errorThrown)
+                alert("Something Went Wrong, Try Later");
+            });
     }
 </script>
