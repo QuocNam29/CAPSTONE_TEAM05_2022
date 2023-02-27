@@ -75,17 +75,18 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 return View(model);
             }
-
+            AspNetUser aspNet = db.AspNetUsers.Where(s => s.Email == model.Email).FirstOrDefault();
+            if (aspNet.LockoutEnabled == false)
+            {
+                ModelState.AddModelError("", "Tài khoản của bạn đang bị khóa !");
+                return View(model);
+            }
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            ModelState.AddModelError("", "Sai Email hoặc Mật khẩu đăng nhập!");
             switch (result)
             {
-                case SignInStatus.Success:
-                    user user = db.users.Where(u => u.email == model.Email).FirstOrDefault();
-                   /* Session["user_email"] = user.email;*/
-                  
+                case SignInStatus.Success:                  
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -93,6 +94,7 @@ namespace CAP_TEAM05_2022.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
+                    ModelState.AddModelError("", "Sai Email hoặc Mật khẩu đăng nhập!");
                     ModelState.AddModelError("", "Đăng nhập Thât bại !");
                     return View(model);
             }

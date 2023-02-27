@@ -139,13 +139,13 @@ namespace CAP_TEAM05_2022.Controllers
         public ActionResult EditStatus_User(AspNetUser user)
         {
             AspNetUser asp_user = db.AspNetUsers.Find(user.Id);
-            if (asp_user.PhoneNumberConfirmed == true)
+            if (asp_user.LockoutEnabled == true)
             {
-                asp_user.PhoneNumberConfirmed = false;
+                asp_user.LockoutEnabled = false;
             }
             else
             {
-                asp_user.PhoneNumberConfirmed = true;
+                asp_user.LockoutEnabled = true;
             }
             db.Entry(asp_user).State = EntityState.Modified;
             db.SaveChanges();

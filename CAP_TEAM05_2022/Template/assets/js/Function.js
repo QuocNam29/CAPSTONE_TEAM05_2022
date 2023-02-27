@@ -2251,3 +2251,11 @@ function Get_exchangeSupplier(id, product_name, quantity_stock, supplier, price_
     $('#exchangeSupplierModal').modal('show');
        
 }
+//-------------------Định dạng số điện thoại (phone)------------------
+function phoneMask() {
+    var num = $(this).val().replace(/\D/g, '');
+    if (num != "") {
+        $(this).val(num.substring(0, 3) + ' ' + num.substring(3, 10));
+    }  
+}
+$('[type="tel"]').keyup(phoneMask);
