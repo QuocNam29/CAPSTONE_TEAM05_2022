@@ -37,10 +37,14 @@ namespace CAP_TEAM05_2022.Controllers
             var OrderDetailsList = db.sale_details.Where(o => o.sale_id == order_id);
             return PartialView(OrderDetailsList.ToList());
         }
-        public ActionResult _HistoryOrder(int order_customer)
+        public ActionResult _HistoryOrder(int order_customer, int? method)
         {
-            var HistoryOrder = db.sales.Where(o => o.customer_id == order_customer).OrderByDescending(o => o.id);
-            return PartialView(HistoryOrder.ToList());
+            var HistoryOrder = db.sales.Where(o => o.customer_id == order_customer);
+            if (method == 2)
+            {
+                HistoryOrder = HistoryOrder.Where(s => s.method == 2);
+            }
+            return PartialView(HistoryOrder.OrderByDescending(o => o.id).ToList());
         }
         public ActionResult _OrderList(DateTime? date_Start, DateTime? date_End)
         {
@@ -248,12 +252,12 @@ namespace CAP_TEAM05_2022.Controllers
                                 else
                                 {
                                     int temp_1 = (int)(temp_quatity / inventory.product.quantity_swap);
-                                    int temp_check = (int)(temp_quatity  % inventory.product.quantity_swap);
-                                    
+                                    int temp_check = (int)(temp_quatity % inventory.product.quantity_swap);
+
                                     if (temp_check > 0)
                                     {
                                         double temp_2 = (double)((temp_quatity * 1.0000000) / inventory.product.quantity_swap) - temp_1;
-                                        if (temp_inventory >= (temp_1 +1))
+                                        if (temp_inventory >= (temp_1 + 1))
                                         {
                                             inventory.sold += (temp_1 + 1);
                                             int temp = (int)(inventory.product.quantity_swap * (1 - temp_2));
@@ -314,7 +318,7 @@ namespace CAP_TEAM05_2022.Controllers
                                             temp_quatity -= temp;
                                         }
                                     }
-                                    db.Entry(inventory).State = EntityState.Modified;                                   
+                                    db.Entry(inventory).State = EntityState.Modified;
                                 }
                                 db.SaveChanges();
                             }
@@ -326,14 +330,35 @@ namespace CAP_TEAM05_2022.Controllers
                 }
                 if (createSale.method > 0)
                 {
-                    debt debt = new debt();
-                    debt.sale_id = sale.id;
-                    debt.paid = createSale.method;
-                    debt.created_at = DateTime.Now;
-                    debt.created_by = User.Identity.GetUserId();
-                    debt.total = createSale.method;
-                    db.debts.Add(debt);
-                    db.SaveChanges();
+
+                    var check_debt = db.debts.Where(d => d.sale.customer_id == createSale.customer_id).Count();
+                    if (check_debt > 0)
+                    {
+                        var last_debt = db.debts.Where(d => d.sale.customer_id == createSale.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
+                        debt debt = new debt();
+                        debt.sale_id = sale.id;
+                        debt.paid = createSale.method;
+                        debt.created_at = DateTime.Now;
+                        debt.created_by = User.Identity.GetUserId();
+                        debt.total = last_debt.total + createSale.method;
+                        debt.debt1 = sale.total;
+                        debt.remaining = last_debt.remaining + (sale.total - debt.paid);
+                        db.debts.Add(debt);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        debt debt = new debt();
+                        debt.sale_id = sale.id;
+                        debt.paid = createSale.method;
+                        debt.created_at = DateTime.Now;
+                        debt.created_by = User.Identity.GetUserId();
+                        debt.total = createSale.method;
+                        debt.debt1 = sale.total;
+                        debt.remaining = sale.total - debt.paid;
+                        db.debts.Add(debt);
+                        db.SaveChanges();
+                    }
                 }
                 message = "Bạn có muốn in hóa đơn ?";
                 return Json(new
@@ -346,7 +371,7 @@ namespace CAP_TEAM05_2022.Controllers
                     sale_total = String.Format("{0:0,00}", sale.total),
                     sale_prepayment = String.Format("{0:0,00}", sale.prepayment),
                     sale_create = String.Format("{0:HH:mm - dd/MM/yyy}", sale.created_at)
-                }, JsonRequestBehavior.AllowGet) ;
+                }, JsonRequestBehavior.AllowGet);
 
             }
             catch (Exception e)

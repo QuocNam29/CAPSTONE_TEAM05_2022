@@ -16,13 +16,15 @@ namespace CAP_TEAM05_2022.Models
     {
         public int id { get; set; }
         public int sale_id { get; set; }
-        public decimal paid { get; set; }
-        public decimal total { get; set; }
+        public Nullable<decimal> paid { get; set; }
+        public Nullable<decimal> total { get; set; }
         public string created_by { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }
         public Nullable<System.DateTime> deleted_at { get; set; }
         public string note { get; set; }
+        public Nullable<decimal> debt1 { get; set; }
+        public Nullable<decimal> remaining { get; set; }
     
         public virtual sale sale { get; set; }
         public virtual user user { get; set; }

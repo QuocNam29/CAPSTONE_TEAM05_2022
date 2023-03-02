@@ -2147,7 +2147,7 @@ function DebtCollection(ele, id) {
         url: URLFindDebt,
         data: { id: id },
         success: function (response) {
-            $('#sale_id').val(response.id);
+            $('#customer_id').val(response.id);
             $('#order_total').val(response.total.toLocaleString());
             $('#debts_total').val(response.prepayment.toLocaleString());
             $('#Debt_conlai').val((response.total - response.prepayment).toLocaleString());

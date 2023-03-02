@@ -336,7 +336,7 @@
     </div>
 </div>
 <div id="dataContainer2">
-    @{ Html.RenderAction("_HistoryOrder", "sales", new { order_customer = 0 });}
+    @{ Html.RenderAction("_HistoryOrder", "sales", new { order_customer = 0, method = 0 });}
 </div>
 <script>
     function GetList_History() {       
@@ -345,6 +345,7 @@
                 url: '@Url.Action("_HistoryOrder", "sales")',
                 data: {
                     order_customer: id,
+                    method: 1,
                 }
             }).done(function (result) {
                 $('#dataContainer2').html(result);            

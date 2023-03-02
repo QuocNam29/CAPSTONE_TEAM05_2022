@@ -36,105 +36,99 @@
                                         {
                                             int no = 0;
                                             var details = item.sale_details.ToList();
-                                            <tbody>
-                                                @if (details.Count() > 0)
-                                                {
-                                                    foreach (var item_details in details)
+                                            if (details.Count() > 0)
+                                            {
+                                                <tbody>
+
+                                                    @foreach (var item_details in details)
                                                     {
                                                         no++;
-                                                        <tr>
-                                                            <td class="text-center">
-                                                                @no
-                                                            </td>
-                                                            <td class="text-center">
-                                                                @item_details.product.code
-                                                            </td>
-                                                            <td class="text-center"> @item_details.product.name</td>
-                                                            <td class="text-center">
-                                                                @String.Format("{0:0,00}", item_details.price / item_details.sold)/<span class="txt-unit">@item_details.unit</span>
-                                                            </td>
-                                                            <td class="text-center">
-                                                                @item_details.sold<span class="txt-unit">@item_details.unit</span>
-                                                            </td>
-                                                            <td class="text-center">
-                                                                @String.Format("{0:0,00}", item_details.price)₫
-                                                            </td>
-                                                        </tr>
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            @no
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @item_details.product.code
+                                                        </td>
+                                                        <td class="text-center"> @item_details.product.name</td>
+                                                        <td class="text-center">
+                                                            @String.Format("{0:0,00}", item_details.price / item_details.sold)/<span class="txt-unit">@item_details.unit</span>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @item_details.sold<span class="txt-unit">@item_details.unit</span>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @String.Format("{0:0,00}", item_details.price)₫
+                                                        </td>
+                                                    </tr>
 
                                                     }
-                                                }
-                                                else
-                                                {
-                                                    <tr style="display: none;">
-                                                        <td colspan="7">
-                                                            <div class="alert alert-warning">
-                                                                <p class="text-center">Không tìm thấy dữ liệu</p>
+                                                    
+
+                                                </tbody>
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="3">
+                                                            <p>
+                                                                Mã đơn hàng: <span>@item.code</span>
+                                                            </p>
+                                                            <!---->
+                                                        </td>
+                                                        <td colspan="2">
+                                                            <p>
+                                                                Ngày mua hàng : <span> @String.Format("{0:HH:mm - dd/MM/yyy}", item.created_at)</span>
+                                                            </p>
+                                                            <!---->
+                                                        </td>
+                                                        <td colspan="2" class="text-left">
+                                                            <div class="total-div">
+
+                                                                <div>
+
+                                                                    Thành tiền:
+                                                                    <span class="text">
+                                                                        @String.Format("{0:0,00}", item.total)₫
+                                                                    </span>
+
+                                                                </div>
+                                                                @if (item.prepayment >= 0)
+                                                                {
+                                                                    <div>
+                                                                        Đã thanh toán:
+                                                                        <span class="text-success">
+                                                                            @String.Format("{0:0,00}", item.prepayment)₫
+                                                                        </span>
+                                                                    </div>
+                                                                    <div>
+                                                                        Còn nợ:
+                                                                        <span class="text-danger">
+                                                                            @String.Format("{0:0,00}", item.total - item.prepayment)₫
+                                                                        </span>
+                                                                    </div>
+                                                                }
+                                                                
                                                             </div>
                                                         </td>
                                                     </tr>
+
+                                                </tbody>
+                                                    }
                                                 }
-
-
-                                            </tbody>
-                                            <tbody>
-                                                <tr>
-                                                    <td colspan="3">
-                                                        <p>
-                                                            Mã đơn hàng: <span>@item.code</span>
-                                                        </p>
-                                                        <!---->
-                                                    </td>
-                                                    <td colspan="2">
-                                                        <p>
-                                                            Ngày mua hàng : <span> @String.Format("{0:HH:mm - dd/MM/yyy}", item.created_at)</span>
-                                                        </p>
-                                                        <!---->
-                                                    </td>
-                                                    <td colspan="2" class="text-left">
-                                                        <div class="total-div">
-
-                                                            <div>
-
-                                                                Thành tiền:
-                                                                <span class="text">
-                                                                    @String.Format("{0:0,00}", item.total)₫
-                                                                </span>
-
-                                                            </div>
-                                                            @if (item.prepayment >= 0)
-                                                            {
-                                                                <div>
-                                                                    Đã thanh toán:
-                                                                    <span class="text-success">
-                                                                        @String.Format("{0:0,00}", item.prepayment)₫
-                                                                    </span>
-                                                                </div>
-                                                                <div>
-                                                                    Còn nợ:
-                                                                    <span class="text-danger">
-                                                                        @String.Format("{0:0,00}", item.total - item.prepayment)₫
-                                                                    </span>
-                                                                </div>
-                                                            }
-                                                        </div>
-                                                    </td>
-                                                </tr>
-
-                                            </tbody>
-                                        }
-                                    }
-                                    else
-                                    {
+                                            }
+                                            else
+                                            {
+                                                                
                                         <tbody>
-                                            <tr>
-                                                <td colspan="7">
-                                                    <div class="alert alert-warning">
-                                                        <p class="text-center">Không tìm thấy dữ liệu</p>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    }
+                                                                    <tr >
+                                                                        <td colspan = "7" >
+
+                                                                             <div class="alert alert-warning">
+                                                                                <p class="text-center">Không tìm thấy dữ liệu</p>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            }
                                 </table>
                             </div>
                         </div>

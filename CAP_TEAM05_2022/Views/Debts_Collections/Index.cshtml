@@ -180,14 +180,14 @@
 
 </section>
 <div id="dataContainer2">
-    @{ Html.RenderAction("_DebtsDetailsList", "Debts_Collections", new { order_id = 0 });}
+    @{ Html.RenderAction("_DebtsDetailsList", "Debts_Collections", new { customer_id = 0 });}
 </div>
 <div id="DebtCollectionModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="DebtCollectionModalLabel" aria-hidden="true">
     <div role="document" class="modal-dialog modal-lg">
         <form class="needs-validation DebtsForm" method="post" action="@Url.Action("Create_Debts", "Debts_Collections")" novalidate>
             <div class="modal-content">
                 <div class="modal-header bg-primary">
-                    <h5 id="detailModalTitle" class="modal-title white">Thu nợ đơn hàng </h5>
+                    <h5 id="DebtCollectionTitle" class="modal-title white">Thu nợ đơn hàng </h5>
                     <button type="button" data-dismiss="modal" aria-label="Close" class="close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -195,11 +195,11 @@
 
                 <div class="modal-body">
                     <div class="row">
-                        <input type="number" hidden name="sale_id" id="sale_id"  />
+                        <input type="number" hidden name="customer_id" id="customer_id"  />
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Tổng hóa đơn</label>
+                                <label>Tổng tiền:</label>
                                 <div class="position-relative">
                                     <div class="input-group mb-3">
                                         <input type="text" disabled  id="order_total" class="form-control">
@@ -210,7 +210,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Đã thu </label>
+                                <label>Đã thu: </label>
                                 <div class="position-relative">
                                     <div class="input-group mb-3">
                                         <input type="text" name="debts_total" id="debts_total" disabled class="form-control">
@@ -221,7 +221,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Còn lại</label>
+                                <label>Còn nợ:</label>
                                 <div class="position-relative">
                                     <div class="input-group mb-3">
                                         <input type="text" id="Debt_conlai"  disabled class="form-control">
@@ -282,6 +282,9 @@
         </form>
     </div>
 </div>
+<div id="dataContainer2">
+    @{ Html.RenderAction("_HistoryOrder", "sales", new { order_customer = 0, method = 0 });}
+</div>
 <script>
      var row;
     $(document).ready(function () {
@@ -293,13 +296,13 @@
             $.ajax({
                 url: '@Url.Action("_DebtsDetailsList", "Debts_Collections")',
                 data: {
-                    order_id: id,
+                    customer_id: id,
                 }
             }).done(function (result) {
                 $('#dataContainer2').html(result);
                     $('#detailModal.close').css('display', 'none');
-                    $('#detailModal').modal('show');               
-              
+                    $('#detailModal').modal('show');
+
 
 
             }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
@@ -308,7 +311,23 @@
                 alert("Something Went Wrong, Try Later");
             });
     }
-
+    function GetList_History(id) {
+            $.ajax({
+                url: '@Url.Action("_HistoryOrder", "sales")',
+                data: {
+                    order_customer: id,
+                    method: 2,
+                }
+            }).done(function (result) {
+                $('#dataContainer2').html(result);
+                $('#historyModal.close').css('display', 'none');
+                $('#historyModal').modal('show');
+            }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(textStatus)
+                console.log(errorThrown)
+                alert("Something Went Wrong, Try Later");
+            });
+    }
 </script>
 
 

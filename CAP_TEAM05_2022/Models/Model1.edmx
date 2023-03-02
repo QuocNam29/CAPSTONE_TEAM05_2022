@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="CP25Team05Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CP25Team05Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -108,7 +108,7 @@
           <Property Name="status" Type="int" Nullable="false" />
           <Property Name="account_number" Type="varchar" MaxLength="20" />
           <Property Name="bank" Type="varchar" MaxLength="255" />
-          <Property Name="note" Type="varchar(max)" />
+          <Property Name="note" Type="nvarchar(max)" />
           <Property Name="birthday" Type="datetime2" Precision="0" />
           <Property Name="price_level" Type="int" Nullable="false" />
           <Property Name="created_at" Type="datetime2" Precision="0" />
@@ -122,13 +122,15 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="sale_id" Type="int" Nullable="false" />
-          <Property Name="paid" Type="money" Nullable="false" />
-          <Property Name="total" Type="money" Nullable="false" />
+          <Property Name="paid" Type="money" />
+          <Property Name="total" Type="money" />
           <Property Name="created_by" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="created_at" Type="datetime2" Precision="0" />
           <Property Name="updated_at" Type="datetime2" Precision="0" />
           <Property Name="deleted_at" Type="datetime2" Precision="0" />
           <Property Name="note" Type="nvarchar(max)" />
+          <Property Name="debt" Type="money" />
+          <Property Name="remaining" Type="money" />
         </EntityType>
         <EntityType Name="groups">
           <Key>
@@ -803,8 +805,7 @@
             <End Role="sale_details" EntitySet="sale_details" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CP25Team05Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -914,7 +915,7 @@
           <Property Name="status" Type="Int32" Nullable="false" />
           <Property Name="account_number" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="bank" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="birthday" Type="DateTime" Precision="0" />
           <Property Name="price_level" Type="Int32" Nullable="false" />
           <Property Name="created_at" Type="DateTime" Precision="0" />
@@ -931,8 +932,8 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="sale_id" Type="Int32" Nullable="false" />
-          <Property Name="paid" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
-          <Property Name="total" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="paid" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="total" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="created_by" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="created_at" Type="DateTime" Precision="0" />
           <Property Name="updated_at" Type="DateTime" Precision="0" />
@@ -940,6 +941,8 @@
           <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="sale" Relationship="Self.debts_ibfk_1" FromRole="debts" ToRole="sales" />
           <NavigationProperty Name="user" Relationship="Self.debts_ibfk_2" FromRole="debts" ToRole="users" />
+          <Property Name="debt1" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="remaining" Type="Decimal" Precision="19" Scale="4" />
         </EntityType>
         <EntityType Name="group">
           <Key>
@@ -1750,6 +1753,8 @@
           <EntitySetMapping Name="debts">
             <EntityTypeMapping TypeName="CP25Team05Model.debt">
               <MappingFragment StoreEntitySet="debts">
+                <ScalarProperty Name="remaining" ColumnName="remaining" />
+                <ScalarProperty Name="debt1" ColumnName="debt" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="sale_id" ColumnName="sale_id" />
                 <ScalarProperty Name="paid" ColumnName="paid" />

@@ -35,56 +35,96 @@ namespace CAP_TEAM05_2022.Controllers
                                                      || s.created_at.Value.Day == date_End.Value.Day
                                                      && s.created_at.Value.Month == date_End.Value.Month
                                                      && s.created_at.Value.Year == date_End.Value.Year);
-
-            return PartialView(sales.OrderByDescending(c => c.id).ToList());
+            var customer = db.customers.Where(c => c.sales.Where(s => s.method == 2).Count() > 0).ToList();
+            return PartialView(customer.OrderByDescending(c => c.id).ToList());
         }
-        public ActionResult _DebtsDetailsList(int order_id)
+        public ActionResult _DebtsDetailsList(int customer_id)
         {
-            var sale = db.sales.Find(order_id);
-            if (sale != null)
-            {
-                TempData["order_code"] = sale.code;
-                TempData["order_total"] = sale.total;
-            }
-
-            var OrderDetailsList = db.sale_details.Where(o => o.sale_id == order_id);
-            return PartialView(OrderDetailsList.ToList());
+            var debtDetailsList = db.debts.Where(o => o.sale.customer_id == customer_id);
+            return PartialView(debtDetailsList.ToList());
         }
         [HttpPost]
         public JsonResult FindDebt(int id)
         {
-            sale debt = db.sales.Find(id);
+            customer customer = db.customers.Find(id);
             var emp = new sale();
             emp.id = id;
-            emp.total = debt.total;
-            emp.prepayment = debt.prepayment;
-            emp.code = debt.customer.code;
-            emp.note = debt.customer.name;
-            emp.created_by = debt.customer.phone;
-            
+            emp.total = customer.sales.Where(s => s.method == 2).Sum(s => s.total);
+            emp.prepayment = customer.sales.Where(s => s.method == 2).Sum(s => s.prepayment);
+            emp.code = customer.code;
+            emp.note = customer.name;
+            emp.created_by = customer.phone;
+
             return Json(emp);
         }
-        public ActionResult Create_Debts(int sale_id, string paid,  string note)
+        public ActionResult Create_Debts(int customer_id, string paid, string note)
         {
             string message = "";
             bool status = true;
             try
             {
                 decimal paid_temp = decimal.Parse(paid.Replace(",", "").Replace(".", ""));
-                sale sale = db.sales.Find(sale_id);
-                debt debt = new debt();
-                debt.sale_id = sale_id;
-                debt.created_by = User.Identity.GetUserId();
-                debt.created_at = DateTime.Now;
-                debt.paid = paid_temp;
-                debt.total = (decimal)(sale.prepayment + paid_temp);
-                debt.note = note;
-                db.debts.Add(debt);
-                message = "Thu nợ thành công";
-                
-                sale.prepayment += paid_temp;
-                db.Entry(sale).State = EntityState.Modified;
-                db.SaveChanges();
+                DateTime create_at = DateTime.Now;
+                var sale = db.sales.Where(s => s.customer_id == customer_id && s.total != s.prepayment).ToList();
+                while (paid_temp > 0)
+                {
+                    foreach (var item in sale)
+                    {
+
+                        if (paid_temp <= (item.total - item.prepayment))
+                        {
+                            var last_debt = db.debts.Where(d => d.sale.customer_id == item.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
+
+                            debt debt = new debt();
+                            debt.sale_id = item.id;
+                            debt.created_by = User.Identity.GetUserId();
+                            debt.created_at = create_at;
+                            debt.paid = paid_temp;
+                            debt.total = (decimal)(last_debt.total + paid_temp);
+                            debt.note = note;
+                            debt.remaining = last_debt.remaining - paid_temp;
+                            db.debts.Add(debt);
+
+                            item.prepayment += paid_temp;
+                            db.Entry(item).State = EntityState.Modified;
+                            db.SaveChanges();
+                            paid_temp = 0;
+                        }
+                        else
+                        {
+                            var last_debt = db.debts.Where(d => d.sale.customer_id == item.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
+                            decimal remaining = (decimal)(item.total - item.prepayment);
+                            debt debt = new debt();
+                            debt.sale_id = item.id;
+                            debt.created_by = User.Identity.GetUserId();
+                            debt.created_at = create_at;
+                            debt.paid = remaining;
+                            debt.total = (decimal)(last_debt.total + remaining);
+                            debt.note = note;
+                            debt.remaining = last_debt.remaining - remaining;
+                            db.debts.Add(debt);
+
+                            item.prepayment += remaining;
+                            db.Entry(item).State = EntityState.Modified;
+                            db.SaveChanges();
+                            paid_temp -= remaining;
+                        }
+                    }
+
+                }
+                /*  debt debt = new debt();
+                  debt.sale_id = sale_id;
+                  debt.created_by = User.Identity.GetUserId();
+                  debt.created_at = DateTime.Now;
+                  debt.paid = paid_temp;
+                  debt.total = (decimal)(sale.prepayment + paid_temp);
+                  debt.note = note;
+                  db.debts.Add(debt);
+                  message = "Thu nợ thành công";
+
+                  sale.prepayment += paid_temp;
+                  db.Entry(sale).State = EntityState.Modified;
+                  db.SaveChanges();*/
 
             }
             catch (Exception e)

@@ -1,33 +1,14 @@
-﻿@model IEnumerable<CAP_TEAM05_2022.Models.sale_details>
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.debt>
 @{ 
     int no = 0;
-    int no_debts = 0;
-    string order_code = "";
-    decimal order_total = 0;
     
-    string MKH = "";
-    string Phone_KH = "";
-    string Name_KH = "";
-    int order_id = 0;
-    if (TempData["order_code"] != null)
-    {
-        order_code = TempData["order_code"].ToString();
-        order_total = decimal.Parse(TempData["order_total"].ToString());
-       
-        MKH = Model.FirstOrDefault().sale.customer.code;
-        Phone_KH = Model.FirstOrDefault().sale.customer.phone;
-        Name_KH = Model.FirstOrDefault().sale.customer.name;
-        order_id = Model.FirstOrDefault().sale.id;
-    }
-    decimal debts_total = 0;
-
 }
 <div id="detailModal" tabindex="-1" aria-labelledby="detailModalTitle" class="modal fade bd-example-modal-lg" style="display: none;" aria-hidden="true">
     <div role="document" class="modal-dialog modal-lg">
 
         <div class="modal-content">
             <div class="modal-header bg-primary">
-                <h5 id="detailModalTitle" class="modal-title white">Chi tiết @order_code</h5>
+                <h5 id="detailModalTitle" class="modal-title white">Chi tiết nợ</h5>
                 <button type="button" data-dismiss="modal" aria-label="Close" class="close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -40,11 +21,11 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">STT</th>
-                                        <th class="text-center">Mã sản phẩm</th>
-                                        <th class="text-center">Tên sản phẩm</th>
-                                        <th class="text-center">Đơn giá bán</th>
-                                        <th class="text-center">Số lượng bán</th>
-                                        <th class="text-center">Thành tiền</th>
+                                        <th class="text-center">Nợ thêm</th>
+                                        <th class="text-center">Đã thu</th>
+                                        <th class="text-center">Tổng thu</th>
+                                        <th class="text-center">Tồn nợ</th>
+                                        <th class="text-center">Ngày giao dịch</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -56,71 +37,25 @@
                                                 @no
                                             </td>
                                             <td class="text-center">
-                                                @item.product.code
+                                                @String.Format("{0:0,00}", item.debt1)
                                             </td>
                                             <td class="text-center">
-                                                @item.product.name
+                                                @String.Format("{0:0,00}", item.paid)
                                             </td>
                                             
                                             <td class="text-center">
-                                                @String.Format("{0:0,00}", item.price / item.sold)₫/<span class="txt-unit">@item.unit</span>
+                                                @String.Format("{0:0,00}", item.total)
                                             </td>
                                             <td class="text-center">
-                                                @item.sold<span class="txt-unit">@item.unit</span>
+                                                @String.Format("{0:0,00}", item.remaining)
                                             </td>
                                             <td class="text-center">
-                                                @String.Format("{0:0,00}", item.price)₫
+                                                 @item.created_at
                                             </td>
                                         </tr>
                                     }
                                 </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="5" class="text-right ">
-                                            <h5><span class="">Tổng đơn hàng</span></h5>
-                                        </td>
-                                        <td class="text-left">
-                                           
-                                                @String.Format("{0:0,00}", order_total)₫
-                                           
-                                        </td>
-                                    </tr>
-                                    @if (TempData["order_code"] != null)
-                                    {
-                                        var debts = Model.FirstOrDefault().sale.debts.ToList();
-                                        foreach (var item in debts)
-                                        {
-                                            no_debts++;
-
-                                            <tr>
-                                                <td colspan="2" class=" ">
-                                                   <span class=""> @item.note </span>
-                                                </td>
-                                                <td colspan="2" class="text-right ">
-                                                   <span class=""> @String.Format("{0:HH:mm - dd/MM/yyy}", item.created_at) </span>
-                                                </td>
-                                                <td colspan="1" class="text-right ">
-                                                    <span class="spending-detail">Đợt @no_debts: </span>
-                                                </td>
-                                                <td class="text-left">
-                                                    
-                                                        @String.Format("{0:0,00}", item.paid)₫
-                                                    
-                                                </td>
-                                            </tr>
-                                            debts_total += item.paid;
-                                        }
-                                    }
-
-                                    <tr>
-                                        <td colspan="5" class="text-right">
-                                            <h5><span class="total-sale">Còn nợ</span></h5>
-                                        </td>
-                                        <td class="text-left">
-                                            <span class="">@String.Format("{0:0,00}", order_total - debts_total)₫ </span>
-                                        </td>
-                                    </tr>
-                                </tfoot>
+                                
                             </table>
                         </div>
                     </div>
