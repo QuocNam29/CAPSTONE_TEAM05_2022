@@ -23,6 +23,7 @@ namespace CAP_TEAM05_2022.Models
             this.import_inventory = new HashSet<import_inventory>();
             this.products = new HashSet<product>();
             this.sales = new HashSet<sale>();
+            this.customer_debt = new HashSet<customer_debt>();
         }
     
         public string id { get; set; }
@@ -50,5 +51,7 @@ namespace CAP_TEAM05_2022.Models
         public virtual ICollection<product> products { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<sale> sales { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<customer_debt> customer_debt { get; set; }
     }
 }

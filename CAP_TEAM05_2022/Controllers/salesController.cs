@@ -332,6 +332,7 @@ namespace CAP_TEAM05_2022.Controllers
                 {
 
                     var check_debt = db.debts.Where(d => d.sale.customer_id == createSale.customer_id).Count();
+                    var check_customer_debt = db.customer_debt.Where(d => d.customer_id == createSale.customer_id).Count();
                     if (check_debt > 0)
                     {
                         var last_debt = db.debts.Where(d => d.sale.customer_id == createSale.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
@@ -344,6 +345,16 @@ namespace CAP_TEAM05_2022.Controllers
                         debt.debt1 = sale.total;
                         debt.remaining = last_debt.remaining + (sale.total - debt.paid);
                         db.debts.Add(debt);
+
+                        var last_customer_Debt = db.customer_debt.Where(d => d.customer_id == createSale.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
+
+                        customer_debt customer_Debt = new customer_debt();
+                        customer_Debt.created_at = DateTime.Now;
+                        customer_Debt.created_by = User.Identity.GetUserId();
+                        customer_Debt.customer_id = createSale.customer_id;
+                        customer_Debt.debt = (sale.total - debt.paid);
+                        customer_Debt.remaining = last_debt.remaining + (sale.total - debt.paid);
+                        db.customer_debt.Add(customer_Debt);
                         db.SaveChanges();
                     }
                     else
@@ -357,6 +368,15 @@ namespace CAP_TEAM05_2022.Controllers
                         debt.debt1 = sale.total;
                         debt.remaining = sale.total - debt.paid;
                         db.debts.Add(debt);
+
+                        customer_debt customer_Debt = new customer_debt();
+                        customer_Debt.created_at = DateTime.Now;
+                        customer_Debt.created_by = User.Identity.GetUserId();
+                        customer_Debt.customer_id = createSale.customer_id;
+                        customer_Debt.debt = sale.total - debt.paid;
+                        customer_Debt.remaining = sale.total - debt.paid;
+                        db.customer_debt.Add(customer_Debt);
+
                         db.SaveChanges();
                     }
                 }

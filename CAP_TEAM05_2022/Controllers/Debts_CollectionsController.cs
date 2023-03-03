@@ -1,10 +1,8 @@
 ﻿using CAP_TEAM05_2022.Models;
 using Microsoft.AspNet.Identity;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace CAP_TEAM05_2022.Controllers
@@ -40,7 +38,7 @@ namespace CAP_TEAM05_2022.Controllers
         }
         public ActionResult _DebtsDetailsList(int customer_id)
         {
-            var debtDetailsList = db.debts.Where(o => o.sale.customer_id == customer_id);
+            var debtDetailsList = db.customer_debt.Where(o => o.customer_id == customer_id);
             return PartialView(debtDetailsList.ToList());
         }
         [HttpPost]
@@ -65,12 +63,18 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 decimal paid_temp = decimal.Parse(paid.Replace(",", "").Replace(".", ""));
                 DateTime create_at = DateTime.Now;
+                var last_customer_Debt = db.customer_debt.Where(d => d.customer_id == customer_id).OrderByDescending(o => o.id).FirstOrDefault();
+                if (paid_temp > last_customer_Debt.remaining)
+                {
+                     message = "Số tiền thu nợ lớn hơn tồn nợ ( tồn nợ: " + String.Format("{0:0,00}", last_customer_Debt.remaining)+"đ )";                 
+                     status = false;
+                    return Json(new { status, message }, JsonRequestBehavior.AllowGet);
+                }
                 var sale = db.sales.Where(s => s.customer_id == customer_id && s.total != s.prepayment).ToList();
                 while (paid_temp > 0)
                 {
                     foreach (var item in sale)
                     {
-
                         if (paid_temp <= (item.total - item.prepayment))
                         {
                             var last_debt = db.debts.Where(d => d.sale.customer_id == item.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
@@ -112,19 +116,17 @@ namespace CAP_TEAM05_2022.Controllers
                     }
 
                 }
-                /*  debt debt = new debt();
-                  debt.sale_id = sale_id;
-                  debt.created_by = User.Identity.GetUserId();
-                  debt.created_at = DateTime.Now;
-                  debt.paid = paid_temp;
-                  debt.total = (decimal)(sale.prepayment + paid_temp);
-                  debt.note = note;
-                  db.debts.Add(debt);
-                  message = "Thu nợ thành công";
-
-                  sale.prepayment += paid_temp;
-                  db.Entry(sale).State = EntityState.Modified;
-                  db.SaveChanges();*/
+                decimal paid_debt =  decimal.Parse(paid.Replace(",", "").Replace(".", ""));
+                customer_debt customer_Debt = new customer_debt();
+                customer_Debt.customer_id = customer_id;
+                customer_Debt.created_by = User.Identity.GetUserId();
+                customer_Debt.created_at = create_at;
+                customer_Debt.paid = paid_debt;
+                customer_Debt.remaining = last_customer_Debt.remaining - paid_debt;
+                customer_Debt.note = note;
+                db.customer_debt.Add(customer_Debt);
+                db.SaveChanges();
+                message = "Thu nợ thành công";
 
             }
             catch (Exception e)
@@ -133,7 +135,6 @@ namespace CAP_TEAM05_2022.Controllers
                 message = e.Message;
             }
             return Json(new { status, message }, JsonRequestBehavior.AllowGet);
-
         }
     }
 }

@@ -94,6 +94,19 @@
           <Property Name="updated_at" Type="datetime2" Precision="0" />
           <Property Name="deleted_at" Type="datetime2" Precision="0" />
         </EntityType>
+        <EntityType Name="customer_debt">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="debt" Type="money" />
+          <Property Name="paid" Type="money" />
+          <Property Name="remaining" Type="money" />
+          <Property Name="created_at" Type="datetime" />
+          <Property Name="customer_id" Type="int" />
+          <Property Name="created_by" Type="nvarchar" MaxLength="128" />
+          <Property Name="note" Type="nvarchar" MaxLength="250" />
+        </EntityType>
         <EntityType Name="customers">
           <Key>
             <PropertyRef Name="id" />
@@ -124,13 +137,13 @@
           <Property Name="sale_id" Type="int" Nullable="false" />
           <Property Name="paid" Type="money" />
           <Property Name="total" Type="money" />
+          <Property Name="debt" Type="money" />
+          <Property Name="remaining" Type="money" />
           <Property Name="created_by" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="created_at" Type="datetime2" Precision="0" />
           <Property Name="updated_at" Type="datetime2" Precision="0" />
           <Property Name="deleted_at" Type="datetime2" Precision="0" />
           <Property Name="note" Type="nvarchar(max)" />
-          <Property Name="debt" Type="money" />
-          <Property Name="remaining" Type="money" />
         </EntityType>
         <EntityType Name="groups">
           <Key>
@@ -351,6 +364,30 @@
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="categories">
+              <PropertyRef Name="created_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_customer_debt_customers">
+          <End Role="customers" Type="Self.customers" Multiplicity="0..1" />
+          <End Role="customer_debt" Type="Self.customer_debt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customer_debt">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_customer_debt_users">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="customer_debt" Type="Self.customer_debt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customer_debt">
               <PropertyRef Name="created_by" />
             </Dependent>
           </ReferentialConstraint>
@@ -679,6 +716,7 @@
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="carts" EntityType="Self.carts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="categories" EntityType="Self.categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="customer_debt" EntityType="Self.customer_debt" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="customers" EntityType="Self.customers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="debts" EntityType="Self.debts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="groups" EntityType="Self.groups" Schema="dbo" store:Type="Tables" />
@@ -711,6 +749,14 @@
           <AssociationSet Name="FK_categories_users" Association="Self.FK_categories_users">
             <End Role="users" EntitySet="users" />
             <End Role="categories" EntitySet="categories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_customer_debt_customers" Association="Self.FK_customer_debt_customers">
+            <End Role="customers" EntitySet="customers" />
+            <End Role="customer_debt" EntitySet="customer_debt" />
+          </AssociationSet>
+          <AssociationSet Name="FK_customer_debt_users" Association="Self.FK_customer_debt_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="customer_debt" EntitySet="customer_debt" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -925,6 +971,7 @@
           <NavigationProperty Name="carts" Relationship="Self.carts_ibfk_2" FromRole="customers" ToRole="carts" />
           <NavigationProperty Name="import_inventory" Relationship="Self.FK_import_inventory_customers" FromRole="customers" ToRole="import_inventory" />
           <NavigationProperty Name="sales" Relationship="Self.FK_sales_customers" FromRole="customers" ToRole="sales" />
+          <NavigationProperty Name="customer_debt" Relationship="CP25Team05Model.FK_customer_debt_customers" FromRole="customer" ToRole="customer_debt" />
         </EntityType>
         <EntityType Name="debt">
           <Key>
@@ -1144,6 +1191,7 @@
           <NavigationProperty Name="import_inventory" Relationship="Self.FK_import_inventory_users" FromRole="users" ToRole="import_inventory" />
           <NavigationProperty Name="products" Relationship="Self.FK_products_users" FromRole="users" ToRole="products" />
           <NavigationProperty Name="sales" Relationship="Self.FK_sales_users" FromRole="users" ToRole="sales" />
+          <NavigationProperty Name="customer_debt" Relationship="CP25Team05Model.FK_customer_debt_users" FromRole="user" ToRole="customer_debt" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
@@ -1624,6 +1672,15 @@
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
+          <EntitySet Name="customer_debt" EntityType="CP25Team05Model.customer_debt" />
+          <AssociationSet Name="FK_customer_debt_customers" Association="CP25Team05Model.FK_customer_debt_customers">
+            <End Role="customer" EntitySet="customers" />
+            <End Role="customer_debt" EntitySet="customer_debt" />
+          </AssociationSet>
+          <AssociationSet Name="FK_customer_debt_users" Association="CP25Team05Model.FK_customer_debt_users">
+            <End Role="user" EntitySet="users" />
+            <End Role="customer_debt" EntitySet="customer_debt" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1636,6 +1693,45 @@
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
+        <EntityType Name="customer_debt">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="debt" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="paid" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="remaining" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="created_at" Type="DateTime" Precision="3" />
+          <Property Name="customer_id" Type="Int32" />
+          <Property Name="created_by" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="customer" Relationship="CP25Team05Model.FK_customer_debt_customers" FromRole="customer_debt" ToRole="customer" />
+          <NavigationProperty Name="user" Relationship="CP25Team05Model.FK_customer_debt_users" FromRole="customer_debt" ToRole="user" />
+          <Property Name="note" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_customer_debt_customers">
+          <End Type="CP25Team05Model.customer" Role="customer" Multiplicity="0..1" />
+          <End Type="CP25Team05Model.customer_debt" Role="customer_debt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customer_debt">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_customer_debt_users">
+          <End Type="CP25Team05Model.user" Role="user" Multiplicity="0..1" />
+          <End Type="CP25Team05Model.customer_debt" Role="customer_debt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customer_debt">
+              <PropertyRef Name="created_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1973,6 +2069,20 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="CP25Team05Model.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="CP25Team05Model.Store.sp_upgraddiagrams" />
+          <EntitySetMapping Name="customer_debt">
+            <EntityTypeMapping TypeName="CP25Team05Model.customer_debt">
+              <MappingFragment StoreEntitySet="customer_debt">
+                <ScalarProperty Name="note" ColumnName="note" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="remaining" ColumnName="remaining" />
+                <ScalarProperty Name="paid" ColumnName="paid" />
+                <ScalarProperty Name="debt" ColumnName="debt" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

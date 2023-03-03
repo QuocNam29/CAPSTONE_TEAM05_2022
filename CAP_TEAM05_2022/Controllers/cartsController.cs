@@ -48,7 +48,7 @@ namespace CAP_TEAM05_2022.Controllers
                     {
                         message1 += " và " + (product.quantity * product.quantity_swap + product.quantity_remaning) + " " + product.unit_swap;
                     }
-                    bool status1 = true;
+                    bool status1 = false;
                     return Json(new { status = status1, message = message1 }, JsonRequestBehavior.AllowGet);
                 }
             }
@@ -61,7 +61,7 @@ namespace CAP_TEAM05_2022.Controllers
                     {
                         message1 += " và " + (product.quantity * product.quantity_swap + product.quantity_remaning) + " " + product.unit_swap;
                     }
-                    bool status1 = true;
+                    bool status1 = false;
                     return Json(new { status = status1, message = message1 }, JsonRequestBehavior.AllowGet);
                 }
             }

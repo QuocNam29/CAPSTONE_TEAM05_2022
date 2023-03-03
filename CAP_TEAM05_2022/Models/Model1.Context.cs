@@ -47,6 +47,7 @@ namespace CAP_TEAM05_2022.Models
         public virtual DbSet<sale> sales { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<user> users { get; set; }
+        public virtual DbSet<customer_debt> customer_debt { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {
