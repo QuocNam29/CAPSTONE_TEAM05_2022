@@ -18,9 +18,10 @@ namespace CAP_TEAM05_2022.Models
         public customer()
         {
             this.carts = new HashSet<cart>();
+            this.customer_debt = new HashSet<customer_debt>();
             this.import_inventory = new HashSet<import_inventory>();
             this.sales = new HashSet<sale>();
-            this.customer_debt = new HashSet<customer_debt>();
+            this.inventory_order = new HashSet<inventory_order>();
         }
     
         public int id { get; set; }
@@ -44,10 +45,12 @@ namespace CAP_TEAM05_2022.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cart> carts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<customer_debt> customer_debt { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<import_inventory> import_inventory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<sale> sales { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<customer_debt> customer_debt { get; set; }
+        public virtual ICollection<inventory_order> inventory_order { get; set; }
     }
 }

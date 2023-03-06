@@ -106,6 +106,8 @@
           <Property Name="customer_id" Type="int" />
           <Property Name="created_by" Type="nvarchar" MaxLength="128" />
           <Property Name="note" Type="nvarchar" MaxLength="250" />
+          <Property Name="sale_id" Type="int" />
+          <Property Name="import_id" Type="int" />
         </EntityType>
         <EntityType Name="customers">
           <Key>
@@ -134,7 +136,8 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="sale_id" Type="int" Nullable="false" />
+          <Property Name="sale_id" Type="int" />
+          <Property Name="import_id" Type="int" />
           <Property Name="paid" Type="money" />
           <Property Name="total" Type="money" />
           <Property Name="debt" Type="money" />
@@ -175,6 +178,22 @@
           <Property Name="sold_swap" Type="int" />
           <Property Name="quantity_remaining" Type="int" />
           <Property Name="supplier_id" Type="int" />
+          <Property Name="inventory_id" Type="int" />
+        </EntityType>
+        <EntityType Name="inventory_order">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="code" Type="nvarchar" MaxLength="50" />
+          <Property Name="supplier_id" Type="int" />
+          <Property Name="create_at" Type="datetime" />
+          <Property Name="update_at" Type="datetime" />
+          <Property Name="create_by" Type="nvarchar" MaxLength="128" />
+          <Property Name="state" Type="int" />
+          <Property Name="Total" Type="money" />
+          <Property Name="payment" Type="money" />
+          <Property Name="debt" Type="money" />
         </EntityType>
         <EntityType Name="products">
           <Key>
@@ -333,7 +352,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="debts_ibfk_1">
-          <End Role="sales" Type="Self.sales" Multiplicity="1" />
+          <End Role="sales" Type="Self.sales" Multiplicity="0..1" />
           <End Role="debts" Type="Self.debts" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="sales">
@@ -377,6 +396,30 @@
             </Principal>
             <Dependent Role="customer_debt">
               <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_customer_debt_import_inventory">
+          <End Role="import_inventory" Type="Self.import_inventory" Multiplicity="0..1" />
+          <End Role="customer_debt" Type="Self.customer_debt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="import_inventory">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customer_debt">
+              <PropertyRef Name="import_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_customer_debt_sales">
+          <End Role="sales" Type="Self.sales" Multiplicity="0..1" />
+          <End Role="customer_debt" Type="Self.customer_debt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sales">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customer_debt">
+              <PropertyRef Name="sale_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -448,6 +491,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_debts_import_inventory">
+          <End Role="import_inventory" Type="Self.import_inventory" Multiplicity="0..1" />
+          <End Role="debts" Type="Self.debts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="import_inventory">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="debts">
+              <PropertyRef Name="import_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_groups_users">
           <End Role="users" Type="Self.users" Multiplicity="1" />
           <End Role="groups" Type="Self.groups" Multiplicity="*" />
@@ -472,6 +527,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_import_inventory_inventory_order">
+          <End Role="inventory_order" Type="Self.inventory_order" Multiplicity="0..1" />
+          <End Role="import_inventory" Type="Self.import_inventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="inventory_order">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="import_inventory">
+              <PropertyRef Name="inventory_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_import_inventory_users">
           <End Role="users" Type="Self.users" Multiplicity="1" />
           <End Role="import_inventory" Type="Self.import_inventory" Multiplicity="*" />
@@ -481,6 +548,30 @@
             </Principal>
             <Dependent Role="import_inventory">
               <PropertyRef Name="created_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_inventory_order_customers">
+          <End Role="customers" Type="Self.customers" Multiplicity="0..1" />
+          <End Role="inventory_order" Type="Self.inventory_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="inventory_order">
+              <PropertyRef Name="supplier_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_inventory_order_users">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="inventory_order" Type="Self.inventory_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="inventory_order">
+              <PropertyRef Name="create_by" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -676,37 +767,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
-        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="version" Type="int" Mode="In" />
-          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-        </Function>
-        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="version" Type="int" Mode="In" />
-          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-        </Function>
-        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
-        </Function>
-        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="CP25Team05ModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
@@ -721,6 +781,7 @@
           <EntitySet Name="debts" EntityType="Self.debts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="groups" EntityType="Self.groups" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="import_inventory" EntityType="Self.import_inventory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="inventory_order" EntityType="Self.inventory_order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="products" EntityType="Self.products" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="return_details" EntityType="Self.return_details" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="return_sale" EntityType="Self.return_sale" Schema="dbo" store:Type="Tables" />
@@ -754,6 +815,14 @@
             <End Role="customers" EntitySet="customers" />
             <End Role="customer_debt" EntitySet="customer_debt" />
           </AssociationSet>
+          <AssociationSet Name="FK_customer_debt_import_inventory" Association="Self.FK_customer_debt_import_inventory">
+            <End Role="import_inventory" EntitySet="import_inventory" />
+            <End Role="customer_debt" EntitySet="customer_debt" />
+          </AssociationSet>
+          <AssociationSet Name="FK_customer_debt_sales" Association="Self.FK_customer_debt_sales">
+            <End Role="sales" EntitySet="sales" />
+            <End Role="customer_debt" EntitySet="customer_debt" />
+          </AssociationSet>
           <AssociationSet Name="FK_customer_debt_users" Association="Self.FK_customer_debt_users">
             <End Role="users" EntitySet="users" />
             <End Role="customer_debt" EntitySet="customer_debt" />
@@ -774,6 +843,10 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
+          <AssociationSet Name="FK_debts_import_inventory" Association="Self.FK_debts_import_inventory">
+            <End Role="import_inventory" EntitySet="import_inventory" />
+            <End Role="debts" EntitySet="debts" />
+          </AssociationSet>
           <AssociationSet Name="FK_groups_users" Association="Self.FK_groups_users">
             <End Role="users" EntitySet="users" />
             <End Role="groups" EntitySet="groups" />
@@ -782,9 +855,21 @@
             <End Role="customers" EntitySet="customers" />
             <End Role="import_inventory" EntitySet="import_inventory" />
           </AssociationSet>
+          <AssociationSet Name="FK_import_inventory_inventory_order" Association="Self.FK_import_inventory_inventory_order">
+            <End Role="inventory_order" EntitySet="inventory_order" />
+            <End Role="import_inventory" EntitySet="import_inventory" />
+          </AssociationSet>
           <AssociationSet Name="FK_import_inventory_users" Association="Self.FK_import_inventory_users">
             <End Role="users" EntitySet="users" />
             <End Role="import_inventory" EntitySet="import_inventory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_inventory_order_customers" Association="Self.FK_inventory_order_customers">
+            <End Role="customers" EntitySet="customers" />
+            <End Role="inventory_order" EntitySet="inventory_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_inventory_order_users" Association="Self.FK_inventory_order_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="inventory_order" EntitySet="inventory_order" />
           </AssociationSet>
           <AssociationSet Name="FK_products_users" Association="Self.FK_products_users">
             <End Role="users" EntitySet="users" />
@@ -947,6 +1032,25 @@
           <NavigationProperty Name="user" Relationship="Self.FK_categories_users" FromRole="categories" ToRole="users" />
           <NavigationProperty Name="products" Relationship="Self.products_ibfk_4" FromRole="categories" ToRole="products" />
         </EntityType>
+        <EntityType Name="customer_debt">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="debt" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="paid" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="remaining" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="created_at" Type="DateTime" Precision="3" />
+          <Property Name="customer_id" Type="Int32" />
+          <Property Name="created_by" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="note" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="sale_id" Type="Int32" />
+          <Property Name="import_id" Type="Int32" />
+          <NavigationProperty Name="customer" Relationship="Self.FK_customer_debt_customers" FromRole="customer_debt" ToRole="customers" />
+          <NavigationProperty Name="user" Relationship="Self.FK_customer_debt_users" FromRole="customer_debt" ToRole="users" />
+          <NavigationProperty Name="import_inventory" Relationship="CP25Team05Model.FK_customer_debt_import_inventory" FromRole="customer_debt" ToRole="import_inventory" />
+          <NavigationProperty Name="sale" Relationship="CP25Team05Model.FK_customer_debt_sales" FromRole="customer_debt" ToRole="sale" />
+        </EntityType>
         <EntityType Name="customer">
           <Key>
             <PropertyRef Name="id" />
@@ -969,18 +1073,22 @@
           <Property Name="deleted_at" Type="DateTime" Precision="0" />
           <Property Name="code" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="carts" Relationship="Self.carts_ibfk_2" FromRole="customers" ToRole="carts" />
+          <NavigationProperty Name="customer_debt" Relationship="Self.FK_customer_debt_customers" FromRole="customers" ToRole="customer_debt" />
           <NavigationProperty Name="import_inventory" Relationship="Self.FK_import_inventory_customers" FromRole="customers" ToRole="import_inventory" />
           <NavigationProperty Name="sales" Relationship="Self.FK_sales_customers" FromRole="customers" ToRole="sales" />
-          <NavigationProperty Name="customer_debt" Relationship="CP25Team05Model.FK_customer_debt_customers" FromRole="customer" ToRole="customer_debt" />
+          <NavigationProperty Name="inventory_order" Relationship="CP25Team05Model.FK_inventory_order_customers" FromRole="customer" ToRole="inventory_order" />
         </EntityType>
         <EntityType Name="debt">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="sale_id" Type="Int32" Nullable="false" />
+          <Property Name="sale_id" Type="Int32" />
+          <Property Name="import_id" Type="Int32" />
           <Property Name="paid" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="total" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="debt1" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="remaining" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="created_by" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="created_at" Type="DateTime" Precision="0" />
           <Property Name="updated_at" Type="DateTime" Precision="0" />
@@ -988,8 +1096,7 @@
           <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="sale" Relationship="Self.debts_ibfk_1" FromRole="debts" ToRole="sales" />
           <NavigationProperty Name="user" Relationship="Self.debts_ibfk_2" FromRole="debts" ToRole="users" />
-          <Property Name="debt1" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="remaining" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="import_inventory" Relationship="CP25Team05Model.FK_debts_import_inventory" FromRole="debt" ToRole="import_inventory" />
         </EntityType>
         <EntityType Name="group">
           <Key>
@@ -1028,6 +1135,10 @@
           <NavigationProperty Name="return_supplier" Relationship="Self.FK_return_supplier_import_inventory" FromRole="import_inventory" ToRole="return_supplier" />
           <NavigationProperty Name="revenues" Relationship="Self.FK_revenue_import_inventory" FromRole="import_inventory" ToRole="revenue" />
           <NavigationProperty Name="product" Relationship="Self.import_inventory_ibfk_2" FromRole="import_inventory" ToRole="products" />
+          <NavigationProperty Name="customer_debt" Relationship="CP25Team05Model.FK_customer_debt_import_inventory" FromRole="import_inventory" ToRole="customer_debt" />
+          <NavigationProperty Name="debts" Relationship="CP25Team05Model.FK_debts_import_inventory" FromRole="import_inventory" ToRole="debt" />
+          <Property Name="inventory_id" Type="Int32" />
+          <NavigationProperty Name="inventory_order" Relationship="CP25Team05Model.FK_import_inventory_inventory_order" FromRole="import_inventory" ToRole="inventory_order" />
         </EntityType>
         <EntityType Name="product">
           <Key>
@@ -1158,6 +1269,7 @@
           <NavigationProperty Name="return_sale" Relationship="Self.FK_return_sales" FromRole="sales" ToRole="return_sale" />
           <NavigationProperty Name="sale_details" Relationship="Self.sale_details_ibfk_2" FromRole="sales" ToRole="sale_details" />
           <NavigationProperty Name="user" Relationship="Self.FK_sales_users" FromRole="sales" ToRole="users" />
+          <NavigationProperty Name="customer_debt" Relationship="CP25Team05Model.FK_customer_debt_sales" FromRole="sale" ToRole="customer_debt" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -1186,12 +1298,13 @@
           <Property Name="asp_id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUser" Relationship="Self.FK_users_AspNetUsers" FromRole="users" ToRole="AspNetUsers" />
           <NavigationProperty Name="categories" Relationship="Self.FK_categories_users" FromRole="users" ToRole="categories" />
+          <NavigationProperty Name="customer_debt" Relationship="Self.FK_customer_debt_users" FromRole="users" ToRole="customer_debt" />
           <NavigationProperty Name="debts" Relationship="Self.debts_ibfk_2" FromRole="users" ToRole="debts" />
           <NavigationProperty Name="groups" Relationship="Self.FK_groups_users" FromRole="users" ToRole="groups" />
           <NavigationProperty Name="import_inventory" Relationship="Self.FK_import_inventory_users" FromRole="users" ToRole="import_inventory" />
           <NavigationProperty Name="products" Relationship="Self.FK_products_users" FromRole="users" ToRole="products" />
           <NavigationProperty Name="sales" Relationship="Self.FK_sales_users" FromRole="users" ToRole="sales" />
-          <NavigationProperty Name="customer_debt" Relationship="CP25Team05Model.FK_customer_debt_users" FromRole="user" ToRole="customer_debt" />
+          <NavigationProperty Name="inventory_order" Relationship="CP25Team05Model.FK_inventory_order_users" FromRole="user" ToRole="inventory_order" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
@@ -1281,6 +1394,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_customer_debt_customers">
+          <End Role="customers" Type="Self.customer" Multiplicity="0..1" />
+          <End Role="customer_debt" Type="Self.customer_debt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customer_debt">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_customer_debt_users">
+          <End Role="users" Type="Self.user" Multiplicity="0..1" />
+          <End Role="customer_debt" Type="Self.customer_debt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customer_debt">
+              <PropertyRef Name="created_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_import_inventory_customers">
           <End Role="customers" Type="Self.customer" Multiplicity="0..1" />
           <End Role="import_inventory" Type="Self.import_inventory" Multiplicity="*" />
@@ -1306,7 +1443,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="debts_ibfk_1">
-          <End Role="sales" Type="Self.sale" Multiplicity="1" />
+          <End Role="sales" Type="Self.sale" Multiplicity="0..1" />
           <End Role="debts" Type="Self.debt" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="sales">
@@ -1521,6 +1658,7 @@
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
           <EntitySet Name="carts" EntityType="Self.cart" />
           <EntitySet Name="categories" EntityType="Self.category" />
+          <EntitySet Name="customer_debt" EntityType="Self.customer_debt" />
           <EntitySet Name="customers" EntityType="Self.customer" />
           <EntitySet Name="debts" EntityType="Self.debt" />
           <EntitySet Name="groups" EntityType="Self.group" />
@@ -1561,6 +1699,14 @@
           <AssociationSet Name="products_ibfk_4" Association="Self.products_ibfk_4">
             <End Role="categories" EntitySet="categories" />
             <End Role="products" EntitySet="products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_customer_debt_customers" Association="Self.FK_customer_debt_customers">
+            <End Role="customers" EntitySet="customers" />
+            <End Role="customer_debt" EntitySet="customer_debt" />
+          </AssociationSet>
+          <AssociationSet Name="FK_customer_debt_users" Association="Self.FK_customer_debt_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="customer_debt" EntitySet="customer_debt" />
           </AssociationSet>
           <AssociationSet Name="FK_import_inventory_customers" Association="Self.FK_import_inventory_customers">
             <End Role="customers" EntitySet="customers" />
@@ -1642,93 +1788,119 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
-          <FunctionImport Name="sp_alterdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_creatediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_dropdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(CP25Team05Model.sp_helpdiagramdefinition_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(CP25Team05Model.sp_helpdiagrams_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_renamediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="new_diagramname" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="sp_upgraddiagrams" />
-          <EntitySet Name="customer_debt" EntityType="CP25Team05Model.customer_debt" />
-          <AssociationSet Name="FK_customer_debt_customers" Association="CP25Team05Model.FK_customer_debt_customers">
-            <End Role="customer" EntitySet="customers" />
+          <AssociationSet Name="FK_customer_debt_import_inventory" Association="CP25Team05Model.FK_customer_debt_import_inventory">
+            <End Role="import_inventory" EntitySet="import_inventory" />
             <End Role="customer_debt" EntitySet="customer_debt" />
           </AssociationSet>
-          <AssociationSet Name="FK_customer_debt_users" Association="CP25Team05Model.FK_customer_debt_users">
-            <End Role="user" EntitySet="users" />
+          <AssociationSet Name="FK_customer_debt_sales" Association="CP25Team05Model.FK_customer_debt_sales">
+            <End Role="sale" EntitySet="sales" />
             <End Role="customer_debt" EntitySet="customer_debt" />
+          </AssociationSet>
+          <AssociationSet Name="FK_debts_import_inventory" Association="CP25Team05Model.FK_debts_import_inventory">
+            <End Role="import_inventory" EntitySet="import_inventory" />
+            <End Role="debt" EntitySet="debts" />
+          </AssociationSet>
+          <EntitySet Name="inventory_order" EntityType="CP25Team05Model.inventory_order" />
+          <AssociationSet Name="FK_inventory_order_customers" Association="CP25Team05Model.FK_inventory_order_customers">
+            <End Role="customer" EntitySet="customers" />
+            <End Role="inventory_order" EntitySet="inventory_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_import_inventory_inventory_order" Association="CP25Team05Model.FK_import_inventory_inventory_order">
+            <End Role="inventory_order" EntitySet="inventory_order" />
+            <End Role="import_inventory" EntitySet="import_inventory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_inventory_order_users" Association="CP25Team05Model.FK_inventory_order_users">
+            <End Role="user" EntitySet="users" />
+            <End Role="inventory_order" EntitySet="inventory_order" />
           </AssociationSet>
         </EntityContainer>
-        <ComplexType Name="sp_helpdiagramdefinition_Result">
-          <Property Type="Int32" Name="version" Nullable="true" />
-          <Property Type="Binary" Name="definition" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="sp_helpdiagrams_Result">
-          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
-          <Property Type="Int32" Name="ID" Nullable="false" />
-          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
-          <Property Type="Int32" Name="OwnerID" Nullable="false" />
-        </ComplexType>
-        <EntityType Name="customer_debt">
+        <Association Name="FK_customer_debt_import_inventory">
+          <End Type="CP25Team05Model.import_inventory" Role="import_inventory" Multiplicity="0..1" />
+          <End Type="CP25Team05Model.customer_debt" Role="customer_debt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="import_inventory">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customer_debt">
+              <PropertyRef Name="import_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_customer_debt_sales">
+          <End Type="CP25Team05Model.sale" Role="sale" Multiplicity="0..1" />
+          <End Type="CP25Team05Model.customer_debt" Role="customer_debt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sale">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="customer_debt">
+              <PropertyRef Name="sale_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_debts_import_inventory">
+          <End Type="CP25Team05Model.import_inventory" Role="import_inventory" Multiplicity="0..1" />
+          <End Type="CP25Team05Model.debt" Role="debt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="import_inventory">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="debt">
+              <PropertyRef Name="import_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="inventory_order">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="supplier_id" Type="Int32" />
+          <Property Name="create_at" Type="DateTime" Precision="3" />
+          <Property Name="update_at" Type="DateTime" Precision="3" />
+          <Property Name="create_by" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="state" Type="Int32" />
+          <Property Name="Total" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="payment" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="debt" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="paid" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="remaining" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="created_at" Type="DateTime" Precision="3" />
-          <Property Name="customer_id" Type="Int32" />
-          <Property Name="created_by" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="customer" Relationship="CP25Team05Model.FK_customer_debt_customers" FromRole="customer_debt" ToRole="customer" />
-          <NavigationProperty Name="user" Relationship="CP25Team05Model.FK_customer_debt_users" FromRole="customer_debt" ToRole="user" />
-          <Property Name="note" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="customer" Relationship="CP25Team05Model.FK_inventory_order_customers" FromRole="inventory_order" ToRole="customer" />
+          <NavigationProperty Name="import_inventory" Relationship="CP25Team05Model.FK_import_inventory_inventory_order" FromRole="inventory_order" ToRole="import_inventory" />
+          <NavigationProperty Name="user" Relationship="CP25Team05Model.FK_inventory_order_users" FromRole="inventory_order" ToRole="user" />
         </EntityType>
-        <Association Name="FK_customer_debt_customers">
+        <Association Name="FK_inventory_order_customers">
           <End Type="CP25Team05Model.customer" Role="customer" Multiplicity="0..1" />
-          <End Type="CP25Team05Model.customer_debt" Role="customer_debt" Multiplicity="*" />
+          <End Type="CP25Team05Model.inventory_order" Role="inventory_order" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="customer">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="customer_debt">
-              <PropertyRef Name="customer_id" />
+            <Dependent Role="inventory_order">
+              <PropertyRef Name="supplier_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_customer_debt_users">
+        <Association Name="FK_import_inventory_inventory_order">
+          <End Type="CP25Team05Model.inventory_order" Role="inventory_order" Multiplicity="0..1" />
+          <End Type="CP25Team05Model.import_inventory" Role="import_inventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="inventory_order">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="import_inventory">
+              <PropertyRef Name="inventory_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_inventory_order_users">
           <End Type="CP25Team05Model.user" Role="user" Multiplicity="0..1" />
-          <End Type="CP25Team05Model.customer_debt" Role="customer_debt" Multiplicity="*" />
+          <End Type="CP25Team05Model.inventory_order" Role="inventory_order" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="user">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="customer_debt">
-              <PropertyRef Name="created_by" />
+            <Dependent Role="inventory_order">
+              <PropertyRef Name="create_by" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1823,6 +1995,22 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="customer_debt">
+            <EntityTypeMapping TypeName="CP25Team05Model.customer_debt">
+              <MappingFragment StoreEntitySet="customer_debt">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="debt" ColumnName="debt" />
+                <ScalarProperty Name="paid" ColumnName="paid" />
+                <ScalarProperty Name="remaining" ColumnName="remaining" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="note" ColumnName="note" />
+                <ScalarProperty Name="sale_id" ColumnName="sale_id" />
+                <ScalarProperty Name="import_id" ColumnName="import_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="customers">
             <EntityTypeMapping TypeName="CP25Team05Model.customer">
               <MappingFragment StoreEntitySet="customers">
@@ -1849,12 +2037,13 @@
           <EntitySetMapping Name="debts">
             <EntityTypeMapping TypeName="CP25Team05Model.debt">
               <MappingFragment StoreEntitySet="debts">
-                <ScalarProperty Name="remaining" ColumnName="remaining" />
-                <ScalarProperty Name="debt1" ColumnName="debt" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="sale_id" ColumnName="sale_id" />
+                <ScalarProperty Name="import_id" ColumnName="import_id" />
                 <ScalarProperty Name="paid" ColumnName="paid" />
                 <ScalarProperty Name="total" ColumnName="total" />
+                <ScalarProperty Name="debt1" ColumnName="debt" />
+                <ScalarProperty Name="remaining" ColumnName="remaining" />
                 <ScalarProperty Name="created_by" ColumnName="created_by" />
                 <ScalarProperty Name="created_at" ColumnName="created_at" />
                 <ScalarProperty Name="updated_at" ColumnName="updated_at" />
@@ -1881,6 +2070,7 @@
           <EntitySetMapping Name="import_inventory">
             <EntityTypeMapping TypeName="CP25Team05Model.import_inventory">
               <MappingFragment StoreEntitySet="import_inventory">
+                <ScalarProperty Name="inventory_id" ColumnName="inventory_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="product_id" ColumnName="product_id" />
                 <ScalarProperty Name="quantity" ColumnName="quantity" />
@@ -2045,40 +2235,18 @@
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
-          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="CP25Team05Model.Store.sp_alterdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="CP25Team05Model.Store.sp_creatediagram" />
-          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="CP25Team05Model.Store.sp_dropdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="CP25Team05Model.Store.sp_helpdiagramdefinition">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="CP25Team05Model.sp_helpdiagramdefinition_Result">
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="CP25Team05Model.Store.sp_helpdiagrams">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="CP25Team05Model.sp_helpdiagrams_Result">
-                <ScalarProperty Name="Database" ColumnName="Database" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Owner" ColumnName="Owner" />
-                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="CP25Team05Model.Store.sp_renamediagram" />
-          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="CP25Team05Model.Store.sp_upgraddiagrams" />
-          <EntitySetMapping Name="customer_debt">
-            <EntityTypeMapping TypeName="CP25Team05Model.customer_debt">
-              <MappingFragment StoreEntitySet="customer_debt">
-                <ScalarProperty Name="note" ColumnName="note" />
-                <ScalarProperty Name="created_by" ColumnName="created_by" />
-                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
-                <ScalarProperty Name="created_at" ColumnName="created_at" />
-                <ScalarProperty Name="remaining" ColumnName="remaining" />
-                <ScalarProperty Name="paid" ColumnName="paid" />
+          <EntitySetMapping Name="inventory_order">
+            <EntityTypeMapping TypeName="CP25Team05Model.inventory_order">
+              <MappingFragment StoreEntitySet="inventory_order">
                 <ScalarProperty Name="debt" ColumnName="debt" />
+                <ScalarProperty Name="payment" ColumnName="payment" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="state" ColumnName="state" />
+                <ScalarProperty Name="create_by" ColumnName="create_by" />
+                <ScalarProperty Name="update_at" ColumnName="update_at" />
+                <ScalarProperty Name="create_at" ColumnName="create_at" />
+                <ScalarProperty Name="supplier_id" ColumnName="supplier_id" />
+                <ScalarProperty Name="code" ColumnName="code" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

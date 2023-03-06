@@ -1,0 +1,218 @@
+﻿@model CAP_TEAM05_2022.Models.inventory_order
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
+    int i = 0;
+
+}
+
+    <section class="pcoded-main-container">
+        <div class="pcoded-content">
+            <div class="page-header">
+                <div class="page-block">
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <div class="page-header-title">
+                                <h5 class="m-b-10">Tồn kho</h5>
+                            </div>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="https://tancool.net">
+                                        <i class="feather icon-home">
+                                        </i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="javascript:void(0)">Tồn kho</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Basic Component</h5>
+                        </div>
+                        <div class="card-body">
+                            @Html.ValidationSummary()
+                            @using (Html.BeginForm("Create", "importInventory", FormMethod.Post, new { @novalidate = "novalidate" }))
+                            {
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Nhà cung cấp</label>
+                                            @if ((bool)ViewBag.isCreate)
+                                            {
+                                                @Html.DropDownListFor(model => model.supplier_id, (SelectList)ViewBag.Customer, "---- Chọn nhà cung cấp ----", new { @class = "form-control", @aria_label = "Chọn danh mục thiết bị" })
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="floating-label" for="Text">Text</label>
+                                            <input type="text" class="form-control" id="Text" placeholder="123">
+                                        </div>
+                                    </div>
+                                    <div class="ovf-table col-sm-12">
+                                        <table class="min-w-600 table table-group-divider">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        Tên sản phẩm
+                                                    </th>
+                                                    <th>
+                                                        Số lượng
+                                                    </th>
+                                                    <th>
+                                                        Đơn giá nhập
+                                                    </th>
+                                                   
+                                                    <th>
+                                                        Thành tiền
+                                                    </th>
+                                                  
+                                                    <th><button type="button" class="btn btn-primary bi-plus-circle" id="addRow"></button></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (int j = 0; j < Model?.import_inventory?.Count; j++)
+                                                {
+                                                    <tr id="rcd[@i]" name="rcd">
+                                                        @*@Html.HiddenFor(m => m.importInventory[i].Id)*@
+                                                        <td>
+                                                            @Html.DropDownListFor(m => m.import_inventory[i].product_id, new SelectList(ViewBag.Equidment, "Id", "Name", Model.import_inventory[i].product_id), new { @class = "form-control", @required = "true" })
+                                                        </td>
+                                                        <td>
+                                                            @Html.EditorFor(m => m.import_inventory[i].quantity, new { htmlAttributes = new { @class = "form-control", @required = "true", @onchange = "calculate(this)" } })
+                                                        </td>
+                                                       
+                                                        <td>
+                                                            @Html.EditorFor(m => m.import_inventory[i].price_import, new { htmlAttributes = new { @class = "form-control", @required = "true", @onchange = "calculate(this)" } })
+                                                        </td>
+                                                        <td>
+                                                            <label id="total[@i]" name="totalEq" data-val=@((Model.import_inventory[i].price_import * Model.import_inventory[i].quantity ))>
+                                                                @((Model.import_inventory[i].price_import * Model.import_inventory[i].quantity).ToString("N0")) VNĐ
+                                                            </label>
+                                                        </td>
+                                                       
+                                                        <td>
+                                                            <button type="button" id='@i' class="btn bi-trash delete-row" onclick="deleteRow(this)"></button>
+                                                        </td>
+                                                    </tr>
+                                                    i++;
+                                                }
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="8">
+                                                        <label class="float-end" id="totalReceipt"></label>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <a type="button" class="btn btn-secondary" href="@Url.Action("Index", "importInventory")">Quay lại</a>
+                                    <button type="submit" class="btn btn-primary  float-end">Lưu</button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                </div>
+                
+            </div>
+</section>
+
+
+    <script type="text/javascript">
+        var count = $('tr[name="rcd"]').length == 0 ? 0 : $('tr[name="rcd"]').length;
+        var total = 0;
+        function deleteRow(target) {
+            var rows = $("table tr[name='rcd']");
+            //remove existing row
+            $('#rcd\\[' + target.id + '\\]').remove();
+            count--
+            for (var i = parseInt(target.id) + 1; i < rows.length; i++) {
+                //replace tr tag id
+                $(rows[i]).attr('id', 'rcd[' + (i - 1) + ']')
+                //get all column for one row
+                var cols = $(rows[i]).find('td');
+                for (var j = 0; j < cols.length; j++) {
+                    //get first children then replace the index
+                    var childrenIn = $(cols[j]).children().first();
+                    //replace only name and id only to not affected other field
+                    childrenIn.attr('name', childrenIn.attr('name')?.replace(i, (i - 1)))
+                    childrenIn.attr('id', childrenIn.attr('id')?.replace(i, (i - 1)))
+                }
+            }
+            calTotal()
+        }
+        function calculate(target) {
+          
+            //get target id before calculate
+            var idToCal = target.id;
+            //split to get the index
+            var id = idToCal.split('__')[0].split('_')[1];
+            //passing id for exact column data use to calculate
+            var quantity = $('#importInventory_' + parseInt(id) + '__quantity').val();
+            var cost = $('#importInventory_' + parseInt(id) + '__price_import').val();
+            //calculate data
+            var truequantity = quantity ? parseInt(quantity) : 0;
+            var trueprice_import = cost ? parseFloat(cost) : 0;
+            var cal =  truequantity * trueprice_import;
+            //set field total for equidment
+            $('label[id="total[' + id + ']"]').text(cal.toLocaleString('vn-VN') + ' VNĐ');
+            $('label[id="total[' + id + ']"]').attr('data-val', cal)
+            //calculate total
+            calTotal()
+            console.log(idToCal)
+            console.log(id)
+        }
+        function calTotal() {
+            total = 0;
+            //get all total rows
+            var rows = $('label[name="totalEq"]');
+            for (var i = 0; i < rows.length; i++) {
+                total += parseFloat($(rows[i]).attr('data-val'));
+            }
+            $('#totalReceipt').text("Tổng hoá đơn: "+total.toLocaleString('vn-VN') + ' VNĐ')
+        }
+        $(document).ready(function () {
+            // Add new row when the "Add Row" button is clicked
+            calTotal()
+            $("#addRow").click(function (e) {
+                e.preventDefault();
+                var newRow = $("<tr id='rcd[" + count + "]' name='rcd'>");
+                //get data list from viewbag
+                var data = @Html.Raw(Json.Encode(new SelectList(ViewBag.Uniform, "Id","Name")));
+
+                //add html field
+                var cols = "";
+                cols += "<td> <select id='importInventory_" + count + "__product_id' name='importInventory[" + count + "].product_id' class='form-control'>";
+                $.each(data, function (index, item) {
+                    cols+= "<option value='"+item.Value+"'>"+item.Text+"</option>"
+                });
+                cols += '</select></td>'
+                cols += '<td>' + '<input class="form-control text-box single-line"   id ="importInventory_' + count + '__quantity" name ="importInventory[' + count +'].quantity" onchange ="calculate(this)" required type ="number">'+ '</td>';               
+                cols += '</select></td>'
+                cols += '<td>' +' <input class="form-control text-box single-line"   id ="importInventory_' + count + '__price_import" name ="importInventory[' + count +'].price_import" onchange ="calculate(this)" required type ="number">' + '</td>';
+                cols += '<td>' + '<label id="total[' + count + ']" name="totalEq" data-val=0>0 VNĐ </label>' + '</td > ';
+                cols += '<td><button type="button"  id='+ count +' class="btn bi-trash delete-row" onclick="deleteRow(this)"></button></td>';
+                cols += '</tr>'
+                newRow.append(cols);
+                count++
+                $("table").append(newRow);
+            });
+        });
+    </script>
+    
+
+
+
+

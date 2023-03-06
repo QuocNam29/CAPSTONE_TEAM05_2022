@@ -195,6 +195,7 @@
     <Compile Include="Controllers\groupsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\import_inventoryController.cs" />
+    <Compile Include="Controllers\inventory_orderController.cs" />
     <Compile Include="Controllers\LookUpOrderController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\productsController.cs" />
@@ -249,6 +250,9 @@
     <Compile Include="Models\import_inventory.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\inventory_order.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Model1.Context.cs">
       <AutoGen>True</AutoGen>
@@ -284,12 +288,6 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sale_details.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sp_helpdiagrams_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sysdiagram.cs">
@@ -711,6 +709,12 @@
     <Content Include="Views\Home\Error404.cshtml" />
     <Content Include="Views\LookUpOrder\Index.cshtml" />
     <Content Include="Views\LookUpOrder\LookUpOrder.cshtml" />
+    <Content Include="Views\import_inventory\Create.cshtml" />
+    <Content Include="Views\inventory_order\Create.cshtml" />
+    <Content Include="Views\inventory_order\Delete.cshtml" />
+    <Content Include="Views\inventory_order\Details.cshtml" />
+    <Content Include="Views\inventory_order\Edit.cshtml" />
+    <Content Include="Views\inventory_order\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

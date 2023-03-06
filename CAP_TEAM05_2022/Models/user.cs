@@ -18,12 +18,13 @@ namespace CAP_TEAM05_2022.Models
         public user()
         {
             this.categories = new HashSet<category>();
+            this.customer_debt = new HashSet<customer_debt>();
             this.debts = new HashSet<debt>();
             this.groups = new HashSet<group>();
             this.import_inventory = new HashSet<import_inventory>();
             this.products = new HashSet<product>();
             this.sales = new HashSet<sale>();
-            this.customer_debt = new HashSet<customer_debt>();
+            this.inventory_order = new HashSet<inventory_order>();
         }
     
         public string id { get; set; }
@@ -42,6 +43,8 @@ namespace CAP_TEAM05_2022.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<category> categories { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<customer_debt> customer_debt { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<debt> debts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<group> groups { get; set; }
@@ -52,6 +55,6 @@ namespace CAP_TEAM05_2022.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<sale> sales { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<customer_debt> customer_debt { get; set; }
+        public virtual ICollection<inventory_order> inventory_order { get; set; }
     }
 }

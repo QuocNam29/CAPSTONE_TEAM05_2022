@@ -22,8 +22,12 @@ namespace CAP_TEAM05_2022.Models
         public Nullable<int> customer_id { get; set; }
         public string created_by { get; set; }
         public string note { get; set; }
+        public Nullable<int> sale_id { get; set; }
+        public Nullable<int> import_id { get; set; }
     
         public virtual customer customer { get; set; }
         public virtual user user { get; set; }
+        public virtual import_inventory import_inventory { get; set; }
+        public virtual sale sale { get; set; }
     }
 }

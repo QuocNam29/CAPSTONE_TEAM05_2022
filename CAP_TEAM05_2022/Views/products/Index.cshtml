@@ -269,7 +269,7 @@
                                     Nhà cung cấp<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <select class="custom-select SupplierDropdown"  name="SupplierDropdown" required>
+                                    <select class="custom-select SupplierDropdown" name="SupplierDropdown" required>
                                     </select>
                                     <div class="invalid-feedback">Vui lòng chọn nhà cung cấp</div>
                                 </div> <!---->
@@ -279,7 +279,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>
-                                    số lượng sản phẩm<span class="text-danger">*</span>
+                                    Tồn kho<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
                                     <div class="input-group mb-3">
@@ -351,7 +351,7 @@
                                     Đơn giá nhập<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input type="text" placeholder="Nhập giá tiền" id="product-price-buy" max="999999999999" class="form-control Price"
+                                    <input type="text" placeholder="Nhập giá tiền" id="purchase_price" max="999999999999" class="form-control Price"
                                            pattern="[0-9.,]+" data-type="number" name="purchase_price" required>
                                     <div class="invalid-feedback">
                                         Giá tiền nhập không được để trống !
@@ -360,6 +360,7 @@
                                 <!---->
                             </div>
                         </div>
+                       
                         <div class="col-md-12 mt-2">
                             <div class="form-group">
                                 <input type="checkbox" id="swap" name="swap">
@@ -581,7 +582,7 @@
                                     Nhà cung cấp<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <select class="custom-select SupplierDropdown"  name="SupplierDropdown" required>
+                                    <select class="custom-select SupplierDropdown" name="SupplierDropdown" required>
                                     </select>
                                     <div class="invalid-feedback">Vui lòng chọn nhà cung cấp</div>
                                 </div> <!---->
@@ -601,9 +602,6 @@
                                 </div>
                             </div>
                         </div>
-
-
-
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="product-price-import">
@@ -615,6 +613,32 @@
                                     <div class="invalid-feedback">
                                         Giá tiền nhập không được để trống !
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Tổng giá nhập</label>
+                                <div class="input-group">
+                                    <div class="input-group-append">
+                                        <span id="basic-addon1" class="input-group-text spCollect">
+                                            Tổng giá nhập
+                                        </span>
+                                    </div>
+                                    <input type="text" id="Sum_purchase" disabled="disabled" class="form-control Price" value="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Thanh toán trước <span class="text-danger">(đối với ghi nợ)</span></label>
+                                <div class="input-group">
+                                    <div class="input-group-append">
+                                        <span id="basic-addon1" class="input-group-text spCollect">
+                                            Thanh toán
+                                        </span>
+                                    </div>
+                                    <input type="text" id="collect" class="form-control Price" value="0" name="debt_price">
                                 </div>
                             </div>
                         </div>
@@ -653,5 +677,16 @@
     $("#unit_buy").change(function () {
         var unit_buy = $("#unit_buy").val()
         document.getElementsByClassName('unit_current')[0].innerHTML = unit_buy;
+    });
+
+    $("#add_quantity").change(function () {
+        var add_quantity = $("#add_quantity").val()
+        var purchase_price = $("#purchase_price").val().replace(/\,/g, '').replace(/\./g, '');
+        $("#Sum_purchase").val((add_quantity * purchase_price).toLocaleString());
+    });
+    $("#purchase_price").change(function () {
+        var add_quantity = $("#add_quantity").val()
+        var purchase_price = $("#purchase_price").val().replace(/\,/g, '').replace(/\./g, '');
+        $("#Sum_purchase").val((add_quantity * purchase_price).toLocaleString());
     });
 </script>

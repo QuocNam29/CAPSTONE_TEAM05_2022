@@ -1,0 +1,132 @@
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.inventory_order>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
+    int no = 0;
+}
+
+<section class="pcoded-main-container">
+    <div class="pcoded-content">
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">Quản lý đơn hàng</h5>
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="https://dnqt.net">
+                                    <i class="feather icon-home">
+                                    </i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="javascript:void(0)">Quản lý đơn hàng</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" class="tab-pane fade active show">
+                    <div class="card">
+                        <div class="card-body table-border-style">
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <div class="mx-datepicker">
+                                        <div class="mx-input-wrapper">
+                                            <input id="sale_DateStart" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}", DateTime.Now.AddDays((-DateTime.Now.Day) + 1))">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mx-datepicker">
+                                        <div class="mx-input-wrapper">
+                                            <input id="sale_DateEnd" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}",DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day)))">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="table-responsive" id="dataContainer3">
+                                <table id="example" class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Mã đơn nhập</th>
+                                            <th>Tên nhà cung cấp</th>
+                                            <th class="text-center">Tổng đơn nhập</th>
+                                            <th class="text-center">Phương thức</th>
+                                            <th class="text-center">Ngày giao dịch</th>
+                                            <th>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            no++;
+                                            <tr>
+                                                <td>@no</td>
+                                                <td>@item.code</td>
+                                                <td>@item.customer.name</td>
+                                                <td class="text-center">
+                                                    @String.Format("{0:0,00}", item.Total)
+                                                </td>
+
+                                                @if (item.state == 1)
+                                                {
+                                                    <td class="text-center">
+                                                        Đã thanh toán
+                                                    </td>
+                                                }
+                                                else 
+                                                {
+                                                    <td class="text-center">
+                                                        Ghi nợ
+                                                    </td>
+                                                }
+
+
+
+                                                <td class="text-center">
+                                                    @String.Format("{0:HH:mm - dd/MM/yyy}", item.create_at)
+                                                </td>
+                                                <td>
+                                                    <button title="Xem chi tiết" class="btn btn-info" onclick="GetList_orderDetails('@item.id', 1)">
+                                                        <span class="pcoded-micon">
+                                                            <i class="fas fa-info">
+                                                            </i>
+                                                        </span>
+                                                    </button>
+                                                    <button title="Đổi trả" class="btn btn-success" onclick="GetList_orderDetails('@item.id', 2)">
+                                                        <span class="pcoded-micon">
+                                                            <i class="fas fa-retweet">
+                                                            </i>
+                                                        </span>
+                                                    </button>           
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+            </div>
+
+
+        </div>
+    </div>
+</section>
