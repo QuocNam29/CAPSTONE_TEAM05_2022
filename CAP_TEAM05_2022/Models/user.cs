@@ -22,9 +22,9 @@ namespace CAP_TEAM05_2022.Models
             this.debts = new HashSet<debt>();
             this.groups = new HashSet<group>();
             this.import_inventory = new HashSet<import_inventory>();
+            this.inventory_order = new HashSet<inventory_order>();
             this.products = new HashSet<product>();
             this.sales = new HashSet<sale>();
-            this.inventory_order = new HashSet<inventory_order>();
         }
     
         public string id { get; set; }
@@ -51,10 +51,10 @@ namespace CAP_TEAM05_2022.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<import_inventory> import_inventory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<inventory_order> inventory_order { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<product> products { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<sale> sales { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<inventory_order> inventory_order { get; set; }
     }
 }

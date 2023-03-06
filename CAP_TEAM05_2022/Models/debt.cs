@@ -16,7 +16,7 @@ namespace CAP_TEAM05_2022.Models
     {
         public int id { get; set; }
         public Nullable<int> sale_id { get; set; }
-        public Nullable<int> import_id { get; set; }
+        public Nullable<int> inventory_id { get; set; }
         public Nullable<decimal> paid { get; set; }
         public Nullable<decimal> total { get; set; }
         public Nullable<decimal> debt1 { get; set; }

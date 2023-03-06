@@ -4,28 +4,29 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="321787bb7ddb4660827db48cdb8ba655" Name="Diagram1">
+      <Diagram DiagramId="c9b5dd38126e4d42ab23a9a542486e4b" Name="Diagram1">
         <EntityTypeShape EntityType="CP25Team05Model.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CP25Team05Model.AspNetRole" Width="1.5" PointX="0.75" PointY="22.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="CP25Team05Model.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="17.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="CP25Team05Model.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="20" IsExpanded="true" />
-        <EntityTypeShape EntityType="CP25Team05Model.AspNetUser" Width="1.5" PointX="3" PointY="21.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="CP25Team05Model.cart" Width="1.5" PointX="15" PointY="31.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CP25Team05Model.category" Width="1.5" PointX="7.5" PointY="22.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="CP25Team05Model.customer_debt" Width="1.5" PointX="7.5" PointY="27.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="CP25Team05Model.customer" Width="1.5" PointX="10.25" PointY="34.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="CP25Team05Model.debt" Width="1.5" PointX="10.5" PointY="22.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="CP25Team05Model.group" Width="1.5" PointX="7.5" PointY="34.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="CP25Team05Model.import_inventory" Width="1.5" PointX="15" PointY="22.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="CP25Team05Model.product" Width="1.5" PointX="9.75" PointY="27" IsExpanded="true" />
-        <EntityTypeShape EntityType="CP25Team05Model.return_details" Width="1.5" PointX="18" PointY="28.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="CP25Team05Model.return_sale" Width="1.5" PointX="14.75" PointY="27.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="CP25Team05Model.return_supplier" Width="1.5" PointX="17.25" PointY="19.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="CP25Team05Model.revenue" Width="1.5" PointX="20" PointY="23.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="CP25Team05Model.sale_details" Width="1.5" PointX="17.75" PointY="23.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="CP25Team05Model.sale" Width="1.5" PointX="12.5" PointY="26.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CP25Team05Model.AspNetRole" Width="1.5" PointX="0.75" PointY="25.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CP25Team05Model.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="20" IsExpanded="true" />
+        <EntityTypeShape EntityType="CP25Team05Model.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CP25Team05Model.AspNetUser" Width="1.5" PointX="3" PointY="24.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CP25Team05Model.cart" Width="1.5" PointX="15" PointY="27.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CP25Team05Model.category" Width="1.5" PointX="7.5" PointY="25.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CP25Team05Model.customer_debt" Width="1.5" PointX="23" PointY="24.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CP25Team05Model.customer" Width="1.5" PointX="10.25" PointY="19.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CP25Team05Model.debt" Width="1.5" PointX="20" PointY="20.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CP25Team05Model.group" Width="1.5" PointX="7.5" PointY="29.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CP25Team05Model.import_inventory" Width="1.5" PointX="17.75" PointY="26.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CP25Team05Model.inventory_order" Width="1.5" PointX="12.5" PointY="27" IsExpanded="true" />
+        <EntityTypeShape EntityType="CP25Team05Model.product" Width="1.5" PointX="9.75" PointY="25.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CP25Team05Model.return_details" Width="1.5" PointX="20" PointY="25.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CP25Team05Model.return_sale" Width="1.5" PointX="14.75" PointY="22.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CP25Team05Model.return_supplier" Width="1.5" PointX="20" PointY="36.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CP25Team05Model.revenue" Width="1.5" PointX="23" PointY="20.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CP25Team05Model.sale_details" Width="1.5" PointX="17.75" PointY="21" IsExpanded="true" />
+        <EntityTypeShape EntityType="CP25Team05Model.sale" Width="1.5" PointX="12.5" PointY="21.5" IsExpanded="true" />
         <EntityTypeShape EntityType="CP25Team05Model.sysdiagram" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CP25Team05Model.user" Width="1.5" PointX="5.25" PointY="23.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CP25Team05Model.user" Width="1.5" PointX="5.25" PointY="26.375" IsExpanded="true" />
         <AssociationConnector Association="CP25Team05Model.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.FK_users_AspNetUsers" ManuallyRouted="false" />
@@ -34,17 +35,23 @@
         <AssociationConnector Association="CP25Team05Model.FK_categories_users" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.products_ibfk_4" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.FK_customer_debt_customers" ManuallyRouted="false" />
+        <AssociationConnector Association="CP25Team05Model.FK_customer_debt_import_inventory" ManuallyRouted="false" />
+        <AssociationConnector Association="CP25Team05Model.FK_customer_debt_sales" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.FK_customer_debt_users" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.FK_import_inventory_customers" ManuallyRouted="false" />
+        <AssociationConnector Association="CP25Team05Model.FK_inventory_order_customers" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.FK_sales_customers" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.debts_ibfk_1" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.debts_ibfk_2" ManuallyRouted="false" />
+        <AssociationConnector Association="CP25Team05Model.FK_debts_import_inventory" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.FK_groups_users" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.products_ibfk_5" ManuallyRouted="false" />
+        <AssociationConnector Association="CP25Team05Model.FK_import_inventory_inventory_order" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.FK_import_inventory_users" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.FK_return_supplier_import_inventory" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.FK_revenue_import_inventory" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.import_inventory_ibfk_2" ManuallyRouted="false" />
+        <AssociationConnector Association="CP25Team05Model.FK_inventory_order_users" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.FK_products_users" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.FK_return_details_products" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.FK_return_details_products1" ManuallyRouted="false" />
@@ -55,13 +62,6 @@
         <AssociationConnector Association="CP25Team05Model.sale_details_ibfk_2" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.FK_sales_users" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.AspNetUserRoles" ManuallyRouted="false" />
-        <AssociationConnector Association="CP25Team05Model.FK_customer_debt_import_inventory" />
-        <AssociationConnector Association="CP25Team05Model.FK_customer_debt_sales" />
-        <AssociationConnector Association="CP25Team05Model.FK_debts_import_inventory" />
-        <EntityTypeShape EntityType="CP25Team05Model.inventory_order" Width="1.5" PointX="12.5" PointY="32.875" />
-        <AssociationConnector Association="CP25Team05Model.FK_inventory_order_customers" />
-        <AssociationConnector Association="CP25Team05Model.FK_import_inventory_inventory_order" />
-        <AssociationConnector Association="CP25Team05Model.FK_inventory_order_users" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

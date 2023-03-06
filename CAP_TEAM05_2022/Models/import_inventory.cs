@@ -17,10 +17,10 @@ namespace CAP_TEAM05_2022.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public import_inventory()
         {
-            this.return_supplier = new HashSet<return_supplier>();
-            this.revenues = new HashSet<revenue>();
             this.customer_debt = new HashSet<customer_debt>();
             this.debts = new HashSet<debt>();
+            this.return_supplier = new HashSet<return_supplier>();
+            this.revenues = new HashSet<revenue>();
         }
     
         public int id { get; set; }
@@ -37,17 +37,17 @@ namespace CAP_TEAM05_2022.Models
         public Nullable<int> supplier_id { get; set; }
         public Nullable<int> inventory_id { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<customer_debt> customer_debt { get; set; }
         public virtual customer customer { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<debt> debts { get; set; }
+        public virtual inventory_order inventory_order { get; set; }
         public virtual user user { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<return_supplier> return_supplier { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<revenue> revenues { get; set; }
         public virtual product product { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<customer_debt> customer_debt { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<debt> debts { get; set; }
-        public virtual inventory_order inventory_order { get; set; }
     }
 }

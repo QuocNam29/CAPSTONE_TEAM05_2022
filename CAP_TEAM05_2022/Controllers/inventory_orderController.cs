@@ -58,7 +58,7 @@ namespace CAP_TEAM05_2022.Controllers
        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,code,supplier_id,create_at,update_at,create_by,state,Total,payment,debt")] inventory_order inventory_order, List<import_inventory> importInventory)
+        public ActionResult Create([Bind(Include = "id,code,supplier_id,create_at,update_at,create_by,state,Total,payment,debt")] inventory_order inventory_order, List<import_inventory> importInventory, int method)
         {
             if (ModelState.IsValid)
             {
@@ -83,8 +83,17 @@ namespace CAP_TEAM05_2022.Controllers
                 inventory_order.update_at = DateTime.Now;
                 inventory_order.create_by = User.Identity.GetUserId();
                 inventory_order.Total = total;
-
+                inventory_order.state = method;
+                if (method == 2)
+                {
+                    inventory_order.debt = inventory_order.Total - inventory_order.payment;
+                }             
                 db.inventory_order.Add(inventory_order);
+                if (method == 2)
+                {
+                    customer_debt customer_Debt = new customer_debt();
+
+                }
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

@@ -17,10 +17,10 @@ namespace CAP_TEAM05_2022.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public sale()
         {
+            this.customer_debt = new HashSet<customer_debt>();
             this.debts = new HashSet<debt>();
             this.return_sale = new HashSet<return_sale>();
             this.sale_details = new HashSet<sale_details>();
-            this.customer_debt = new HashSet<customer_debt>();
         }
     
         public int id { get; set; }
@@ -36,6 +36,8 @@ namespace CAP_TEAM05_2022.Models
         public Nullable<System.DateTime> deleted_at { get; set; }
         public Nullable<decimal> prepayment { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<customer_debt> customer_debt { get; set; }
         public virtual customer customer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<debt> debts { get; set; }
@@ -44,7 +46,5 @@ namespace CAP_TEAM05_2022.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<sale_details> sale_details { get; set; }
         public virtual user user { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<customer_debt> customer_debt { get; set; }
     }
 }
