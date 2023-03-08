@@ -26,6 +26,15 @@ namespace CAP_TEAM05_2022.Controllers
             var inventory_order = db.inventory_order.Include(i => i.customer).Include(i => i.user);
             return View(inventory_order.ToList());
         }
+        public ActionResult _HistoryInventory(int order_customer, int? method)
+        {
+            var HistoryOrder = db.inventory_order.Where(o => o.supplier_id == order_customer);
+            if (method == 2)
+            {
+                HistoryOrder = HistoryOrder.Where(s => s.state == 2);
+            }
+            return PartialView(HistoryOrder.OrderByDescending(o => o.id).ToList());
+        }
 
         // GET: inventory_order/Details/5
         public ActionResult Details(int? id)

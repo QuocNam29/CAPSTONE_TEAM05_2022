@@ -1,0 +1,148 @@
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.inventory_order>
+
+<style>
+    .modal-lg {
+        max-width: 1200px;
+    }
+</style>
+<div id="historySupplierModal" tabindex="-1" role="dialog" aria-labelledby="historyModalTitle" class="modal fade bd-example-modal-lg">
+    <div role="document" class="modal-dialog modal-lg">
+        <form>
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 id="historyModalTitle" class="modal-title white">Lịch sử nhập hàng</h5>
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">STT</th>
+                                            <th class="text-center">Mã sản phẩm</th>
+                                            <th class="text-center">Tên sản phẩm</th>
+                                            <th class="text-center">Đơn giá nhập</th>
+                                            <th class="text-center">Số lượng</th>
+                                            <th class="text-center">Thành tiền</th>
+                                        </tr>
+                                    </thead>
+                                    @if (Model.Count() > 0)
+                                    {
+                                        foreach (var item in Model)
+                                        {
+                                            int no = 0;
+                                            int no_debt = 0;
+                                            var details = item.import_inventory.ToList();
+                                            var history_debt = item.debts.ToList();
+                                            if (details.Count() > 0)
+                                            {
+                                                <tbody>
+                                                    @foreach (var item_details in details)
+                                                    {
+                                                        no++;
+                                                        <tr>
+                                                            <td class="text-center">
+                                                                @no
+                                                            </td>
+                                                            <td class="text-center">
+                                                                @item_details.product.code
+                                                            </td>
+                                                            <td class="text-center"> @item_details.product.name</td>
+                                                            <td class="text-center">
+                                                                @String.Format("{0:0,00}", item_details.price_import)₫/<span class="txt-unit">@item_details.product.unit</span>
+                                                            </td>
+                                                             <td class="text-center">
+                                                                @item_details.quantity<span class="txt-unit">@item_details.product.unit</span>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                @String.Format("{0:0,00}", item_details.price_import * item_details.quantity)₫
+                                                            </td>
+                                                        </tr>
+
+                                                    }
+
+                                                </tbody>
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="3">
+                                                            <p>
+                                                                Mã đơn hàng: <span>@item.code</span>
+                                                            </p>
+                                                            <!---->
+                                                            @foreach (var item1 in history_debt)
+                                                            {
+                                                                no_debt++;
+                                                                <p>
+                                                                    Đợt @no_debt: <span>@String.Format("{0:0,00}", item1.paid)₫</span>
+                                                                </p>
+                                                            }
+                                                        </td>
+                                                        <td colspan="2">
+                                                            <p>
+                                                                Ngày mua hàng : <span> @String.Format("{0:HH:mm - dd/MM/yyy}", item.create_at)</span>
+                                                            </p>
+                                                            <!---->
+                                                            @foreach (var item1 in history_debt)
+                                                            {
+                                                                <p>
+                                                                    Ngày thu nợ: <span> @String.Format("{0:HH:mm - dd/MM/yyy}", item1.created_at)</span>
+                                                                </p>
+                                                            }
+                                                        </td>
+                                                        <td colspan="2" class="text-left">
+                                                            <div class="total-div">
+                                                                <div>
+                                                                    Thành tiền:
+                                                                    <span class="text">
+                                                                        @String.Format("{0:0,00}", item.Total)₫
+                                                                    </span>
+                                                                </div>
+                                                                @if (item.payment >= 0)
+                                                                {
+                                                                    <div>
+                                                                        Đã thanh toán:
+                                                                        <span class="text-success">
+                                                                            @String.Format("{0:0,00}", item.payment)₫
+                                                                        </span>
+                                                                    </div>
+                                                                    <div>
+                                                                        Còn nợ:
+                                                                        <span class="text-danger">
+                                                                            @String.Format("{0:0,00}", item.Total - item.payment)₫
+                                                                        </span>
+                                                                    </div>
+                                                                }
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="7">
+
+                                                    <div class="alert alert-warning">
+                                                        <p class="text-center">Không tìm thấy dữ liệu</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

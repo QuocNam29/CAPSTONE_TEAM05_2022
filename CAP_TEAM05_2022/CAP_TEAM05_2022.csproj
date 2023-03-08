@@ -722,6 +722,7 @@
     <Content Include="Views\inventory_order\Edit.cshtml" />
     <Content Include="Views\inventory_order\Index.cshtml" />
     <Content Include="Views\Debts_Collections\_SupplierDebtsList.cshtml" />
+    <Content Include="Views\inventory_order\_HistoryInventory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
