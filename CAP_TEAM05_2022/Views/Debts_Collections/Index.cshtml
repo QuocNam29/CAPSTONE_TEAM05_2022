@@ -28,7 +28,8 @@
         font-weight: bold;
     }
 </style>
-<input type="text" hidden id="URLDebtsList" value="@Url.Action("_DebtsList", "Debts_Collections")" />
+<input type="text" hidden id="URLCustomerDebtsList" value="@Url.Action("_CustomerDebtsList", "Debts_Collections")" />
+<input type="text" hidden id="URLSupplierDebtsList" value="@Url.Action("_SupplierDebtsList", "Debts_Collections")" />
 <input type="text" hidden id="URLFindDebt" value="@Url.Action("FindDebt", "Debts_Collections")/" />
 
 <section class="pcoded-main-container">
@@ -77,65 +78,34 @@
                                     <div id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" class="tab-pane fade">
                                         <div class="card">
                                             <div class="card-body table-border-style">
-                                                <button class="btn btn-primary float-right mb-3">Tạo mới</button>
-                                                <div class="table-responsive">
-                                                    <table class="table table-hover">
-                                                        <thead>
-                                                            <tr>
-                                                                <th class="text-center">STT</th>
-                                                                <th>Mã sản phẩm</th>
-                                                                <th class="text-center">Tên sản phẩm</th>
-                                                                <th class="text-center">Số lượng</th>
-                                                                <th class="text-center">Tổng tiền</th>
-                                                                <th class="text-center">Đã trả</th>
-                                                                <th class="text-center">Ngày tháng</th>
-                                                                <th>
-                                                                </th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td class="text-center">
-                                                                    1
-                                                                </td>
-                                                                <td>SPf6bb28349</td>
-                                                                <td class="text-center">	URE PHÚ MỸ</td>
-                                                                <td class="text-center">114</td>
-                                                                <td class="text-center">95,760,000</td>
-                                                                <td class="text-center">10,000</td>
-                                                                <td class="text-center">11:06 - 06/02/2023</td>
-                                                                <td class="text-center">
-                                                                    <button type="button" class="btn btn-info">Chọn</button>
-                                                                    <button type="button" title="Xem chi tiết" class="btn btn-secondary">
-                                                                        <span>
-                                                                            <i class="fa icon-2 icon-custom fa-minus">
-                                                                            </i>
-                                                                        </span>
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                            <tr class="detail-debt-2">
-                                                                <td colspan="6">
-                                                                </td>
-                                                                <td colspan="2">
-                                                                    Đợt 1: 10,000
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                        <tbody style="display: none;">
-                                                            <tr>
-                                                                <td colspan="7">
-                                                                    <div class="alert alert-warning">
-                                                                        <p class="text-center">Không tìm thấy dữ liệu</p>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-4">
+                                                        <div class="mx-datepicker">
+                                                            <div class="mx-input-wrapper">
+                                                                <input id="debt_DateStart" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}", DateTime.Now.AddDays((-DateTime.Now.Day) + 1))">
 
-                                        </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="mx-datepicker">
+                                                            <div class="mx-input-wrapper">
+                                                                <input id="debt_DateEnd" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}",DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day)))">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <button class="btn btn-primary float-right mb-3">Tạo mới</button>
+                                                    </div>
+                                                </div>
+                                                    <div class="table-responsive" id="dataContainer1">
+                                                        @{ Html.RenderAction("_SupplierDebtsList", "Debts_Collections");}
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
                                     </div>
                                     <div id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" class="tab-pane fade active show">
                                         <div>
@@ -161,7 +131,7 @@
 
                                                     </div>
                                                     <div class="table-responsive" id="dataContainer">
-                                                        @{ Html.RenderAction("_DebtsList", "Debts_Collections");}
+                                                        @{ Html.RenderAction("_CustomerDebtsList", "Debts_Collections");}
 
                                                     </div>
                                                 </div>
@@ -196,6 +166,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <input type="number" hidden name="customer_id" id="customer_id"  />
+                        <input type="number" hidden name="method" id="method"  />
 
                         <div class="col-md-4">
                             <div class="form-group">
@@ -289,6 +260,11 @@
      var row;
     $(document).ready(function () {
         $('#example').DataTable({
+            pagingType: 'full_numbers',
+        });
+    });
+    $(document).ready(function () {
+        $('#example1').DataTable({
             pagingType: 'full_numbers',
         });
     });

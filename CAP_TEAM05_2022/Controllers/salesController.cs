@@ -331,11 +331,10 @@ namespace CAP_TEAM05_2022.Controllers
                 if (createSale.method > 0)
                 {
 
-                    var check_debt = db.debts.Where(d => d.sale.customer_id == createSale.customer_id).Count();
-                    var check_customer_debt = db.customer_debt.Where(d => d.customer_id == createSale.customer_id).Count();
+                    var check_debt = db.debts.Where(d => d.sale.customer_id == createSale.customer_id && d.sale_id != null).Count();
                     if (check_debt > 0)
                     {
-                        var last_debt = db.debts.Where(d => d.sale.customer_id == createSale.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
+                        var last_debt = db.debts.Where(d => d.sale.customer_id == createSale.customer_id ).OrderByDescending(o => o.id).FirstOrDefault();
                         debt debt = new debt();
                         debt.sale_id = sale.id;
                         debt.paid = createSale.method;
@@ -349,6 +348,7 @@ namespace CAP_TEAM05_2022.Controllers
                         var last_customer_Debt = db.customer_debt.Where(d => d.customer_id == createSale.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
 
                         customer_debt customer_Debt = new customer_debt();
+                        customer_Debt.sale_id = sale.id;
                         customer_Debt.created_at = DateTime.Now;
                         customer_Debt.created_by = User.Identity.GetUserId();
                         customer_Debt.customer_id = createSale.customer_id;
@@ -370,6 +370,7 @@ namespace CAP_TEAM05_2022.Controllers
                         db.debts.Add(debt);
 
                         customer_debt customer_Debt = new customer_debt();
+                        customer_Debt.sale_id = sale.id;
                         customer_Debt.created_at = DateTime.Now;
                         customer_Debt.created_by = User.Identity.GetUserId();
                         customer_Debt.customer_id = createSale.customer_id;

@@ -62,6 +62,7 @@ namespace CAP_TEAM05_2022.Controllers
         {
             if (ModelState.IsValid)
             {
+                DateTime currentDate = DateTime.Now;
                 decimal total = 0;
                 foreach (var inventory in importInventory)
                 {
@@ -70,7 +71,7 @@ namespace CAP_TEAM05_2022.Controllers
                     inventory.sold_swap = 0;
                     inventory.quantity_remaining = 0;
                     inventory.created_by = User.Identity.GetUserId();
-                    inventory.created_at = DateTime.Now;
+                    inventory.created_at = currentDate;
                     inventory.supplier_id = inventory_order.supplier_id;
                     db.import_inventory.Add(inventory);
                     total += inventory.price_import * inventory.quantity;
@@ -79,8 +80,8 @@ namespace CAP_TEAM05_2022.Controllers
                     db.Entry(product).State = EntityState.Modified;
                 }
                 inventory_order.code = "MPN" + CodeRandom.RandomCode();
-                inventory_order.create_at = DateTime.Now;
-                inventory_order.update_at = DateTime.Now;
+                inventory_order.create_at = currentDate;
+                inventory_order.update_at = currentDate;
                 inventory_order.create_by = User.Identity.GetUserId();
                 inventory_order.Total = total;
                 inventory_order.state = method;
@@ -91,8 +92,55 @@ namespace CAP_TEAM05_2022.Controllers
                 db.inventory_order.Add(inventory_order);
                 if (method == 2)
                 {
-                    customer_debt customer_Debt = new customer_debt();
+                   
+                    var check_debt = db.debts.Where(d => d.sale.customer_id == inventory_order.supplier_id && d.inventory_id != null).Count();
+                    if (check_debt > 0)
+                    {
+                        var last_debt = db.debts.Where(d => d.sale.customer_id == inventory_order.supplier_id && d.inventory_id != null).OrderByDescending(o => o.id).FirstOrDefault();
+                        debt debt = new debt();
+                        debt.inventory_id = inventory_order.id;
+                        debt.paid = inventory_order.payment;
+                        debt.created_at = currentDate;
+                        debt.created_by = User.Identity.GetUserId();
+                        debt.total = last_debt.total + inventory_order.payment;
+                        debt.debt1 = total;
+                        debt.remaining = last_debt.remaining + (total - debt.paid);
+                        db.debts.Add(debt);
 
+                        var last_customer_Debt = db.customer_debt.Where(d => d.customer_id == inventory_order.supplier_id && d.inventory_id != null).OrderByDescending(o => o.id).FirstOrDefault();
+                        customer_debt customer_Debt = new customer_debt(); 
+                        customer_Debt.inventory_id = inventory_order.id;
+                        customer_Debt.created_at = currentDate;
+                        customer_Debt.created_by = User.Identity.GetUserId();
+                        customer_Debt.customer_id = inventory_order.supplier_id;
+                        customer_Debt.debt = (total - debt.paid);
+                        customer_Debt.remaining = last_debt.remaining + (total - debt.paid);
+                        db.customer_debt.Add(customer_Debt);
+                    }
+                    else
+                    {
+                        debt debt = new debt();
+                        debt.inventory_id = inventory_order.id;
+                        debt.paid = inventory_order.payment;
+                        debt.created_at = currentDate;
+                        debt.created_by = User.Identity.GetUserId();
+                        debt.total = inventory_order.payment;
+                        debt.debt1 = total;
+                        debt.remaining = total - debt.paid;
+                        db.debts.Add(debt);
+
+                        customer_debt customer_Debt = new customer_debt();
+                        customer_Debt.inventory_id = inventory_order.id;
+                        customer_Debt.created_at = currentDate;
+                        customer_Debt.created_by = User.Identity.GetUserId();
+                        customer_Debt.customer_id = inventory_order.supplier_id;
+                        customer_Debt.debt = total - debt.paid;
+                        customer_Debt.remaining = total - debt.paid;
+                        db.customer_debt.Add(customer_Debt);
+
+                        db.SaveChanges();
+                    }
+                    db.SaveChanges();                  
                 }
                 db.SaveChanges();
                 return RedirectToAction("Index");

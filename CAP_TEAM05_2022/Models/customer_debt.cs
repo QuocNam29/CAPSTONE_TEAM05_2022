@@ -26,7 +26,7 @@ namespace CAP_TEAM05_2022.Models
         public Nullable<int> inventory_id { get; set; }
     
         public virtual customer customer { get; set; }
-        public virtual import_inventory import_inventory { get; set; }
+        public virtual inventory_order inventory_order { get; set; }
         public virtual sale sale { get; set; }
         public virtual user user { get; set; }
     }

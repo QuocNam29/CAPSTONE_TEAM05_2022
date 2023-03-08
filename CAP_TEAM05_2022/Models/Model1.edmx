@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="CP25Team05Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CP25Team05Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -399,11 +399,11 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_customer_debt_import_inventory">
-          <End Role="import_inventory" Type="Self.import_inventory" Multiplicity="0..1" />
+        <Association Name="FK_customer_debt_inventory_order">
+          <End Role="inventory_order" Type="Self.inventory_order" Multiplicity="0..1" />
           <End Role="customer_debt" Type="Self.customer_debt" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="import_inventory">
+            <Principal Role="inventory_order">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="customer_debt">
@@ -491,11 +491,11 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_debts_import_inventory">
-          <End Role="import_inventory" Type="Self.import_inventory" Multiplicity="0..1" />
+        <Association Name="FK_debts_inventory_order">
+          <End Role="inventory_order" Type="Self.inventory_order" Multiplicity="0..1" />
           <End Role="debts" Type="Self.debts" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="import_inventory">
+            <Principal Role="inventory_order">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="debts">
@@ -846,8 +846,8 @@
             <End Role="customers" EntitySet="customers" />
             <End Role="customer_debt" EntitySet="customer_debt" />
           </AssociationSet>
-          <AssociationSet Name="FK_customer_debt_import_inventory" Association="Self.FK_customer_debt_import_inventory">
-            <End Role="import_inventory" EntitySet="import_inventory" />
+          <AssociationSet Name="FK_customer_debt_inventory_order" Association="Self.FK_customer_debt_inventory_order">
+            <End Role="inventory_order" EntitySet="inventory_order" />
             <End Role="customer_debt" EntitySet="customer_debt" />
           </AssociationSet>
           <AssociationSet Name="FK_customer_debt_sales" Association="Self.FK_customer_debt_sales">
@@ -874,8 +874,8 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK_debts_import_inventory" Association="Self.FK_debts_import_inventory">
-            <End Role="import_inventory" EntitySet="import_inventory" />
+          <AssociationSet Name="FK_debts_inventory_order" Association="Self.FK_debts_inventory_order">
+            <End Role="inventory_order" EntitySet="inventory_order" />
             <End Role="debts" EntitySet="debts" />
           </AssociationSet>
           <AssociationSet Name="FK_groups_users" Association="Self.FK_groups_users">
@@ -967,8 +967,7 @@
             <End Role="sale_details" EntitySet="sale_details" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CP25Team05Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1079,7 +1078,7 @@
           <Property Name="sale_id" Type="Int32" />
           <Property Name="inventory_id" Type="Int32" />
           <NavigationProperty Name="customer" Relationship="Self.FK_customer_debt_customers" FromRole="customer_debt" ToRole="customers" />
-          <NavigationProperty Name="import_inventory" Relationship="Self.FK_customer_debt_import_inventory" FromRole="customer_debt" ToRole="import_inventory" />
+          <NavigationProperty Name="inventory_order" Relationship="Self.FK_customer_debt_inventory_order" FromRole="customer_debt" ToRole="inventory_order" />
           <NavigationProperty Name="sale" Relationship="Self.FK_customer_debt_sales" FromRole="customer_debt" ToRole="sales" />
           <NavigationProperty Name="user" Relationship="Self.FK_customer_debt_users" FromRole="customer_debt" ToRole="users" />
         </EntityType>
@@ -1129,6 +1128,7 @@
           <NavigationProperty Name="sale" Relationship="Self.debts_ibfk_1" FromRole="debts" ToRole="sales" />
           <NavigationProperty Name="user" Relationship="Self.debts_ibfk_2" FromRole="debts" ToRole="users" />
           <NavigationProperty Name="import_inventory" Relationship="Self.FK_debts_import_inventory" FromRole="debts" ToRole="import_inventory" />
+          <NavigationProperty Name="inventory_order" Relationship="CP25Team05Model.FK_debts_inventory_order" FromRole="debt" ToRole="inventory_order" />
         </EntityType>
         <EntityType Name="group">
           <Key>
@@ -1163,7 +1163,6 @@
           <Property Name="quantity_remaining" Type="Int32" />
           <Property Name="supplier_id" Type="Int32" />
           <Property Name="inventory_id" Type="Int32" />
-          <NavigationProperty Name="customer_debt" Relationship="Self.FK_customer_debt_import_inventory" FromRole="import_inventory" ToRole="customer_debt" />
           <NavigationProperty Name="customer" Relationship="Self.FK_import_inventory_customers" FromRole="import_inventory" ToRole="customers" />
           <NavigationProperty Name="debts" Relationship="Self.FK_debts_import_inventory" FromRole="import_inventory" ToRole="debts" />
           <NavigationProperty Name="inventory_order" Relationship="Self.FK_import_inventory_inventory_order" FromRole="import_inventory" ToRole="inventory_order" />
@@ -1186,9 +1185,11 @@
           <Property Name="Total" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="payment" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="debt" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="customer_debt" Relationship="Self.FK_customer_debt_inventory_order" FromRole="inventory_order" ToRole="customer_debt" />
           <NavigationProperty Name="customer" Relationship="Self.FK_inventory_order_customers" FromRole="inventory_order" ToRole="customers" />
           <NavigationProperty Name="import_inventory" Relationship="Self.FK_import_inventory_inventory_order" FromRole="inventory_order" ToRole="import_inventory" />
           <NavigationProperty Name="user" Relationship="Self.FK_inventory_order_users" FromRole="inventory_order" ToRole="users" />
+          <NavigationProperty Name="debts" Relationship="CP25Team05Model.FK_debts_inventory_order" FromRole="inventory_order" ToRole="debt" />
         </EntityType>
         <EntityType Name="product">
           <Key>
@@ -1456,11 +1457,11 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_customer_debt_import_inventory">
-          <End Role="import_inventory" Type="Self.import_inventory" Multiplicity="0..1" />
+        <Association Name="FK_customer_debt_inventory_order">
+          <End Role="inventory_order" Type="Self.inventory_order" Multiplicity="0..1" />
           <End Role="customer_debt" Type="Self.customer_debt" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="import_inventory">
+            <Principal Role="inventory_order">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="customer_debt">
@@ -1827,8 +1828,8 @@
             <End Role="customers" EntitySet="customers" />
             <End Role="customer_debt" EntitySet="customer_debt" />
           </AssociationSet>
-          <AssociationSet Name="FK_customer_debt_import_inventory" Association="Self.FK_customer_debt_import_inventory">
-            <End Role="import_inventory" EntitySet="import_inventory" />
+          <AssociationSet Name="FK_customer_debt_inventory_order" Association="Self.FK_customer_debt_inventory_order">
+            <End Role="inventory_order" EntitySet="inventory_order" />
             <End Role="customer_debt" EntitySet="customer_debt" />
           </AssociationSet>
           <AssociationSet Name="FK_customer_debt_sales" Association="Self.FK_customer_debt_sales">
@@ -1965,6 +1966,10 @@
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
+          <AssociationSet Name="FK_debts_inventory_order" Association="CP25Team05Model.FK_debts_inventory_order">
+            <End Role="inventory_order" EntitySet="inventory_order" />
+            <End Role="debt" EntitySet="debts" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1977,6 +1982,18 @@
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
+        <Association Name="FK_debts_inventory_order">
+          <End Type="CP25Team05Model.inventory_order" Role="inventory_order" Multiplicity="0..1" />
+          <End Type="CP25Team05Model.debt" Role="debt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="inventory_order">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="debt">
+              <PropertyRef Name="inventory_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->

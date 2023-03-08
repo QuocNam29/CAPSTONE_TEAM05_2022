@@ -21,6 +21,7 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">STT</th>
+                                        <th class="text-center">Mã đơn nợ</th>
                                         <th class="text-center">Nợ mới</th>
                                         <th class="text-center">Đã thu</th>
                                         <th class="text-center">Tổng nợ</th>
@@ -34,6 +35,17 @@
                                             <tr>
                                                 <td class="text-center">
                                                     @no
+                                                </td>
+                                                <td class="text-center">
+                                                    @{ if (item.inventory_id != null)
+                                                        {
+                                                            <div>@item.inventory_order.code </div>
+                                                        }
+                                                        if (item.sale_id != null)
+                                                        {
+                                                            <div>@item.sale.code </div>
+                                                        }
+                                                    }
                                                 </td>
                                                 <td class="text-center">
                                                     @String.Format("{0:0,00}", item.debt)

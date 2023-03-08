@@ -16,7 +16,7 @@ namespace CAP_TEAM05_2022.Controllers
         {
             return View();
         }
-        public ActionResult _DebtsList(DateTime? date_Start, DateTime? date_End)
+        public ActionResult _CustomerDebtsList(DateTime? date_Start, DateTime? date_End)
         {
             if (date_Start == null)
             {
@@ -36,26 +36,54 @@ namespace CAP_TEAM05_2022.Controllers
             var customer = db.customers.Where(c => c.sales.Where(s => s.method == 2).Count() > 0).ToList();
             return PartialView(customer.OrderByDescending(c => c.id).ToList());
         }
+        public ActionResult _SupplierDebtsList(DateTime? date_Start, DateTime? date_End)
+        {
+            if (date_Start == null)
+            {
+                date_Start = DateTime.Now.AddDays((-DateTime.Now.Day) + 1);
+            }
+            if (date_End == null)
+            {
+                date_End = DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day));
+            }
+            var sales = db.sales.Where(d => d.method == 2).Where(s => s.created_at >= date_Start && s.created_at <= date_End
+                                                     || s.created_at.Value.Day == date_Start.Value.Day
+                                                     && s.created_at.Value.Month == date_Start.Value.Month
+                                                     && s.created_at.Value.Year == date_Start.Value.Year
+                                                     || s.created_at.Value.Day == date_End.Value.Day
+                                                     && s.created_at.Value.Month == date_End.Value.Month
+                                                     && s.created_at.Value.Year == date_End.Value.Year);
+            var customer = db.customers.Where(c => c.inventory_order.Where(s => s.state == 2).Count() > 0).ToList();
+            return PartialView(customer.OrderByDescending(c => c.id).ToList());
+        }
         public ActionResult _DebtsDetailsList(int customer_id)
         {
             var debtDetailsList = db.customer_debt.Where(o => o.customer_id == customer_id);
             return PartialView(debtDetailsList.ToList());
         }
         [HttpPost]
-        public JsonResult FindDebt(int id)
+        public JsonResult FindDebt(int id, int method)
         {
             customer customer = db.customers.Find(id);
             var emp = new sale();
             emp.id = id;
-            emp.total = customer.sales.Where(s => s.method == 2).Sum(s => s.total);
-            emp.prepayment = customer.sales.Where(s => s.method == 2).Sum(s => s.prepayment);
+            if (method == 1)
+            {
+                emp.total = customer.sales.Where(s => s.method == 2).Sum(s => s.total);
+                emp.prepayment = customer.sales.Where(s => s.method == 2).Sum(s => s.prepayment);
+            }
+            else if (method == 2)
+            {
+                emp.total = (decimal)customer.inventory_order.Where(s => s.state == 2).Sum(s => s.Total);
+                emp.prepayment = customer.inventory_order.Where(s => s.state == 2).Sum(s => s.payment);
+            }        
             emp.code = customer.code;
             emp.note = customer.name;
             emp.created_by = customer.phone;
 
             return Json(emp);
         }
-        public ActionResult Create_Debts(int customer_id, string paid, string note)
+        public ActionResult Create_Debts(int customer_id, string paid, string note, int method)
         {
             string message = "";
             bool status = true;
@@ -70,52 +98,104 @@ namespace CAP_TEAM05_2022.Controllers
                      status = false;
                     return Json(new { status, message }, JsonRequestBehavior.AllowGet);
                 }
-                var sale = db.sales.Where(s => s.customer_id == customer_id && s.total != s.prepayment).ToList();
-                while (paid_temp > 0)
+                if (method == 1)
                 {
-                    foreach (var item in sale)
+                    var sale = db.sales.Where(s => s.customer_id == customer_id && s.total != s.prepayment).ToList();
+                    while (paid_temp > 0)
                     {
-                        if (paid_temp <= (item.total - item.prepayment))
+                        foreach (var item in sale)
                         {
-                            var last_debt = db.debts.Where(d => d.sale.customer_id == item.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
+                            if (paid_temp <= (item.total - item.prepayment))
+                            {
+                                var last_debt = db.debts.Where(d => d.sale.customer_id == item.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
 
-                            debt debt = new debt();
-                            debt.sale_id = item.id;
-                            debt.created_by = User.Identity.GetUserId();
-                            debt.created_at = create_at;
-                            debt.paid = paid_temp;
-                            debt.total = (decimal)(last_debt.total + paid_temp);
-                            debt.note = note;
-                            debt.remaining = last_debt.remaining - paid_temp;
-                            db.debts.Add(debt);
+                                debt debt = new debt();
+                                debt.sale_id = item.id;
+                                debt.created_by = User.Identity.GetUserId();
+                                debt.created_at = create_at;
+                                debt.paid = paid_temp;
+                                debt.total = (decimal)(last_debt.total + paid_temp);
+                                debt.note = note;
+                                debt.remaining = last_debt.remaining - paid_temp;
+                                db.debts.Add(debt);
 
-                            item.prepayment += paid_temp;
-                            db.Entry(item).State = EntityState.Modified;
-                            db.SaveChanges();
-                            paid_temp = 0;
+                                item.prepayment += paid_temp;
+                                db.Entry(item).State = EntityState.Modified;
+                                db.SaveChanges();
+                                paid_temp = 0;
+                            }
+                            else
+                            {
+                                var last_debt = db.debts.Where(d => d.sale.customer_id == item.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
+                                decimal remaining = (decimal)(item.total - item.prepayment);
+                                debt debt = new debt();
+                                debt.sale_id = item.id;
+                                debt.created_by = User.Identity.GetUserId();
+                                debt.created_at = create_at;
+                                debt.paid = remaining;
+                                debt.total = (decimal)(last_debt.total + remaining);
+                                debt.note = note;
+                                debt.remaining = last_debt.remaining - remaining;
+                                db.debts.Add(debt);
+
+                                item.prepayment += remaining;
+                                db.Entry(item).State = EntityState.Modified;
+                                db.SaveChanges();
+                                paid_temp -= remaining;
+                            }
                         }
-                        else
-                        {
-                            var last_debt = db.debts.Where(d => d.sale.customer_id == item.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
-                            decimal remaining = (decimal)(item.total - item.prepayment);
-                            debt debt = new debt();
-                            debt.sale_id = item.id;
-                            debt.created_by = User.Identity.GetUserId();
-                            debt.created_at = create_at;
-                            debt.paid = remaining;
-                            debt.total = (decimal)(last_debt.total + remaining);
-                            debt.note = note;
-                            debt.remaining = last_debt.remaining - remaining;
-                            db.debts.Add(debt);
 
-                            item.prepayment += remaining;
-                            db.Entry(item).State = EntityState.Modified;
-                            db.SaveChanges();
-                            paid_temp -= remaining;
-                        }
                     }
-
                 }
+                else if (method == 2)
+                {
+                    var inventory = db.inventory_order.Where(s => s.supplier_id == customer_id && s.Total != s.payment).ToList();
+                    while (paid_temp > 0)
+                    {
+                        foreach (var item in inventory)
+                        {
+                            if (paid_temp <= (item.Total - item.payment))
+                            {
+                                var last_debt = db.debts.Where(d => d.inventory_order.supplier_id == item.supplier_id).OrderByDescending(o => o.id).FirstOrDefault();
+
+                                debt debt = new debt();
+                                debt.inventory_id = item.id;
+                                debt.created_by = User.Identity.GetUserId();
+                                debt.created_at = create_at;
+                                debt.paid = paid_temp;
+                                debt.total = (decimal)(last_debt.total + paid_temp);
+                                debt.note = note;
+                                debt.remaining = last_debt.remaining - paid_temp;
+                                db.debts.Add(debt);
+
+                                item.payment += paid_temp;
+                                db.Entry(item).State = EntityState.Modified;
+                                db.SaveChanges();
+                                paid_temp = 0;
+                            }
+                            else
+                            {
+                                var last_debt = db.debts.Where(d => d.inventory_order.supplier_id == item.supplier_id).OrderByDescending(o => o.id).FirstOrDefault();
+                                decimal remaining = (decimal)(item.Total - item.payment);
+                                debt debt = new debt();
+                                debt.inventory_id = item.id;
+                                debt.created_by = User.Identity.GetUserId();
+                                debt.created_at = create_at;
+                                debt.paid = remaining;
+                                debt.total = (decimal)(last_debt.total + remaining);
+                                debt.note = note;
+                                debt.remaining = last_debt.remaining - remaining;
+                                db.debts.Add(debt);
+                                item.payment += remaining;
+                                db.Entry(item).State = EntityState.Modified;
+                                db.SaveChanges();
+                                paid_temp -= remaining;
+                            }
+                        }
+
+                    }
+                }
+              
                 decimal paid_debt =  decimal.Parse(paid.Replace(",", "").Replace(".", ""));
                 customer_debt customer_Debt = new customer_debt();
                 customer_Debt.customer_id = customer_id;

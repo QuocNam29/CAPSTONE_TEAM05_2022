@@ -77,7 +77,7 @@
                             <div class="col-sm-6 debt_method" style="display: none">
                                 <div class="form-group">
                                     <label class="form-label">Thanh toán trước: </label>
-                                    @Html.EditorFor(model => model.payment, new { htmlAttributes = new { @class = "form-control", @placeholder = "Thanh toán trước" } })
+                                    @Html.EditorFor(model => model.payment, new { htmlAttributes = new { @class = "form-control", @placeholder = "Thanh toán trước", text = 0 } })
                                 </div>
                             </div>
                             <div class="ovf-table col-sm-12">
@@ -105,14 +105,12 @@
                                         @for (int j = 0; j < Model?.import_inventory?.Count; j++)
                                         {
                                             <tr id="rcd[@i]" name="rcd">
-                                                @*@Html.HiddenFor(m => m.importInventory[i].Id)*@
                                                 <td>
                                                     @Html.DropDownListFor(m => m.import_inventory[i].product_id, new SelectList(ViewBag.Uniform, "Id", "Name", Model.import_inventory[i].product_id), new { @class = "form-control", @required = "true" })
                                                 </td>
                                                 <td>
                                                     @Html.EditorFor(m => m.import_inventory[i].quantity, new { htmlAttributes = new { @class = "form-control", @required = "true", @onchange = "calculate(this)" } })
                                                 </td>
-
                                                 <td>
                                                     @Html.EditorFor(m => m.import_inventory[i].price_import, new { htmlAttributes = new { @class = "form-control", @required = "true", @onchange = "calculate(this)" } })
                                                 </td>
@@ -121,7 +119,6 @@
                                                         @((Model.import_inventory[i].price_import * Model.import_inventory[i].quantity).ToString("N0")) VNĐ
                                                     </label>
                                                 </td>
-
                                                 <td>
                                                     <button type="button" id='@i' class="btn bi-trash delete-row" onclick="deleteRow(this)"></button>
                                                 </td>

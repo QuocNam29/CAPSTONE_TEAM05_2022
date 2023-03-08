@@ -697,7 +697,7 @@
     <Content Include="Views\AspNetUsers\Index.cshtml" />
     <Content Include="Views\AspNetUsers\_UserList.cshtml" />
     <Content Include="Views\Debts_Collections\Index.cshtml" />
-    <Content Include="Views\Debts_Collections\_DebtsList.cshtml" />
+    <Content Include="Views\Debts_Collections\_CustomerDebtsList.cshtml" />
     <Content Include="Views\Debts_Collections\_DebtsDetailsList.cshtml" />
     <Content Include="Views\return_sale\Create.cshtml" />
     <Content Include="Views\return_sale\Delete.cshtml" />
@@ -721,6 +721,7 @@
     <Content Include="Views\inventory_order\Details.cshtml" />
     <Content Include="Views\inventory_order\Edit.cshtml" />
     <Content Include="Views\inventory_order\Index.cshtml" />
+    <Content Include="Views\Debts_Collections\_SupplierDebtsList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

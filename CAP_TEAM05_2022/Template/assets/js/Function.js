@@ -2074,9 +2074,14 @@ function GetList_UserList() {
     });
 }
 //----------------------Add  DebtForm------------------------------------------------
-$('#URLDebtsList')
+$('#URLCustomerDebtsList')
     .keypress(function () {
-        URLDebtsList = $(this).val();
+        URLCustomerDebtsList = $(this).val();
+    })
+    .keypress();
+$('#URLSupplierDebtsList')
+    .keypress(function () {
+        URLSupplierDebtsList = $(this).val();
     })
     .keypress();
 $('.DebtsForm').submit(function (e) {
@@ -2098,6 +2103,7 @@ $('.DebtsForm').submit(function (e) {
                     var date_start = $("#debt_DateStart").val();
                     var date_end = $("#debt_DateEnd").val();
                     GetList_Debt(date_start, date_end);
+                    GetList_Debt2(date_start, date_end);
                     sweetAlert
                         ({
                             title: "Thành công !",
@@ -2121,14 +2127,30 @@ $('.DebtsForm').submit(function (e) {
 });
 function GetList_Debt(date_start, date_end) {
     $.ajax({
-        url: URLDebtsList,
+        url: URLCustomerDebtsList,
         data: {
             date_Start: date_start,
             date_End: date_end,
         }
     }).done(function (result) {
         $('#dataContainer').html(result);
-        $('#example').DataTable();
+        $('#example').DataTable();        
+    }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        console.log(textStatus)
+        console.log(errorThrown)
+        alert("Something Went Wrong, Try Later");
+    });
+}
+function GetList_Debt2(date_start, date_end) {
+    $.ajax({
+        url: URLSupplierDebtsList,
+        data: {
+            date_Start: date_start,
+            date_End: date_end,
+        }
+    }).done(function (result) {       
+        $('#dataContainer1').html(result);
+        $('#example1').DataTable();
     }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
         console.log(textStatus)
         console.log(errorThrown)
@@ -2140,12 +2162,15 @@ $('#URLFindDebt')
         URLFindDebt = $(this).val();
     })
     .keypress();
-function DebtCollection(ele, id) {
+function DebtCollection(ele, id, method) {
     row = $(ele).closest('tr');
     $.ajax({
         type: 'POST',
         url: URLFindDebt,
-        data: { id: id },
+        data: {
+            id: id,
+            method: method
+        },
         success: function (response) {
             $('#customer_id').val(response.id);
             $('#order_total').val(response.total.toLocaleString());
@@ -2154,6 +2179,7 @@ function DebtCollection(ele, id) {
             $('#MKH').val(response.code);
             $('#Name_KH').val(response.note);
             $('#phone_KH').val(response.created_by);
+            $('#method').val(method);
           
             $('#DebtCollectionModal .close').css('display', 'none');
             $('#DebtCollectionModal').modal('show');
