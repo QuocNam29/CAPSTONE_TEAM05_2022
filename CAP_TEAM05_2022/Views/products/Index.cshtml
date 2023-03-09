@@ -360,7 +360,7 @@
                                 <!---->
                             </div>
                         </div>
-                       
+
                         <div class="col-md-12 mt-2">
                             <div class="form-group">
                                 <input type="checkbox" id="swap" name="swap">
@@ -655,38 +655,40 @@
     </div>
 </div>
 @{ Html.RenderAction("ProductList_import", "Excel");}
+@section scripts {
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#example').DataTable({
-            pagingType: 'full_numbers',
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#example').DataTable({
+                pagingType: 'full_numbers',
+            });
         });
-    });
-    document.getElementById('swap').onclick = function (e) {
-        if (this.checked) {
-            $(".swap").show();
-            $("#check_swap").val(1)
+        document.getElementById('swap').onclick = function (e) {
+            if (this.checked) {
+                $(".swap").show();
+                $("#check_swap").val(1)
+                var unit_buy = $("#unit_buy").val()
+                document.getElementsByClassName('unit_current')[0].innerHTML = unit_buy;
+
+            }
+            else {
+                $(".swap").hide();
+            }
+        };
+        $("#unit_buy").change(function () {
             var unit_buy = $("#unit_buy").val()
             document.getElementsByClassName('unit_current')[0].innerHTML = unit_buy;
+        });
 
-        }
-        else {
-            $(".swap").hide();
-        }
-    };
-    $("#unit_buy").change(function () {
-        var unit_buy = $("#unit_buy").val()
-        document.getElementsByClassName('unit_current')[0].innerHTML = unit_buy;
-    });
-
-    $("#add_quantity").change(function () {
-        var add_quantity = $("#add_quantity").val()
-        var purchase_price = $("#purchase_price").val().replace(/\,/g, '').replace(/\./g, '');
-        $("#Sum_purchase").val((add_quantity * purchase_price).toLocaleString());
-    });
-    $("#purchase_price").change(function () {
-        var add_quantity = $("#add_quantity").val()
-        var purchase_price = $("#purchase_price").val().replace(/\,/g, '').replace(/\./g, '');
-        $("#Sum_purchase").val((add_quantity * purchase_price).toLocaleString());
-    });
-</script>
+        $("#add_quantity").change(function () {
+            var add_quantity = $("#add_quantity").val()
+            var purchase_price = $("#purchase_price").val().replace(/\,/g, '').replace(/\./g, '');
+            $("#Sum_purchase").val((add_quantity * purchase_price).toLocaleString());
+        });
+        $("#purchase_price").change(function () {
+            var add_quantity = $("#add_quantity").val()
+            var purchase_price = $("#purchase_price").val().replace(/\,/g, '').replace(/\./g, '');
+            $("#Sum_purchase").val((add_quantity * purchase_price).toLocaleString());
+        });
+    </script>
+    }

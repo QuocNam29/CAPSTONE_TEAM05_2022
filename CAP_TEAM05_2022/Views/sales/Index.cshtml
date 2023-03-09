@@ -156,7 +156,7 @@
                                 </label>
                                 <div>
                                     <input type="hidden" class="ProductID" />
-                                    <select class="form-control returnProduct_List" name="product_id" ></select>
+                                    <select class="form-control returnProduct_List" name="product_id"></select>
                                 </div>
 
 
@@ -229,7 +229,8 @@
         </form>
     </div>
 </div>
-<script type="text/javascript">
+@section scripts {
+    <script type="text/javascript">
     var row;
     $(document).ready(function () {
         $('#example').DataTable({
@@ -282,17 +283,18 @@
                 $('#product_Current_id').val(response.method);
                 $('#collect_return').val((response.prepayment * response.total).toLocaleString());
 
-              
+
             }
         })
     }
-   
+
 
     function Return2() {
         $(".return_product").hide();
         $(".return_product_1").show();
     } function Return1() {
         $(".return_product").show();
-        $(".return_product_1").hide();      
+        $(".return_product_1").hide();
     }
-</script>
+    </script>
+    }

@@ -1,10 +1,4 @@
-﻿
-@{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
-}
-
-@{
+﻿@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
 }
@@ -96,16 +90,16 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <button class="btn btn-primary float-right mb-3">Tạo mới</button>
+                                                        <button class="btn btn-primary float-right mb-3" data-toggle="modal" data-target="#oldDebt">Tạo mới</button>
                                                     </div>
                                                 </div>
-                                                    <div class="table-responsive" id="dataContainer1">
-                                                        @{ Html.RenderAction("_SupplierDebtsList", "Debts_Collections");}
+                                                <div class="table-responsive" id="dataContainer1">
+                                                    @{ Html.RenderAction("_SupplierDebtsList", "Debts_Collections");}
 
-                                                    </div>
                                                 </div>
-
                                             </div>
+
+                                        </div>
                                     </div>
                                     <div id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" class="tab-pane fade active show">
                                         <div>
@@ -147,11 +141,10 @@
             </div>
         </div>
     </div>
-
 </section>
 <div id="dataContainer2">
-    @{ Html.RenderAction("_DebtsDetailsList", "Debts_Collections", new { customer_id = 0 });}
 </div>
+
 <div id="DebtCollectionModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="DebtCollectionModalLabel" aria-hidden="true">
     <div role="document" class="modal-dialog modal-lg">
         <form class="needs-validation DebtsForm" method="post" action="@Url.Action("Create_Debts", "Debts_Collections")" novalidate>
@@ -165,15 +158,15 @@
 
                 <div class="modal-body">
                     <div class="row">
-                        <input type="number" hidden name="customer_id" id="customer_id"  />
-                        <input type="number" hidden name="method" id="method"  />
+                        <input type="number" hidden name="customer_id" id="customer_id" />
+                        <input type="number" hidden name="method" id="method" />
 
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Tổng tiền:</label>
                                 <div class="position-relative">
                                     <div class="input-group mb-3">
-                                        <input type="text" disabled  id="order_total" class="form-control">
+                                        <input type="text" disabled id="order_total" class="form-control">
                                         <div class="input-group-append">
                                             <span id="basic-addon2" class="input-group-text">₫</span>
                                         </div>
@@ -195,7 +188,7 @@
                                 <label>Còn nợ:</label>
                                 <div class="position-relative">
                                     <div class="input-group mb-3">
-                                        <input type="text" id="Debt_conlai"  disabled class="form-control">
+                                        <input type="text" id="Debt_conlai" disabled class="form-control">
                                         <div class="input-group-append">
                                             <span id="basic-addon2" class="input-group-text">₫</span>
                                         </div>
@@ -207,19 +200,19 @@
                             <div class="form-group">
                                 <label>Mã khách hàng</label>
                                 <div class="position-relative">
-                                    <input type="text" id="MKH"  placeholder="Mã khách hàng" disabled class="form-control">
+                                    <input type="text" id="MKH" placeholder="Mã khách hàng" disabled class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>Tên khách hàng</label>
                                 <div class="position-relative">
-                                    <input type="text" id="Name_KH"  placeholder="Tên khách hàng" disabled class="form-control">
+                                    <input type="text" id="Name_KH" placeholder="Tên khách hàng" disabled class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>SĐT khách hàng</label>
                                 <div class="position-relative">
-                                    <input type="text" id="phone_KH"  placeholder="Số điện thoại" disabled class="form-control">
+                                    <input type="text" id="phone_KH" placeholder="Số điện thoại" disabled class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -238,7 +231,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Ghi chú</label>
-                                    <textarea id="first-name-icon" name="note" placeholder="Ghi chú" rows="6" class="form-control"></textarea>
+                                <textarea id="first-name-icon" name="note" placeholder="Ghi chú" rows="6" class="form-control"></textarea>
                                 <!---->
                             </div>
                         </div>
@@ -253,13 +246,10 @@
         </form>
     </div>
 </div>
-<div id="dataContainer2">
-    @{ Html.RenderAction("_HistoryOrder", "sales", new { order_customer = 0, method = 0 });}
-</div>
-<div id="dataContainer3">
-    @{ Html.RenderAction("_HistoryInventory", "inventory_order", new { order_customer = 0, method = 0 });}
-</div>
-<script>
+
+@section scripts {
+
+    <script>
      var row;
     $(document).ready(function () {
         $('#example').DataTable({
@@ -312,7 +302,7 @@
                     method: 2,
                 }
             }).done(function (result) {
-                $('#dataContainer3').html(result);
+                $('#dataContainer2').html(result);
                 $('#historySupplierModal.close').css('display', 'none');
                 $('#historySupplierModal').modal('show');
             }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
@@ -321,6 +311,6 @@
                 alert("Something Went Wrong, Try Later");
             });
     }
-</script>
-
+    </script>
+}
 

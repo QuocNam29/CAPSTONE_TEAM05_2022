@@ -23,7 +23,28 @@
 
     }, false);
 })();
+//----------------------Add, Update group, category-------------------
 
+$('#URL_List')
+    .keypress(function () {
+        URL_List = $(this).val();
+    })
+    .keypress();
+
+function GetList_CategoryAndGroup() {
+    $.ajax({
+        url: URL_List,
+        data: {}
+    }).done(function (result) {
+        $('#dataContainer').html(result);
+        $('#example').DataTable()
+
+    }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        console.log(textStatus)
+        console.log(errorThrown)
+        alert("Something Went Wrong, Try Later");
+    });
+}
 $(document).ready(function () {
     var forms = document.getElementsByClassName('needs-validation');
     var validation = Array.prototype.filter.call(forms, function (form) {     
