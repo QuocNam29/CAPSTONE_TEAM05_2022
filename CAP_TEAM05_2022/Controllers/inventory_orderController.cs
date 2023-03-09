@@ -69,6 +69,10 @@ namespace CAP_TEAM05_2022.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "id,code,supplier_id,create_at,update_at,create_by,state,Total,payment,debt")] inventory_order inventory_order, List<import_inventory> importInventory, int method)
         {
+            if (importInventory == null || importInventory.Count == 0)
+            {
+                ModelState.AddModelError("importInventoryError", "Vui lòng nhập chi tiết các sản phẩm đã nhập kho");
+            }
             if (ModelState.IsValid)
             {
                 DateTime currentDate = DateTime.Now;
@@ -96,16 +100,17 @@ namespace CAP_TEAM05_2022.Controllers
                 inventory_order.state = method;
                 if (method == 2)
                 {
+                    inventory_order.payment = inventory_order.payment != null ? inventory_order.payment : 0;
                     inventory_order.debt = inventory_order.Total - inventory_order.payment;
                 }             
                 db.inventory_order.Add(inventory_order);
                 if (method == 2)
                 {
                    
-                    var check_debt = db.debts.Where(d => d.sale.customer_id == inventory_order.supplier_id && d.inventory_id != null).Count();
+                    var check_debt = db.debts.Where(d => d.inventory_order.supplier_id == inventory_order.supplier_id && d.inventory_id != null).Count();
                     if (check_debt > 0)
                     {
-                        var last_debt = db.debts.Where(d => d.sale.customer_id == inventory_order.supplier_id && d.inventory_id != null).OrderByDescending(o => o.id).FirstOrDefault();
+                        var last_debt = db.debts.Where(d => d.inventory_order.supplier_id == inventory_order.supplier_id && d.inventory_id != null).OrderByDescending(o => o.id).FirstOrDefault();
                         debt debt = new debt();
                         debt.inventory_id = inventory_order.id;
                         debt.paid = inventory_order.payment;

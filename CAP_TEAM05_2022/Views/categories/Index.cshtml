@@ -6,7 +6,6 @@
 
 }
 <input type="text" hidden id="URL_List" value="@Url.Action("_CategoryList", "categories")" />
-
 <section class="pcoded-main-container">
     <div class="pcoded-content">
         <div class="page-header">
@@ -41,7 +40,7 @@
                                     <h4>DANH MỤC SẢN PHẨM</h4>
                                 </div>
                                 <div class="col-md-2">
-                                    <button type="button" class="btn  btn-primary btn-block" data-toggle="modal" data-target="#AddCategory">Thêm mới</button>
+                                    <button type="button" class="btn  btn-primary btn-block" onclick="createCategory()">Thêm mới</button>
                                 </div>
                             </div>
                         </div>
@@ -56,91 +55,42 @@
         </div>
     </div>
 </section>
-
-<div id="AddCategory" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="AddCategoryLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <form class="needs-validation GroupForm" method="post" action="@Url.Action("Create_Category", "categories")" novalidate>
-            <div class="modal-content">
-                <div class="modal-header bg-primary">
-                    <h5 class="modal-title" id="AddCategoryLabel">Thêm mới danh mục</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                </div>
-
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>
-                                    Tên danh mục<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    <input type="text" placeholder="Nhập tên danh mục" id="name_category" class="form-control" name="name_category" pattern="\S+.*" required>
-                                    <p id="Status" />
-                                    <div class="invalid-feedback">
-                                        Vui lòng nhập tên danh mục !
-                                    </div>
-                                </div> <!---->
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
-                    <button type="submit" class="btn btn-primary" >Thêm mới</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-<div id="Edit_Modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Edit_ModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <form class="needs-validation GroupForm" method="post" action="@Url.Action("UpdateCategory", "categories")" novalidate>
-            <div class="modal-content">
-                <div class="modal-header bg-primary">
-                    <h5 class="modal-title" id="Edit_ModalLabel">Chỉnh sửa danh mục</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                </div>
-
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>
-                                    Tên danh mục<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    <input hidden id="edit_id" name="id" />
-                                    <input type="text" placeholder="Nhập tên danh mục" id="Edit_name" class="form-control" name="name_category" pattern="\S+.*" required>
-                                    <div class="invalid-feedback">
-                                        Vui lòng nhập tên danh mục !
-                                    </div>
-                                </div> <!---->
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
-                    <button type="submit" class="btn btn-primary" @*id="submit_edit" onclick="Update()"*@>Chỉnh sửa</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-
-<script>
+<div class="table-responsive" id="dataContainer2">
+    @{ Html.RenderAction("_Form", "categories");}
+ </div>
+    <script>
     var row;
     $(document).ready(function () {
         $('#example').DataTable({
             pagingType: 'full_numbers',
         });
     });
-    
-</script>
+function editCategory(id) {
+            $.ajax({
+                url: '@Url.Action("_Form", "categories")',
+                type: 'GET',
+                data: { id },
+                success: function (response) {
+                    // Add response in Modal body
+                    $('#dataContainer2').html(response);
+                    // Display Modal
+                    $('#Category').modal('show');                    
+                }
+            });
+        }
+        function createCategory() {
+            $.ajax({
+                url: '@Url.Action("_Form", "categories")',
+                type: 'GET',
+                data: {},
+                success: function (response) {
+                    // Add response in Modal body
+                    $('#dataContainer2').html(response);
+                    // Display Modal
+                    $('#Category').modal('show');                    
+                }
+            });
+        }
+    </script>
 
 

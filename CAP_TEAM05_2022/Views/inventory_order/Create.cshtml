@@ -6,7 +6,7 @@
     int i = 0;
 
 }
-
+<link href="~/Content/css/custom-css.css" rel="stylesheet" />
 <section class="pcoded-main-container">
     <div class="pcoded-content">
         <div class="page-header">
@@ -35,7 +35,7 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5>Basic Component</h5>
+                        <h5>Nhập kho</h5>
                     </div>
                     <div class="card-body">
                         @Html.ValidationSummary()
@@ -49,8 +49,10 @@
                                     <label class="form-label">Nhà cung cấp</label>
                                     @if ((bool)ViewBag.isCreate)
                                     {
-                                        @Html.DropDownListFor(model => model.supplier_id, (SelectList)ViewBag.Customer, "---- Chọn nhà cung cấp ----", new { @class = "form-control", @aria_label = "Chọn danh mục thiết bị" })
+                                        @Html.DropDownListFor(model => model.supplier_id, (SelectList)ViewBag.Customer, "---- Chọn nhà cung cấp ----", new { @class = "form-control", @aria_label = "Chọn danh mục thiết bị", @required = "required" })
                                     }
+                                    @Html.ValidationMessageFor(model => model.supplier_id, "", new { @class = "text-danger" })
+
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -58,7 +60,7 @@
                                     <label class="floating-label" for="Text">Phương thức thanh toán</label>
                                     <div>
                                         <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-control-lg" name="method" value="1" onclick="Method1();" checked>
+                                            <input type="radio" class="form-control-lg" name="method" value="1" onclick="Method1();"  checked>
                                             <label class="form-check-label" for="Subject">Đã thanh toán</label>
                                         </div>
                                         <div class="form-check form-check-inline">
@@ -78,6 +80,7 @@
                                 <div class="form-group">
                                     <label class="form-label">Thanh toán trước: </label>
                                     @Html.EditorFor(model => model.payment, new { htmlAttributes = new { @class = "form-control", @placeholder = "Thanh toán trước", text = 0 } })
+                                    @Html.ValidationMessageFor(model => model.payment, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="ovf-table col-sm-12">
@@ -149,8 +152,8 @@
 
     </div>
 </section>
-
-
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 <script type="text/javascript">
         var count = $('tr[name="rcd"]').length == 0 ? 0 : $('tr[name="rcd"]').length;
         var total = 0;
@@ -221,10 +224,10 @@
                     cols+= "<option value='"+item.Value+"'>"+item.Text+"</option>"
                 });
                 cols += '</select></td>'
-                cols += '<td>' + '<input class="form-control text-box single-line"   id ="importInventory_' + count + '__quantity" name ="importInventory[' + count +'].quantity" onchange ="calculate(this)" required type ="number">'+ '</td>';
+                cols += '<td>' + '<input class="form-control text-box single-line"  id ="importInventory_' + count + '__quantity" name ="importInventory[' + count +'].quantity" onchange ="calculate(this)" required type ="number" min="1">'+ '</td>';
                 cols += '</select></td>'
-                cols += '<td>' +' <input class="form-control text-box single-line"   id ="importInventory_' + count + '__price_import" name ="importInventory[' + count +'].price_import" onchange ="calculate(this)" required type ="number">' + '</td>';
-                cols += '<td>' + '<label id="total[' + count + ']" name="totalEq" data-val=0>0 VNĐ </label>' + '</td > ';
+                cols += '<td>' + ' <input class="form-control text-box single-line"  id ="importInventory_' + count + '__price_import"  placeholder="Nhập số lượng" name ="importInventory[' + count +'].price_import" onchange ="calculate(this)" required type ="number" min="0">' + '</td>';
+                cols += '<td>' + '<label id="total[' + count + ']" name="totalEq" placeholder="Nhập đơn giá" data-val=0>0 VNĐ </label>' + '</td > ';
                 cols += '<td><button type="button"  id=' + count +' class="btn btn-danger feather icon-trash-2 delete-row" onclick="deleteRow(this)"></button></td>';
                 cols += '</tr>'
                 newRow.append(cols);
@@ -238,6 +241,12 @@
     function Method2() {
         $(".debt_method").show();
     }
+</script>
+<script>
+    $('form').validate();
+    $.extend($.validator.messages, {
+        required: "Không để trống",
+    });
 </script>
 
 

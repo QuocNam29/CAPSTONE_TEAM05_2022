@@ -13,6 +13,10 @@ namespace CAP_TEAM05_2022.Controllers
 
     public class categoriesController : Controller
     {
+        public categoriesController()
+        {
+            ViewBag.isCreate = false;
+        }
         private CP25Team05Entities db = new CP25Team05Entities();
 
         // GET: categories
@@ -21,49 +25,92 @@ namespace CAP_TEAM05_2022.Controllers
             var categories = db.categories.Where(c => c.status != 3).OrderByDescending(c => c.id).ToList();
             return View(categories);
         }
-        public ActionResult _CategoryList()
+        [HttpGet]
+        public PartialViewResult _Form(int? id)
         {
-            var categories = db.categories.Include(c => c.user).Where(c => c.status != 3).OrderByDescending(c => c.id);
-            return PartialView(categories.ToList());
+            if (id != null)
+            {
+                ViewBag.isCreate = false;
+                var category = db.categories.Find(id);
+                return PartialView("_Form", category);
+            }
+            ViewBag.isCreate = true;     
+            return PartialView("_Form", new category());
         }
-
-        public ActionResult Create_Category(string name_category)
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(category category)
         {
             string message = "";
             bool status = true;
             try
             {
-                int check = db.categories.Where(c => c.name == name_category).Count();
-                if (check > 0)
+                if (ModelState.IsValid)
                 {
-                    status = false;
-                    message = "Danh mục đã tồn tại !";
+                    int check = db.categories.Where(c => c.name == category.name).Count();
+                    if (check > 0)
+                    {
+                        status = false;
+                        message = "Danh mục đã tồn tại !";
+                    }
+                    else
+                    {
+                        category.status = 1;
+                        category.created_by = User.Identity.GetUserId();
+                        category.created_at = DateTime.Now;
+                        category.slug = category.name;
+                        category.code = "DM" + CodeRandom.RandomCode();
+                        db.categories.Add(category);
+                        db.SaveChanges();
+                        message = "Tạo danh mục thành công";
+                        return Json(new { status, message }, JsonRequestBehavior.AllowGet);
+                    }
                 }
-                else
-                {
-
-                    category category = new category();
-                    category.name = name_category;
-                    category.status = 1;
-                    category.created_by = User.Identity.GetUserId();
-                    category.created_at = DateTime.Now;
-                    category.slug = name_category;
-                    category.code = "DM" + CodeRandom.RandomCode();
-                    db.categories.Add(category);
-                    db.SaveChanges();
-                    message = "Tạo danh mục thành công";
-                }
-
             }
             catch (Exception e)
             {
                 status = false;
                 message = e.Message;
             }
+            ViewBag.isCreate = true;
             return Json(new { status, message }, JsonRequestBehavior.AllowGet);
-
         }
+           [ValidateAntiForgeryToken]
+        public ActionResult Edit(category category)
+        {
+            string message = "";
+            bool status = true;
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    int check = db.categories.Where(c => c.name == category.name).Count();
+                    if (check > 0)
+                    {
+                        status = false;
+                        message = "Tên danh mục đã tồn tại !";
+                    }
+                    else
+                    {
+                        category.updated_at = DateTime.Now;
+                        db.Entry(category).State = EntityState.Modified;
+                        db.SaveChanges();
+                        message = "Cập nhật danh mục thành công";
+                    }
+                }
+            }
+            catch (Exception e)
+            {
 
+                message = e.Message;
+                status = false;
+            }
+            return Json(new { status, message }, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult _CategoryList()
+        {
+            var categories = db.categories.Include(c => c.user).Where(c => c.status != 3).OrderByDescending(c => c.id);
+            return PartialView(categories.ToList());
+        }
         public ActionResult Delete_Category(category categorys)
         {
             bool status = true;
@@ -97,46 +144,7 @@ namespace CAP_TEAM05_2022.Controllers
             db.Entry(categories).State = EntityState.Modified;
             db.SaveChanges();
             return Json("EditStatus_Category", JsonRequestBehavior.AllowGet);
-        }
-        public JsonResult UpdateCategory(int id, string name_category)
-        {
-            string message = "";
-            bool status = true;
-            try
-            {
-                int check = db.categories.Where(c => c.name == name_category).Count();
-                if (check > 0)
-                {
-                    status = false;
-                    message = "Tên danh mục đã tồn tại !";
-                }
-                else
-                {
-                    category categories = db.categories.Find(id);
-                    categories.name = name_category;
-                    categories.updated_at = DateTime.Now;
-                    db.Entry(categories).State = EntityState.Modified;
-                    db.SaveChanges();
-                    message = "Cập nhật danh mục thành công";
-                }
-            }
-            catch (Exception e)
-            {
-
-                message = e.Message;
-                status = false;
-            }
-            return Json(new { status, message }, JsonRequestBehavior.AllowGet);
-        }
-        [HttpPost]
-        public JsonResult FindCategory(int GroupProduct_id)
-        {
-            category categories = db.categories.Find(GroupProduct_id);
-            var emp = new category();
-            emp.id = GroupProduct_id;
-            emp.name = categories.name;
-            return Json(emp);
-        }
+        }       
         public ActionResult getCategory()
         {
 
@@ -145,29 +153,6 @@ namespace CAP_TEAM05_2022.Controllers
                 categoryID = x.id,
                 categoryName = x.name
             }).ToList(), JsonRequestBehavior.AllowGet);
-        }
-        public ActionResult Edit_Category(int category_id, string name_category)
-        {
-            category categories = db.categories.Find(category_id);
-            categories.name = name_category;
-            categories.updated_at = DateTime.Now;
-            db.Entry(categories).State = EntityState.Modified;
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-        public JsonResult CheckCategorynameAvailability(string categorydata)
-        {
-            System.Threading.Thread.Sleep(200);
-            var SeachData = db.categories.Where(x => x.name == categorydata && x.status != 3).FirstOrDefault();
-            if (SeachData != null)
-            {
-                return Json(1);
-            }
-            else
-            {
-                return Json(0);
-            }
-
         }
         protected override void Dispose(bool disposing)
         {

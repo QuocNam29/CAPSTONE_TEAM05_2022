@@ -20,7 +20,6 @@
     <link href="~/Content/jquery-ui.css" rel="stylesheet" />
     <link href="~/Template/assets/css/flatpickr.css" rel="stylesheet" />
     <link href="~/Content/css/select2.css" rel="stylesheet" />
-    @Scripts.Render("~/bundles/jquery")
 
 </head>
 
@@ -176,6 +175,14 @@
             </ul>
         </div>
     </header>
+    <main id="main" class="main body-content">
+        @if (TempData["AlertMessage"] != null)
+        {
+            <div id="alert-box" class="alert @TempData["AlertType"] hide" role="alert">
+                <i class="@TempData["AlertIcon"]"></i>&nbsp;@TempData["AlertMessage"]
+            </div>
+        }
+    </main>
     @if (Session["notification"] != null)
     {
         <button type="button" hidden class="btn btn-lg btn-block btn-outline-success mb-2" id="type-success" onclick="test()">Success</button>
@@ -203,17 +210,17 @@
     <script src="~/Scripts/jquery-ui.min.js"></script>
     <script src="~/Template/assets/js/plugins/bootstrap.min.js"></script>
     <script src="~/Template/assets/js/pcoded.min.js"></script>
-    <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Template/assets/js/flatpickr.min.js"></script>
     <!-- Sweet Alert -->
     <script src="~/Template/assets/js/SweetAlert/sweetalert.js"></script>
     <!-- Data Table -->
     <script src="~/Template/assets/js/jquery.dataTables.min.js"></script>
-    <!--Toastr-->
-    @* <script src="~/Scripts/toastr.js"></script>*@
+    <!--Validation-->
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
     <script src="~/Scripts/select2.js"></script>
     <!--My script function-->
     <script src="~/Template/assets/js/Function.js"></script>
-
 </body>
 </html>

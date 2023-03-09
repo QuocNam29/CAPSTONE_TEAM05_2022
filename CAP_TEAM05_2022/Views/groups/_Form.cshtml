@@ -1,0 +1,87 @@
+﻿@model CAP_TEAM05_2022.Models.group
+@{
+    bool isCreate = ViewBag.isCreate;
+
+}
+<link href="~/Content/css/custom-css.css" rel="stylesheet" />
+
+<div class="modal fade" id="Group" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <form class="GroupForm" method="post" action="@Url.Action(isCreate ? "Create" : "Edit", "groups")">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title" id="AddCategoryLabel">@(isCreate ? "Tạo danh mục" : "Cập nhật danh mục")</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    @Html.AntiForgeryToken()
+                    @if (!isCreate)
+                    {
+                        @Html.HiddenFor(m => m.id)
+                        @Html.HiddenFor(m => m.code)
+                        @Html.HiddenFor(m => m.created_at)
+                        @Html.HiddenFor(m => m.created_by)
+                        @Html.HiddenFor(m => m.status)
+                        @Html.HiddenFor(m => m.slug)
+                    }
+                    <div class="col-12">
+                        <label class="form-label">Tên danh mục</label><span class="text-danger">*</span>
+                        @Html.TextBoxFor(m => m.name, new { @class = "form-control", @placeholder = "Nhập tên danh mục" })
+                        @Html.ValidationMessageFor(m => m.name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--Validation-->
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    $('.GroupForm').submit(function (e) {
+        var form = $(this);
+        var _this = $(this);
+        var _form = _this.closest("form");
+        var isvalid = _form.valid()
+        // Check if form is valid then submit ajax
+        if (isvalid) {
+            e.preventDefault();
+            var url = form.attr('action');
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: form.serialize(),
+                success: function (data) {
+                    // Hide bootstrap modal to prevent conflict
+                    $('.modal').modal('hide');
+
+                    if (data.status) {
+                        // Refresh table data
+                        GetList_CategoryAndGroup();
+                        sweetAlert
+                            ({
+                                title: "Thành công !",
+                                text: data.message,
+                                type: "success"
+                            })
+
+                        form[0].reset();
+                        form.removeClass('was-validated');
+                    } else {
+                        swal({
+                            title: 'Lỗi !',
+                            text: data.message,
+                            type: 'error',
+
+                        }); // Show bootstrap modal again
+                    }
+                }
+            });
+        }
+    });
+</script>

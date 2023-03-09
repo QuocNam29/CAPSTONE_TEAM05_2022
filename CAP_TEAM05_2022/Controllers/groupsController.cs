@@ -23,6 +23,86 @@ namespace CAP_TEAM05_2022.Controllers
           
             return View();
         }
+        public PartialViewResult _Form(int? id)
+        {
+            if (id != null)
+            {
+                ViewBag.isCreate = false;
+                var group = db.groups.Find(id);
+                return PartialView("_Form", group);
+            }
+            ViewBag.isCreate = true;
+            return PartialView("_Form", new group());
+        }
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(group group)
+        {
+            string message = "";
+            bool status = true;
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    int check = db.groups.Where(c => c.name == group.name).Count();
+                    if (check > 0)
+                    {
+                        status = false;
+                        message = "Danh mục đã tồn tại !";
+                    }
+                    else
+                    {
+                        group.status = 1;
+                        group.created_by = User.Identity.GetUserId();
+                        group.created_at = DateTime.Now;
+                        group.slug = group.name;
+                        group.code = "DM" + CodeRandom.RandomCode();
+                        db.groups.Add(group);
+                        db.SaveChanges();
+                        message = "Tạo danh mục thành công";
+                        return Json(new { status, message }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                status = false;
+                message = e.Message;
+            }
+            ViewBag.isCreate = true;
+            return Json(new { status, message }, JsonRequestBehavior.AllowGet);
+        }
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(group group)
+        {
+            string message = "";
+            bool status = true;
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    int check = db.groups.Where(c => c.name == group.name).Count();
+                    if (check > 0)
+                    {
+                        status = false;
+                        message = "Tên danh mục đã tồn tại !";
+                    }
+                    else
+                    {
+                        group.updated_at = DateTime.Now;
+                        db.Entry(group).State = EntityState.Modified;
+                        db.SaveChanges();
+                        message = "Cập nhật danh mục thành công";
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+                message = e.Message;
+                status = false;
+            }
+            return Json(new { status, message }, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult _GroupList()
         {
             var groups = db.groups.Include(g => g.user).Where(c => c.status != 3).OrderByDescending(c => c.id);
@@ -110,12 +190,7 @@ namespace CAP_TEAM05_2022.Controllers
             emp.name = group.name;
             return Json(emp);
         }
-       /* public JsonResult GetGroupProduct(int Id)
-        {
-            group group = db.groups.Find(Id);
-            return Json(new { success = true, data = group }, JsonRequestBehavior.AllowGet);
-        }*/
-
+      
         public ActionResult getGroupProduct()
         {
            

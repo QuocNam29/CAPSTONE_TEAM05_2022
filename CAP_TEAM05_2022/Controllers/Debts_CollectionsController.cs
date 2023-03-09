@@ -100,7 +100,7 @@ namespace CAP_TEAM05_2022.Controllers
                 }
                 if (method == 1)
                 {
-                    var sale = db.sales.Where(s => s.customer_id == customer_id && s.total != s.prepayment).ToList();
+                    var sale = db.sales.Where(s => s.customer_id == customer_id && s.total != s.prepayment && s.method == 2).ToList();
                     while (paid_temp > 0)
                     {
                         foreach (var item in sale)
@@ -149,7 +149,7 @@ namespace CAP_TEAM05_2022.Controllers
                 }
                 else if (method == 2)
                 {
-                    var inventory = db.inventory_order.Where(s => s.supplier_id == customer_id && s.Total != s.payment).ToList();
+                    var inventory = db.inventory_order.Where(s => s.supplier_id == customer_id && s.Total != s.payment && s.state == 2).ToList();
                     while (paid_temp > 0)
                     {
                         foreach (var item in inventory)
