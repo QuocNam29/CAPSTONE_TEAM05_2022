@@ -209,6 +209,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\CodeRandom.cs" />
+    <Compile Include="Helper\Constants.cs" />
     <Compile Include="Helper\LoginVerification.cs" />
     <Compile Include="Helper\PagedData.cs" />
     <Compile Include="Helper\Pagination.cs" />
@@ -726,6 +727,7 @@
     <Content Include="Views\inventory_order\_HistoryInventory.cshtml" />
     <Content Include="Views\categories\_Form.cshtml" />
     <Content Include="Views\groups\_Form.cshtml" />
+    <Content Include="Views\customers\_Form.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

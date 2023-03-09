@@ -20,6 +20,7 @@
     <link href="~/Content/jquery-ui.css" rel="stylesheet" />
     <link href="~/Template/assets/css/flatpickr.css" rel="stylesheet" />
     <link href="~/Content/css/select2.css" rel="stylesheet" />
+    @RenderSection("style", required: false)
 
 </head>
 
@@ -215,12 +216,12 @@
     <script src="~/Template/assets/js/SweetAlert/sweetalert.js"></script>
     <!-- Data Table -->
     <script src="~/Template/assets/js/jquery.dataTables.min.js"></script>
-    <!--Validation-->
-    <script src="~/Scripts/jquery.validate.min.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
     <script src="~/Scripts/select2.js"></script>
     <!--My script function-->
     <script src="~/Template/assets/js/Function.js"></script>
 </body>
+@RenderSection("scripts", required: false)
+@RenderSection("hihi", required: false)
+
 </html>

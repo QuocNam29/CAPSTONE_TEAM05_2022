@@ -653,28 +653,7 @@ function GetGroupProduct(ele, id, name) {
    
 
 
-//----------------------Add, Update group, category-------------------
 
-$('#URL_List')
-    .keypress(function () {
-        URL_List = $(this).val();
-    })
-    .keypress();
-
-function GetList_CategoryAndGroup() {
-    $.ajax({
-        url: URL_List,
-        data: {}
-    }).done(function (result) {
-        $('#dataContainer').html(result);
-        $('#example').DataTable()
-
-    }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
-        console.log(textStatus)
-        console.log(errorThrown)
-        alert("Something Went Wrong, Try Later");
-    });
-}
 //---------------------Export Excel-------------------------
 $('#URLExportExcel')
     .keypress(function () {
@@ -807,46 +786,7 @@ $("#filter_type").change(function () {
     var type = $("#filter_type").val();
     GetList_Customer(type)
 });
-$('.CusomerForm').submit(function (e) {
-    var form = $(this);
 
-    // Check if form is valid then submit ajax
-    if (form[0].checkValidity()) {
-        e.preventDefault();
-        var url = form.attr('action');
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data: form.serialize(),
-            success: function (data) {
-                // Hide bootstrap modal to prevent conflict
-                $('.modal').modal('hide');
-
-                if (data.status) {
-                    // Refresh table data
-                    var type = $("#filter_type").val();
-                    GetList_Customer(type)
-                    sweetAlert
-                        ({
-                            title: "Thành công !",
-                            text: data.message,
-                            type: "success"
-                        })
-
-                    form[0].reset();
-                    form.removeClass('was-validated');
-                } else {
-                    swal({
-                        title: 'Lỗi !',
-                        text: data.message,
-                        type: 'error',
-
-                    }); // Show bootstrap modal again
-                }
-            }
-        });
-    }
-});
 function GetList_Customer(type) {
     $.ajax({
         url: URLCustomerList,

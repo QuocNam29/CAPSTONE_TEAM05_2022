@@ -16,7 +16,10 @@ namespace CAP_TEAM05_2022.Controllers
     public class groupsController : Controller
     {
         private CP25Team05Entities db = new CP25Team05Entities();
-
+        public groupsController()
+        {
+            ViewBag.isCreate = false;
+        }
         // GET: groups
         public ActionResult Index()
         {

@@ -16,11 +16,93 @@ namespace CAP_TEAM05_2022.Controllers
     public class customersController : Controller
     {
         private CP25Team05Entities db = new CP25Team05Entities();
-
+        public customersController()
+        {
+            ViewBag.isCreate = false;
+        }
         // GET: customers
         public ActionResult Index()
         {
             return View();
+        }
+        public PartialViewResult _Form(int? id)
+        {
+            if (id != null)
+            {
+                ViewBag.isCreate = false;
+                var customer = db.customers.Find(id);
+                return PartialView("_Form", customer);
+            }
+            ViewBag.isCreate = true;
+            return PartialView("_Form", new customer());
+        }
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(customer customer)
+        {
+            string message = "";
+            bool status = true;
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    int check = db.customers.Where(c => c.phone == customer.phone).Count();
+                    if (check > 0)
+                    {
+                        status = false;
+                        message = "Khách hàng đã tồn tại ! (Vui lòng kiểm tra lại số điện thoại)";
+                    }
+                    else
+                    {
+                        customer.code = "MKH" + CodeRandom.RandomCode();
+                        customer.created_by = User.Identity.GetUserId();
+                        customer.created_at = DateTime.Now;
+                        customer.status = 1;
+                        db.customers.Add(customer);
+                        db.SaveChanges();
+                        message = "Thêm khách hàng thành công !";
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                status = false;
+                message = e.Message;
+            }
+            ViewBag.isCreate = true;
+            return Json(new { status, message }, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult Edit(customer customer)
+        {
+            string message = "";
+            bool status = true;
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    
+                        int check = db.customers.Where(c => c.phone == customer.phone && c.id != customer.id).Count();
+                        if (check > 0)
+                        {
+                            status = false;
+                            message = "Khách hàng đã tồn tại (Vui lòng kiểm tra lại số điện thoại) !";
+                        }
+                        else
+                        {                       
+                            customer.updated_at = DateTime.Now;
+                            db.Entry(customer).State = EntityState.Modified;
+                            db.SaveChanges();
+                            message = "Cập nhật thông tin khách hàng thành công !";
+                        }
+                    }
+                
+            }
+            catch (Exception e)
+            {
+
+                message = e.Message;
+                status = false;
+            }
+            return Json(new { status, message }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult _CustomerList(int? type)
         {

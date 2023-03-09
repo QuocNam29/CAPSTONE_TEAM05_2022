@@ -5,60 +5,66 @@
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
 
 }
-<input type="text" hidden id="URL_List" value="@Url.Action("_CategoryList", "categories")" />
-<section class="pcoded-main-container">
-    <div class="pcoded-content">
-        <div class="page-header">
-            <div class="page-block">
-                <div class="row align-items-center">
+@section style {
+    <link href="~/Content/css/custom-css.css" rel="stylesheet" />
+}
+    <input type="text" hidden id="URL_List" value="@Url.Action("_CategoryList", "categories")" />
+    <section class="pcoded-main-container">
+        <div class="pcoded-content">
+            <div class="page-header">
+                <div class="page-block">
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <div class="page-header-title">
+                                <h5 class="m-b-10">Quản lý danh mục</h5>
+                            </div>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="https://tancool.net">
+                                        <i class="feather icon-home">
+                                        </i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="javascript:void(0)">Quản lý danh mục</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="row">
                     <div class="col-md-12">
-                        <div class="page-header-title">
-                            <h5 class="m-b-10">Quản lý danh mục</h5>
-                        </div>
-                        <ul class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <a href="https://tancool.net">
-                                    <i class="feather icon-home">
-                                    </i>
-                                </a>
-                            </li>
-                            <li class="breadcrumb-item">
-                                <a href="javascript:void(0)">Quản lý danh mục</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <h4>DANH MỤC SẢN PHẨM</h4>
-                                </div>
-                                <div class="col-md-2">
-                                    <button type="button" class="btn  btn-primary btn-block" onclick="createCategory()">Thêm mới</button>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <h4>DANH MỤC SẢN PHẨM</h4>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn  btn-primary btn-block" onclick="createCategory()">Thêm mới</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="card-body table-border-style">
-                            <div class="table-responsive" id="dataContainer">
-                                @{ Html.RenderAction("_CategoryList", "categories");}
+                            <div class="card-body table-border-style">
+                                <div class="table-responsive" id="dataContainer">
+                                    @{ Html.RenderAction("_CategoryList", "categories");}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
+    <div class="table-responsive" id="dataContainer2">
     </div>
-</section>
-<div class="table-responsive" id="dataContainer2">
-    @{ Html.RenderAction("_Form", "categories");}
- </div>
-    <script>
+    @section scripts {
+        <!--Validation-->
+        <script src="~/Scripts/jquery.validate.min.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+        <script>
     var row;
     $(document).ready(function () {
         $('#example').DataTable({
@@ -74,7 +80,7 @@ function editCategory(id) {
                     // Add response in Modal body
                     $('#dataContainer2').html(response);
                     // Display Modal
-                    $('#Category').modal('show');                    
+                    $('#Category').modal('show');
                 }
             });
         }
@@ -87,10 +93,10 @@ function editCategory(id) {
                     // Add response in Modal body
                     $('#dataContainer2').html(response);
                     // Display Modal
-                    $('#Category').modal('show');                    
+                    $('#Category').modal('show');
                 }
             });
         }
-    </script>
-
+        </script>
+    }
 
