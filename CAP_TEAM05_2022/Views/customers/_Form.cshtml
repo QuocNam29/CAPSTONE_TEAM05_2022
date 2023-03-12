@@ -150,22 +150,12 @@
                         // Refresh table data
                         var type = $("#filter_type").val();
                         GetList_Customer(type)
-                        sweetAlert
-                            ({
-                                title: "Thành công !",
-                                text: data.message,
-                                type: "success"
-                            })
+                        Swal.fire('Thành công !', data.message, 'success')     
 
                         form[0].reset();
                         form.removeClass('was-validated');
                     } else {
-                        swal({
-                            title: 'Lỗi !',
-                            text: data.message,
-                            type: 'error',
-
-                        }); // Show bootstrap modal again
+                        Swal.fire('Lỗi !', data.message, 'error')     
                     }
                 }
             });

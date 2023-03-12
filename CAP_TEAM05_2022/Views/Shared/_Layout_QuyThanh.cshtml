@@ -14,7 +14,6 @@
     <!-- Favicon icon -->
     <link rel="icon" href="~/Template/assets/images/logo-icon.png" type="image/x-icon">
     <!-- vendor css -->
-    <link href="~/Content/sweetalert/sweet-alert.css" rel="stylesheet" />
     <link href="~/Template/assets/css/style.css" rel="stylesheet" />
     <link href="~/Template/assets/css/plugins/animate.min.css" rel="stylesheet" />
     <link href="~/Content/jquery-ui.css" rel="stylesheet" />
@@ -189,11 +188,7 @@
         <button type="button" hidden class="btn btn-lg btn-block btn-outline-success mb-2" id="type-success" onclick="test()">Success</button>
         <script>
             function test() {
-                sweetAlert
-                    ({
-                        title: "Thêm mới thành công !",
-                        type: "success"
-                    })
+                Swal.fire('Thêm mới thành công !', '', 'success')
             }
             window.onload = function () {
                 document.getElementById('type-success').click();
@@ -213,7 +208,7 @@
     <script src="~/Template/assets/js/pcoded.min.js"></script>
     <script src="~/Template/assets/js/flatpickr.min.js"></script>
     <!-- Sweet Alert -->
-    <script src="~/Template/assets/js/SweetAlert/sweetalert.js"></script>
+    <script src="~/Template/assets/js/SweetAlert/sweetalert2.all.js"></script>
     <!-- Data Table -->
     <script src="~/Template/assets/js/jquery.dataTables.min.js"></script>
 

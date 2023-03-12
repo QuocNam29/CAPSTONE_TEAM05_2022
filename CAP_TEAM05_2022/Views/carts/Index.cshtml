@@ -7,16 +7,16 @@
 @if (Model.Count() >= 1)
 {
     <div class="row" id="myDIV">
-        
+
         <div class="col-md-6">
             <div class="form-group">
-                <label>Thành tiền</label>
+                <label>Tổng đơn hàng:</label>
                 <input type="text" id="total" disabled="disabled" class="form-control" value="@total.ToString("N0")">
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label>Trả trước</label>                
+                <label>Trả trước</label>
                 <input type="text" placeholder="Thanh toán 1 phần" id="cart_Prepay" max="999999999999" class="form-control"
                        pattern="[0-9.,]+" data-type="number" name="purchase_price" onchange="ButtonDebit()">
             </div>
@@ -61,7 +61,7 @@
                                         <div> @item.quantity<span class="txt-unit"> @item.unit</span></div>
                                     </td>
                                     <td class="text-center">@((item.price/ item.quantity).ToString("N0")) ₫</td>
-                                    
+
                                     <td class="text-center">@item.price.ToString("N0") ₫</td>
                                     <td>@item.note</td>
                                     <td>
@@ -74,7 +74,7 @@
                                             <i class="feather icon-trash-2">
                                             </i>
                                         </button>
-                                        
+
                                     </td>
 
 
@@ -88,14 +88,14 @@
         </div>
     </div>
 </div>
-
-<script type="text/javascript">
+@section scripts {
+    <script type="text/javascript">
     $(document).ready(function () {
         $('#example').DataTable({
             pagingType: 'full_numbers',
         });
     });
-   
+
     $('#cart_Prepay').keydown(function (e) {
         setTimeout(() => {
             let parts = $(this).val().split(".");
@@ -109,18 +109,21 @@
             $(this).val(n);
         })
     })
-
+    </script>
+    }
+<script>
     function deleteAlert(id) {
-        swal({
-            title: "Bạn chắn chắn muốn xóa ?",
-            type: "warning",
+        Swal.fire({
+            title: 'Bạn có chắc chắn muốn xóa',
+            text: "Bạn không thể hoàn nguyên nếu có sai xót!",
+            icon: 'warning',
             showCancelButton: true,
-            closeOnConfirm: false,
-            confirmButtonText: "Xác nhận",
-            confirmButtonColor: "#ec6c62",
-        },
-            function () {
-                var categorys = {};
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xác nhận'
+        }).then((result) => {
+            if (result.isConfirmed) {
+               var categorys = {};
                 categorys.id = id;
 
                 $.ajax({
@@ -132,15 +135,10 @@
                 })
                     .done(function (data) {
                         GetList_Cart($('#customer_id').val());
-                        sweetAlert
-                            ({
-                                title: "Đã xóa!",
-                                type: "success"
-                            },)
+                        Swal.fire('Đã xóa!', '', 'success')
                     })
-
-            })
+            }
+        })
+        
     }
-
-    
 </script>

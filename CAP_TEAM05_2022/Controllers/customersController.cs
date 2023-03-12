@@ -442,7 +442,7 @@ namespace CAP_TEAM05_2022.Controllers
         public ActionResult getSupplier()
         {
 
-            return Json(db.customers.Where(c => c.status == 1 && c.type == 2).OrderByDescending(c => c.id).Select(x => new
+            return Json(db.customers.Where(c => c.status == 1 && c.type == 3).OrderByDescending(c => c.id).Select(x => new
             {
                 supplierID = x.id,
                 supplierName = x.name

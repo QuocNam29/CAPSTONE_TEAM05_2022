@@ -31,13 +31,13 @@
                 <td>@item.name</td>
                 <td>@item.email</td>
                 <td>@item.phone</td>
-                @if (item.type == 0)
+                @if (item.type == 1)
                 {
                     <td class="text-center">
                         <p class="role-cus cus-simple">Khách mua lẻ</p>
                     </td>
                 }
-                else if (item.type == 1)
+                else if (item.type == 2)
                 {
 
                     <td class="text-center">
@@ -45,7 +45,7 @@
                     </td>
 
                 }
-                else if (item.type == 2)
+                else if (item.type == 3)
                 {
 
                     <td class="text-center">
