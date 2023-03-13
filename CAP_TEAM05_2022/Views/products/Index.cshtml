@@ -169,6 +169,8 @@
         </div>
     </div>
 </section>
+<div class="table-responsive" id="dataContainer2">
+</div>
 <!-- Modal -->
 <div class="modal fade text-left" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -663,6 +665,19 @@
                 pagingType: 'full_numbers',
             });
         });
+        function createProduct() {
+            $.ajax({
+                url: '@Url.Action("_Form", "products")',
+                type: 'GET',
+                data: {},
+                success: function (response) {
+                    // Add response in Modal body
+                    $('#dataContainer2').html(response);
+                    // Display Modal
+                    $('#AddProduct').modal('show');
+                }
+            });
+        }
         document.getElementById('swap').onclick = function (e) {
             if (this.checked) {
                 $(".swap").show();
@@ -691,4 +706,4 @@
             $("#Sum_purchase").val((add_quantity * purchase_price).toLocaleString());
         });
     </script>
-    }
+}

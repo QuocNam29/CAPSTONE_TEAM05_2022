@@ -1336,12 +1336,27 @@ function Payment_order() {
                 success: function (response) {
                     if (response.status) {
                         GetList_Cart($('#customer_id').val());
+                        document.querySelector("#customer_name").disabled = false;
+                        document.querySelector("#product_name").disabled = false;
+                        $('#product_code').val('');
+                        $('#product_unit').val('');
+                        $('#product_price').val('');
+                        $('#product_name').val('');
+                        $('#sum_price').val('');
+                        $('#product_quantity').val(1);
+                        $("#submit_addCart").show();
+                        $("#refresh_cart").show();
+                        $("#submit_updateCart").hide();
+                        $("#Cancel_Cart").hide();                       
+                            $("#payment_btn").hide();
+                            $("#order_btn").hide();
+                        
                         Swal.fire({
                             title: 'Thành công!',
                             text: 'Bạn có muốn in hóa đơn ?',
+                            icon: 'success',
                             showCancelButton: true,
                             confirmButtonText: 'In hóa đơn',
-                            CancelButtonText: 'Huy',
                         }).then((result) => {
                             /* Read more about isConfirmed, isDenied below */
                             if (result.isConfirmed) {

@@ -16,14 +16,23 @@ namespace CAP_TEAM05_2022.Controllers
     public class productsController : Controller
     {
         private CP25Team05Entities db = new CP25Team05Entities();
-
+        public productsController()
+        {
+            ViewBag.isCreate = false;
+        }
         // GET: products
         public ActionResult Index()
         {
             return View();
 
         }
-
+        [HttpGet]
+        public PartialViewResult _Form()
+        {
+            ViewBag.isCreate = true;
+            ViewBag.CategoryId = new SelectList(db.categories, "Id", "Name");
+            return PartialView("_Form", new product());
+        }
         public ActionResult _ProductList(int group_id, int category_id)
         {
             var links = from l in db.products

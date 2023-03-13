@@ -11,7 +11,8 @@ namespace CAP_TEAM05_2022.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class product
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -26,12 +27,19 @@ namespace CAP_TEAM05_2022.Models
     
         public int id { get; set; }
         public string code { get; set; }
+        [Required]
         public string name { get; set; }
+        [Required]
         public int group_id { get; set; }
+        [Required]
         public int category_id { get; set; }
+        [Required]
         public string unit { get; set; }
+        [Required]
         public decimal purchase_price { get; set; }
+        [Required]
         public decimal sell_price { get; set; }
+        [Required]
         public int quantity { get; set; }
         public int status { get; set; }
         public string note { get; set; }

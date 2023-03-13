@@ -721,6 +721,7 @@
     <Content Include="Views\categories\_Form.cshtml" />
     <Content Include="Views\groups\_Form.cshtml" />
     <Content Include="Views\customers\_Form.cshtml" />
+    <Content Include="Views\products\_Form.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

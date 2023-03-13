@@ -13,6 +13,9 @@
         avt = "~/Template/assets/images/" + Model.avatar;
     }
 }
+@section style {
+    <link href="~/Content/css/custom-css.css" rel="stylesheet" />
+}
 <section class="pcoded-main-container">
     <div class="pcoded-content">
         <div class="page-header">
@@ -57,7 +60,7 @@
                                                     <img id="output" src="@Url.Content(avt)" alt="profile" class="avatar-img">
                                                 </label>
                                             </div>
-                                            <input type="file"   id="file-input" name="file" class="form-control" accept="image/x-png,image/gif,image/jpeg" onchange="loadFile_edit(event)">
+                                            <input type="file" id="file-input" name="file" class="form-control" accept="image/x-png,image/gif,image/jpeg" onchange="loadFile_edit(event)">
                                             <script>
                                                 var loadFile_edit = function (event) {
                                                     var image = document.getElementById('output');
@@ -85,7 +88,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="phone">Số điện thoại</label>
-                                        @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập số điện thoại" } })
+                                        @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập số điện thoại", @type = "tel" } })
                                         @Html.ValidationMessageFor(model => model.phone, "", new { @class = "text-danger" })                                        <!---->
                                     </div>
                                 </div>
@@ -112,5 +115,8 @@
         </div>
     </div>
 </section>
-
+@section scripts {
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+}
 

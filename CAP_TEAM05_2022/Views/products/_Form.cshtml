@@ -1,0 +1,460 @@
+﻿@model CAP_TEAM05_2022.Models.product
+@{
+    bool isCreate = ViewBag.isCreate;
+
+}
+<div id="AddProduct" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="AddProductLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <form class="ProductForm" method="post" action="@Url.Action("Create_Product", "products")" novalidate>
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title" id="AddProductLabel">Thêm mới sản phẩm</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+
+                <div class="modal-body ">
+                    @Html.AntiForgeryToken()
+                    @if (!isCreate)
+                    {
+                        @Html.HiddenFor(m => m.id)
+                        @Html.HiddenFor(m => m.code)
+                        @Html.HiddenFor(m => m.created_at)
+                        @Html.HiddenFor(m => m.created_by)
+                        @Html.HiddenFor(m => m.status)
+                    }
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Tên sản phẩm<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+                                </div> <!---->
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>
+                                    Nhóm hàng<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <select class="custom-select" id="GroupProductDropdown" name="GroupProductDropdown" required>
+                                    </select>
+                                    <div class="invalid-feedback">Vui lòng chọn nhóm hàng</div>
+                                </div> <!---->
+
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>
+                                    Danh mục sản phẩm<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    @Html.DropDownListFor(m => m.category_id, (SelectList)ViewBag.CategoryId, "---- Chọn danh mục sản phẩm ----", new { @class = "form-select", @aria_label = "Chọn danh mục thiết bị" })
+                                    @Html.ValidationMessageFor(model => model.category_id, "", new { @class = "text-danger" })
+                                </div> <!---->
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Nhà cung cấp<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <select class="custom-select SupplierDropdown" name="SupplierDropdown" required>
+                                    </select>
+                                    <div class="invalid-feedback">Vui lòng chọn nhà cung cấp</div>
+                                </div> <!---->
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Tồn kho<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <div class="input-group mb-3">
+                                        <input type="number" data-model="quantity" placeholder="Nhập số lượng" id="add_quantity" name="quantity" max="999999999999" aria-describedby="quantity-buy" class="form-control" required>
+                                        <div class="input-group-append">
+                                            <select id="unit_buy" class="input-group-text select-unit" name="unit">
+                                                <option disabled="disabled" value="" selected>Đơn vị</option>
+                                                <optgroup label="Khác">
+                                                    <option data-name="bao" value="Bao">
+                                                        bao
+                                                    </option>
+                                                    <option data-name="chai" value="Chai">
+                                                        chai
+                                                    </option>
+                                                    <option data-name="gói" value="Gói">
+                                                        Gói
+                                                    </option>
+                                                </optgroup>
+                                                <optgroup label="Khối lượng">
+
+                                                    <option data-name="tạ" value="Tạ">
+                                                        tạ
+                                                    </option>
+
+                                                    <option data-name="kg" value="Kg">
+                                                        kg
+                                                    </option>
+                                                    <option data-name="gam" value="Gam">
+                                                        gam
+                                                    </option>
+                                                </optgroup>
+                                                <optgroup label="Thể tích">
+                                                    <option data-name="lít" value="Lít">
+                                                        lít
+                                                    </option>
+                                                    <option data-name="ml" value="ml">
+                                                        ml
+                                                    </option>
+                                                </optgroup>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập số lượng sản phẩm và lớn hơn 0 !
+                                    </div>
+                                </div> <!---->
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Đơn giá bán<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <input type="text" placeholder="Nhập giá tiền" id="product-price-sold" max="999999999999" class="form-control Price"
+                                           pattern="[0-9.,]+" data-type="number" name="sell_price" required>
+                                    <div class="invalid-feedback">
+                                        Giá tiền bán không được để trống !
+                                    </div>
+                                </div> <!---->
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="product-price-import">
+                                    Đơn giá nhập<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <input type="text" placeholder="Nhập giá tiền" id="purchase_price" max="999999999999" class="form-control Price"
+                                           pattern="[0-9.,]+" data-type="number" name="purchase_price" required>
+                                    <div class="invalid-feedback">
+                                        Giá tiền nhập không được để trống !
+                                    </div>
+                                </div>
+                                <!---->
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mt-2">
+                            <div class="form-group">
+                                <input type="checkbox" id="swap" name="swap">
+                                <input type="number" id="check_swap" name="check_swap" hidden value="0" />
+                                <label for="swap">Quy đổi sang đơn vị khác</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3 swap" style="display: none;">
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <div class="input-group mb-3">
+                                        <input type="number" value="1" disabled data-model="unit_current_quantity" id="unit-quantity-current" aria-describedby="basic-addon2" class="form-control" required="required">
+                                        <div class="input-group-append">
+                                            <span id="unit_current" class="input-group-text unit_current"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1 col-icon swap" style="display: none;">
+                            <div class="form-group">
+                                <i aria-hidden="true" class="feather icon-arrow-right icon-swap">
+                                </i>
+                            </div>
+                        </div>
+                        <div class="col-md-4 swap" style="display: none;">
+                            <div class="form-group">
+                                <div class="position-relative">
+                                    <div class="input-group mb-3">
+                                        <input type="number" name="quantity_swap" data-model="unit_swap_quantity" placeholder="Nhập số lượng" id="unit-quantity-input" max="999999999999" aria-describedby="unit-quantity" class="form-control">
+                                        <div class="input-group-append">
+                                            <select id="unit_swap" name="unit_swap" class="input-group-text select-unit">
+                                                <option disabled="disabled" value="" selected>Đơn vị</option>
+                                                <optgroup label="Khác">
+                                                    <option data-name="bao" value="Bao">
+                                                        bao
+                                                    </option>
+                                                    <option data-name="chai" value="Chai">
+                                                        chai
+                                                    </option>
+                                                </optgroup>
+                                                <optgroup label="Khối lượng">
+
+                                                    <option data-name="tạ" value="Tạ">
+                                                        tạ
+                                                    </option>
+
+                                                    <option data-name="kg" value="Kg">
+                                                        kg
+                                                    </option>
+                                                    <option data-name="gam" value="Gam">
+                                                        gam
+                                                    </option>
+                                                </optgroup>
+                                                <optgroup label="Thể tích">
+                                                    <option data-name="lít" value="Lít">
+                                                        lít
+                                                    </option>
+                                                    <option data-name="ml" value="ml">
+                                                        ml
+                                                    </option>
+                                                </optgroup>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 swap" style="display: none;">
+                            <div class="form-group">
+                                <input type="text" name="price_swap" placeholder="Nhập giá tiền" id="product-price-swap" max="999999999999" data-model="unit_price" class="form-control Price">
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Thêm mới</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--Validation-->
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    $('.CategoryForm').submit(function (e) {
+        var form = $(this);
+        var _this = $(this);
+        var _form = _this.closest("form");
+        var isvalid = _form.valid()
+        // Check if form is valid then submit ajax
+        if (isvalid) {
+            e.preventDefault();
+            var url = form.attr('action');
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: form.serialize(),
+                success: function (data) {
+                    // Hide bootstrap modal to prevent conflict
+                    $('.modal').modal('hide');
+
+                    if (data.status) {
+                        // Refresh table data
+                        GetList_CategoryAndGroup();
+                        Swal.fire('Thành công !', data.message, 'success')
+
+                        form[0].reset();
+                        form.removeClass('was-validated');
+                    } else {
+                        Swal.fire('Lỗi !', data.message, 'error')
+                    }
+                }
+            });
+        }
+    });
+</script>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>product</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.code, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.code, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.code, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.group_id, "group_id", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("group_id", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.group_id, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.category_id, "category_id", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.category_id, (SelectList)ViewBag.CategoryId, "---- Chọn danh mục sản phẩm ----", new { @class = "form-select", @aria_label = "Chọn danh mục thiết bị" })
+                @Html.ValidationMessageFor(model => model.category_id, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.unit, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.unit, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.unit, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.purchase_price, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.purchase_price, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.purchase_price, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.sell_price, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.sell_price, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.sell_price, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.quantity, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.quantity, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.status, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.status, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.note, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.note, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.note, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.created_by, "created_by", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("created_by", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.created_by, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.created_at, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.created_at, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.created_at, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.updated_at, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.updated_at, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.updated_at, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.deleted_at, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.deleted_at, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.deleted_at, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.name_group, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.name_group, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.name_group, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.name_category, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.name_category, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.name_category, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.unit_swap, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.unit_swap, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.unit_swap, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.quantity_swap, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.quantity_swap, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.quantity_swap, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.quantity_remaning, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.quantity_remaning, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.quantity_remaning, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.sell_price_swap, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.sell_price_swap, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.sell_price_swap, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
