@@ -33,7 +33,7 @@ namespace CAP_TEAM05_2022.Controllers
                     TempData["order_prepayment"] = sale.prepayment;
                 }
             }
-
+            ViewBag.Order = sale;
             var OrderDetailsList = db.sale_details.Where(o => o.sale_id == order_id);
             return PartialView(OrderDetailsList.ToList());
         }

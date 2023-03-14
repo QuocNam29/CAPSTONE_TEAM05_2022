@@ -9,6 +9,7 @@
 <input type="text" hidden id="URLExportExcel_RevenueDate" value="@Url.Action("ExportExcel_RevenueDate", "Excel")" />
 <input type="text" hidden id="URLExportExcel_RevenueMonth" value="@Url.Action("ExportExcel_RevenueMonth", "Excel")" />
 <input type="text" hidden id="URLExportExcel_profit" value="@Url.Action("ExportExcel_profit", "Excel")" />
+
 <section class="pcoded-main-container">
     <div class="pcoded-content">
         <div class="page-header">
@@ -148,78 +149,78 @@
                                                             <tbody>
                                                                 @foreach (var item in Model)
                                                                 {
-                                                                <tr>
-                                                                    <td>@item.sale_details.product.code</td>
-                                                                    <td>@item.sale_details.product.name</td>
-                                                                    <td class="text-center">
+                                                                    <tr>
+                                                                        <td>@item.sale_details.product.code</td>
+                                                                        <td>@item.sale_details.product.name</td>
+                                                                        <td class="text-center">
 
-                                                                        @if (item.sale_details.product.unit_swap != null)
-                                                                        {
-                                                                            <div>
-                                                                                1 @item.sale_details.product.unit = @item.sale_details.product.quantity_swap@item.sale_details.product.unit_swap
-                                                                            </div>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            @item.sale_details.product.unit
-                                                                        }
-                                                                    </td>
+                                                                            @if (item.sale_details.product.unit_swap != null)
+                                                                            {
+                                                                                <div>
+                                                                                    1 @item.sale_details.product.unit = @item.sale_details.product.quantity_swap@item.sale_details.product.unit_swap
+                                                                                </div>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                @item.sale_details.product.unit
+                                                                            }
+                                                                        </td>
 
-                                                                    <td class="text-center">
-                                                                        @(item.import_inventory.price_import.ToString("N0") )đ / @item.sale_details.product.unit
-                                                                        @if (item.sale_details.product.unit_swap != null)
+                                                                        <td class="text-center">
+                                                                            @(item.import_inventory.price_import.ToString("N0") )đ / @item.sale_details.product.unit
+                                                                            @if (item.sale_details.product.unit_swap != null)
+                                                                            {
+                                                                                <div>
+                                                                                    @String.Format("{0:0,00}", (item.import_inventory.price_import / item.sale_details.product.quantity_swap))đ / @item.sale_details.product.unit_swap
+                                                                                </div>
+                                                                            }
+
+                                                                        </td>
+
+                                                                        <td class="text-center">
+                                                                            @item.quantity @item.unit
+                                                                        </td>
+                                                                        <td class="text-center">
+                                                                            @String.Format("{0:0,00}", item.Price) đ
+                                                                        </td>
+                                                                        <td class="text-center">
+                                                                            @String.Format("{0:0,00}", item.Price * item.quantity) đ
+                                                                        </td>
+                                                                        @if (item.unit == item.sale_details.product.unit)
                                                                         {
-                                                                            <div>
-                                                                                @String.Format("{0:0,00}", (item.import_inventory.price_import / item.sale_details.product.quantity_swap))đ / @item.sale_details.product.unit_swap
-                                                                            </div>
+                                                                            if ((item.Price - item.import_inventory.price_import) * item.quantity >= 0)
+                                                                            {
+                                                                                <td class="text-right text-success">
+                                                                                    + @String.Format("{0:0,00}", (((item.Price - item.import_inventory.price_import) * item.quantity))) đ
+                                                                                </td>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <td class="text-right text-danger">
+                                                                                    - @String.Format("{0:0,00}", (((item.Price - item.import_inventory.price_import) * item.quantity))) đ
+                                                                                </td>
+                                                                            }
+                                                                        }
+                                                                        else if (item.unit == item.sale_details.product.unit_swap)
+                                                                        {
+                                                                            if ((item.Price - (item.import_inventory.price_import / item.sale_details.product.quantity_swap)) * item.quantity >= 0)
+                                                                            {
+                                                                                <td class="text-right text-success">
+                                                                                    + @String.Format("{0:0,00}", (((item.Price - (item.import_inventory.price_import / item.sale_details.product.quantity_swap)) * item.quantity))) đ
+                                                                                </td>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <td class="text-right text-danger">
+                                                                                    - @String.Format("{0:0,00}", (((item.Price - (item.import_inventory.price_import / item.sale_details.product.quantity_swap)) * item.quantity))) đ
+                                                                                </td>
+                                                                            }
                                                                         }
 
-                                                                    </td>
-
-                                                                    <td class="text-center">
-                                                                        @item.quantity @item.unit
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        @String.Format("{0:0,00}", item.Price) đ
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        @String.Format("{0:0,00}", item.Price*item.quantity) đ
-                                                                    </td>
-                                                                    @if (item.unit == item.sale_details.product.unit)
-                                                                    {
-                                                                        if ((item.Price - item.import_inventory.price_import) * item.quantity >= 0)
-                                                                        {
-                                                                            <td class="text-right text-success">
-                                                                                + @String.Format("{0:0,00}", (((item.Price - item.import_inventory.price_import) * item.quantity))) đ
-                                                                            </td>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <td class="text-right text-danger">
-                                                                               - @String.Format("{0:0,00}", (((item.Price - item.import_inventory.price_import) * item.quantity))) đ
-                                                                            </td>
-                                                                        }
-                                                                    }
-                                                                    else if (item.unit == item.sale_details.product.unit_swap)
-                                                                    {
-                                                                        if ((item.Price - (item.import_inventory.price_import / item.sale_details.product.quantity_swap)) * item.quantity >= 0)
-                                                                        {
-                                                                            <td class="text-right text-success">
-                                                                                + @String.Format("{0:0,00}", (((item.Price - (item.import_inventory.price_import / item.sale_details.product.quantity_swap)) * item.quantity))) đ
-                                                                            </td>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <td class="text-right text-danger">
-                                                                               - @String.Format("{0:0,00}", (((item.Price - (item.import_inventory.price_import / item.sale_details.product.quantity_swap)) * item.quantity))) đ
-                                                                            </td>
-                                                                        }
-                                                                    }
-
-                                                                    <td class="text-center">
-                                                                        @String.Format("{0:HH:mm - dd/MM/yyy}", item.sale_details.sale.created_at)
-                                                                    </td>
-                                                                </tr>
+                                                                        <td class="text-center">
+                                                                            @String.Format("{0:HH:mm - dd/MM/yyy}", item.sale_details.sale.created_at)
+                                                                        </td>
+                                                                    </tr>
                                                                 }
 
 
@@ -248,15 +249,21 @@
                     </div>
 
                 </div>
-            </div> 
+            </div>
         </div>
     </div>
 </section>
 <div id="dataContainer2">
-    @{ Html.RenderAction("_OrderDetailsList", "sales", new { order_id = 0 });}
 </div>
-<script type="text/javascript">
+@section scripts {
+
+    <script type="text/javascript">
     var row;
+    $(document).ready(function () {
+        $('#example').DataTable({
+            pagingType: 'full_numbers',
+        });
+    });
     $(document).ready(function () {
         $('#example').DataTable({
             pagingType: 'full_numbers',
@@ -305,4 +312,5 @@
                 alert("Something Went Wrong, Try Later");
             });
     }
-</script>
+    </script>
+}

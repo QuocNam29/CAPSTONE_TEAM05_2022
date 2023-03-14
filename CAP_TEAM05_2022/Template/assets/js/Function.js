@@ -1550,7 +1550,7 @@ function GetList_RevenueListDate(date_start, date_end) {
         }
     }).done(function (result) {
         $('#dataContainer').html(result);
-
+        $('#example').DataTable()
     }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
         console.log(textStatus)
         console.log(errorThrown)

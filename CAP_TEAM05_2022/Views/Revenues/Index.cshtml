@@ -1,0 +1,524 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
+}
+<input type="text" hidden id="URL_RevenueList_Date" value="@Url.Action("_RevenueList_Date", "Revenues")" />
+<section class="pcoded-main-container">
+    <div class="pcoded-content">
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">Doanh thu</h5>
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="https://dnqt.net">
+                                    <i class="feather icon-home">
+                                    </i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="javascript:void(0)">Doanh thu</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-2">
+                                    <select id="select-date" class="form-control">
+                                        <option value="1">Theo ngày</option>
+                                        <option value="2">Theo tháng</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mx-datepicker">
+                                        <div class="mx-input-wrapper">
+                                            <input name="date_start" id="revenue_DateStart" placeholder="" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}", DateTime.Now)">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mx-datepicker">
+                                        <div class="mx-input-wrapper">
+                                            <input name="date_end" id="revenue_DateEnd" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}",DateTime.Now)">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="float-right">
+                                        <button type="button" class="btn btn-secondary" id="btnExportExcel_RevenueDate">Xuất doanh thu</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" id="dataContainer">
+                        @{ Html.RenderAction("_RevenueList_Date", "Revenues");}
+                    </div>
+                </div>
+            </div>
+            <div id="detailModal" tabindex="-1" aria-labelledby="detailModalTitle" class="modal fade bd-example-modal-lg" style="display: none;" aria-hidden="true">
+                <div role="document" class="modal-dialog modal-lg">
+                    <form>
+                        <div class="modal-content">
+                            <div class="modal-header bg-primary">
+                                <h5 id="detailModalTitle" class="modal-title white">Chi tiết đơn hàng</h5>
+                                <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="txt-15">Người bán: Quản trị viên</p>
+                                                        <p class="txt-15">Số ĐT: 0123456754</p>
+                                                        <p class="txt-15">Ngày tạo đơn: 02:27 - 14/03/2023</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <p class="txt-15">Người mua: IT Global</p>
+                                                        <p class="txt-15">Số ĐT: 0987654321</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">STT</th>
+                                                        <th>Mã sản phẩm</th>
+                                                        <th>Tên sản phẩm</th>
+                                                        <th class="text-center">Số lượng</th>
+                                                        <th class="text-center">Đơn giá</th>
+                                                        <th class="text-center">Thành tiền</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            1
+                                                        </td>
+                                                        <td>
+                                                            SPf004aa0d1
+                                                        </td>
+                                                        <td>Tele</td>
+                                                        <td class="text-center">
+                                                            40<span class="txt-unit">kg</span>
+                                                        </td>
+                                                        <td class="text-center">200,000₫</td>
+                                                        <td class="text-center">8,000,000₫</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            2
+                                                        </td>
+                                                        <td>
+                                                            SP26d26ca1d
+                                                        </td>
+                                                        <td>Float</td>
+                                                        <td class="text-center">
+                                                            1.5<span class="txt-unit">kg</span>
+                                                        </td>
+                                                        <td class="text-center">20,000₫</td>
+                                                        <td class="text-center">30,000₫</td>
+                                                    </tr>
+                                                    <tr style="display: none;">
+                                                        <td colspan="8">
+                                                            <div class="alert alert-warning">
+                                                                <p class="text-center">Không tìm thấy dữ liệu</p>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td colspan="5" class="text-right">
+                                                            <h5>Thành tiền</h5>
+                                                        </td>
+                                                        <td class="text-left">
+                                                            <h5>
+                                                                8,030,000
+                                                                ₫
+                                                            </h5>
+                                                        </td>
+                                                    </tr>
+                                                    <!---->
+                                                    <!---->
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div id="detailModalMonth" tabindex="-1" aria-labelledby="detailModalMonthTitle" class="modal fade bd-example-modal-lg" aria-hidden="true" style="display: none;">
+                <div role="document" class="modal-dialog modal-lg">
+                    <form>
+                        <div class="modal-content">
+                            <div class="modal-header bg-primary">
+                                <h5 id="detailModalMonthTitle" class="modal-title white">Chi tiết đơn hàng</h5>
+                                <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="txt-15">Người bán: Quản trị viên</p>
+                                                        <p class="txt-15">Số ĐT: 0123456754</p>
+                                                        <p class="txt-15">Ngày tạo đơn: 02:27 - 14/03/2023</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <p class="txt-15">Người mua: IT Global</p>
+                                                        <p class="txt-15">Số ĐT: 0987654321</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">STT</th>
+                                                        <th>Mã sản phẩm</th>
+                                                        <th>Tên sản phẩm</th>
+                                                        <th class="text-center">Số lượng</th>
+                                                        <th class="text-center">Đơn giá</th>
+                                                        <th class="text-center">Thành tiền</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            1
+                                                        </td>
+                                                        <td>
+                                                            SPf004aa0d1
+                                                        </td>
+                                                        <td>Tele</td>
+                                                        <td class="text-center">
+                                                            40<span class="txt-unit">kg</span>
+                                                        </td>
+                                                        <td class="text-center">200,000₫</td>
+                                                        <td class="text-center">8,000,000₫</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            2
+                                                        </td>
+                                                        <td>
+                                                            SP26d26ca1d
+                                                        </td>
+                                                        <td>Float</td>
+                                                        <td class="text-center">
+                                                            1.5<span class="txt-unit">kg</span>
+                                                        </td>
+                                                        <td class="text-center">20,000₫</td>
+                                                        <td class="text-center">30,000₫</td>
+                                                    </tr>
+                                                    <tr style="display: none;">
+                                                        <td colspan="8">
+                                                            <div class="alert alert-warning">
+                                                                <p class="text-center">Không tìm thấy dữ liệu</p>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td colspan="5" class="text-right">
+                                                            <h5>Thành tiền</h5>
+                                                        </td>
+                                                        <td class="text-left">
+                                                            <h5>
+                                                                8,030,000
+                                                                ₫
+                                                            </h5>
+                                                        </td>
+                                                    </tr>
+                                                    <!---->
+                                                    <!---->
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="txt-15">Người bán: Quản trị viên</p>
+                                                        <p class="txt-15">Số ĐT: 0123456754</p>
+                                                        <p class="txt-15">Ngày tạo đơn: 11:17 - 01/03/2023</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <p class="txt-15">Người mua: Trần Hoàng B</p>
+                                                        <p class="txt-15">Số ĐT: 0123456783</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">STT</th>
+                                                        <th>Mã sản phẩm</th>
+                                                        <th>Tên sản phẩm</th>
+                                                        <th class="text-center">Số lượng</th>
+                                                        <th class="text-center">Đơn giá</th>
+                                                        <th class="text-center">Thành tiền</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            1
+                                                        </td>
+                                                        <td>
+                                                            SPf6bb28349
+                                                        </td>
+                                                        <td>	URE PHÚ MỸ</td>
+                                                        <td class="text-center">
+                                                            15<span class="txt-unit">kg</span>
+                                                        </td>
+                                                        <td class="text-center">880,000₫</td>
+                                                        <td class="text-center">13,200,000₫</td>
+                                                    </tr>
+                                                    <tr style="display: none;">
+                                                        <td colspan="8">
+                                                            <div class="alert alert-warning">
+                                                                <p class="text-center">Không tìm thấy dữ liệu</p>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td colspan="5" class="text-right">
+                                                            <h5>Thành tiền</h5>
+                                                        </td>
+                                                        <td class="text-left">
+                                                            <h5>
+                                                                13,200,000
+                                                                ₫
+                                                            </h5>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="5" class="text-right">
+                                                            <h5>Đã trả</h5>
+                                                        </td>
+                                                        <td class="text-left">
+                                                            <h5>115,000 ₫</h5>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="5" class="text-right">
+                                                            <h5>Còn nợ</h5>
+                                                        </td>
+                                                        <td class="text-left">
+                                                            <h5>13,085,000 ₫</h5>
+                                                        </td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="txt-15">Người bán: Quản trị viên</p>
+                                                        <p class="txt-15">Số ĐT: 0123456754</p>
+                                                        <p class="txt-15">Ngày tạo đơn: 10:17 - 12/03/2023</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <p class="txt-15">Người mua: IT Global</p>
+                                                        <p class="txt-15">Số ĐT: 0987654321</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">STT</th>
+                                                        <th>Mã sản phẩm</th>
+                                                        <th>Tên sản phẩm</th>
+                                                        <th class="text-center">Số lượng</th>
+                                                        <th class="text-center">Đơn giá</th>
+                                                        <th class="text-center">Thành tiền</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            1
+                                                        </td>
+                                                        <td>
+                                                            SPc760ff963
+                                                        </td>
+                                                        <td>Bao diêm</td>
+                                                        <td class="text-center">
+                                                            1<span class="txt-unit">kg</span>
+                                                        </td>
+                                                        <td class="text-center">20,000₫</td>
+                                                        <td class="text-center">20,000₫</td>
+                                                    </tr>
+                                                    <tr style="display: none;">
+                                                        <td colspan="8">
+                                                            <div class="alert alert-warning">
+                                                                <p class="text-center">Không tìm thấy dữ liệu</p>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td colspan="5" class="text-right">
+                                                            <h5>Thành tiền</h5>
+                                                        </td>
+                                                        <td class="text-left">
+                                                            <h5>
+                                                                20,000
+                                                                ₫
+                                                            </h5>
+                                                        </td>
+                                                    </tr>
+                                                    <!---->
+                                                    <!---->
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <p class="txt-15">Người bán: Quản trị viên</p>
+                                                        <p class="txt-15">Số ĐT: 0123456754</p>
+                                                        <p class="txt-15">Ngày tạo đơn: 01:42 - 12/03/2023</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <p class="txt-15">Người mua: Trần Hoàng B</p>
+                                                        <p class="txt-15">Số ĐT: 0123456783</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">STT</th>
+                                                        <th>Mã sản phẩm</th>
+                                                        <th>Tên sản phẩm</th>
+                                                        <th class="text-center">Số lượng</th>
+                                                        <th class="text-center">Đơn giá</th>
+                                                        <th class="text-center">Thành tiền</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            1
+                                                        </td>
+                                                        <td>
+                                                            SP0bb59b6e6
+                                                        </td>
+                                                        <td> APPENCARB SUPER - THUỐC ĐẶC TRỊ NẤM BÊNH CHO CÂY TRỒNG</td>
+                                                        <td class="text-center">
+                                                            1<span class="txt-unit">kg</span>
+                                                        </td>
+                                                        <td class="text-center">1,210,000₫</td>
+                                                        <td class="text-center">1,210,000₫</td>
+                                                    </tr>
+                                                    <tr style="display: none;">
+                                                        <td colspan="8">
+                                                            <div class="alert alert-warning">
+                                                                <p class="text-center">Không tìm thấy dữ liệu</p>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td colspan="5" class="text-right">
+                                                            <h5>Thành tiền</h5>
+                                                        </td>
+                                                        <td class="text-left">
+                                                            <h5>
+                                                                1,210,000
+                                                                ₫
+                                                            </h5>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="5" class="text-right">
+                                                            <h5>Đã trả</h5>
+                                                        </td>
+                                                        <td class="text-left">
+                                                            <h5>710,000 ₫</h5>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="5" class="text-right">
+                                                            <h5>Còn nợ</h5>
+                                                        </td>
+                                                        <td class="text-left">
+                                                            <h5>500,000 ₫</h5>
+                                                        </td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#example').DataTable({
+                pagingType: 'full_numbers',
+            });
+        });
+    </script>
+}

@@ -201,6 +201,7 @@
     <Compile Include="Controllers\productsController.cs" />
     <Compile Include="Controllers\return_saleController.cs" />
     <Compile Include="Controllers\return_supplierController.cs" />
+    <Compile Include="Controllers\RevenuesController.cs" />
     <Compile Include="Controllers\salesController.cs" />
     <Compile Include="Controllers\sale_detailsController.cs" />
     <Compile Include="Controllers\SweetController.cs" />
@@ -722,6 +723,8 @@
     <Content Include="Views\groups\_Form.cshtml" />
     <Content Include="Views\customers\_Form.cshtml" />
     <Content Include="Views\products\_Form.cshtml" />
+    <Content Include="Views\Revenues\Index.cshtml" />
+    <Content Include="Views\Revenues\_RevenueList_Date.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
