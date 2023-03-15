@@ -40,7 +40,7 @@
                                 <div class="col-md-4">
                                     <div class="mx-datepicker">
                                         <div class="mx-input-wrapper">
-                                            <input id="sale_DateStart" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}", DateTime.Now.AddDays((-DateTime.Now.Day) + 1))">
+                                            <input id="inventory_DateStart" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}", DateTime.Now.AddDays((-DateTime.Now.Day) + 1))">
 
                                         </div>
                                     </div>
@@ -48,77 +48,18 @@
                                 <div class="col-md-4">
                                     <div class="mx-datepicker">
                                         <div class="mx-input-wrapper">
-                                            <input id="sale_DateEnd" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}",DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day)))">
+                                            <input id="inventory_DateEnd" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}",DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day)))">
 
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                    <a class="btn  btn-primary btn-block" href="@Url.Action("Create", "inventory_order")" >Tạo đơn nhập</a>
+                                    <a class="btn  btn-primary btn-block" href="@Url.Action("Create", "inventory_order")">Tạo đơn nhập</a>
                                 </div>
                             </div>
                             <div class="table-responsive" id="dataContainer3">
-                                <table id="example" class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>STT</th>
-                                            <th>Mã đơn nhập</th>
-                                            <th>Tên nhà cung cấp</th>
-                                            <th class="text-center">Tổng đơn nhập</th>
-                                            <th class="text-center">Phương thức</th>
-                                            <th class="text-center">Ngày giao dịch</th>
-                                            <th>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in Model)
-                                        {
-                                            no++;
-                                            <tr>
-                                                <td>@no</td>
-                                                <td>@item.code</td>
-                                                <td>@item.customer.name</td>
-                                                <td class="text-center">
-                                                    @String.Format("{0:0,00}", item.Total)
-                                                </td>
+                                @{ Html.RenderAction("_InventoryList", "inventory_order");}
 
-                                                @if (item.state == 1)
-                                                {
-                                                    <td class="text-center">
-                                                        Đã thanh toán
-                                                    </td>
-                                                }
-                                                else 
-                                                {
-                                                    <td class="text-center">
-                                                        Ghi nợ
-                                                    </td>
-                                                }
-
-
-
-                                                <td class="text-center">
-                                                    @String.Format("{0:HH:mm - dd/MM/yyy}", item.create_at)
-                                                </td>
-                                                <td>
-                                                    <button title="Xem chi tiết" class="btn btn-info" onclick="GetList_orderDetails('@item.id', 1)">
-                                                        <span class="pcoded-micon">
-                                                            <i class="fas fa-info">
-                                                            </i>
-                                                        </span>
-                                                    </button>
-                                                    <button title="Đổi trả" class="btn btn-success" onclick="GetList_orderDetails('@item.id', 2)">
-                                                        <span class="pcoded-micon">
-                                                            <i class="fas fa-retweet">
-                                                            </i>
-                                                        </span>
-                                                    </button>           
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
 
                             </div>
                         </div>
@@ -132,3 +73,49 @@
         </div>
     </div>
 </section>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                pagingType: 'full_numbers',
+            });
+        });
+        $("#inventory_DateStart").change(function () {
+            var date_start = $("#inventory_DateStart").val();
+            var date_end = $("#inventory_DateEnd").val();
+            if (date_start <= date_end) {
+                GetList_Inventory(date_start, date_end);
+            } else {
+                Swal.fire('Lỗi', 'Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc !', 'error')
+            }
+
+        });
+        $("#inventory_DateEnd").change(function () {
+            var date_start = $("#inventory_DateStart").val();
+            var date_end = $("#inventory_DateEnd").val();
+            if (date_start <= date_end) {
+                GetList_Inventory(date_start, date_end);
+            } else {
+                Swal.fire('Lỗi', 'Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc !', 'error')
+            }
+        });
+       
+        function GetList_Inventory(date_start, date_end) {
+
+            $.ajax({
+                url: '@Url.Action("_InventoryList", "inventory_order")',
+                data: {
+                    date_Start: date_start,
+                    date_End: date_end,
+                }
+            }).done(function (result) {
+                $('#dataContainer3').html(result);
+                $('#example').DataTable()
+            }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(textStatus)
+                console.log(errorThrown)
+                alert("Something Went Wrong, Try Later");
+            });
+        }
+    </script>
+    }

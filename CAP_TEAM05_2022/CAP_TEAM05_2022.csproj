@@ -313,7 +313,6 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\css\custom-css.css" />
-    <Content Include="Content\css\select2.css" />
     <Content Include="Content\css\select2.min.css" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\toastr.css" />
@@ -417,6 +416,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\toastr.min.js" />
     <Content Include="Template\assets\css\flatpickr.css" />
@@ -713,9 +713,6 @@
     <Content Include="Views\LookUpOrder\LookUpOrder.cshtml" />
     <Content Include="Views\import_inventory\Create.cshtml" />
     <Content Include="Views\inventory_order\Create.cshtml" />
-    <Content Include="Views\inventory_order\Delete.cshtml" />
-    <Content Include="Views\inventory_order\Details.cshtml" />
-    <Content Include="Views\inventory_order\Edit.cshtml" />
     <Content Include="Views\inventory_order\Index.cshtml" />
     <Content Include="Views\Debts_Collections\_SupplierDebtsList.cshtml" />
     <Content Include="Views\inventory_order\_HistoryInventory.cshtml" />
@@ -725,6 +722,8 @@
     <Content Include="Views\products\_Form.cshtml" />
     <Content Include="Views\Revenues\Index.cshtml" />
     <Content Include="Views\Revenues\_RevenueList_Date.cshtml" />
+    <Content Include="Views\inventory_order\_InventoryList.cshtml" />
+    <Content Include="Views\inventory_order\_InventoryDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

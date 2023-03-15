@@ -42,7 +42,7 @@ function GetList_CategoryAndGroup() {
     }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
         console.log(textStatus)
         console.log(errorThrown)
-        alert("Something Went Wrong, Try Later");
+        Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
     });
 }
 $(document).ready(function () {
@@ -274,12 +274,47 @@ $('.ProductForm').submit(function (e) {
                     form[0].reset();
                     form.removeClass('was-validated');
                 } else {
-                    swalWithBootstrapButtons.fire(
-                        'Lỗi',
-                        response.message,
-                        'error'
-                    )
-                         // Show bootstrap modal again
+                    Swal.fire('Lỗi !', data.message , 'error');
+                }
+            }
+        });
+    }
+});
+//-------------------------------ADD CUSTOMER SALE--------------------------------
+
+$('.ProductSaleForm').submit(function (e) {
+    var form = $(this);
+
+    // Check if form is valid then submit ajax
+    if (form[0].checkValidity()) {
+        e.preventDefault();
+        var url = form.attr('action');
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: form.serialize(),
+            success: function (data) {
+                // Hide bootstrap modal to prevent conflict
+                $('.modal').modal('hide');
+
+                if (data.status) {
+                    // Refresh table data
+                    Swal.fire('Thành công !', data.message, 'success')
+                    form[0].reset();
+                    form.removeClass('was-validated');
+                    $('#product_id').val(data.id);
+                    LoadDataProduct(data.id);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi',
+                        text: data.message,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#AddProduct').modal('show');
+                        }
+                    });// Show bootstrap modal again                           
                 }
             }
         });
@@ -337,11 +372,7 @@ function deleteAlert(id, code) {
                      
                     }
                     else {
-                        swalWithBootstrapButtons.fire(
-                            'Lỗi',
-                            response.message,
-                            'error'
-                        )
+                        Swal.fire('Lỗi !', data.message, 'error');
                     }
                 })
             /*   .error(function (data) {
@@ -505,7 +536,7 @@ function GetList(group_id, category_id) {
     }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
         console.log(textStatus)
         console.log(errorThrown)
-        alert("Something Went Wrong, Try Later");
+        Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
     });
 }
 
@@ -756,7 +787,7 @@ function GetList_Inventory(date_start, date_end) {
     }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
         console.log(textStatus)
         console.log(errorThrown)
-        alert("Something Went Wrong, Try Later");
+        Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
     });
 }
 //----------------------FILTER CusomerForm------------------------------------------------
@@ -783,7 +814,7 @@ function GetList_Customer(type) {
     }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
         console.log(textStatus)
         console.log(errorThrown)
-        alert("Something Went Wrong, Try Later");
+        Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
     });
 }
 //----------------------LOAD FORM EDIT CUSTOMER---------------------------------------
@@ -881,16 +912,16 @@ $('.AddCustomerSaleFrom').submit(function (e) {
                     }
                     if ($("#total").val() != undefined) {
                         $("#payment_btn").show();
-$("#order_btn").show();
+                        $("#order_btn").show();
                     } else {
-$("#payment_btn").hide();
-$("#order_btn").hide();
+                        $("#payment_btn").hide();
+                        $("#order_btn").hide();
                     }
                 } else {
                     Swal.fire({
                         icon: 'error',
                         title: 'Lỗi',
-                        text: response.message,
+                        text: data.message,
                     }).then((result) => {
                         if (result.isConfirmed) {
                             $('#AddCustomer').modal('show');
@@ -915,95 +946,8 @@ function isValid(str) {
 
 //-------------------------------CHECK Người dùng đã có trong hệ thống--------------------------------
 
-function UserCustomer() {
-    var customer_name = $("#customer_name").val();
-    if (customer_name != "" && customer_name != undefined) {
-        var URLCheckCustomernameAvailability = "";
-        $('#URLCheckCustomernameAvailability')
-            .keypress(function () {
-                URLCheckCustomernameAvailability = $(this).val();
-            })
-            .keypress();
-        $.post(URLCheckCustomernameAvailability,
-            {
-                customer_name: customer_name
-            },
-            function (data) {
-                if (data == 0) {
-                    $('#customer_id').val('');
-                    $('#customer_code').val('');
-                    $('#customer_phone').val('');
-                    $('#customer_type').val('');
-                    $('#count_sale').val('');
-                    $('#debit_sum').val('');
-                    $('#debit_sum').val('');
-
-                    Swal.fire({
-                        title: 'Không tìm thấy !',
-                        text: "Khách hàng không có trong hệ thống, bạn có muốn thêm mới ?",
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Xác nhận'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $('#AddCustomer .close').css('display', 'none');
-                            $('#AddCustomer').modal('show');
-                            $('#create_customer_name').val($('#customer_name').val());
-                        }
-                    })
-                }
-
-            });
-    }
-  
-  
-}
-function UserCustomer_phone() {
-    var customer_phone = $("#customer_phone").val();
-    if (customer_phone != "" && customer_phone != undefined) {
-        var URLCheckCustomerPhoneAvailability = "";
-        $('#URLCheckCustomerPhoneAvailability')
-            .keypress(function () {
-                URLCheckCustomerPhoneAvailability = $(this).val();
-            })
-            .keypress();
-        $.post(URLCheckCustomerPhoneAvailability,
-            {
-                phone: customer_phone
-            },
-            function (data) {
-                if (data == 0) {
-                    $('#customer_id').val('');
-                    $('#customer_code').val('');
-                    $('#customer_type').val('');
-                    $('#count_sale').val('');
-                    $('#debit_sum').val('');
-                    $('#debit_sum').val('');
-                    $('#debit_name').val('');
-                    Swal.fire({
-                        title: 'Không tìm thấy !',
-                        text: "Khách hàng không có trong hệ thống, bạn có muốn thêm mới ?",
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Xác nhận'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                                $('#AddCustomer .close').css('display', 'none');
-                                $('#AddCustomer').modal('show');
-                                $('#sale_customer_phone').val(customer_phone);
-
-                            }
-                        })
-                }
-            });
-    }
 
 
-}
 /*//------------------------Import Fail Add-----------------------------
 $('#URLUpdateGroupProduct')
     .keypress(function () {
@@ -1065,7 +1009,7 @@ function Create_Cart() {
     cart_create.price = Number($('#sum_price').val().replace(/\,/g, '').replace(/\./g, ''));
     cart_create.note = $('#cart_note').val();   
     cart_create.unit = $('#unit_product_swap').val();   
-    console.log(Number($('#sum_price').val().replace(/\,/g, '').replace(/\./g, '')));
+    console.log(cart_create);
         $.ajax({
             url: URLCreateCart,
             type: "Post",
@@ -1078,7 +1022,6 @@ function Create_Cart() {
                     $("#payment_btn").show();
                     LoadDataProduct($('#product_id').val());
                     Swal.fire('Thành công !', 'Thêm giỏ hàng thành công !', 'success');
-
                 } else {
                     Swal.fire({
                         icon: 'error',
@@ -1087,7 +1030,18 @@ function Create_Cart() {
                     })
                 }        
                 
-            }
+            }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                if (textStatus == 'error') {
+                    Swal.fire('Lỗi !', 'Vui lòng kiểm tra lại thông tin !', 'error');     
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi',
+                        text: "Trạng thái: " + textStatus + ", Lỗi: " + errorThrown +" !",
+                    })
+                }
+            }  
         });   
    
 }
@@ -1107,7 +1061,7 @@ function GetList_Cart(customer_id) {
     }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
         console.log(textStatus)
         console.log(errorThrown)
-        alert("Something Went Wrong, Try Later");
+        Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
     });
 }
 $("#product_quantity").change(function () {
@@ -1280,9 +1234,11 @@ function LoadDataProduct(id) {
         url: URLFindProduct_name,
         data: { "product_id": id },
         success: function (response) {
+            console.log(response);
+            $('#product_name').val(response.name);
             $('#product_code').val(response.code);
             $('#product_unit').val(response.note);
-            $('#product_price').val(response.name);
+            $('#product_price').val(response.name_category);
             var sum_price = Number($('#product_price').val().replace(/\,/g, '').replace(/\./g, '')) * Number($('#product_quantity').val()) ;
             $('#sum_price').val(sum_price.toLocaleString());
             
@@ -1364,11 +1320,7 @@ function Payment_order() {
                                     response.sale_total, response.sale_create, $('#customer_code').val(), response.sale_prepayment);                            }
                         })
                     } else {
-                        swalWithBootstrapButtons.fire(
-                            'Lỗi',
-                            response.message,
-                            'error'
-                        )                      
+                        Swal.fire('Lỗi !', response.message, 'error');                 
                     }
 
                 }
@@ -1554,7 +1506,7 @@ function GetList_RevenueListDate(date_start, date_end) {
     }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
         console.log(textStatus)
         console.log(errorThrown)
-        alert("Something Went Wrong, Try Later");
+        Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
     });
 }
 
@@ -1571,14 +1523,13 @@ function GetList_RevenueListMonth(date_start, date_end) {
     }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
         console.log(textStatus)
         console.log(errorThrown)
-        alert("Something Went Wrong, Try Later");
+        Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
     });
 }
 
 $("#sale_DateStart").change(function () {
     var date_start = $("#sale_DateStart").val();
     var date_end = $("#sale_DateEnd").val();
-    console.log("hihi");
     if (date_start <= date_end) {
         GetList_OrderList(date_start, date_end);
     } else {
@@ -1615,7 +1566,7 @@ function GetList_OrderList(date_start, date_end) {
     }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
         console.log(textStatus)
         console.log(errorThrown)
-        alert("Something Went Wrong, Try Later");
+        Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
     });
 }
 //----------------------Xem trước hóa đơn------------------------------------------------
@@ -1883,11 +1834,7 @@ $('.UserForm').submit(function (e) {
                     form[0].reset();
                     form.removeClass('was-validated');
                 } else {
-                    swalWithBootstrapButtons.fire(
-                        'Lỗi',
-                        response.message,
-                        'error'
-                    ) // Show bootstrap modal again
+                    Swal.fire('Lỗi !', data.message, 'error');
                 }
             }
         });
@@ -1905,7 +1852,7 @@ function GetList_UserList() {
     }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
         console.log(textStatus)
         console.log(errorThrown)
-        alert("Something Went Wrong, Try Later");
+        Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
     });
 }
 //----------------------Add  DebtForm------------------------------------------------
@@ -1943,11 +1890,7 @@ $('.DebtsForm').submit(function (e) {
                     form[0].reset();
                     form.removeClass('was-validated');
                 } else {
-                    swalWithBootstrapButtons.fire(
-                        'Lỗi',
-                        response.message,
-                        'error'
-                    ) // Show bootstrap modal again
+                    Swal.fire('Lỗi !', data.message, 'error');
                 }
             }
         });
@@ -1966,7 +1909,7 @@ function GetList_Debt(date_start, date_end) {
     }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
         console.log(textStatus)
         console.log(errorThrown)
-        alert("Something Went Wrong, Try Later");
+        Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
     });
 }
 function GetList_Debt2(date_start, date_end) {
@@ -1982,7 +1925,7 @@ function GetList_Debt2(date_start, date_end) {
     }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
         console.log(textStatus)
         console.log(errorThrown)
-        alert("Something Went Wrong, Try Later");
+        Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
     });
 }
 $('#URLFindDebt')
@@ -2058,11 +2001,7 @@ $('.ReturnForm').submit(function (e) {
                     form[0].reset();
                     form.removeClass('was-validated');
                 } else {
-                    swalWithBootstrapButtons.fire(
-                        'Lỗi',
-                        response.message,
-                        'error'
-                    )        // Show bootstrap modal again
+                    Swal.fire('Lỗi !', data.message, 'error');
                 }
             }
         });

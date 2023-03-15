@@ -1,0 +1,120 @@
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.sale_details>
+@using CAP_TEAM05_2022.Models
+
+@{
+    int no = 0;
+    int no_return = 0;
+
+    var Order = (sale)ViewBag.Order;
+
+}
+<div id="detailModal" tabindex="-1" aria-labelledby="detailModalTitle" class="modal fade bd-example-modal-lg" style="display: none;" aria-hidden="true">
+    <div role="document" class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 id="detailModalTitle" class="modal-title white">Chi tiết @Order.code</h5>
+                <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="txt-15">Nhân viên bán: @Order.user.name</p>
+                                    <p class="txt-15">Số ĐT: @Order.user.phone</p>
+                                    <p class="txt-15">Ngày tạo đơn:  @String.Format("{0:HH:mm - dd/MM/yyy}", Order.created_at)</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="txt-15">Mã khách hàng: @Order.customer.code</p>
+                                    <p class="txt-15">Người mua: @Order.customer.name</p>
+                                    <p class="txt-15">Số ĐT: @Order.customer.phone</p>
+                                </div>
+                            </div>
+
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">STT</th>
+                                        <th class="text-center">Mã sản phẩm</th>
+                                        <th class="text-center">Tên sản phẩm</th>
+                                        <th class="text-center">Đơn giá</th>
+                                        <th class="text-center">Số lượng</th>
+                                        <th class="text-center">Thành tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        no++;
+                                        <tr>
+                                            <td class="text-center">
+                                                @no
+                                            </td>
+                                            <td class="text-center">
+                                                @item.product.code
+                                            </td>
+                                            <td class="text-center">
+                                                @item.product.name
+                                            </td>
+
+                                            <td class="text-center">
+                                                @String.Format("{0:0,00}", item.price / item.sold)₫/<span class="txt-unit">@item.unit</span>
+                                            </td>
+                                            <td class="text-center">
+                                                @item.sold<span class="txt-unit"> @item.unit</span>
+                                            </td>
+                                            <td class="text-center">
+                                                @String.Format("{0:0,00}", item.price)₫
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="4" class="text-right">
+                                        </td>
+
+                                        <td colspan="2" class="text-left">
+                                            <div class="total-div">
+                                                <div>
+                                                    Thành tiền:
+                                                    <b>
+                                                        <span class="text">
+                                                            @String.Format("{0:0,00}", Order.total)₫
+                                                        </span>
+                                                    </b>
+                                                </div>
+                                                @if (Order.prepayment >= 0)
+                                                {
+                                                    <div>
+                                                        Đã thanh toán:
+                                                        <span class="text-success">
+                                                            @String.Format("{0:0,00}", Order.prepayment)₫
+                                                        </span>
+                                                    </div>
+                                                    <div>
+                                                        Còn nợ:
+                                                        <span class="text-danger">
+                                                            @String.Format("{0:0,00}", Order.total - Order.prepayment)₫
+                                                        </span>
+                                                    </div>
+                                                }
+
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

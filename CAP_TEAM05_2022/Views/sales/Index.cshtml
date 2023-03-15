@@ -4,7 +4,21 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
 }
+@section style{
+    <link href="~/Content/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .select2-container--default .select2-results > .select2-results__options {
+            max-height: 300px
+        }
+        .select2-container .select2-selection--single, .select2-container--default .select2-selection--single .select2-selection__rendered, .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 45px;
+        }
 
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 45px;
+        }
+    </style>
+}
 <input type="text" hidden id="URLgetOrderProduct" value="@Url.Action("getCartProduct", "sale_details")" />
 <input type="text" hidden id="URL_OrderList" value="@Url.Action("_OrderList", "sales")" />
 
@@ -229,6 +243,7 @@
     </div>
 </div>
 @section scripts {
+    <script src="~/Scripts/select2.min.js"></script>
     <script type="text/javascript">
     var row;
     $(document).ready(function () {
@@ -294,4 +309,4 @@
         $(".return_product_1").hide();
     }
     </script>
-    }
+}

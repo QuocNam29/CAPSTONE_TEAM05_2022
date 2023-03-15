@@ -216,15 +216,15 @@ namespace CAP_TEAM05_2022.Controllers
             emp.id = customer.id;
             emp.name = customer.name;
             emp.phone = customer.phone;
-            if (customer.type == 0)
+            if (customer.type == 1)
             {
                 emp.note = "Khách mua lẻ";
             }
-            else if (customer.type == 1)
+            else if (customer.type == 2)
             {
                 emp.note = "Khách mua sĩ";
             }
-            else if (customer.type == 2)
+            else if (customer.type == 3)
             {
                 emp.note = "Nhà cung cấp";
             }
@@ -328,7 +328,8 @@ namespace CAP_TEAM05_2022.Controllers
         public JsonResult GetSearchValue(string search)
         {
             var customers = (from customer in db.customers
-                             where customer.name.Contains(search) && customer.status != 3 && customer.type != 2
+                             where customer.name.Contains(search) && customer.status != 3 && customer.type != 3
+
                              select new
                              {
                                  label = customer.name,

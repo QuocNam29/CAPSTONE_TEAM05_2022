@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MilitaryMonitoring.Helpers
+namespace CAP_TEAM05_2022.Helper
 {
     public class Constants
     {

@@ -35,20 +35,32 @@ namespace CAP_TEAM05_2022.Controllers
             }
             return PartialView(HistoryOrder.OrderByDescending(o => o.id).ToList());
         }
-
-        // GET: inventory_order/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult _InventoryList(DateTime? date_Start, DateTime? date_End)
         {
-            if (id == null)
+            if (date_Start == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                date_Start = DateTime.Now.AddDays((-DateTime.Now.Day) + 1);
             }
-            inventory_order inventory_order = db.inventory_order.Find(id);
-            if (inventory_order == null)
+            if (date_End == null)
             {
-                return HttpNotFound();
+                date_End = DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day));
             }
-            return View(inventory_order);
+            var sales = db.inventory_order.Include(i => i.customer).Include(i => i.user).Where(s => s.create_at >= date_Start && s.create_at <= date_End
+                                                    || s.create_at.Value.Day == date_Start.Value.Day
+                                                    && s.create_at.Value.Month == date_Start.Value.Month
+                                                    && s.create_at.Value.Year == date_Start.Value.Year
+                                                    || s.create_at.Value.Day == date_End.Value.Day
+                                                    && s.create_at.Value.Month == date_End.Value.Month
+                                                    && s.create_at.Value.Year == date_End.Value.Year);
+
+            return PartialView(sales.OrderByDescending(c => c.id).ToList());
+        }
+        public ActionResult _InventoryDetails(int inventor_id)
+        {
+            var inventory = db.inventory_order.Find(inventor_id);
+            ViewBag.Inventory = inventory;
+            var OrderDetailsList = db.import_inventory.Where(o => o.inventory_id == inventor_id);
+            return PartialView(OrderDetailsList.ToList());
         }
 
         // GET: inventory_order/Create
@@ -59,12 +71,11 @@ namespace CAP_TEAM05_2022.Controllers
                 Id = x.id,
                 Name = (x.category.name + " - " + x.name + " (" + x.unit + (x.unit_swap != null ? "/" + x.quantity_swap + x.unit_swap : "") + ")").ToString()
             });
-            ViewBag.Customer = new SelectList(db.customers.Where(c => c.type == 2), "id", "name");
+            ViewBag.Customer = new SelectList(db.customers.Where(c => c.type == Helper.Constants.SUPPLIER), "id", "name");
             ViewBag.isCreate = true;
             return View();
         }
-
-       
+    
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "id,code,supplier_id,create_at,update_at,create_by,state,Total,payment,debt")] inventory_order inventory_order, List<import_inventory> importInventory, int method)
@@ -169,67 +180,7 @@ namespace CAP_TEAM05_2022.Controllers
             return View(inventory_order);
         }
 
-        // GET: inventory_order/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            inventory_order inventory_order = db.inventory_order.Find(id);
-            if (inventory_order == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.supplier_id = new SelectList(db.customers, "id", "created_by", inventory_order.supplier_id);
-            ViewBag.create_by = new SelectList(db.users, "id", "name", inventory_order.create_by);
-            return View(inventory_order);
-        }
-
-        // POST: inventory_order/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,code,supplier_id,create_at,update_at,create_by,state,Total,payment,debt")] inventory_order inventory_order)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(inventory_order).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.supplier_id = new SelectList(db.customers, "id", "created_by", inventory_order.supplier_id);
-            ViewBag.create_by = new SelectList(db.users, "id", "name", inventory_order.create_by);
-            return View(inventory_order);
-        }
-
-        // GET: inventory_order/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            inventory_order inventory_order = db.inventory_order.Find(id);
-            if (inventory_order == null)
-            {
-                return HttpNotFound();
-            }
-            return View(inventory_order);
-        }
-
-        // POST: inventory_order/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            inventory_order inventory_order = db.inventory_order.Find(id);
-            db.inventory_order.Remove(inventory_order);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
+        
         protected override void Dispose(bool disposing)
         {
             if (disposing)

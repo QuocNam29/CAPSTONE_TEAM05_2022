@@ -101,10 +101,10 @@
                                                                     <td class="text-center">
                                                                         <div>
                                                                             <p class="text-danger">Sản phẩm cũ:</p>
-                                                                            <p>1<span class="txt-unit"> @detail.unit_current</span></p>
+                                                                            <p>@detail.quantity_current<span class="txt-unit"> @detail.unit_current</span></p>
                                                                             <hr>
                                                                             <p class="text-success">Sản phẩm mới:</p>
-                                                                            <p>2<span class="txt-unit"> @detail.unit_return</span></p>
+                                                                            <p>@detail.quantity_return<span class="txt-unit"> @detail.unit_return</span></p>
                                                                         </div>
                                                                     </td>
                                                                     <td>
@@ -151,6 +151,11 @@
     var row;
     $(document).ready(function () {
         $('#example').DataTable({
+            pagingType: 'full_numbers',
+        });
+    });
+    $(document).ready(function () {
+        $('#example1').DataTable({
             pagingType: 'full_numbers',
         });
     });

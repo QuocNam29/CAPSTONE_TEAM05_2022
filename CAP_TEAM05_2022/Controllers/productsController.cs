@@ -90,8 +90,6 @@ namespace CAP_TEAM05_2022.Controllers
                         }
                         else
                         {
-
-
                             product product = new product();
                             product.name = name_product;
                             product.status = 1;
@@ -125,6 +123,7 @@ namespace CAP_TEAM05_2022.Controllers
                             db.import_inventory.Add(inventory);
                             db.SaveChanges();
                             message = "Tạo sản phẩm thành công";
+                            return Json(new { status, message, id = product.id }, JsonRequestBehavior.AllowGet);
                         }
                     }
                     
@@ -298,7 +297,7 @@ namespace CAP_TEAM05_2022.Controllers
             var emp = new product();
             emp.id = product.id;
             emp.code = product.code;
-            emp.name = product.sell_price.ToString("N0");
+            emp.name = product.name;
             emp.note = "Số lượng tồn: " + product.quantity + product.unit;
             if (product.quantity_swap != null)
             {
@@ -316,6 +315,7 @@ namespace CAP_TEAM05_2022.Controllers
             emp.quantity = product.quantity;
             emp.unit = product.unit;
             emp.unit_swap = product.unit_swap;
+            emp.name_category = product.sell_price.ToString("N0");
             return Json(emp);
         }
 
@@ -335,7 +335,20 @@ namespace CAP_TEAM05_2022.Controllers
             });
             return Json(modifiedData, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult CheckProductNameAvailability(string name)
+        {
+            System.Threading.Thread.Sleep(200);
+            var SeachData = db.products.Where(x => x.name == name).FirstOrDefault();
+            if (SeachData != null)
+            {
+                return Json(1);
+            }
+            else
+            {
+                return Json(0);
+            }
 
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)
