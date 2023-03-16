@@ -24,10 +24,14 @@ namespace CAP_TEAM05_2022.Models
         public string note { get; set; }
         public Nullable<int> sale_id { get; set; }
         public Nullable<int> inventory_id { get; set; }
+        public Nullable<int> return_sale_id { get; set; }
+        public Nullable<int> return_supplier_id { get; set; }
     
         public virtual customer customer { get; set; }
         public virtual inventory_order inventory_order { get; set; }
         public virtual sale sale { get; set; }
         public virtual user user { get; set; }
+        public virtual return_sale return_sale { get; set; }
+        public virtual return_supplier return_supplier { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using CAP_TEAM05_2022.Models;
+using Microsoft.AspNet.Identity;
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -25,6 +26,7 @@ namespace CAP_TEAM05_2022.Controllers
         {
             string message = "";
             bool status = true;
+            DateTime create_at = DateTime.Now;
             try
             {
                 import_inventory inventory = db.import_inventory.Find(id_inventory);
@@ -40,10 +42,11 @@ namespace CAP_TEAM05_2022.Controllers
 
                     return_supplier return_Supplier = new return_supplier();
                     return_Supplier.inventory_id = id_inventory;
+                    return_Supplier.code = $"MTH-{DateTime.Now:ddMMyyHHss}";
                     return_Supplier.quantity = quantity;
                     return_Supplier.note = note;
                     return_Supplier.cost_difference = inventory.price_import * quantity;
-                    return_Supplier.created_at = DateTime.Now;
+                    return_Supplier.created_at = create_at;
                     db.return_supplier.Add(return_Supplier);
 
                     inventory.quantity -= quantity;                   
@@ -51,15 +54,43 @@ namespace CAP_TEAM05_2022.Controllers
 
                     inventory_order inventory_Order = db.inventory_order.Find(inventory.inventory_id);
                     inventory_Order.Total = inventory_Order.import_inventory.Sum(x => x.quantity * x.price_import);
-                    inventory_Order.update_at = DateTime.Now;
-                    db.Entry(inventory_Order).State = EntityState.Modified;
+                    inventory_Order.update_at = create_at;
 
                     product product = db.products.Find(inventory.product_id);
                     product.quantity -= quantity;
                     db.Entry(product).State = EntityState.Modified;
-                    
+
+                    if (inventory_Order.state == 2)
+                    {
+                        var last_customer_Debt = db.customer_debt.Where(d => d.customer_id == inventory_Order.supplier_id).OrderByDescending(o => o.id).FirstOrDefault();
+                        var last_debt = db.debts.Where(d => d.inventory_order.supplier_id == inventory_Order.supplier_id).OrderByDescending(o => o.id).FirstOrDefault();
+                        debt debt = new debt();
+                        debt.inventory_id = inventory_Order.id;
+                        debt.created_by = User.Identity.GetUserId();
+                        debt.created_at = create_at;
+                        debt.paid = (inventory.price_import * quantity);
+                        debt.total = (decimal)(last_debt.total + (inventory.price_import * quantity));
+                        debt.note = note;
+                        debt.remaining = last_debt.remaining - (inventory.price_import * quantity);
+                        debt.return_supplier_id = return_Supplier.id;
+                        db.debts.Add(debt);
+
+                        customer_debt customer_Debt = new customer_debt();
+                        customer_Debt.customer_id = inventory_Order.supplier_id;
+                        customer_Debt.created_by = User.Identity.GetUserId();
+                        customer_Debt.created_at = create_at;
+                        customer_Debt.paid = (inventory.price_import * quantity);
+                        customer_Debt.remaining = last_customer_Debt.remaining - (inventory.price_import * quantity);
+                        customer_Debt.note = note;
+                        customer_Debt.return_supplier_id = return_Supplier.id;
+                        db.customer_debt.Add(customer_Debt);
+
+                    }
+                    db.Entry(inventory_Order).State = EntityState.Modified;
+
+
                     db.SaveChanges();
-                    message = "Tổng tiền hoàn lại cho nhà cung cấp là: "+ (inventory.price_import * quantity).ToString("N0") + "VNĐ";
+                    message = "Tổng tiền thu lại từ nhà cung cấp là: "+ (inventory.price_import * quantity).ToString("N0") + "VNĐ";
                 }
 
             }

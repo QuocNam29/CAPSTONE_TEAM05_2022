@@ -26,10 +26,14 @@ namespace CAP_TEAM05_2022.Models
         public Nullable<System.DateTime> updated_at { get; set; }
         public Nullable<System.DateTime> deleted_at { get; set; }
         public string note { get; set; }
+        public Nullable<int> return_sale_id { get; set; }
+        public Nullable<int> return_supplier_id { get; set; }
     
         public virtual sale sale { get; set; }
         public virtual user user { get; set; }
         public virtual import_inventory import_inventory { get; set; }
         public virtual inventory_order inventory_order { get; set; }
+        public virtual return_sale return_sale { get; set; }
+        public virtual return_supplier return_supplier { get; set; }
     }
 }

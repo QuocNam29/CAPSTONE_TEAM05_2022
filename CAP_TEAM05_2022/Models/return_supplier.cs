@@ -14,13 +14,25 @@ namespace CAP_TEAM05_2022.Models
     
     public partial class return_supplier
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public return_supplier()
+        {
+            this.customer_debt = new HashSet<customer_debt>();
+            this.debts = new HashSet<debt>();
+        }
+    
         public int id { get; set; }
         public int inventory_id { get; set; }
         public int quantity { get; set; }
         public string note { get; set; }
         public decimal cost_difference { get; set; }
         public System.DateTime created_at { get; set; }
+        public string code { get; set; }
     
         public virtual import_inventory import_inventory { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<customer_debt> customer_debt { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<debt> debts { get; set; }
     }
 }

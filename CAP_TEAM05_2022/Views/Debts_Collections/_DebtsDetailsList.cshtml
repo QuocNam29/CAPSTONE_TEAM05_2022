@@ -26,6 +26,7 @@
                                         <th class="text-center">Đã thu</th>
                                         <th class="text-center">Tổng nợ</th>
                                         <th class="text-center">Ngày giao dịch</th>
+                                        <th class="text-center">Ghi chú</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -36,6 +37,7 @@
                                                 <td class="text-center">
                                                     @no
                                                 </td>
+                                               
                                                 <td class="text-center">
                                                     @{ if (item.inventory_id != null)
                                                         {
@@ -48,19 +50,22 @@
                                                     }
                                                 </td>
                                                 <td class="text-center">
-                                                    @(((decimal)item.debt).ToString("N0"))
+                                                    @(item.debt != null ? String.Format("{0:0,00}", item.debt) : "")
                                                 </td>
                                                 <td class="text-center">
-                                                    @(((decimal)item.paid).ToString("N0"))
-                                                </td>                                               
-                                                <td class="text-center">
-                                                    @(((decimal)item.remaining).ToString("N0"))
+                                                    @(item.paid != null ?  String.Format("{0:0,00}", item.paid) : "")
                                                 </td>
                                                 <td class="text-center">
-                                                    @item.created_at
+                                                    @(item.remaining != null ? String.Format("{0:0,00}", item.remaining) : "")
+                                                </td>
+                                                <td class="text-center">
+                                                    @String.Format("{0:HH:mm - dd/MM/yyy}", item.created_at)
+                                                </td>
+                                                <td class="text-center">
+                                                    @(item.return_sale_id != null ? ("Khách hàng trả sản phẩm") :"")
+                                                    @(item.return_supplier_id != null ? ("Trả sản phẩm cho nhà cung cấp (mã hoàn trả : " + item.return_supplier.code +")" ) :"")
                                                 </td>
                                             </tr>
-
                                         }
                                     }
 

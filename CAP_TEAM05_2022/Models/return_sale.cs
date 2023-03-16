@@ -18,6 +18,8 @@ namespace CAP_TEAM05_2022.Models
         public return_sale()
         {
             this.return_details = new HashSet<return_details>();
+            this.customer_debt = new HashSet<customer_debt>();
+            this.debts = new HashSet<debt>();
         }
     
         public int id { get; set; }
@@ -25,9 +27,14 @@ namespace CAP_TEAM05_2022.Models
         public int method { get; set; }
         public System.DateTime create_at { get; set; }
         public decimal difference { get; set; }
+        public string code { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<return_details> return_details { get; set; }
         public virtual sale sale { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<customer_debt> customer_debt { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<debt> debts { get; set; }
     }
 }

@@ -63,6 +63,10 @@
         <AssociationConnector Association="CP25Team05Model.FK_sales_users" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.AspNetUserRoles" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.FK_debts_inventory_order" />
+        <AssociationConnector Association="CP25Team05Model.FK_customer_debt_return_sale" />
+        <AssociationConnector Association="CP25Team05Model.FK_customer_debt_return_supplier" />
+        <AssociationConnector Association="CP25Team05Model.FK_debts_return_sale" />
+        <AssociationConnector Association="CP25Team05Model.FK_debts_return_supplier" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
