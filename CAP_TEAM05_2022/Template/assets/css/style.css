@@ -30415,3 +30415,68 @@ body {
 .click-hover {
     cursor: pointer;
 }
+
+.card__header-thumb {
+    width: 200px;
+  
+
+}
+
+.logo {
+    width: 100%;
+}
+
+.card__header {
+    display: flex;
+    /*justify-content: space-between;*/
+    border-bottom: 1px solid #e9e9e9;
+}
+
+.card__header-info {
+    padding: 0 12px;
+    text-align: center;
+    flex: 1;
+}
+
+.card__info-name {
+    font-size: 22px;
+}
+
+.card__nav-info {
+    text-align: center;
+}
+
+.card__nav-info {
+    padding: 12px 0;
+}
+
+.card__nav-info p {
+    margin: 0;
+}
+
+.card__nav-name {
+    font-size: 20px;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.card__nav-time {
+    padding: 6px 0;
+    font-style: italic;
+}
+
+.card__nav-desc {
+    font-style: italic;
+}
+
+.card__footer-desc {
+    font-weight: bold;
+}
+
+.card__footer-desc span {
+    font-weight: 500;
+}
+
+.card__footer-desc-ladi {
+    text-align: center;
+}

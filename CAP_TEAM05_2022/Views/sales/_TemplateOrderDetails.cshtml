@@ -1,0 +1,154 @@
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.sale_details>
+@using CAP_TEAM05_2022.Models
+@{
+    ViewBag.Title = "_TemplateOrderDetails";
+    int no = 0;
+    var Order = (sale)ViewBag.Order;
+    Layout = null;
+}
+<style>
+</style>
+<link href="~/Template/assets/css/style.css" rel="stylesheet" />
+
+    <div class="pcoded-content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body table-border-style">    
+                                <div class="card__header">
+                                    <div class="card__header-thumb">
+                                        <img src="@Url.Content("~/Template/assets/images/logoTT.png")" alt="" class="logo">
+                                    </div>
+                                    <div class="card__header-info">
+                                        <h3 class="card__info-name"> DOANH NGHIỆP BUÔN BÁN PHÂN BÓN THUỐC TRỪ SÂU TẤN THÀNH</h3>
+                                        <p>Địa chỉ: Tổ 20, ấp Tân Trung B, xã Tân Hưng, huyện Tân Châu, tỉnh Tây Ninh</p>
+                                        <p>Điện thoại: 0854xxxxxx</p>
+                                    </div>
+                                </div>
+                                <div class="card__nav">
+                                    <div class="card__nav-info">
+                                        <h4 class="card__nav-name">HÓA ĐƠN BÁN HÀNG</h4>
+                                        <p class="card__nav-time">Ngày @Order.created_at.Value.Day Tháng @Order.created_at.Value.Month Năm @Order.created_at.Value.Year</p>
+                                        <p class="card__nav-desc">Mã đơn hàng: @Order.code</p>
+                                    </div>
+                                </div>
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <td class="text" colspan="5">
+                                                <p class="txt-15">Nhân viên bán: @Order.user.name</p>
+                                                <p class="txt-15">Số ĐT: @Order.user.phone</p>
+                                                <p class="txt-15">Ngày tạo đơn:  @String.Format("{0:HH:mm - dd/MM/yyy}", Order.created_at)</p>
+                                            </td>
+                                            <td class="text" colspan="2">
+                                                <p class="txt-15">Mã khách hàng: @Order.customer.code</p>
+                                                <p class="txt-15">Người mua: @Order.customer.name</p>
+                                                <p class="txt-15">Số ĐT: @Order.customer.phone</p>
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">STT</th>
+                                            <th class="text-center">Mã sản phẩm</th>
+                                            <th class="text-center">Tên sản phẩm</th>
+                                            <th class="text-center">Đơn giá</th>
+                                            <th class="text-center">Số lượng</th>
+                                            <th class="text-center">Thành tiền</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            no++;
+                                            <tr>
+                                                <td class="text-center">
+                                                    @no
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.product.code
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.product.name
+                                                </td>
+
+                                                <td class="text-center">
+                                                    @String.Format("{0:0,00}", item.price / item.sold)₫/<span class="txt-unit">@item.unit</span>
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.sold<span class="txt-unit"> @item.unit</span>
+                                                </td>
+                                                <td class="text-center">
+                                                    @String.Format("{0:0,00}", item.price)₫
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="4" class="text-right">
+                                            </td>
+                                            <td colspan="2" class="text-left">
+                                                <div>
+                                                    Hình thức:
+                                                    <b>
+                                                        <span class="text">
+                                                            @(Order.method == 1 ? "Đã thanh toán" : "Ghi nợ")
+                                                        </span>
+                                                    </b>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4" class="text-right">
+                                            </td>
+
+                                            <td colspan="2" class="text-left">
+                                                <div class="total-div">
+                                                    <div>
+                                                        Thành tiền:
+                                                        <b>
+                                                            <span class="text">
+                                                                @String.Format("{0:0,00}", Order.total)₫
+                                                            </span>
+                                                        </b>
+                                                    </div>
+                                                    @if (Order.prepayment >= 0)
+                                                    {
+                                                        <div>
+                                                            Đã thanh toán:
+                                                            <span class="text-success">
+                                                                @String.Format("{0:0,00}", Order.prepayment)₫
+                                                            </span>
+                                                        </div>
+                                                        <div>
+                                                            Còn nợ:
+                                                            <span class="text-danger">
+                                                                @String.Format("{0:0,00}", Order.total - Order.prepayment)₫
+                                                            </span>
+                                                        </div>
+                                                    }
+
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                                <div class="card_footer">
+                                    <p class="card__footer-desc">Tra cứu tại Website: <a href="https://cntttest.vanlanguni.edu.vn:18081/CP25Team05/LookUpOrder">https://cntttest.vanlanguni.edu.vn:18081/CP25Team05/LookUpOrder</a> -<span> Mã tra cứu:</span> @Order.code</p>
+                                   @* <p class="card__footer-desc card__footer-desc-ladi">(abc)</p>
+                                    <p class="card__footer-desc card__footer-desc-ladi">(abc)</p>*@
+                                </div>
+                            </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+

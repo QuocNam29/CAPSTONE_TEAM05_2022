@@ -2,6 +2,7 @@
 @{
     int no = 0;
 }
+<input type="text" hidden id="URLTestPrint" value="@Url.Action("_TemplateOrderDetails", "sales")" />
 <table id="example" class="table table-hover">
     <thead>
         <tr>
@@ -66,8 +67,8 @@
                             </i>
                         </span>
                     </button>
-                  
-                    <button title="In hoá đơn" class="btn btn-secondary" onclick="PrintOrder('@item.id', '@item.code', '@item.method', '@String.Format("{0:0,00}",item.total)', '@item.created_at', '@item.customer.code', '@String.Format("{0:0,00}",item.prepayment)')">
+
+                    <button title="In hoá đơn" class="btn btn-secondary" onclick="PrintOrder('@item.id')">
                         <span class="pcoded-micon">
                             <i class="fas fa-print">
                             </i>

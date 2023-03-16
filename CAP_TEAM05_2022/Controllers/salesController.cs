@@ -21,18 +21,17 @@ namespace CAP_TEAM05_2022.Controllers
 
             return View();
         }
+        public ActionResult _TemplateOrderDetails(int id)
+        {
+            var sale = db.sales.Find(id);
+            ViewBag.Order = sale;
+            var OrderDetailsList = db.sale_details.Where(o => o.sale_id == id);
+            return PartialView(OrderDetailsList.ToList());
+        }
+
         public ActionResult _OrderDetailsList(int order_id)
         {
-            var sale = db.sales.Find(order_id);
-            if (sale != null)
-            {
-                TempData["order_code"] = sale.code;
-                TempData["order_total"] = sale.total;
-                if (sale.prepayment != null)
-                {
-                    TempData["order_prepayment"] = sale.prepayment;
-                }
-            }
+            var sale = db.sales.Find(order_id);           
             ViewBag.Order = sale;
             var OrderDetailsList = db.sale_details.Where(o => o.sale_id == order_id);
             return PartialView(OrderDetailsList.ToList());

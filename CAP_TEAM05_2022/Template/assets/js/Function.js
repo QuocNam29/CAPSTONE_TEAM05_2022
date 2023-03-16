@@ -798,17 +798,19 @@ $('#URLCustomerList')
     .keypress();
 $("#filter_type").change(function () {
     var type = $("#filter_type").val();
-    GetList_Customer(type)
+    GetList_Customer(type);
+    TestPrint();
 });
 
 function GetList_Customer(type) {
     $.ajax({
         url: URLCustomerList,
         data: {
-            type: type,
-          
+            type,
+
         }
     }).done(function (result) {
+
         $('#dataContainer').html(result);
         $('#example').DataTable();
     }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
@@ -816,6 +818,35 @@ function GetList_Customer(type) {
         console.log(errorThrown)
         Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
     });
+}
+
+$('#URLTestPrint')
+    .keypress(function () {
+        URLTestPrint = $(this).val();
+    })
+    .keypress();
+function PrintOrder(id) {
+        $.ajax({
+            url: URLTestPrint,
+            data: {
+                id: id
+            }, 
+            async: false,
+        }).done(function (result) {
+            var WinPrint = window.open('', '', 'width=1200,height=800');
+            WinPrint.document.write('<html><head>');
+            WinPrint.document.write('<link href="/Template/assets/css/style.css" rel="stylesheet" />');
+/*            WinPrint.document.write('<link href="/CP25Team05/Template/assets/css/style.css" rel="stylesheet" />');
+*/            WinPrint.document.write('</head><body onload="print();">');
+            WinPrint.document.write(result);
+            WinPrint.document.write('</body></html>');
+            WinPrint.document.close();
+            WinPrint.focus();        
+        }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log(textStatus)
+            console.log(errorThrown)
+            Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
+        });
 }
 //----------------------LOAD FORM EDIT CUSTOMER---------------------------------------
 
@@ -1316,8 +1347,7 @@ function Payment_order() {
                         }).then((result) => {
                             /* Read more about isConfirmed, isDenied below */
                             if (result.isConfirmed) {
-                                PrintOrder(response.sale_id, response.sale_code, response.sale_method,
-                                    response.sale_total, response.sale_create, $('#customer_code').val(), response.sale_prepayment);                            }
+                                PrintOrder(response.sale_id);                            }
                         })
                     } else {
                         Swal.fire('Lỗi !', response.message, 'error');                 
@@ -1681,128 +1711,6 @@ function openWin() {
     myWindow.focus();
 }
 
-function PrintOrder(id, code, method, total, create_at, customer_code, prepayment) {
-    
-    var s = "";
-    var debt = "";
-
-    $.ajax({
-        type: "GET",
-        async: false,
-        url: URLgetOrderProduct,
-        data: { id: id },
-        success: function (data) {
-
-            for (var i = 0; i < data.length; i++) {
-                if (data[i].cartNote != null) {
-                    note = data[i].cartNote;
-                }
-                s += `<tr>
-                        <td class="text-center">`+ (i + 1) + `</td>
-                        <td>`+ data[i].cartCode + `</td>
-                        <td>`+ data[i].cartName + `</td>
-                        <td class="text-center">`+ data[i].cartPrice.toLocaleString() + `₫/<span class="txt-unit">` + data[i].cartUnit + `</span>` + `</td>
-                        <td class="text-center">`+ data[i].cartQuantity + `<span class="txt-unit">` + data[i].cartUnit + `</span>` + `</td>
-                        <td class="text-center">`+ data[i].cartTotal.toLocaleString() + `₫</td>
-                    </tr>`
-            }
-        }
-    });
-    if (method == 1) {
-        var form_method = "Đã thanh toán";
-    } else if (method == 2) {
-        var form_method = "Ghi nợ";
-        var prepayment_1 = prepayment.replace(/\,/g, '').replace(/\./g, '');
-        var total_1 = total.replace(/\,/g, '').replace(/\./g, '');
-        var total_debt = total_1 - prepayment_1
-        debt = ` <tr>
-                            <td colspan="5" class="text-right">
-                                <h5> Đã thanh toán: </h5>
-                            </td>
-                            <td colspan="1" class="text-left">
-                                <h5>
-             `+ prepayment +`₫
-                                </h5>
-                            </td>
-                        </tr>
-                         <tr>
-                            <td colspan="5" class="text-right">
-                                <h5>còn lại</h5>
-                            </td>
-                            <td colspan="1" class="text-left">
-                                <h5>
-            `+ total_debt.toLocaleString() +`₫
-                                </h5>
-                            </td>
-                        </tr>`;
-    }
-
-    var myWindow = window.open('', '', 'width=1200,height=800');
-/*      myWindow.document.write('<link href="/Template/assets/css/style.css" rel="stylesheet" />'); 
-*/    myWindow.document.write('<link href="/CP25Team05/Template/assets/css/style.css" rel="stylesheet" />');
-    myWindow.document.write(`<div class="col-md-12">
-    <div class="card">
-        <div class="card-header">
-            <h4 class="text-center">DOANH NGHIỆP TẤN THÀNH</h4>
-            <h6 class="text-center">Địa chỉ: 11/43 Ấp Tân Trung B, xã Tân Hưng, Huyện Tân Châu, Tỉnh Tây Ninh</h6>
-            <h6 class="text-center">SDT: 0382399026</h6>
-            <hr>
-         <h4 class="text-center">HOÁ ĐƠN BÁN HÀNG</h4>
-        </div>
-        <div class="card-body table-border-style">
-            <div class="table-responsive">
-                <div class="row">
-                    <div class="col-md-6">
-                        <p>Ngày tạo đơn: ` + create_at + `</p>
-                    </div>
-                    <div class="col-md-6">
-                        <p class="text-right">Mã hóa đơn: `+ code + `</p>
-                        <p class="text-right">Mã khách hàng: `+ customer_code + `</p>
-                    </div>
-                </div>
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                           <th class="text-center">STT</th>
-                                        <th class="text-center">Mã sản phẩm</th>
-                                        <th class="text-center">Tên sản phẩm</th>
-                                        <th class="text-center">Đơn giá</th>
-                                        <th class="text-center">Số lượng</th>
-                                        <th class="text-center">Thành tiền</th>
-                        </tr>
-                    </thead>
-                        <tbody>` + s + `</tbody >
-                    <tfoot>
-                       
-                        <tr>
-                            <td colspan="5" class="text-right">
-                                <h5>Hình thức</h5>
-                            </td>
-                            <td colspan="1" class="text-left">
-                               `+ form_method +`
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="5" class="text-right">
-                                <h5>Thành tiền</h5>
-                            </td>
-                            <td colspan="1" class="text-left">
-                                <h5>
-                                    `+ total.toLocaleString() + `₫
-                                </h5>
-                            </td>
-                        </tr>`+debt+`
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>`);
-    
-    myWindow.print();
-    myWindow.document.close();
-    myWindow.focus();
-}
 //---------------------------flatpickr---------------
 flatpickr(".flatpickr", {});
 
@@ -1843,8 +1751,7 @@ $('.UserForm').submit(function (e) {
 function GetList_UserList() {
     $.ajax({
         url: URL_UserList,
-        data: {
-           
+        data: {         
         }
     }).done(function (result) {
         $('#dataContainer').html(result);
