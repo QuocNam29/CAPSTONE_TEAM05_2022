@@ -73,6 +73,8 @@
         </div>
     </div>
 </section>
+<div id="dataContainer2">
+</div>
 @section scripts {
     <script>
         $(document).ready(function () {
@@ -99,7 +101,7 @@
                 Swal.fire('Lỗi', 'Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc !', 'error')
             }
         });
-       
+
         function GetList_Inventory(date_start, date_end) {
 
             $.ajax({
@@ -111,6 +113,31 @@
             }).done(function (result) {
                 $('#dataContainer3').html(result);
                 $('#example').DataTable()
+            }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(textStatus)
+                console.log(errorThrown)
+                alert("Something Went Wrong, Try Later");
+            });
+        }
+        function GetList_InventoryDetails(id, method) {
+            $.ajax({
+                url: '@Url.Action("_InventoryDetails", "inventory_order")',
+                data: {
+                    inventor_id: id,
+
+                }
+            }).done(function (result) {
+                $('#dataContainer2').html(result);
+                if (method ==1 ) {
+                    $('#detailModal.close').css('display', 'none');
+                    $('#detailModal').modal('show');
+                }
+                else if (method == 2) {
+                    $('#productSelectModal.close').css('display', 'none');
+                    $('#productSelectModal').modal('show');
+                }
+
+
             }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log(textStatus)
                 console.log(errorThrown)

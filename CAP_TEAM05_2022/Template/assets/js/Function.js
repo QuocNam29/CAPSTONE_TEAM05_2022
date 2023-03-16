@@ -1846,7 +1846,10 @@ function Get_exchangeSupplier(id, product_name, quantity_stock, supplier, price_
     var price_product = price_product_stock.replace(/\,/g, '').replace(/\./g, '');
     var total = quantity * price_product;
     $("#cost_return").val(total.toLocaleString());
-          
+
+    $('#productSelectModal.close').css('display', 'none');
+    $('#productSelectModal').modal('hide');
+
     $('#exchangeSupplierModal .close').css('display', 'none');
     $('#exchangeSupplierModal').modal('show');
        

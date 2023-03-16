@@ -161,7 +161,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary me-1 mb-1">Trờ lại</button>
+                        <button type="button" class="btn btn-secondary me-1 mb-1"  data-dismiss="modal"> Hủy</button>
                         <button type="submit" class="btn btn-primary me-1 mb-1">Lưu</button>
                     </div>
                 </div>
@@ -179,50 +179,7 @@
             pagingType: 'full_numbers',
         });
     });
-    $('.Return_Supplier').submit(function (e) {
-        var form = $(this);
-
-        // Check if form is valid then submit ajax
-        if (form[0].checkValidity()) {
-            e.preventDefault();
-            var url = form.attr('action');
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: form.serialize(),
-                success: function (data) {
-                    // Hide bootstrap modal to prevent conflict
-                    $('.modal').modal('hide');
-
-                    if (data.status) {
-                        // Refresh table data
-                        sweetAlert
-                            ({
-                                title: "Thành công !",
-                                text: data.message,
-                                type: "success"
-                            })
-
-                        form[0].reset();
-                        form.removeClass('was-validated');
-                    } else {
-                        swal({
-                            title: 'Lỗi !',
-                            text: data.message,
-                            type: 'error',
-
-                        }); // Show bootstrap modal again
-                    }
-                }
-            });
-        }
-    });
-    $("#quantity").change(function () {
-        var quantity = $("#quantity").val();
-        var price_product = $("#price_product_stock").val().replace(/\,/g, '').replace(/\./g, '');
-        var total = quantity * price_product;
-        $("#cost_return").val(total.toLocaleString());
-    });
+  
 </script>
 <script type="text/javascript">
     var row;

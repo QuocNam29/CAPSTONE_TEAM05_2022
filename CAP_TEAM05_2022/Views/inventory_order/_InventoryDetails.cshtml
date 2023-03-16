@@ -1,11 +1,11 @@
-﻿@model IEnumerable<CAP_TEAM05_2022.Models.sale_details>
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.import_inventory>
 @using CAP_TEAM05_2022.Models
 
 @{
     int no = 0;
     int no_return = 0;
 
-    var Order = (sale)ViewBag.Order;
+    var Inventory = (inventory_order)ViewBag.Inventory;
 
 }
 <div id="detailModal" tabindex="-1" aria-labelledby="detailModalTitle" class="modal fade bd-example-modal-lg" style="display: none;" aria-hidden="true">
@@ -13,7 +13,7 @@
 
         <div class="modal-content">
             <div class="modal-header bg-primary">
-                <h5 id="detailModalTitle" class="modal-title white">Chi tiết @Order.code</h5>
+                <h5 id="detailModalTitle" class="modal-title white">ĐƠN NHẬP HÀNG - Chi tiết @Inventory.code</h5>
                 <button type="button" data-dismiss="modal" aria-label="Close" class="close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -22,27 +22,29 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="table-responsive">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <p class="txt-15">Nhân viên bán: @Order.user.name</p>
-                                    <p class="txt-15">Số ĐT: @Order.user.phone</p>
-                                    <p class="txt-15">Ngày tạo đơn:  @String.Format("{0:HH:mm - dd/MM/yyy}", Order.created_at)</p>
-                                </div>
-                                <div class="col-md-6">
-                                    <p class="txt-15">Mã khách hàng: @Order.customer.code</p>
-                                    <p class="txt-15">Người mua: @Order.customer.name</p>
-                                    <p class="txt-15">Số ĐT: @Order.customer.phone</p>
-                                </div>
-                            </div>
-
                             <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <td class="text" colspan="4">
+                                            <p class="txt-15">Nhân viên nhập hàng: @Inventory.user.name</p>
+                                            <p class="txt-15">Số ĐT: @Inventory.user.phone</p>
+                                            <p class="txt-15">Ngày tạo đơn:  @String.Format("{0:HH:mm - dd/MM/yyy}", Inventory.create_at)</p>
+                                        </td>
+                                        <td class="text" colspan="2">
+                                            <p class="txt-15">Mã nhà cung cấp: @Inventory.customer.code</p>
+                                            <p class="txt-15">Tên nhà cung cấp: @Inventory.customer.name</p>
+                                            <p class="txt-15">Số ĐT: @Inventory.customer.phone</p>
+                                            <p class="txt-15">Địa chỉ: @Inventory.customer.address</p>
+                                        </td>
+                                    </tr>
+                                </thead>
                                 <thead>
                                     <tr>
                                         <th class="text-center">STT</th>
                                         <th class="text-center">Mã sản phẩm</th>
                                         <th class="text-center">Tên sản phẩm</th>
-                                        <th class="text-center">Đơn giá</th>
                                         <th class="text-center">Số lượng</th>
+                                        <th class="text-center">Đơn giá nhập</th>
                                         <th class="text-center">Thành tiền</th>
                                     </tr>
                                 </thead>
@@ -50,30 +52,49 @@
                                     @foreach (var item in Model)
                                     {
                                         no++;
-                                        <tr>
-                                            <td class="text-center">
-                                                @no
-                                            </td>
-                                            <td class="text-center">
-                                                @item.product.code
-                                            </td>
-                                            <td class="text-center">
-                                                @item.product.name
-                                            </td>
-
-                                            <td class="text-center">
-                                                @String.Format("{0:0,00}", item.price / item.sold)VNĐ/<span class="txt-unit">@item.unit</span>
-                                            </td>
-                                            <td class="text-center">
-                                                @item.sold<span class="txt-unit"> @item.unit</span>
-                                            </td>
-                                            <td class="text-center">
-                                                @String.Format("{0:0,00}", item.price)VNĐ
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td class="text-center">
+                                            @no
+                                        </td>
+                                        <td class="text-center">
+                                            @item.product.code
+                                        </td>
+                                        <td class="text-center">
+                                            @item.product.name
+                                        </td>
+                                        <td class="text-center">
+                                            @item.quantity<span class="txt-unit"> @item.product.unit</span>
+                                            @if (item.product.unit_swap != null)
+                                            {
+                                                <div>
+                                                    <span>
+                                                        1<span class="txt-unit">@item.product.unit</span> = @item.product.quantity_swap<span class="txt-unit">@item.product.unit_swap</span>
+                                                    </span>
+                                                </div>
+                                            }
+                                        </td>
+                                        <td class="text-center">
+                                            @(((decimal)item.price_import).ToString("N0")) VNĐ / <span class="txt-unit">@item.product.unit</span>
+                                        </td>
+                                        <td class="text-center">
+                                            @(((decimal)(item.price_import * item.quantity)).ToString("N0")) VNĐ
+                                        </td>
+                                    </tr>
                                     }
                                 </tbody>
                                 <tfoot>
+                                    <tr>
+                                        <td colspan="4" class="text-right">
+                                        </td>
+                                        <td colspan="2" class="text-left">
+                                            <div>
+                                                Hình thức:
+                                                <span class="text-@(Inventory.Total == Inventory.payment ? "info" : Inventory.state == 1 ? "success" : "danger")">
+                                                    @(Inventory.state == 1 ? "Đã thanh toán" : "Ghi nợ") @((Inventory.Total == Inventory.payment ? "(Đã thanh toán xong)" : ""))
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td colspan="4" class="text-right">
                                         </td>
@@ -84,27 +105,25 @@
                                                     Thành tiền:
                                                     <b>
                                                         <span class="text">
-                                                            @String.Format("{0:0,00}", Order.total)VNĐ
+                                                            @(((decimal)Inventory.Total).ToString("N0")) VNĐ
                                                         </span>
                                                     </b>
                                                 </div>
-                                                @if (Order.prepayment >= 0)
+                                                @if (Inventory.payment >= 0)
                                                 {
                                                     <div>
                                                         Đã thanh toán:
                                                         <span class="text-success">
-                                                            @String.Format("{0:0,00}", Order.prepayment)VNĐ
+                                                            @(((decimal)Inventory.payment).ToString("N0")) VNĐ
                                                         </span>
                                                     </div>
                                                     <div>
                                                         Còn nợ:
                                                         <span class="text-danger">
-                                                            @String.Format("{0:0,00}", Order.total - Order.prepayment)VNĐ
+                                                            @(((decimal)(Inventory.Total - Inventory.payment)).ToString("N0")) VNĐ
                                                         </span>
                                                     </div>
                                                 }
-
-
                                             </div>
                                         </td>
                                     </tr>
@@ -118,3 +137,205 @@
 
     </div>
 </div>
+<div id="productSelectModal" tabindex="-1" role="dialog" aria-labelledby="productSelectModalTitle" aria-hidden="true" class="modal fade bd-example-modal-lg">
+    <div role="document" class="modal-dialog modal-lg">
+        <form>
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 id="productSelectModalTitle" class="modal-title white">Chon sản phẩm đổi trả</h5>
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-hover ">
+                                    <thead>
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Mã sản phẩm</th>
+                                            <th>Tên sản phẩm</th>
+                                            <th class="text-center">Số lượng nhập</th>
+                                            <th class="text-center">Đơn giá nhập</th>
+                                            <th class="text-center">Thành tiền</th>
+                                            <th></th>
+                                        </tr>
+
+
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            no_return++;
+
+                                            <tr>
+                                                <td>@no_return</td>
+                                                <td>@item.product.code</td>
+                                                <td>@item.product.name</td>
+                                                <td class="text-center">
+                                                    <div>@item.quantity<span class="txt-unit">@item.product.unit</span></div>
+                                                    @if (@item.product.unit_swap != null)
+                                                    {
+                                                        <div>
+                                                            <span>
+                                                                1<span class="txt-unit">@item.product.unit</span> = @item.product.quantity_swap<span class="txt-unit">@item.product.unit_swap</span>
+                                                            </span>
+                                                        </div>
+                                                    }
+                                                </td>
+                                                <td class="text-center">@item.price_import.ToString("N0")</td>
+                                                <td class="text-center">@((item.price_import * (item.quantity)).ToString("N0")) </td>
+                                                <td class="text-center">
+                                                    <button type="button" class="btn btn-danger" onclick="Get_exchangeSupplier('@item.id', '@item.product.name', '@(item.quantity-item.sold + " " + item.product.unit)', '@item.customer.name', '@item.price_import.ToString("N0")')">Trả sản phẩm</button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="exchangeSupplierModal" tabindex="-1" aria-labelledby="exchangeSupplierModalTitle" class="modal fade bd-example-modal-lg" aria-modal="true" role="dialog">
+    <div role="document" class="modal-dialog modal-lg">
+        <form class="needs-validation Return_Supplier" method="post" action="@Url.Action("Create_returnSupplier", "return_supplier")" novalidate>
+            <input type="number" id="id_inventory" name="id_inventory" hidden class="form-control">
+
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 id="exchangeSupplierModalTitle" class="modal-title white">Trả sản phẩm</h5>
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Sản phẩm
+                                </label>
+                                <input type="text" disabled id="productName_inventory" class="form-control">
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Nhà cung cấp
+                                </label>
+                                <input type="text" disabled id="name_supplier" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Số lượng còn
+                                </label>
+                                <div class="position-relative">
+                                    <input type="text" disabled id="quantity_stock" class="form-control">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Đơn giá sản phẩm
+                                </label>
+                                <div class="position-relative">
+                                    <input type="text" disabled id="price_product_stock" class="form-control">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Số lượng trả <span class="text-danger">(*)</span>
+                                </label>
+                                <div class="position-relative">
+                                    <input type="number" name="quantity" id="quantity" value="1" min="1" class="form-control" placeholder="Số lượng trả" required>
+                                    <div class="error-quantity text-danger mb-3 d-none">
+                                        Vui lòng nhập số lượng lớn hơn 0
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Số tiền hoàn lại cho nhà cung cấp
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group-append">
+                                        <span id="basic-addon1" class="input-group-text spCollect">
+                                            Hoàn lại:
+                                        </span>
+                                    </div>
+                                    <input type="text" id="cost_return" disabled="disabled" class="form-control" value="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label>
+                                Ghi chú:
+                            </label>
+                            <div class="form-group">
+                                <textarea name="note" id="note" cols="10" rows="5" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary me-1 mb-1"  data-dismiss="modal">Trờ lại</button>
+                        <button type="submit" class="btn btn-primary me-1 mb-1">Lưu</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $('.Return_Supplier').submit(function (e) {
+        var form = $(this);
+        // Check if form is valid then submit ajax
+        if (form[0].checkValidity()) {
+            e.preventDefault();
+            var url = form.attr('action');
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: form.serialize(),
+                success: function (data) {
+                    // Hide bootstrap modal to prevent conflict
+                    $('.modal').modal('hide');
+
+                    if (data.status) {
+                        // Refresh table data
+                        var date_start = $("#inventory_DateStart").val();
+                        var date_end = $("#inventory_DateEnd").val();
+                        GetList_Inventory(date_start, date_end);
+                        Swal.fire('Thành công !', data.message, 'success')
+
+                        form[0].reset();
+                        form.removeClass('was-validated');
+                    } else {
+                        Swal.fire('Lỗi !', data.message, 'error')
+                    }
+                }
+            });
+        }
+    });
+    $("#quantity").change(function () {
+        var quantity = $("#quantity").val();
+        var price_product = $("#price_product_stock").val().replace(/\,/g, '').replace(/\./g, '');
+        var total = quantity * price_product;
+        $("#cost_return").val(total.toLocaleString());
+    });
+</script>

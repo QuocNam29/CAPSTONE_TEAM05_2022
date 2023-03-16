@@ -43,6 +43,7 @@ namespace CAP_TEAM05_2022.Controllers
                                                     && s.created_at.Value.Year == date_end.Value.Year);
             return PartialView(import_inventory.OrderByDescending(i => i.id).ToList());
         }
+
         public ActionResult Create()
         {
             ViewBag.Uniform = db.products.OrderByDescending(o => o.category_id).Select(x => new
