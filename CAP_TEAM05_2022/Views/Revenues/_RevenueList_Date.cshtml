@@ -26,7 +26,7 @@
                     @foreach (var item in Model)
                     {
                         no1++;
-                    <tr class="click-hover" onclick="GetList_orderDetails('@item.id', 1)">
+                    <tr class="click-hover" onclick="GetList_orderDetails('@item.id')">
                         <td class="text-center">
                             @no1
                         </td>
@@ -42,10 +42,10 @@
                             @item.total.ToString("N0")VNĐ
                         </td>
                         <td class="text-center">
-                            @(item.prepayment!=null ? (String.Format("{0:0,00}", item.prepayment)+'VNĐ') : "")
+                            @(item.prepayment!=null ? (((decimal)item.prepayment).ToString("N0") + " VNĐ") : "")
                         </td>
                         <td class="text-center">
-                            @(item.prepayment!=null ? (String.Format("{0:0,00}", (item.total - item.prepayment)) +'VNĐ') : "")
+                            @(item.prepayment!=null ? (((decimal)(item.total - item.prepayment)).ToString("N0") + " VNĐ") : "")
                         </td>
                         <td class="text-center">
                             <span class="text-@(item.method == 1 ? "success" : "danger")">@(item.method == 1 ? "Đã thanh toán" : "Ghi nợ")</span>

@@ -304,12 +304,10 @@
                     $('#productSelectModal.close').css('display', 'none');
                     $('#productSelectModal').modal('show');
                 }
-
-
             }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log(textStatus)
                 console.log(errorThrown)
-                alert("Something Went Wrong, Try Later");
+                Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
             });
     }
     </script>

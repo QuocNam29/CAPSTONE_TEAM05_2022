@@ -20,21 +20,22 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="table-responsive">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <p class="txt-15">Nhân viên bán: @Order.user.name</p>
-                                    <p class="txt-15">Số ĐT: @Order.user.phone</p>
-                                    <p class="txt-15">Ngày tạo đơn:  @String.Format("{0:HH:mm - dd/MM/yyy}", Order.created_at)</p>
-                                </div>
-                                <div class="col-md-6">
-                                    <p class="txt-15">Mã khách hàng: @Order.customer.code</p>
-                                    <p class="txt-15">Người mua: @Order.customer.name</p>
-                                    <p class="txt-15">Số ĐT: @Order.customer.phone</p>
-                                </div>
-                            </div>
-
+                        <div class="table-responsive">                           
                             <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <td class="text" colspan="4">
+                                            <p class="txt-15">Nhân viên bán: @Order.user.name</p>
+                                            <p class="txt-15">Số ĐT: @Order.user.phone</p>
+                                            <p class="txt-15">Ngày tạo đơn:  @String.Format("{0:HH:mm - dd/MM/yyy}", Order.created_at)</p>
+                                        </td>
+                                        <td class="text" colspan="2">
+                                            <p class="txt-15">Mã khách hàng: @Order.customer.code</p>
+                                            <p class="txt-15">Người mua: @Order.customer.name</p>
+                                            <p class="txt-15">Số ĐT: @Order.customer.phone</p>
+                                        </td>
+                                    </tr>
+                                </thead>
                                 <thead>
                                     <tr>
                                         <th class="text-center">STT</th>
