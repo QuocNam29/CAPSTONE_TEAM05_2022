@@ -77,6 +77,18 @@
                                     <tr>
                                         <td colspan="4" class="text-right">
                                         </td>
+                                        <td colspan="2" class="text-left">
+                                            <div>
+                                                Hình thức:
+                                                    <span class="text-@(Order.total == Order.prepayment ? "info" : Order.method == 1 ? "success" : "danger")">
+                                                        @(Order.method == 1 ? "Đã thanh toán" : "Ghi nợ") @((Order.total == Order.prepayment ? "(Đã thanh toán xong)" : ""))
+                                                    </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" class="text-right">
+                                        </td>
 
                                         <td colspan="2" class="text-left">
                                             <div class="total-div">
@@ -84,7 +96,7 @@
                                                     Thành tiền:
                                                     <b>
                                                         <span class="text">
-                                                            @String.Format("{0:0,00}", Order.total)VNĐ
+                                                            @Order.total.ToString("N0") VNĐ
                                                         </span>
                                                     </b>
                                                 </div>
@@ -93,13 +105,13 @@
                                                     <div>
                                                         Đã thanh toán:
                                                         <span class="text-success">
-                                                            @String.Format("{0:0,00}", Order.prepayment)VNĐ
+                                                            @(((decimal)Order.prepayment).ToString("N0")) VNĐ
                                                         </span>
                                                     </div>
                                                     <div>
                                                         Còn nợ:
                                                         <span class="text-danger">
-                                                            @String.Format("{0:0,00}", Order.total - Order.prepayment)VNĐ
+                                                            @(((decimal)(Order.total - Order.prepayment)).ToString("N0")) VNĐ
                                                         </span>
                                                     </div>
                                                 }

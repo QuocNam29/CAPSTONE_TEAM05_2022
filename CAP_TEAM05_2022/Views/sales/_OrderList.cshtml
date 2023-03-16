@@ -33,18 +33,11 @@
                     @String.Format("{0:0,00}", item.total)
                 </td>
 
-                @if (item.method == 1)
-                {
+               
                     <td class="text-center">
-                        Đã thanh toán
-                    </td>
-                }
-                else if (item.method == 2)
-                {
-                    <td class="text-center">
-                        Ghi nợ
-                    </td>
-                }
+                        <span class="text-@(item.total == item.prepayment ? "info" : item.method == 1 ? "success" : "danger")">
+                            @(item.method == 1 ? "Đã thanh toán" : "Ghi nợ") @((item.total == item.prepayment ? "(Đã thanh toán xong)" : ""))
+                        </span>                    </td>              
 
 
 

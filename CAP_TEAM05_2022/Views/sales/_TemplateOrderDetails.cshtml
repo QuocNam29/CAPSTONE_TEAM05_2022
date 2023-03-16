@@ -94,11 +94,9 @@
                                             <td colspan="2" class="text-left">
                                                 <div>
                                                     Hình thức:
-                                                    <b>
-                                                        <span class="text">
-                                                            @(Order.method == 1 ? "Đã thanh toán" : "Ghi nợ")
-                                                        </span>
-                                                    </b>
+                                                    <span class="text-@(Order.total == Order.prepayment ? "info" : Order.method == 1 ? "success" : "danger")">
+                                                        @(Order.method == 1 ? "Đã thanh toán" : "Ghi nợ") @((Order.total == Order.prepayment ? "(Đã thanh toán xong)" : ""))
+                                                    </span>
                                                 </div>
                                             </td>
                                         </tr>

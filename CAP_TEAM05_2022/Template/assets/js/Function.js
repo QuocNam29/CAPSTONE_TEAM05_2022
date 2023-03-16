@@ -835,9 +835,7 @@ function PrintOrder(id) {
         }).done(function (result) {
             var WinPrint = window.open('', '', 'width=1200,height=800');
             WinPrint.document.write('<html><head>');
-            WinPrint.document.write('<link href="/Template/assets/css/style.css" rel="stylesheet" />');
-/*            WinPrint.document.write('<link href="/CP25Team05/Template/assets/css/style.css" rel="stylesheet" />');
-*/            WinPrint.document.write('</head><body onload="print();">');
+            WinPrint.document.write('</head><body onload="print();">');
             WinPrint.document.write(result);
             WinPrint.document.write('</body></html>');
             WinPrint.document.close();
@@ -1621,9 +1619,7 @@ function openWin() {
     }).done(function (result) {
         var WinPrint = window.open('', '', 'width=1200,height=800');
         WinPrint.document.write('<html><head>');
-        WinPrint.document.write('<link href="/Template/assets/css/style.css" rel="stylesheet" />');
-/*            WinPrint.document.write('<link href="/CP25Team05/Template/assets/css/style.css" rel="stylesheet" />');
-*/            WinPrint.document.write('</head><body onload="print();">');
+        WinPrint.document.write('</head><body onload="print();">');
         WinPrint.document.write(result);
         WinPrint.document.write('</body></html>');
         WinPrint.document.close();

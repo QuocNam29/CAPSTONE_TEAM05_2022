@@ -48,7 +48,7 @@
                             @(item.prepayment!=null ? (((decimal)(item.total - item.prepayment)).ToString("N0") + " VNĐ") : "")
                         </td>
                         <td class="text-center">
-                            <span class="text-@(item.method == 1 ? "success" : "danger")">@(item.method == 1 ? "Đã thanh toán" : "Ghi nợ")</span>
+                            <span class="text-@(item.total == item.prepayment ? "info" : item.method == 1 ? "success" : "danger")">@(item.method == 1 ? "Đã thanh toán" : "Ghi nợ") @((item.total == item.prepayment ? "(Đã thanh toán xong)" : ""))</span>
                         </td>
                         <td class="text-center">
                             @item.user.name
