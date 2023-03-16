@@ -18,12 +18,12 @@
             </th>
             <th class="text-center">
                 <h5 class="custom-foot">
-                    @Model.Where(p => p.method == 1).Sum(t => t.total).ToString("N0")₫
+                    @Model.Where(p => p.method == 1).Sum(t => t.total).ToString("N0")VNĐ
 
                 </h5>
             </th>
             <th colspan="2">
-                <h5 class="totalPaid">@Model.Where(p => p.method == 1).Sum(t => t.total).ToString("N0") ₫</h5>
+                <h5 class="totalPaid">@Model.Where(p => p.method == 1).Sum(t => t.total).ToString("N0") VNĐ</h5>
             </th>
 
         </tr>
@@ -70,18 +70,18 @@
             <th class="text-center">
                 <h5 class="custom-foot">
                     @Model.Where(p => p.method == 2).Sum(t => t.total).ToString("N0")
-                    ₫
+                    VNĐ
                 </h5>
             </th>
 
             <th colspan="2">
                 <h5 class="totalPaid">
-                    <i>Đã thu:</i> @String.Format("{0:0,00}", Model.Where(p => p.method == 2).Sum(s => s.prepayment)) ₫
+                    <i>Đã thu:</i> @String.Format("{0:0,00}", Model.Where(p => p.method == 2).Sum(s => s.prepayment)) VNĐ
                 </h5>
             </th>
             <th colspan="2">
                 <h5 class="totalPaid">
-                    <i>Còn nợ:</i>  @String.Format("{0:0,00}", (Model.Where(p => p.method == 2).Sum(t => t.total - t.prepayment))) ₫
+                    <i>Còn nợ:</i>  @String.Format("{0:0,00}", (Model.Where(p => p.method == 2).Sum(t => t.total - t.prepayment))) VNĐ
                 </h5>
             </th>
         </tr>
@@ -105,13 +105,13 @@
             </td>
             <td>@item.code</td>
             <td class="text-center">
-                @item.total.ToString("N0")₫
+                @item.total.ToString("N0")VNĐ
             </td>
             <td class="text-center">
-                @String.Format("{0:0,00}", item.prepayment)₫
+                @String.Format("{0:0,00}", item.prepayment)VNĐ
             </td>
             <td class="text-center">
-                @String.Format("{0:0,00}", (item.total - item.prepayment))₫
+                @String.Format("{0:0,00}", (item.total - item.prepayment))VNĐ
             </td>
 
             <td class="text-center">

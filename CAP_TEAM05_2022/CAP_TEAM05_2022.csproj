@@ -668,10 +668,6 @@
     <Content Include="Views\Excel\ProductList_import.cshtml" />
     <Content Include="Views\customers\Index.cshtml" />
     <Content Include="Views\customers\_CustomerList.cshtml" />
-    <Content Include="Views\sale_details\Create.cshtml" />
-    <Content Include="Views\sale_details\Delete.cshtml" />
-    <Content Include="Views\sale_details\Details.cshtml" />
-    <Content Include="Views\sale_details\Edit.cshtml" />
     <Content Include="Views\sale_details\Index.cshtml" />
     <Content Include="Views\carts\Index.cshtml" />
     <Content Include="Views\sales\Index.cshtml" />
@@ -725,6 +721,7 @@
     <Content Include="Views\inventory_order\_InventoryList.cshtml" />
     <Content Include="Views\inventory_order\_InventoryDetails.cshtml" />
     <Content Include="Views\sales\_TemplateOrderDetails.cshtml" />
+    <Content Include="Views\sale_details\_TemplateInvoicePreview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -28,13 +28,13 @@
                 <td>@item.name</td>
                 <td>@item.inventory_order.Where(s => s.state == 2).Count()</td>
                 <td class="text-center">
-                    @String.Format("{0:0,00}", item.inventory_order.Where(s => s.state == 2).Sum(s => s.Total))₫
+                    @(((decimal)item.inventory_order.Where(s => s.state == 2).Sum(s => s.Total)).ToString("N0")) VNĐ
                 </td>
                 <td class="text-center">
-                    @String.Format("{0:0,00}", item.inventory_order.Where(s => s.state == 2).Sum(s => s.payment))₫
+                    @(((decimal)item.inventory_order.Where(s => s.state == 2).Sum(s => s.payment)).ToString("N0")) VNĐ
                 </td>
                 <td class="text-center">
-                    @String.Format("{0:0,00}", (item.inventory_order.Where(s => s.state == 2).Sum(s => s.Total) - item.inventory_order.Where(s => s.state == 2).Sum(s => s.payment)))₫
+                    @(((decimal)(item.inventory_order.Where(s => s.state == 2).Sum(s => s.Total) - item.inventory_order.Where(s => s.state == 2).Sum(s => s.payment))).ToString("N0")) VNĐ
                 </td>
                 <td class="text-center">
                     <button type="button" class="btn btn-info" onclick="DebtCollection(this,'@item.id', 2)">Chọn</button>

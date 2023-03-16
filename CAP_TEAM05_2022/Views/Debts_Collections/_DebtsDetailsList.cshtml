@@ -48,13 +48,13 @@
                                                     }
                                                 </td>
                                                 <td class="text-center">
-                                                    @String.Format("{0:0,00}", item.debt)
+                                                    @(((decimal)item.debt).ToString("N0"))
                                                 </td>
                                                 <td class="text-center">
-                                                    @String.Format("{0:0,00}", item.paid)
+                                                    @(((decimal)item.paid).ToString("N0"))
                                                 </td>                                               
                                                 <td class="text-center">
-                                                    @String.Format("{0:0,00}", item.remaining)
+                                                    @(((decimal)item.remaining).ToString("N0"))
                                                 </td>
                                                 <td class="text-center">
                                                     @item.created_at

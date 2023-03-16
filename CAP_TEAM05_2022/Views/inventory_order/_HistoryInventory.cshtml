@@ -53,13 +53,13 @@
                                                             </td>
                                                             <td class="text-center"> @item_details.product.name</td>
                                                             <td class="text-center">
-                                                                @String.Format("{0:0,00}", item_details.price_import)₫/<span class="txt-unit">@item_details.product.unit</span>
+                                                                @String.Format("{0:0,00}", item_details.price_import)VNĐ/<span class="txt-unit">@item_details.product.unit</span>
                                                             </td>
                                                              <td class="text-center">
                                                                 @item_details.quantity<span class="txt-unit">@item_details.product.unit</span>
                                                             </td>
                                                             <td class="text-center">
-                                                                @String.Format("{0:0,00}", item_details.price_import * item_details.quantity)₫
+                                                                @String.Format("{0:0,00}", item_details.price_import * item_details.quantity)VNĐ
                                                             </td>
                                                         </tr>
 
@@ -77,7 +77,7 @@
                                                             {
                                                                 no_debt++;
                                                                 <p>
-                                                                    Đợt @no_debt: <span>@String.Format("{0:0,00}", item1.paid)₫</span>
+                                                                    Đợt @no_debt: <span>@String.Format("{0:0,00}", item1.paid)VNĐ</span>
                                                                 </p>
                                                             }
                                                         </td>
@@ -98,7 +98,7 @@
                                                                 <div>
                                                                     Thành tiền:
                                                                     <span class="text">
-                                                                        @String.Format("{0:0,00}", item.Total)₫
+                                                                        @String.Format("{0:0,00}", item.Total)VNĐ
                                                                     </span>
                                                                 </div>
                                                                 @if (item.payment >= 0)
@@ -106,13 +106,13 @@
                                                                     <div>
                                                                         Đã thanh toán:
                                                                         <span class="text-success">
-                                                                            @String.Format("{0:0,00}", item.payment)₫
+                                                                            @String.Format("{0:0,00}", item.payment)VNĐ
                                                                         </span>
                                                                     </div>
                                                                     <div>
                                                                         Còn nợ:
                                                                         <span class="text-danger">
-                                                                            @String.Format("{0:0,00}", item.Total - item.payment)₫
+                                                                            @String.Format("{0:0,00}", item.Total - item.payment)VNĐ
                                                                         </span>
                                                                     </div>
                                                                 }

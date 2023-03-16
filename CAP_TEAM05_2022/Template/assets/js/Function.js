@@ -1605,110 +1605,35 @@ $('#URLgetOrderProduct')
         URLgetOrderProduct = $(this).val();
     })
     .keypress();
-$('#URLgetCartProduct')
+$('#URLTemplateInvoicePreview')
     .keypress(function () {
-        URLgetCartProduct = $(this).val();
+        URLTemplateInvoicePreview = $(this).val();
     })
     .keypress();
 function openWin() {
-    var curDate = new Date();
-    // Ngày hiện tại
-    var curDay = curDate.getDate();
-    // Tháng hiện tại
-    var curMonth = curDate.getMonth() + 1;
-    // Năm hiện tại
-    var curYear = curDate.getFullYear();
-    // giờ hiện tại
-    var curTime = curDate.getHours() + ":" + curDate.getMinutes() + ":" + curDate.getSeconds();
-    var customer_id = $('#customer_id').val();
-    var customer_code = $('#customer_code').val();
-    var total = $('#total').val();
-    var s = "";
+    var id = $('#customer_id').val();
     $.ajax({
-        type: "GET",
+        url: URLTemplateInvoicePreview,
+        data: {
+            id: id
+        },
         async: false,
-        url: URLgetCartProduct,
-        data: { id: customer_id },
-        success: function (data) {
-
-            for (var i = 0; i < data.length; i++) {
-                var note = "";
-                if (data[i].cartNote != null) {
-                    note = data[i].cartNote;
-                }
-                s += `<tr>
-                        <td class="text-center">`+ (i + 1) + `</td>
-                        <td>`+ data[i].cartCode + `</td>
-                        <td>`+ data[i].cartName + `</td>
-                        <td class="text-center">`+ data[i].cartPrice.toLocaleString() + `₫/<span class="txt-unit">` + data[i].cartUnit +`</span>`+ `</td>
-                        <td class="text-center">`+ data[i].cartQuantity + `<span class="txt-unit">` + data[i].cartUnit + `</span>` + `</td>
-                        <td class="text-center">`+ data[i].cartTotal.toLocaleString() + `₫</td>
-                    </tr>`
-            }
-        }
+    }).done(function (result) {
+        var WinPrint = window.open('', '', 'width=1200,height=800');
+        WinPrint.document.write('<html><head>');
+        WinPrint.document.write('<link href="/Template/assets/css/style.css" rel="stylesheet" />');
+/*            WinPrint.document.write('<link href="/CP25Team05/Template/assets/css/style.css" rel="stylesheet" />');
+*/            WinPrint.document.write('</head><body onload="print();">');
+        WinPrint.document.write(result);
+        WinPrint.document.write('</body></html>');
+        WinPrint.document.close();
+        WinPrint.focus();
+    }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        console.log(textStatus)
+        console.log(errorThrown)
+        Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
     });
-    var myWindow = window.open('', '', 'width=1200,height=800');
-  /*  myWindow.document.write('<link href="/Template/assets/css/style.css" rel="stylesheet" />'); */
-    myWindow.document.write('<link href="/CP25Team05/Template/assets/css/style.css" rel="stylesheet" />');
-    myWindow.document.write(`<div class="col-md-12">
-    <div class="card">
-        <div class="card-header">
-            <h4 class="text-center">DOANH NGHIỆP TẤN THÀNH</h4>
-            <h6 class="text-center">Địa chỉ: 11/43 Ấp Tân Trung B, xã Tân Hưng, Huyện Tân Châu, Tỉnh Tây Ninh</h6>
-            <h6 class="text-center">SDT: 0382399026</h6>
-            <hr>
-            <h4 class="text-center">BẢN XEM TRƯỚC HOÁ ĐƠN</h4>
-        </div>
-        <div class="card-body table-border-style">
-            <div class="table-responsive">
-                <div class="row">
-                    <div class="col-md-6">
-                        <p>Ngày: ` + curDay + ' tháng ' + curMonth + ' năm ' + curYear + ', Thời gian: ' + curTime + `</p>
-                    </div>
-                    <div class="col-md-6">
-                        <p class="text-right">Mã khách hàng: `+ customer_code + `</p>
-                    </div>
-                </div>
-                <table class="table table-hover">
-                    <thead>
-                       <tr>
-                                        <th class="text-center">STT</th>
-                                        <th class="text-center">Mã sản phẩm</th>
-                                        <th class="text-center">Tên sản phẩm</th>
-                                        <th class="text-center">Đơn giá</th>
-                                        <th class="text-center">Số lượng</th>
-                                        <th class="text-center">Thành tiền</th>
-                        </tr>
-                    </thead>
-                        <tbody>` + s + `</tbody >
-                    <tfoot>
-                        <tr>
-                            <td colspan="5" class="text-right">
-                                <h5>Hình thức</h5>
-                            </td>
-                            <td colspan="1" class="text-left">
-                                Xem trước (Chưa thanh toán)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="5" class="text-right">
-                                <h5>Thành tiền</h5>
-                            </td>
-                            <td colspan="1" class="text-left">
-                                <h5>
-                                    `+ total + `₫
-                                </h5>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>`);
 
-    myWindow.document.close();
-    myWindow.focus();
 }
 
 //---------------------------flatpickr---------------

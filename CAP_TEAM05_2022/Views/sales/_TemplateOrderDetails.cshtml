@@ -1,13 +1,10 @@
 ﻿@model IEnumerable<CAP_TEAM05_2022.Models.sale_details>
 @using CAP_TEAM05_2022.Models
 @{
-    ViewBag.Title = "_TemplateOrderDetails";
     int no = 0;
     var Order = (sale)ViewBag.Order;
     Layout = null;
 }
-<style>
-</style>
 <link href="~/Template/assets/css/style.css" rel="stylesheet" />
 
     <div class="pcoded-content">
@@ -57,33 +54,37 @@
                                             <th class="text-center">Đơn giá</th>
                                             <th class="text-center">Số lượng</th>
                                             <th class="text-center">Thành tiền</th>
+                                            <th class="text-center">Ghi chú</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach (var item in Model)
                                         {
                                             no++;
-                                            <tr>
-                                                <td class="text-center">
-                                                    @no
-                                                </td>
-                                                <td class="text-center">
-                                                    @item.product.code
-                                                </td>
-                                                <td class="text-center">
-                                                    @item.product.name
-                                                </td>
+                                        <tr>
+                                            <td class="text-center">
+                                                @no
+                                            </td>
+                                            <td class="text-center">
+                                                @item.product.code
+                                            </td>
+                                            <td class="text-center">
+                                                @item.product.name
+                                            </td>
 
-                                                <td class="text-center">
-                                                    @String.Format("{0:0,00}", item.price / item.sold)₫/<span class="txt-unit">@item.unit</span>
-                                                </td>
-                                                <td class="text-center">
-                                                    @item.sold<span class="txt-unit"> @item.unit</span>
-                                                </td>
-                                                <td class="text-center">
-                                                    @String.Format("{0:0,00}", item.price)₫
-                                                </td>
-                                            </tr>
+                                            <td class="text-center">
+                                                @((item.price / item.sold).ToString("N0")) VNĐ / <span class="txt-unit">@item.unit</span>
+                                            </td>
+                                            <td class="text-center">
+                                                @item.sold<span class="txt-unit"> @item.unit</span>
+                                            </td>
+                                            <td class="text-center">
+                                                @item.price.ToString("N0") VNĐ
+                                            </td>
+                                            <td class="text-center">
+                                                @item.note VNĐ
+                                            </td>
+                                        </tr>
                                         }
                                     </tbody>
                                     <tfoot>
@@ -111,22 +112,22 @@
                                                         Thành tiền:
                                                         <b>
                                                             <span class="text">
-                                                                @String.Format("{0:0,00}", Order.total)₫
+                                                                @Order.total.ToString("N0") VNĐ
                                                             </span>
                                                         </b>
                                                     </div>
                                                     @if (Order.prepayment >= 0)
-                                                    {
+                                            {
                                                         <div>
                                                             Đã thanh toán:
                                                             <span class="text-success">
-                                                                @String.Format("{0:0,00}", Order.prepayment)₫
+                                                                @(((decimal)Order.prepayment).ToString("N0")) VNĐ
                                                             </span>
                                                         </div>
                                                         <div>
                                                             Còn nợ:
                                                             <span class="text-danger">
-                                                                @String.Format("{0:0,00}", Order.total - Order.prepayment)₫
+                                                                @(((decimal)(Order.total - Order.prepayment)).ToString("N0")) VNĐ
                                                             </span>
                                                         </div>
                                                     }

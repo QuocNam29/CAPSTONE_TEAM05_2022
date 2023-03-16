@@ -51,7 +51,7 @@ namespace CAP_TEAM05_2022.Controllers
                     product.quantity -= quantity;
                     db.Entry(product).State = EntityState.Modified;
                     db.SaveChanges();
-                    message = "Tổng tiền hoàn lại cho nhà cung cấp là: "+ (inventory.price_import * quantity).ToString("N0") + "₫";
+                    message = "Tổng tiền hoàn lại cho nhà cung cấp là: "+ (inventory.price_import * quantity).ToString("N0") + "VNĐ";
                 }
 
             }

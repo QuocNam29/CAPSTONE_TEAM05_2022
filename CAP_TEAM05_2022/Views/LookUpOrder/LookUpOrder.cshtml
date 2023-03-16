@@ -89,12 +89,12 @@
                                                         <tr style="cursor: pointer; background-color: #d8efff" id="sale-31" onclick="GetList_orderDetails('@item.id', 1)">
                                                             <td>@item.code</td>
                                                             <td>
-                                                                @item.total.ToString("N0") ₫
+                                                                @item.total.ToString("N0") VNĐ
                                                             </td>
 
-                                                            <td>  @item.total.ToString("N0")₫</td>
+                                                            <td>  @item.total.ToString("N0")VNĐ</td>
                                                             <td>
-                                                                0 ₫
+                                                                0 VNĐ
                                                             </td>
                                                             <td>
                                                                 <p style="padding: 10px; background-color: #4c994c; border-radius: 10px; color: white;">Đã thanh toán</p>
@@ -118,12 +118,12 @@
                                                         <tr style="cursor: pointer; background-color: #d8efff" id="sale-31" onclick="GetList_orderDetails('@item.id', 1)">
                                                             <td>@item.code</td>
                                                             <td>
-                                                                @item.total.ToString("N0") ₫
+                                                                @item.total.ToString("N0") VNĐ
                                                             </td>
 
-                                                            <td> @String.Format("{0:0,00}", item.prepayment) ₫</td>
+                                                            <td> @String.Format("{0:0,00}", item.prepayment) VNĐ</td>
                                                             <td>
-                                                                <span class="text-danger">@String.Format("{0:0,00}", item.total - item.prepayment) ₫ </span>
+                                                                <span class="text-danger">@String.Format("{0:0,00}", item.total - item.prepayment) VNĐ </span>
                                                             </td>
                                                             <td style="vertical-align: middle;">
                                                                 <p style="padding: 10px; background-color: rgb(219, 93, 93); border-radius: 10px; color: white;">

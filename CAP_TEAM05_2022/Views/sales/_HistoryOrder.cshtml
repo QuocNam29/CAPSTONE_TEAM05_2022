@@ -54,13 +54,13 @@
                                                         </td>
                                                         <td class="text-center"> @item_details.product.name</td>
                                                         <td class="text-center">
-                                                            @String.Format("{0:0,00}", item_details.price / item_details.sold)/<span class="txt-unit">@item_details.unit</span>
+                                                            @((item_details.price / item_details.sold).ToString("N0")) VNĐ / <span class="txt-unit">@item_details.unit</span>
                                                         </td>
                                                         <td class="text-center">
                                                             @item_details.sold<span class="txt-unit">@item_details.unit</span>
                                                         </td>
                                                         <td class="text-center">
-                                                            @String.Format("{0:0,00}", item_details.price)₫
+                                                            @item_details.price.ToString("N0") VNĐ
                                                         </td>
                                                     </tr>
 
@@ -78,7 +78,7 @@
                                                             {
                                                                 no_debt++;
                                                                 <p>
-                                                                    Đợt @no_debt: <span>@String.Format("{0:0,00}", item1.paid)₫</span>
+                                                                    Đợt @no_debt: <span>@(((decimal)item1.paid).ToString("N0"))VNĐ</span>
                                                                 </p>
                                                             }
                                                         </td>
@@ -99,7 +99,7 @@
                                                                 <div>
                                                                     Thành tiền:
                                                                     <span class="text">
-                                                                        @String.Format("{0:0,00}", item.total)₫
+                                                                        @item.total.ToString("N0") VNĐ
                                                                     </span>
                                                                 </div>
                                                                 @if (item.prepayment >= 0)
@@ -107,13 +107,13 @@
                                                                     <div>
                                                                         Đã thanh toán:
                                                                         <span class="text-success">
-                                                                            @String.Format("{0:0,00}", item.prepayment)₫
+                                                                            @(((decimal)item.prepayment).ToString("N0")) VNĐ
                                                                         </span>
                                                                     </div>
                                                                     <div>
                                                                         Còn nợ:
                                                                         <span class="text-danger">
-                                                                            @String.Format("{0:0,00}", item.total - item.prepayment)₫
+                                                                            @(((decimal)(item.total - item.prepayment)).ToString("N0"))VNĐ
                                                                         </span>
                                                                     </div>
                                                                 }
