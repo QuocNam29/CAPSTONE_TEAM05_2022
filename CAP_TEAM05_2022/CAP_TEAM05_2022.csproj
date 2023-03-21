@@ -722,6 +722,7 @@
     <Content Include="Views\inventory_order\_InventoryDetails.cshtml" />
     <Content Include="Views\sales\_TemplateOrderDetails.cshtml" />
     <Content Include="Views\sale_details\_TemplateInvoicePreview.cshtml" />
+    <Content Include="Views\Revenues\_RevenueList_Month.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

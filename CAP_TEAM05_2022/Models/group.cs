@@ -26,6 +26,7 @@ namespace CAP_TEAM05_2022.Models
         public string created_by { get; set; }
         [Required(ErrorMessage = "Vui lòng nhập tên nhóm hàng")]
         [StringLength(100, ErrorMessage = "Tên nhóm hàng phải dưới 100 ký tự.")]
+        [RegularExpression(@"^\S *$", ErrorMessage = "Vui lòng không được nhập khoảng trắng")]
         public string name { get; set; }
         public string slug { get; set; }
         public int status { get; set; }

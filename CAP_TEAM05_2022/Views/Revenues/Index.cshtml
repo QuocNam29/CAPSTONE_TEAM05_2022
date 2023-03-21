@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
 }
 <input type="text" hidden id="URL_RevenueList_Date" value="@Url.Action("_RevenueList_Date", "Revenues")" />
+<input type="text" hidden id="URL_RevenueList_Date" value="@Url.Action("_RevenueList_Month", "Revenues")" />
 <section class="pcoded-main-container">
     <div class="pcoded-content">
         <div class="page-header">
@@ -35,26 +36,47 @@
                         <div class="card-body">
                             <div class="row mb-3">
                                 <div class="col-md-2">
-                                    <select id="select-date" class="form-control">
+                                    <select id="selectDate" class="form-control" >
                                         <option value="1">Theo ngày</option>
-                                        <option value="2">Theo tháng</option>
+                                        <option value="2" >Theo tháng</option>
                                     </select>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="mx-datepicker">
-                                        <div class="mx-input-wrapper">
-                                            <input name="date_start" id="revenue_DateStart" placeholder="" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}", DateTime.Now)">
-                                        </div>
+                                <div class="row col-md-8" id="RevenueDate">
 
+                                    <div class="col-md-4">
+                                        <div class="mx-datepicker">
+                                            <div class="mx-input-wrapper">
+                                                <input name="date_start" id="revenue_DateStart" placeholder="" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}", DateTime.Now)">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mx-datepicker">
+                                            <div class="mx-input-wrapper">
+                                                <input name="date_end" id="revenue_DateEnd" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}",DateTime.Now)">
+                                            </div>
+
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="mx-datepicker">
-                                        <div class="mx-input-wrapper">
-                                            <input name="date_end" id="revenue_DateEnd" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}",DateTime.Now)">
-                                        </div>
+                                <div class="row col-md-8" id="RevenueMonth" style="display: none">
+                                    <div class="col-md-4">
+                                        <div class="mx-datepicker">
 
+                                            <div class="mx-input-wrapper">
+                                                <input name="date_start" id="revenue_DateStart_Month" type="month" placeholder="" class="form-control custom-width" value="@String.Format("{0:yyyy-MM}", DateTime.Now)">
+                                            </div>
+                                        </div>
+                                    </div> <div class="col-md-4">
+                                        <div class="mx-datepicker">
+
+                                            <div class="mx-input-wrapper">
+                                                <input name="date_end" id="revenue_DateEnd_Month" type="month" class="form-control custom-width" value="@String.Format("{0:yyyy-MM}",DateTime.Now)">
+                                            </div>
+                                        </div>
                                     </div>
+                                   
                                 </div>
                                 <div class="col-md-2">
                                     <div class="float-right">
@@ -63,7 +85,7 @@
                                 </div>
 
                             </div>
-                        </div>
+                            </div>
                     </div>
                     <div class="card" id="dataContainer">
                         @{ Html.RenderAction("_RevenueList_Date", "Revenues");}
@@ -82,6 +104,11 @@
                 pagingType: 'full_numbers',
             });
         });
+        $(document).ready(function () {
+            $('#example1').DataTable({
+                pagingType: 'full_numbers',
+            });
+        });
         function GetList_orderDetails(id, method) {
             $.ajax({
                 url: '@Url.Action("_OrderDetailsList", "sales")',
@@ -92,12 +119,99 @@
             }).done(function (result) {
                 $('#dataContainer2').html(result);
                     $('#detailModal.close').css('display', 'none');
-                    $('#detailModal').modal('show');             
+                    $('#detailModal').modal('show');
             }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log(textStatus)
                 console.log(errorThrown)
                 alert("Something Went Wrong, Try Later");
             });
-    }
+        }
+        $("#revenue_DateStart").change(function () {
+            var date_start = $("#revenue_DateStart").val();
+            var date_end = $("#revenue_DateEnd").val();
+            if (date_start <= date_end) {
+                GetRevenueDateList(date_start, date_end);
+            } else {
+                Swal.fire('Lỗi', 'Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc !', 'error')
+            }
+
+        });
+        $("#revenue_DateEnd").change(function () {
+            var date_start = $("#revenue_DateStart").val();
+            var date_end = $("#revenue_DateEnd").val();
+            if (date_start <= date_end) {
+                GetRevenueDateList(date_start, date_end);
+            } else {
+                Swal.fire('Lỗi', 'Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc !', 'error')
+            }
+        });
+        $("#selectDate").change(function () {
+            var selectDate = $("#selectDate").val();
+            if (selectDate == 1) {
+                $("#RevenueDate").show();
+                $("#RevenueMonth").hide();
+                var date_start = $("#revenue_DateStart").val();
+                var date_end = $("#revenue_DateEnd").val();
+                GetRevenueDateList(date_start, date_end);
+            } else {
+                $("#RevenueDate").hide();
+                $("#RevenueMonth").show();
+                var date_start = $("#revenue_DateStart_Month").val();
+                var date_end = $("#revenue_DateEnd_Month").val();
+                GetRevenueMonthList(date_start, date_end);
+            }
+        });
+        $("#revenue_DateStart_Month").change(function () {
+            var date_start = $("#revenue_DateStart_Month").val();
+            var date_end = $("#revenue_DateEnd_Month").val();
+            if (date_start <= date_end) {
+                GetRevenueMonthList(date_start, date_end);
+            } else {
+                Swal.fire('Lỗi', 'Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc !', 'error')
+            }
+
+        });
+        $("#revenue_DateEnd_Month").change(function () {
+            var date_start = $("#revenue_DateStart_Month").val();
+            var date_end = $("#revenue_DateEnd_Month").val();
+            if (date_start <= date_end) {
+                GetRevenueMonthList(date_start, date_end);
+            } else {
+                Swal.fire('Lỗi', 'Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc !', 'error')
+            }
+        });
+        function GetRevenueMonthList(date_start, date_end) {
+            $.ajax({
+                url: '@Url.Action("_RevenueList_Month", "Revenues")',
+                data: {
+                    date_Start: date_start,
+                    date_End: date_end,
+                }
+            }).done(function (result) {
+                $('#dataContainer').html(result);
+                $('#example1').DataTable();
+            }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(textStatus)
+                console.log(errorThrown)
+                Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
+            });
+        }
+
+        function GetRevenueDateList(date_start, date_end) {
+            $.ajax({
+                url: '@Url.Action("_RevenueList_Date", "Revenues")',
+                data: {
+                    date_Start: date_start,
+                    date_End: date_end,
+                }
+            }).done(function (result) {
+                $('#dataContainer').html(result);
+                $('#example').DataTable()
+            }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(textStatus)
+                console.log(errorThrown)
+                Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
+            });
+        }
     </script>
 }

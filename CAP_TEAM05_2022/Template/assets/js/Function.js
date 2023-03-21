@@ -1471,7 +1471,7 @@ function Update_Cart() {
 }
 
 //----------------------FILTER INVENTORY PRODUCT------------------------------------------------
-$('#URL_RevenueList_Date')
+/*$('#URL_RevenueList_Date')
     .keypress(function () {
         URL_RevenueList_Date = $(this).val();
     })
@@ -1553,7 +1553,7 @@ function GetList_RevenueListMonth(date_start, date_end) {
         console.log(errorThrown)
         Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
     });
-}
+}*/
 
 $("#sale_DateStart").change(function () {
     var date_start = $("#sale_DateStart").val();
