@@ -29,10 +29,10 @@ namespace CAP_TEAM05_2022.Models
         public System.DateTime created_at { get; set; }
         public string code { get; set; }
     
-        public virtual import_inventory import_inventory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<customer_debt> customer_debt { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<debt> debts { get; set; }
+        public virtual import_inventory import_inventory { get; set; }
     }
 }

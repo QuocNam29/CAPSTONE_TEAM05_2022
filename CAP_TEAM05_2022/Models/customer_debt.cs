@@ -29,9 +29,9 @@ namespace CAP_TEAM05_2022.Models
     
         public virtual customer customer { get; set; }
         public virtual inventory_order inventory_order { get; set; }
-        public virtual sale sale { get; set; }
-        public virtual user user { get; set; }
         public virtual return_sale return_sale { get; set; }
         public virtual return_supplier return_supplier { get; set; }
+        public virtual sale sale { get; set; }
+        public virtual user user { get; set; }
     }
 }

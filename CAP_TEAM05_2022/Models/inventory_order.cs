@@ -24,7 +24,7 @@ namespace CAP_TEAM05_2022.Models
     
         public int id { get; set; }
         public string code { get; set; }
-        [Required(ErrorMessage ="Vui lòng chọn nhà cung cấp")]
+        [Required(ErrorMessage = "Vui lòng chọn nhà cung cấp")]
         public Nullable<int> supplier_id { get; set; }
         public Nullable<System.DateTime> create_at { get; set; }
         public Nullable<System.DateTime> update_at { get; set; }
@@ -39,9 +39,9 @@ namespace CAP_TEAM05_2022.Models
         public virtual ICollection<customer_debt> customer_debt { get; set; }
         public virtual customer customer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<debt> debts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual List<import_inventory> import_inventory { get; set; }
         public virtual user user { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<debt> debts { get; set; }
     }
 }

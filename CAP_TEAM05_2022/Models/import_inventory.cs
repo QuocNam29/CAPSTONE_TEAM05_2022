@@ -17,7 +17,6 @@ namespace CAP_TEAM05_2022.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public import_inventory()
         {
-            this.debts = new HashSet<debt>();
             this.return_supplier = new HashSet<return_supplier>();
             this.revenues = new HashSet<revenue>();
         }
@@ -31,15 +30,13 @@ namespace CAP_TEAM05_2022.Models
         public Nullable<System.DateTime> created_at { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }
         public Nullable<System.DateTime> deleted_at { get; set; }
-        public Nullable<int> sold_swap { get; set; }
-        public Nullable<int> quantity_remaining { get; set; }
+        public int sold_swap { get; set; }
+        public int quantity_remaining { get; set; }
         public Nullable<int> supplier_id { get; set; }
         public Nullable<int> inventory_id { get; set; }
-        public Nullable<int> return_quantity { get; set; }
+        public int return_quantity { get; set; }
     
         public virtual customer customer { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<debt> debts { get; set; }
         public virtual inventory_order inventory_order { get; set; }
         public virtual user user { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
