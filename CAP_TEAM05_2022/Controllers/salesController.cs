@@ -148,11 +148,11 @@ namespace CAP_TEAM05_2022.Controllers
                     int temp_quatity = item.quantity;
                     while (temp_quatity > 0)
                     {
-                        import_inventory inventory = db.import_inventory.Where(i => (i.product_id == item.product_id && i.quantity != i.sold)
+                        import_inventory inventory = db.import_inventory.Where(i => (i.product_id == item.product_id && i.quantity > (i.sold - i.return_quantity))
                         || (i.product_id == item.product_id && i.product.unit_swap == item.unit && i.quantity_remaining > 0)).FirstOrDefault();
                         if (item.unit == inventory.product.unit)
                         {
-                            if (temp_quatity <= (inventory.quantity - inventory.sold))
+                            if (temp_quatity <= (inventory.quantity - inventory.sold - inventory.return_quantity))
                             {
                                 revenue revenue = new revenue();
                                 revenue.sale_details_id = sale_Details.id;
@@ -168,7 +168,7 @@ namespace CAP_TEAM05_2022.Controllers
                             }
                             else
                             {
-                                int temp_inventory = (inventory.quantity - inventory.sold);
+                                int temp_inventory = (inventory.quantity - inventory.sold - (int)inventory.return_quantity);
                                 if (temp_quatity <= temp_inventory)
                                 {
                                     inventory.sold += temp_quatity;
@@ -217,7 +217,7 @@ namespace CAP_TEAM05_2022.Controllers
                             }
                             else
                             {
-                                int temp_inventory = (inventory.quantity - inventory.sold);
+                                int temp_inventory = (inventory.quantity - inventory.sold - (int)inventory.return_quantity) ;
 
                                 int quantity_remaining = (int)inventory.quantity_remaining;
                                 if (temp_quatity <= quantity_remaining)

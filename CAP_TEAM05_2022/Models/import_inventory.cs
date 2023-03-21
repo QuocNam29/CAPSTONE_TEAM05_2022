@@ -35,6 +35,7 @@ namespace CAP_TEAM05_2022.Models
         public Nullable<int> quantity_remaining { get; set; }
         public Nullable<int> supplier_id { get; set; }
         public Nullable<int> inventory_id { get; set; }
+        public Nullable<int> return_quantity { get; set; }
     
         public virtual customer customer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

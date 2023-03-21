@@ -109,17 +109,17 @@
                                         <th>Mã sản phẩm</th>
                                         <th>Tên sản phẩm</th>
                                         <th class="text-center">Số lượng nhập</th>
+                                        <th class="text-center">Số lượng trả</th>
                                         <th class="text-center">Đơn giá nhập</th>
                                         <th class="text-center">
                                             <span>
                                                 Thành tiền
-                                                <i data-toggle="tooltip" data-placement="top" data-original-title="(Đơn giá nhập x Số lượng nhập)" class="feather icon-alert-circle icon-info" aria-label="(Đơn giá nhập x Số lượng nhập)">
+                                                <i data-toggle="tooltip" data-placement="top" data-original-title="[Đơn giá nhập x (Số lượng nhập - Số lượng trả)]" class="feather icon-alert-circle icon-info" aria-label="[Đơn giá nhập x (Số lượng nhập - Số lượng trả)]">
                                                 </i>
                                             </span>
                                         </th>
                                         <th class="text-center">Nhà cung cấp</th>
                                         <th class="text-center">Ngày nhập hàng</th>
-                                        <th></th>
                                     </tr>
 
 
@@ -144,13 +144,12 @@
                                                 </div>
                                             }
                                         </td>
+                                        <td class="text-center"><div>@item.return_quantity<span class="txt-unit">@item.product.unit</span></div></td>
                                         <td class="text-center">@item.price_import.ToString("N0")</td>
-                                        <td class="text-center">@((item.price_import * (item.quantity)).ToString("N0")) </td>
+                                        <td class="text-center">@((item.price_import * (item.quantity - (int)item.return_quantity)).ToString("N0")) </td>
                                         <td class="text-center">@item.customer.name</td>
                                         <td class="text-center"> @String.Format("{0:HH:mm - dd/MM/yyy}", item.created_at)</td>
-                                        <td class="text-center">
-                                            <button type="button" class="btn btn-danger"  onclick="Get_exchangeSupplier('@item.id', '@item.product.name', '@(item.quantity-item.sold + " " + item.product.unit)', '@item.customer.name', '@item.price_import.ToString("N0")')">Trả sản phẩm</button>
-                                        </td>
+                                       
                                     </tr>
                                         total_import += (item.price_import * (item.quantity));
 

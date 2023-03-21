@@ -183,6 +183,7 @@
           <Property Name="quantity_remaining" Type="int" />
           <Property Name="supplier_id" Type="int" />
           <Property Name="inventory_id" Type="int" />
+          <Property Name="return_quantity" Type="int" />
         </EntityType>
         <EntityType Name="inventory_order">
           <Key>
@@ -1248,6 +1249,7 @@
           <NavigationProperty Name="return_supplier" Relationship="Self.FK_return_supplier_import_inventory" FromRole="import_inventory" ToRole="return_supplier" />
           <NavigationProperty Name="revenues" Relationship="Self.FK_revenue_import_inventory" FromRole="import_inventory" ToRole="revenue" />
           <NavigationProperty Name="product" Relationship="Self.import_inventory_ibfk_2" FromRole="import_inventory" ToRole="products" />
+          <Property Name="return_quantity" Type="Int32" />
         </EntityType>
         <EntityType Name="inventory_order">
           <Key>
@@ -2312,6 +2314,7 @@
           <EntitySetMapping Name="import_inventory">
             <EntityTypeMapping TypeName="CP25Team05Model.import_inventory">
               <MappingFragment StoreEntitySet="import_inventory">
+                <ScalarProperty Name="return_quantity" ColumnName="return_quantity" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="product_id" ColumnName="product_id" />
                 <ScalarProperty Name="quantity" ColumnName="quantity" />

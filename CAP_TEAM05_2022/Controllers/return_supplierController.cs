@@ -49,11 +49,11 @@ namespace CAP_TEAM05_2022.Controllers
                     return_Supplier.created_at = create_at;
                     db.return_supplier.Add(return_Supplier);
 
-                    inventory.quantity -= quantity;                   
+                    inventory.return_quantity += quantity;                   
                     db.Entry(inventory).State = EntityState.Modified;
 
                     inventory_order inventory_Order = db.inventory_order.Find(inventory.inventory_id);
-                    inventory_Order.Total = inventory_Order.import_inventory.Sum(x => x.quantity * x.price_import);
+                    inventory_Order.Total = inventory_Order.import_inventory.Sum(x => (x.quantity - x.return_quantity) * x.price_import );
                     inventory_Order.update_at = create_at;
 
                     product product = db.products.Find(inventory.product_id);

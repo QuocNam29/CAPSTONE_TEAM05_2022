@@ -55,15 +55,41 @@
                                                             <td class="text-center">
                                                                 @String.Format("{0:0,00}", item_details.price_import)VNĐ/<span class="txt-unit">@item_details.product.unit</span>
                                                             </td>
-                                                             <td class="text-center">
+                                                            <td class="text-center">
                                                                 @item_details.quantity<span class="txt-unit">@item_details.product.unit</span>
                                                             </td>
                                                             <td class="text-center">
                                                                 @String.Format("{0:0,00}", item_details.price_import * item_details.quantity)VNĐ
                                                             </td>
                                                         </tr>
+                                                        foreach (var item1 in item_details.return_supplier)
+                                                        {
+                                                            no++;
+                                                            <tr>
+                                                                <td class="text-center text-danger">
+                                                                    @no
+                                                                </td>
+                                                                <td class="text-center text-danger">
+                                                                    @item_details.product.code
+                                                                </td>
+                                                                <td class="text-center text-danger">
+                                                                    @item_details.product.name
+                                                                </td>
+                                                                <td class="text-center text-danger">
+                                                                    - @item1.quantity <span class="txt-unit text-danger"> @item_details.product.unit</span>
 
+                                                                </td>
+                                                                <td class="text-center text-danger">
+                                                                    @(((decimal)item_details.price_import).ToString("N0")) VNĐ / <span class="txt-unit text-danger">@item_details.product.unit</span>
+                                                                </td>
+                                                                <td class="text-center text-danger">
+                                                                    - @(((decimal)(item_details.price_import * item1.quantity)).ToString("N0")) VNĐ
+                                                                </td>
+                                                            </tr>
+                                                        }
                                                     }
+
+
 
                                                 </tbody>
                                                 <tbody>
@@ -75,11 +101,17 @@
                                                             <!---->
                                                             @foreach (var item1 in history_debt)
                                                             {
-                                                                no_debt++;
-                                                                <p>
-                                                                    Đợt @no_debt: <span>@String.Format("{0:0,00}", item1.paid)VNĐ</span>
+                                                                if (item1.return_supplier_id == null)
+                                                                {
+                                                                    no_debt++;
+                                                                    <p>
+                                                                        Đợt @no_debt: <span>
+                                                                            @String.Format("{0:0,00}", item1.paid)VNĐ
+                                                                    </span>
                                                                 </p>
                                                             }
+
+                                                        }
                                                         </td>
                                                         <td colspan="2">
                                                             <p>
@@ -88,9 +120,12 @@
                                                             <!---->
                                                             @foreach (var item1 in history_debt)
                                                             {
+                                                                if (item1.return_supplier_id == null)
+                                                                {
                                                                 <p>
                                                                     Ngày thu nợ: <span> @String.Format("{0:HH:mm - dd/MM/yyy}", item1.created_at)</span>
                                                                 </p>
+                                                                }
                                                             }
                                                         </td>
                                                         <td colspan="2" class="text-left">

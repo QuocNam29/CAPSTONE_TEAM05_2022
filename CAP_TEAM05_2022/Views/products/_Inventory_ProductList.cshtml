@@ -8,16 +8,17 @@
                     <thead>
                         <tr>
                             <th>STT</th>
-                            <th >Mã sản phẩm</th>                            
+                            <th>Mã sản phẩm</th>
                             <th>Tên sản phẩm</th>
                             <th class="text-center">Số lượng nhập</th>
                             <th class="text-center">Đơn giá nhập</th>
                             <th class="text-center">Đơn giá bán</th>
                             <th class="text-center">Số lượng bán</th>
+                            <th class="text-center">Số lượng đổi trả</th>
                             <th class="text-center">
                                 <span>
                                     Tồn tổng
-                                    <i data-toggle="tooltip" data-placement="top" data-original-title="(Số lượng nhập - Số lượng bán)" class="feather icon-alert-circle icon-info"></i>
+                                    <i data-toggle="tooltip" data-placement="top" data-original-title="(Số lượng nhập - Số lượng bán - số lượng đổi trả)" class="feather icon-alert-circle icon-info"></i>
                                 </span>
                             </th>
                             <th class="text-center">
@@ -95,7 +96,15 @@
 
                             </td>
                             <td class="text-center">
-                                <div>@inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity - i.sold)<span class="txt-unit">/@item.unit</span></div>
+                                @if (@inventory.Where(i => i.price_import == item1.Key).Sum(i => i.return_quantity) > 0)
+                                {
+                                    @inventory.Where(i => i.price_import == item1.Key).Sum(i => i.return_quantity)<span class="txt-unit">@item.unit</span>
+
+                                }
+
+                            </td>
+                            <td class="text-center">
+                                <div>@inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity - i.sold - i.return_quantity)<span class="txt-unit">/@item.unit</span></div>
                                 @if (inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity_remaining) > 0)
                                 {
                                     <div> @inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity_remaining)<span class="txt-unit">/@item.unit_swap</span></div>
@@ -103,10 +112,10 @@
                                 }
                             </td>
                             @{
-                                total_temp1 = (item1.Key * (inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity - i.sold)));
+                                total_temp1 = (item1.Key * (inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity - i.sold -(i.return_quantity!= null ? (int)i.return_quantity : 0 ))));
                                 if (item.unit_swap != null)
                                 {
-                                    total_temp2 = (decimal)((item1.Key/(item.quantity_swap)) * (inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity_remaining)));
+                                    total_temp2 = (decimal)((item1.Key / (item.quantity_swap)) * (inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity_remaining)));
                                 }
                             }
                             <td class="text-center">@((total_temp1 + total_temp2).ToString("N0")) </td>

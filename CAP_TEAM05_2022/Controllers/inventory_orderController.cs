@@ -93,6 +93,7 @@ namespace CAP_TEAM05_2022.Controllers
                     inventory.inventory_id = inventory_order.id;
                     inventory.sold = 0;
                     inventory.sold_swap = 0;
+                    inventory.return_quantity = 0;
                     inventory.quantity_remaining = 0;
                     inventory.created_by = User.Identity.GetUserId();
                     inventory.created_at = currentDate;

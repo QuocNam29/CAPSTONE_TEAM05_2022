@@ -116,6 +116,7 @@ namespace CAP_TEAM05_2022.Controllers
                             inventory.price_import = int.Parse(purchase_price.Replace(",", "").Replace(".", ""));
                             inventory.sold = 0;
                             inventory.sold_swap = 0;
+                            inventory.return_quantity = 0;
                             inventory.quantity_remaining = 0;
                             inventory.created_by = User.Identity.GetUserId();
                             inventory.created_at = DateTime.Now;

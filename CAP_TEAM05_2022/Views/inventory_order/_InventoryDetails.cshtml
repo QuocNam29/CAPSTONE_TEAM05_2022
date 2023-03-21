@@ -52,34 +52,59 @@
                                     @foreach (var item in Model)
                                     {
                                         no++;
-                                    <tr>
-                                        <td class="text-center">
-                                            @no
-                                        </td>
-                                        <td class="text-center">
-                                            @item.product.code
-                                        </td>
-                                        <td class="text-center">
-                                            @item.product.name
-                                        </td>
-                                        <td class="text-center">
-                                            @item.quantity<span class="txt-unit"> @item.product.unit</span>
-                                            @if (item.product.unit_swap != null)
-                                            {
-                                                <div>
-                                                    <span>
-                                                        1<span class="txt-unit">@item.product.unit</span> = @item.product.quantity_swap<span class="txt-unit">@item.product.unit_swap</span>
-                                                    </span>
-                                                </div>
-                                            }
-                                        </td>
-                                        <td class="text-center">
-                                            @(((decimal)item.price_import).ToString("N0")) VNĐ / <span class="txt-unit">@item.product.unit</span>
-                                        </td>
-                                        <td class="text-center">
-                                            @(((decimal)(item.price_import * item.quantity)).ToString("N0")) VNĐ
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td class="text-center">
+                                                @no
+                                            </td>
+                                            <td class="text-center">
+                                                @item.product.code
+                                            </td>
+                                            <td class="text-center">
+                                                @item.product.name
+                                            </td>
+                                            <td class="text-center">
+                                                @item.quantity<span class="txt-unit"> @item.product.unit</span>
+                                                @if (item.product.unit_swap != null)
+                                                {
+                                                    <div>
+                                                        <span>
+                                                            1<span class="txt-unit">@item.product.unit</span> = @item.product.quantity_swap<span class="txt-unit">@item.product.unit_swap</span>
+                                                        </span>
+                                                    </div>
+                                                }
+                                            </td>
+                                            <td class="text-center">
+                                                @(((decimal)item.price_import).ToString("N0")) VNĐ / <span class="txt-unit">@item.product.unit</span>
+                                            </td>
+                                            <td class="text-center">
+                                                @(((decimal)(item.price_import * item.quantity)).ToString("N0")) VNĐ
+                                            </td>
+                                        </tr>
+                                        foreach (var item1 in item.return_supplier)
+                                        {
+                                            no++;
+                                            <tr>
+                                                <td class="text-center text-danger">
+                                                    @no
+                                                </td>
+                                                <td class="text-center text-danger">
+                                                    @item.product.code
+                                                </td>
+                                                <td class="text-center text-danger">
+                                                    @item.product.name
+                                                </td>
+                                                <td class="text-center text-danger">
+                                                    - @item1.quantity <span class="txt-unit text-danger"> @item.product.unit</span>
+                                                    
+                                                </td>
+                                                <td class="text-center text-danger">
+                                                    @(((decimal)item.price_import).ToString("N0")) VNĐ / <span class="txt-unit text-danger">@item.product.unit</span>
+                                                </td>
+                                                <td class="text-center text-danger">
+                                                    - @(((decimal)(item.price_import * item1.quantity)).ToString("N0")) VNĐ
+                                                </td>
+                                            </tr>
+                                        }
                                     }
                                 </tbody>
                                 <tfoot>
@@ -188,7 +213,7 @@
                                                 <td class="text-center">@item.price_import.ToString("N0")</td>
                                                 <td class="text-center">@((item.price_import * (item.quantity)).ToString("N0")) </td>
                                                 <td class="text-center">
-                                                    <button type="button" class="btn btn-danger" onclick="Get_exchangeSupplier('@item.id', '@item.product.name', '@(item.quantity-item.sold + " " + item.product.unit)', '@item.customer.name', '@item.price_import.ToString("N0")')">Trả sản phẩm</button>
+                                                    <button type="button" class="btn btn-danger" onclick="Get_exchangeSupplier('@item.id', '@item.product.name', '@(item.quantity-item.sold-item.return_quantity + " " + item.product.unit)', '@item.customer.name', '@item.price_import.ToString("N0")')">Trả sản phẩm</button>
                                                 </td>
                                             </tr>
                                         }
