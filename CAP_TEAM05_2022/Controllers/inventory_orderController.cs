@@ -26,6 +26,10 @@ namespace CAP_TEAM05_2022.Controllers
             var inventory_order = db.inventory_order.Include(i => i.customer).Include(i => i.user);
             return View(inventory_order.ToList());
         }
+        public ActionResult ScriptContainer()
+        {
+            return PartialView();
+        }
         public ActionResult _HistoryInventory(int order_customer, int? method)
         {
             var HistoryOrder = db.inventory_order.Where(o => o.supplier_id == order_customer);
@@ -78,7 +82,8 @@ namespace CAP_TEAM05_2022.Controllers
     
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,code,supplier_id,create_at,update_at,create_by,state,Total,payment,debt")] inventory_order inventory_order, List<import_inventory> importInventory, int method)
+        public ActionResult Create([Bind(Include = "id,code,supplier_id,create_at,update_at,create_by,state,Total,payment,debt")] inventory_order inventory_order, 
+            List<import_inventory> importInventory, int method,string Repayment,string[] saleprice, string[] priceImport)
         {
             if (importInventory == null || importInventory.Count == 0)
             {
@@ -86,10 +91,13 @@ namespace CAP_TEAM05_2022.Controllers
             }
             if (ModelState.IsValid)
             {
+
                 DateTime currentDate = DateTime.Now;
                 decimal total = 0;
+                int i = 0;
                 foreach (var inventory in importInventory)
                 {
+                   
                     inventory.inventory_id = inventory_order.id;
                     inventory.sold = 0;
                     inventory.sold_swap = 0;
@@ -97,12 +105,17 @@ namespace CAP_TEAM05_2022.Controllers
                     inventory.quantity_remaining = 0;
                     inventory.created_by = User.Identity.GetUserId();
                     inventory.created_at = currentDate;
+                    inventory.created_at = currentDate;
                     inventory.supplier_id = inventory_order.supplier_id;
+                    inventory.price_import = decimal.Parse(priceImport[i].Replace(",", "").Replace(".", ""));
                     db.import_inventory.Add(inventory);
                     total += inventory.price_import * inventory.quantity;
+
                     product product = db.products.Find(inventory.product_id);
                     product.quantity += inventory.quantity;
+                    product.sell_price = decimal.Parse(saleprice[i].Replace(",", "").Replace(".", ""));
                     db.Entry(product).State = EntityState.Modified;
+                    i++;
                 }
                 inventory_order.code = "MPN" + CodeRandom.RandomCode();
                 inventory_order.create_at = currentDate;
@@ -112,7 +125,8 @@ namespace CAP_TEAM05_2022.Controllers
                 inventory_order.state = method;
                 if (method == 2)
                 {
-                    inventory_order.payment = inventory_order.payment != null ? inventory_order.payment : 0;
+                    decimal payment = decimal.Parse(Repayment.Replace(",", "").Replace(".", ""));
+                    inventory_order.payment = payment;
                     inventory_order.debt = inventory_order.Total - inventory_order.payment;
                 }             
                 db.inventory_order.Add(inventory_order);

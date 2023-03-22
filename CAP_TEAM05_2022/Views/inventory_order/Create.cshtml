@@ -79,8 +79,10 @@
                                 <div class="col-sm-6 debt_method" style="display: none">
                                     <div class="form-group">
                                         <label class="form-label">Thanh toán trước: </label>
-                                        @Html.EditorFor(model => model.payment, new { htmlAttributes = new { @class = "form-control", @placeholder = "Thanh toán trước", text = 0 } })
-                                        @Html.ValidationMessageFor(model => model.payment, "", new { @class = "text-danger" })
+                                        <input class="form-control Price text-box single-line" data-val="true" data-val-length="Vui lòng nhập một giá trị nhỏ hơn hoặc bằng 999,999,999,999" data-val-length-max="15" data-val-number="Vui lòng nhập số vào giá tiền." data-val-required="Vui lòng nhập số tiền thanh toán trước !" id="Repayment" name="Repayment" pattern="[0-9.,]+" placeholder="Nhập số tiền thanh toán trước..." type="text" value="">
+                                        @Html.ValidationMessage("Repayment", "", new { @class = "text-danger" })
+
+
                                     </div>
                                 </div>
                                 <div class="ovf-table col-sm-12">
@@ -96,11 +98,12 @@
                                                 <th>
                                                     Đơn giá nhập
                                                 </th>
-
                                                 <th>
                                                     Thành tiền
                                                 </th>
-
+                                                <th>
+                                                    Đơn giá bán
+                                                </th>
                                                 <th><button type="button" class="btn btn-primary feather icon-plus-square" id="addRow"></button></th>
                                             </tr>
                                         </thead>
@@ -152,6 +155,8 @@
 
     </div>
 </section>
+<div id="scriptContainer">
+</div>
 @section scripts {
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
@@ -186,7 +191,7 @@
             var id = idToCal.split('__')[0].split('_')[1];
             //passing id for exact column data use to calculate
             var quantity = $('#importInventory_' + parseInt(id) + '__quantity').val();
-            var cost = $('#importInventory_' + parseInt(id) + '__price_import').val();
+            var cost = $('#importInventory_' + parseInt(id) + '__price_import').val().replace(/\,/g, '').replace(/\./g, '');;
             //calculate data
             var truequantity = quantity ? parseInt(quantity) : 0;
             var trueprice_import = cost ? parseFloat(cost) : 0;
@@ -196,8 +201,7 @@
             $('label[id="total[' + id + ']"]').attr('data-val', cal)
             //calculate total
             calTotal()
-            console.log(idToCal)
-            console.log(id)
+
         }
         function calTotal() {
             total = 0;
@@ -227,14 +231,25 @@
                 cols += '</select></td>'
                 cols += '<td>' + '<input class="form-control text-box single-line"  placeholder="Nhập số lượng" id ="importInventory_' + count + '__quantity" name ="importInventory[' + count +'].quantity" onchange ="calculate(this)" required type ="number" min="1">'+ '</td>';
                 cols += '</select></td>'
-                cols += '<td>' + ' <input class="form-control text-box single-line"  placeholder="Nhập đơn giá" id ="importInventory_' + count + '__price_import"  name ="importInventory[' + count +'].price_import" onchange ="calculate(this)" required type ="number" min="0">' + '</td>';
+                cols += '<td>' + ' <input class="form-control text-box single-line Price"  placeholder="Nhập đơn giá" id ="importInventory_' + count + '__price_import"  name ="priceImport[' + count +']" onchange ="calculate(this)" required type ="text">' + '</td>';
                 cols += '<td>' + '<label id="total[' + count + ']" name="totalEq" data-val=0>0 VNĐ </label>' + '</td > ';
+                cols += '<td>' + ' <input class="form-control text-box single-line Price"  placeholder="Nhập đơn giá" @*id ="saleprice_' + count + '__saleprice"*@  name ="saleprice[' + count + ']" onchange ="calculate(this)" required type ="text" >' + '</td>';
                 cols += '<td><button type="button"  id=' + count +' class="btn btn-danger feather icon-trash-2 delete-row" onclick="deleteRow(this)"></button></td>';
                 cols += '</tr>'
                 newRow.append(cols);
                 count++
                 $("table").append(newRow);
-            });
+                $.ajax({
+                    url: '@Url.Action("ScriptContainer", "inventory_order")',
+                    data: {}
+                }).done(function (result) {
+                    $('#scriptContainer').html(result);
+                    }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                        console.log(textStatus)
+                        console.log(errorThrown)
+                        Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
+                    });
+});
         });
     function Method1() {
         $(".debt_method").hide();
@@ -243,13 +258,13 @@
         $(".debt_method").show();
     }
     </script>
-    <script>
-        $('form').validate();
-        $.extend($.validator.messages, {
-            required: "Không để trống",
-        });
-    </script>
-    }
+<script>
+            $('form').validate();
+                $.extend($.validator.messages, {
+                    required: "Không để trống",
+                });
+</script>
+}
 
 
 

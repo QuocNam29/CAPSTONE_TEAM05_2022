@@ -148,7 +148,7 @@ namespace CAP_TEAM05_2022.Controllers
                     int temp_quatity = item.quantity;
                     while (temp_quatity > 0)
                     {
-                        import_inventory inventory = db.import_inventory.Where(i => (i.product_id == item.product_id && i.quantity > (i.sold - i.return_quantity))
+                        import_inventory inventory = db.import_inventory.Where(i => (i.product_id == item.product_id && i.quantity > (i.sold + i.return_quantity))
                         || (i.product_id == item.product_id && i.product.unit_swap == item.unit && i.quantity_remaining > 0)).FirstOrDefault();
                         if (item.unit == inventory.product.unit)
                         {
