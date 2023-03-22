@@ -151,7 +151,7 @@
                                         <td class="text-center"> @String.Format("{0:HH:mm - dd/MM/yyy}", item.created_at)</td>
                                        
                                     </tr>
-                                        total_import += (item.price_import * (item.quantity));
+                                        total_import += (item.price_import * (item.quantity - (int)item.return_quantity));
 
                                     }
 

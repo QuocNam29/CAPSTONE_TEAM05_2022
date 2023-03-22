@@ -21,7 +21,8 @@
                                     <div class="card__header-info">
                                         <h3 class="card__info-name"> DOANH NGHIỆP BUÔN BÁN PHÂN BÓN THUỐC TRỪ SÂU TẤN THÀNH</h3>
                                         <p>Địa chỉ: Tổ 20, ấp Tân Trung B, xã Tân Hưng, huyện Tân Châu, tỉnh Tây Ninh</p>
-                                        <p>Điện thoại: 0854xxxxxx</p>
+                                        <p>Ngân Hàng: <span class="card__info-desc">BIDV - 75210000089921 - TRAN QUOC NAM </span></p>
+                                        <p>Điện thoại: 0854858818</p>
                                     </div>
                                 </div>
                                 <div class="card__nav">
@@ -82,7 +83,7 @@
                                                 @item.price.ToString("N0") VNĐ
                                             </td>
                                             <td class="text-center">
-                                                @item.note VNĐ
+                                                @item.note
                                             </td>
                                         </tr>
                                         }
@@ -91,7 +92,7 @@
                                         <tr>
                                             <td colspan="4" class="text-right">
                                             </td>
-                                            <td colspan="2" class="text-left">
+                                            <td colspan="3" class="text-left">
                                                 <div>
                                                     Hình thức:
                                                     <span class="text-@(Order.total == Order.prepayment ? "info" : Order.method == 1 ? "success" : "danger")">
@@ -104,7 +105,7 @@
                                             <td colspan="4" class="text-right">
                                             </td>
 
-                                            <td colspan="2" class="text-left">
+                                            <td colspan="3" class="text-left">
                                                 <div class="total-div">
                                                     <div>
                                                         Thành tiền:
@@ -136,10 +137,24 @@
                                         </tr>
                                     </tfoot>
                                 </table>
+                                <div class="card__date">
+                                    <p>Ngày @DateTime.Now.Day, tháng @DateTime.Now.Month, năm @DateTime.Now.Year</p>
+                                </div>
+                                <div class="card__signature">
+                                    <div class="card__signature-customer">
+                                        <p class="card__signature-title">
+                                            Chữ ký khách hàng
+                                        </p>
+                                    </div>
+                                    <div class="card__signature-company">
+                                        <p class="card__signature-title">
+                                            Chữ ký doanh nghiệp
+                                        </p>
+                                    </div>
+                                </div>
                                 <div class="card_footer">
-                                    <p class="card__footer-desc">Tra cứu tại Website: <a href="https://cntttest.vanlanguni.edu.vn:18081/CP25Team05/LookUpOrder">https://cntttest.vanlanguni.edu.vn:18081/CP25Team05/LookUpOrder</a> -<span> Mã tra cứu:</span> @Order.code</p>
-                                   @* <p class="card__footer-desc card__footer-desc-ladi">(abc)</p>
-                                    <p class="card__footer-desc card__footer-desc-ladi">(abc)</p>*@
+                                    <p class="card__footer-desc">Tra cứu đơn hàng tại Website: <a href="https://cntttest.vanlanguni.edu.vn:18081/CP25Team05/LookUpOrder">https://cntttest.vanlanguni.edu.vn:18081/CP25Team05/LookUpOrder</a> -<span> Mã tra cứu:</span> @Order.customer.code</p>
+
                                 </div>
                             </div>
                                 
