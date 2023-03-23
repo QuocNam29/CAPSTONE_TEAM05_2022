@@ -609,25 +609,59 @@ namespace CAP_TEAM05_2022.Controllers
                             }
                         }
                     }
-                    /*if (quality_OD < sale_Details.sold)
-                    {*/
-                        decimal price = (sale_Details.price / sale_Details.sold) * quality_OD;
+                    // tạp nợ cho lần đổi sản phẩm
+                    if (sale.method == 2)
+                    {
+                        var last_customer_Debt = db.customer_debt.Where(d => d.customer_id == sale.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
+                        var last_debt = db.debts.Where(d => d.sale.customer_id == sale.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
+                        debt debt = new debt();
+                        debt.sale_id = sale.id;
+                        debt.created_by = User.Identity.GetUserId();
+                        debt.created_at = created_at;
+                        if (return_Sale.difference >= 0)
+                        {
+                            debt.paid = return_Sale.difference;
+                            debt.total = (decimal)(last_debt.total + debt.paid);
+                            debt.remaining = last_debt.remaining - debt.paid;
+                        }
+                        else
+                        {
+                            debt.debt1 = -return_Sale.difference;
+                            debt.total = (decimal)(last_debt.total);
+                            debt.remaining = last_debt.remaining + debt.debt1;
+                        }
+                        
+                      
+                        debt.return_sale_id = return_Sale.id;
+                        db.debts.Add(debt);
+
+                        customer_debt customer_Debt = new customer_debt();
+                        customer_Debt.customer_id = sale.customer_id;
+                        customer_Debt.created_by = User.Identity.GetUserId();
+                        customer_Debt.created_at = created_at;
+                        if (return_Sale.difference >= 0)
+                        {
+                            customer_Debt.paid = return_Sale.difference;
+                            customer_Debt.remaining = last_customer_Debt.remaining - customer_Debt.paid;
+                        }
+                        else
+                        {
+                            customer_Debt.debt = -return_Sale.difference;
+                            customer_Debt.remaining = last_customer_Debt.remaining + customer_Debt.debt;
+                        }
+                            
+                        customer_Debt.return_sale_id = return_Sale.id;
+                        db.customer_debt.Add(customer_Debt);
+                        db.SaveChanges();
+
+                    }
+                    decimal price = (sale_Details.price / sale_Details.sold) * quality_OD;
                         sale_Details.return_quantity += quality_OD;
                         db.Entry(sale_Details).State = EntityState.Modified;
                         sale.total -= price;
                         db.Entry(sale).State = EntityState.Modified;
                         db.SaveChanges();
-                   /* }
-                    else
-                    {
-                       
-                            decimal price = (sale_Details.price / sale_Details.sold) * quality_OD;
-                            sale.total -= price;
-                            db.Entry(sale).State = EntityState.Modified;
-                            db.sale_details.Remove(sale_Details);
-                            db.SaveChanges();
-                       
-                    }*/
+                  
                     if (unit == product.unit)
                     {
                         product.quantity += quality_OD;
