@@ -24,24 +24,28 @@ namespace CAP_TEAM05_2022.Controllers
             string message = "";
             bool status = true;
             try
-            {
-               
+            {              
                 string unit = "";
-                int quality_OD_revenue = quality_OD;
+                int quality_OD_revenue = quality_OD; // sản phẩm muốn trả
                 sale_details sale_Details = db.sale_details.Find(sale_details_id);
                 sale sale = db.sales.Find(sale_Details.sale_id);
                 product product = db.products.Find(sale_Details.product_id);
+
+                // tìm thu chi của sản phẩm đó trong chi tiết đơn hàng
                 var revenue = db.revenues.Where(r => r.sale_details_id == sale_details_id).OrderByDescending(o => o.id).ToList();
                 unit = sale_Details.unit;
                 decimal price_PCurrent1 = decimal.Parse(price_PCurrent.Replace(",", "").Replace(".", ""));
                 if (return_option == 2)
                 {
+                    //Tạo đơn đổi trả sản phẩm
                     return_sale return_Sale = new return_sale();
                     return_Sale.sale_id = sale_Details.sale_id;
                     return_Sale.method = return_option;
                     return_Sale.create_at = DateTime.Now;
                     return_Sale.difference = price_PCurrent1 * quality_OD;
                     db.return_sale.Add(return_Sale);
+
+                    // tạo chi tiết đổi tra
                     return_details return_Details = new return_details();
                     return_Details.return_id = return_Sale.id;
                     return_Details.product_current_id = product_Current_id;
@@ -51,11 +55,13 @@ namespace CAP_TEAM05_2022.Controllers
                     return_Details.unit_current = sale_Details.unit;
                     db.return_details.Add(return_Details);
                     db.SaveChanges();
+
                     foreach (var item in revenue)
                     {
+                        // kiểm tra sản phẩm muốn trả đã hoàn trả hết chưa 
                         while (quality_OD_revenue > 0)
                         {
-
+                            //Kiểm trta số lượng sản phẩm bán theo từng phần thu chi theo lần nhập kho
                             if (item.quantity > quality_OD_revenue)
                             {
                                 item.quantity -= quality_OD_revenue;
@@ -89,13 +95,17 @@ namespace CAP_TEAM05_2022.Controllers
                                 db.Entry(item).State = EntityState.Modified;
 
                                 quality_OD_revenue = 0;
+                                db.SaveChanges();
                             }
                             else
                             {
+                                // lấy dữ liệu lần import đó
                                 import_inventory import_Inventory = db.import_inventory.Find(item.inventory_id);
+
                                 if (item.unit == import_Inventory.product.unit)
                                 {
-                                    import_Inventory.sold -= quality_OD_revenue;
+                                    // nếu đã bán trong kho nhỏ hơn số hoàn trả thì đã bán trả về số lần trong kho
+                                    import_Inventory.sold -= item.quantity;
                                     db.Entry(import_Inventory).State = EntityState.Modified;
                                 }
                                 else
@@ -120,9 +130,10 @@ namespace CAP_TEAM05_2022.Controllers
                                 }
                                 db.revenues.Remove(item);
                                 quality_OD_revenue -= item.quantity;
-
+                                db.SaveChanges();
+                                break;
                             }
-                            db.SaveChanges();
+                           
                         }
                     }
                     if (quality_OD < sale_Details.sold)
@@ -537,15 +548,16 @@ namespace CAP_TEAM05_2022.Controllers
                                     }
                                 }
                                 db.Entry(item).State = EntityState.Modified;
-
                                 quality_OD_revenue = 0;
+                                db.SaveChanges();
+
                             }
                             else
                             {
                                 import_inventory import_Inventory = db.import_inventory.Find(item.inventory_id);
                                 if (item.unit == import_Inventory.product.unit)
                                 {
-                                    import_Inventory.sold -= quality_OD_revenue;
+                                    import_Inventory.sold -= item.quantity;
                                     db.Entry(import_Inventory).State = EntityState.Modified;
                                 }
                                 else
@@ -570,9 +582,9 @@ namespace CAP_TEAM05_2022.Controllers
                                 }
                                 db.revenues.Remove(item);
                                 quality_OD_revenue -= item.quantity;
-
+                                db.SaveChanges();
+                                break;
                             }
-                            db.SaveChanges();
                         }
                     }
                     if (quality_OD < sale_Details.sold)

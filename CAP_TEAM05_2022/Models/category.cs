@@ -24,9 +24,8 @@ namespace CAP_TEAM05_2022.Models
         public int id { get; set; }
         public string code { get; set; }
         public string created_by { get; set; }
-        [Required(ErrorMessage = "Vui lòng nhập tên danh mục")]
-        [StringLength(100, ErrorMessage = "Tên danh mục phải dưới 100 ký tự.")]
-        [RegularExpression(@"^\S *$", ErrorMessage = "Vui lòng không được nhập khoảng trắng")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Vui lòng nhập tên danh mục")]
+        [StringLength(100, ErrorMessage = "Nhập tên danh mục phải dưới 100 ký tự.")]
         public string name { get; set; }
         public string slug { get; set; }
         public int status { get; set; }
