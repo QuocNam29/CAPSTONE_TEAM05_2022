@@ -27,15 +27,22 @@ namespace CAP_TEAM05_2022.Controllers
             string message = "";
             bool status = true;
             DateTime create_at = DateTime.Now;
+            if (quantity <= 0)
+            {
+                status = false;
+                message = "Vui lòng kiểm tra lại số lượng muốn đổi trả !";
+                return Json(new { status, message }, JsonRequestBehavior.AllowGet);
+            }
             try
             {
+                
                 import_inventory inventory = db.import_inventory.Find(id_inventory);
-                if (quantity > (inventory.quantity - inventory.sold))
+                if (quantity > (inventory.quantity - inventory.sold - inventory.return_quantity))
                 {
                     status = false;
                     message = "Số lượng sản phẩm " + inventory.product.name + " do nhà cung cấp  " +'"'
                         + inventory.customer.name + '"'+" cung cấp chỉ còn lại " 
-                        + (inventory.quantity - inventory.sold) + " " + inventory.product.unit;
+                        + (inventory.quantity - inventory.sold - inventory.return_quantity) + " " + inventory.product.unit;
                 }
                 else
                 {
@@ -100,7 +107,6 @@ namespace CAP_TEAM05_2022.Controllers
                 message = e.Message;
             }
             return Json(new { status, message }, JsonRequestBehavior.AllowGet);
-
         }
 
 

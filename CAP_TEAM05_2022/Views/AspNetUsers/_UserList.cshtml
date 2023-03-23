@@ -32,35 +32,42 @@
                 </td>
 
                 <td class="text-center">
-                    @if (item.LockoutEnabled == true)
+                    @if (item.Email != User.Identity.Name)
                     {
-                        <div class="custom-control custom-switch">
-                            <input type="checkbox" checked class="custom-control-input" id="@customswitch_User">
-                            <label class="custom-control-label" for="@customswitch_User"></label>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="@customswitch_User">
-                            <label class="custom-control-label" for="@customswitch_User"></label>
-                        </div>
-                    }
-                    <script language="javascript">
+                        if (item.LockoutEnabled == true)
+                        {
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" checked class="custom-control-input" id="@customswitch_User">
+                                <label class="custom-control-label" for="@customswitch_User"></label>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="@customswitch_User">
+                                <label class="custom-control-label" for="@customswitch_User"></label>
+                            </div>
+                        }
+                        <script language="javascript">
                                                         document.getElementById('@customswitch_User').onclick = function (e) {
                                                                 EditStatus('@item.Id');
                                                         };
-                    </script>
-                </td>
+                        </script>
+                    }
+                    </td>
                 <td>
-                    <button class="btn btn-success" onclick="GetUser(this, '@item.Id')">
-                        <i class="feather icon-edit">
-                        </i>
-                    </button>
-                    <button class="btn btn-danger" onclick="deleteAlert('@item.Id', '@item.Id')" id="Delete">
-                        <i class="feather icon-trash-2">
-                        </i>
-                    </button>
+                    @if (item.Email != User.Identity.Name)
+                    {
+                        <button class="btn btn-success" onclick="GetUser(this, '@item.Id')">
+                            <i class="feather icon-edit">
+                            </i>
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteAlert('@item.Id', '@item.Id')" id="Delete">
+                            <i class="feather icon-trash-2">
+                            </i>
+                        </button>
+                    }
+
                 </td>
             </tr>
         }

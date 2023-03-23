@@ -26,7 +26,13 @@ namespace CAP_TEAM05_2022.Controllers
             bool status = true;
             DateTime created_at = DateTime.Now;
             try
-            {              
+            {
+                if (input_qualityProduct != null && input_qualityProduct <= 0)
+                {
+                    string message1 = "Vui lòng kiểm tra lại số lượng sản phẩm đổi mới !";
+                    bool status1 = false;
+                    return Json(new { status = status1, message = message1 }, JsonRequestBehavior.AllowGet);
+                }
                 string unit = "";
                 int quality_OD_revenue = quality_OD; // sản phẩm muốn trả
                 sale_details sale_Details = db.sale_details.Find(sale_details_id);

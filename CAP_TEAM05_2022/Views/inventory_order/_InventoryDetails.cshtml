@@ -184,7 +184,7 @@
                                             <th>Tên sản phẩm</th>
                                             <th class="text-center">Số lượng nhập</th>
                                             <th class="text-center">Đơn giá nhập</th>
-                                            <th class="text-center">Thành tiền</th>
+                                            <th class="text-center">Số lượng tồn</th>
                                             <th></th>
                                         </tr>
 
@@ -195,27 +195,29 @@
                                         {
                                             no_return++;
 
-                                            <tr>
-                                                <td>@no_return</td>
-                                                <td>@item.product.code</td>
-                                                <td>@item.product.name</td>
-                                                <td class="text-center">
-                                                    <div>@item.quantity<span class="txt-unit">@item.product.unit</span></div>
-                                                    @if (@item.product.unit_swap != null)
-                                                    {
-                                                        <div>
-                                                            <span>
-                                                                1<span class="txt-unit">@item.product.unit</span> = @item.product.quantity_swap<span class="txt-unit">@item.product.unit_swap</span>
-                                                            </span>
-                                                        </div>
-                                                    }
-                                                </td>
-                                                <td class="text-center">@item.price_import.ToString("N0")</td>
-                                                <td class="text-center">@((item.price_import * (item.quantity)).ToString("N0")) </td>
-                                                <td class="text-center">
-                                                    <button type="button" class="btn btn-danger" onclick="Get_exchangeSupplier('@item.id', '@item.product.name', '@(item.quantity-item.sold-item.return_quantity + " " + item.product.unit)', '@item.customer.name', '@item.price_import.ToString("N0")')">Trả sản phẩm</button>
-                                                </td>
-                                            </tr>
+                                        <tr>
+                                            <td>@no_return</td>
+                                            <td>@item.product.code</td>
+                                            <td>@item.product.name</td>
+                                            <td class="text-center">
+                                                <div>@item.quantity<span class="txt-unit">@item.product.unit</span></div>
+                                                @if (@item.product.unit_swap != null)
+                                                {
+                                                    <div>
+                                                        <span>
+                                                            1<span class="txt-unit">@item.product.unit</span> = @item.product.quantity_swap<span class="txt-unit">@item.product.unit_swap</span>
+                                                        </span>
+                                                    </div>
+                                                }
+                                            </td>
+                                            <td class="text-center">@item.price_import.ToString("N0") VNĐ</td>
+                                            <td class="text-center">
+                                                <div>@(item.quantity-item.sold - item.return_quantity)<span class="txt-unit">@item.product.unit</span></div>                                             
+                                            </td>
+                                            <td class="text-center">
+                                                <button type="button" class="btn btn-danger" onclick="Get_exchangeSupplier('@item.id', '@item.product.name', '@(item.quantity-item.sold-item.return_quantity + " " + item.product.unit)', '@item.customer.name', '@item.price_import.ToString("N0")')">Trả sản phẩm</button>
+                                            </td>
+                                        </tr>
                                         }
                                     </tbody>
                                 </table>
@@ -231,7 +233,6 @@
     <div role="document" class="modal-dialog modal-lg">
         <form class="needs-validation Return_Supplier" method="post" action="@Url.Action("Create_returnSupplier", "return_supplier")" novalidate>
             <input type="number" id="id_inventory" name="id_inventory" hidden class="form-control">
-
             <div class="modal-content">
                 <div class="modal-header bg-primary">
                     <h5 id="exchangeSupplierModalTitle" class="modal-title white">Trả sản phẩm</h5>

@@ -263,7 +263,7 @@
                                             <th class="text-center">STT</th>
                                             <th>Mã sản phẩm</th>
                                             <th>Tên sản phẩm</th>
-                                            <th class="text-center">Số lượng</th>
+                                            <th class="text-center">Số lượng còn</th>
                                             <th class="text-center">Tổng tiền</th>
                                             <th>
                                             </th>
@@ -272,28 +272,32 @@
                                     <tbody>
                                         @foreach (var item in Model)
                                         {
-                                            no_return++;
-                                            <tr>
-                                                <td class="text-center">
-                                                    @no_return
-                                                </td>
-                                                <td class="text-center">
-                                                    @item.product.code
-                                                </td>
-                                                <td class="text-center">
-                                                    @item.product.name
-                                                </td>
+                                            if (item.sold - item.return_quantity > 0)
+                                            {
+                                                no_return++;
+                                                <tr>
+                                                    <td class="text-center">
+                                                        @no_return
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.product.code
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.product.name
+                                                    </td>
 
-                                                <td class="text-center">
-                                                    @item.sold<span class="txt-unit"> @item.unit</span>
-                                                </td>
-                                                <td class="text-center">
-                                                    @String.Format("{0:0,00}", item.price)
-                                                </td>
-                                                <td>
-                                                    <button type="button" class="btn btn-primary" onclick="Get_ReturnProduct('@item.id')">Chọn</button>
-                                                </td>
-                                            </tr>
+                                                    <td class="text-center">
+                                                        @(item.sold - item.return_quantity)<span class="txt-unit"> @item.unit</span>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @String.Format("{0:0,00}", item.price)
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-primary" onclick="Get_ReturnProduct('@item.id')">Chọn</button>
+                                                    </td>
+                                                </tr>
+                                            }
+
                                         }
 
                                     </tbody>
