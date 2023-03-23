@@ -92,7 +92,7 @@
                                                     @item.note
                                                 </td>
                                                 <td class="text-center">
-                                                    @item.created_at
+                                                    @String.Format("{0:HH:mm - dd/MM/yyy}", item.created_at)
                                                 </td>
                                             </tr>
                                         }
@@ -148,7 +148,7 @@
                                                         Đổi sản phẩm
                                                     </td>
                                                     <td class="text-center">
-                                                        @item1.create_at
+                                                        @String.Format("{0:HH:mm - dd/MM/yyy}", item1.create_at)
                                                     </td>
                                                 </tr>
                                             }
@@ -179,7 +179,7 @@
                                                         Trả sản phẩm
                                                     </td>
                                                     <td class="text-center">
-                                                        @item1.create_at
+                                                        @String.Format("{0:HH:mm - dd/MM/yyy}", item1.create_at)
                                                     </td>
                                                 </tr>
                                             }

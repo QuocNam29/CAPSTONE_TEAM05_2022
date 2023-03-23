@@ -77,10 +77,10 @@
                                                 @((item.price / item.sold).ToString("N0")) VNĐ / <span class="txt-unit">@item.unit</span>
                                             </td>
                                             <td class="text-center">
-                                                @item.sold<span class="txt-unit"> @item.unit</span>
+                                                @(item.sold-item.return_quantity)<span class="txt-unit"> @item.unit</span>
                                             </td>
                                             <td class="text-center">
-                                                @item.price.ToString("N0") VNĐ
+                                                @(((decimal)((item.price / item.sold)* (item.sold - (item.return_quantity != null ? item.return_quantity : 0)))).ToString("N0")) VNĐ
                                             </td>
                                             <td class="text-center">
                                                 @item.note

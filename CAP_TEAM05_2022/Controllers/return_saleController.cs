@@ -1,4 +1,5 @@
 ﻿using CAP_TEAM05_2022.Models;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Data;
 using System.Data.Entity;
@@ -42,6 +43,7 @@ namespace CAP_TEAM05_2022.Controllers
                     return_sale return_Sale = new return_sale();
                     return_Sale.saleDetails_id = sale_Details.id;
                     return_Sale.method = return_option;
+                    return_Sale.code = $"MTH-{DateTime.Now:ddMMyyHHss}"; ;
                     return_Sale.create_at = created_at;
                     return_Sale.difference = price_PCurrent1 * quality_OD;
                     db.return_sale.Add(return_Sale);
@@ -137,24 +139,41 @@ namespace CAP_TEAM05_2022.Controllers
                            
                         }
                     }
-                   /* if (quality_OD < sale_Details.sold)
-                    {*/
-                        decimal price = (sale_Details.price / sale_Details.sold) * quality_OD;
+                    db.SaveChanges();
+                    if (sale.method == 2)
+                    {
+                        var last_customer_Debt = db.customer_debt.Where(d => d.customer_id == sale.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
+                        var last_debt = db.debts.Where(d => d.sale.customer_id == sale.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
+                        debt debt = new debt();
+                        debt.sale_id = sale.id;
+                        debt.created_by = User.Identity.GetUserId();
+                        debt.created_at = created_at;
+                        debt.paid = (price_PCurrent1 * quality_OD);
+                        debt.total = (decimal)(last_debt.total + (price_PCurrent1 * quality_OD));
+                        debt.remaining = last_debt.remaining - (price_PCurrent1 * quality_OD);
+                        debt.return_sale_id = return_Sale.id;
+                        db.debts.Add(debt);
+
+                        customer_debt customer_Debt = new customer_debt();
+                        customer_Debt.customer_id = sale.customer_id;
+                        customer_Debt.created_by = User.Identity.GetUserId();
+                        customer_Debt.created_at = created_at;
+                        customer_Debt.paid = (price_PCurrent1 * quality_OD);
+                        customer_Debt.remaining = last_customer_Debt.remaining - (price_PCurrent1 * quality_OD);
+                        customer_Debt.return_sale_id = return_Sale.id;
+                        db.customer_debt.Add(customer_Debt);
+                        db.SaveChanges();
+
+                    }
+
+
+                    decimal price = (sale_Details.price / sale_Details.sold) * quality_OD;
                         sale_Details.return_quantity += quality_OD;
                         db.Entry(sale_Details).State = EntityState.Modified;
                         sale.total -= price;
                         db.Entry(sale).State = EntityState.Modified;
                         db.SaveChanges();
-                   /* }
-                    else
-                    {                      
-                            decimal price = (sale_Details.price / sale_Details.sold) * quality_OD;
-                            sale.total -= price;
-                            db.Entry(sale).State = EntityState.Modified;
-                            db.sale_details.Remove(sale_Details);
-                            db.SaveChanges();
-                     
-                    }*/
+                   
                     if (unit == product.unit)
                     {
                         product.quantity += quality_OD;
@@ -223,6 +242,7 @@ namespace CAP_TEAM05_2022.Controllers
                     }
                     sale_Details_return.unit = choose_unit;
                     sale_Details_return.created_at = created_at;
+                    sale_Details_return.return_quantity = 0;
                     db.sale_details.Add(sale_Details_return);
                     int temp_quatity = (int)input_qualityProduct;
                     while (temp_quatity > 0)
@@ -496,9 +516,11 @@ namespace CAP_TEAM05_2022.Controllers
                     return_sale return_Sale = new return_sale();
                     return_Sale.saleDetails_id = sale_Details.id;
                     return_Sale.method = return_option;
+                    return_Sale.code = $"MDH-{DateTime.Now:ddMMyyHHss}"; ;
                     return_Sale.create_at = created_at;
                     return_Sale.difference = (price_PCurrent1 * quality_OD) - total_return;
                     db.return_sale.Add(return_Sale);
+
                     return_details return_Details = new return_details();
                     return_Details.return_id = return_Sale.id;
                     return_Details.product_current_id = product_Current_id;
@@ -610,11 +632,22 @@ namespace CAP_TEAM05_2022.Controllers
                     {
                         product.quantity += quality_OD;
                         db.Entry(product).State = EntityState.Modified;
+                        
                     }
                     else if (unit == product.unit_swap)
                     {
                         product.quantity_remaning += quality_OD;
                         db.Entry(product).State = EntityState.Modified;
+                    }
+                    if (choose_unit == product_check.unit)
+                    {
+                        product_check.quantity -= (int)input_qualityProduct;
+                        db.Entry(product_check).State = EntityState.Modified;
+                    }
+                    else if (choose_unit == product_check.unit_swap)
+                    {
+                        product_check.quantity_remaning += quality_OD;
+                        db.Entry(product_check).State = EntityState.Modified;
                     }
 
                     db.SaveChanges();
