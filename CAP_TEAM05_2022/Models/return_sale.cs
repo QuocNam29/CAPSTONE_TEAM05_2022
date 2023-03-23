@@ -24,7 +24,7 @@ namespace CAP_TEAM05_2022.Models
     
         public int id { get; set; }
         public string code { get; set; }
-        public int sale_id { get; set; }
+        public int saleDetails_id { get; set; }
         public int method { get; set; }
         public System.DateTime create_at { get; set; }
         public decimal difference { get; set; }
@@ -35,6 +35,6 @@ namespace CAP_TEAM05_2022.Models
         public virtual ICollection<debt> debts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<return_details> return_details { get; set; }
-        public virtual sale sale { get; set; }
+        public virtual sale_details sale_details { get; set; }
     }
 }

@@ -19,7 +19,6 @@ namespace CAP_TEAM05_2022.Models
         {
             this.customer_debt = new HashSet<customer_debt>();
             this.debts = new HashSet<debt>();
-            this.return_sale = new HashSet<return_sale>();
             this.sale_details = new HashSet<sale_details>();
         }
     
@@ -41,8 +40,6 @@ namespace CAP_TEAM05_2022.Models
         public virtual customer customer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<debt> debts { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<return_sale> return_sale { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<sale_details> sale_details { get; set; }
         public virtual user user { get; set; }

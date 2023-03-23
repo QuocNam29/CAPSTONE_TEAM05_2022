@@ -248,7 +248,7 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="code" Type="varchar" MaxLength="50" />
-          <Property Name="sale_id" Type="int" Nullable="false" />
+          <Property Name="saleDetails_id" Type="int" Nullable="false" />
           <Property Name="method" Type="int" Nullable="false" />
           <Property Name="create_at" Type="datetime" Nullable="false" />
           <Property Name="difference" Type="money" Nullable="false" />
@@ -290,6 +290,7 @@
           <Property Name="created_at" Type="date" />
           <Property Name="updated_at" Type="date" />
           <Property Name="deleted_at" Type="datetime2" Precision="0" />
+          <Property Name="return_quantity" Type="int" />
         </EntityType>
         <EntityType Name="sales">
           <Key>
@@ -678,15 +679,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_return_sales">
-          <End Role="sales" Type="Self.sales" Multiplicity="1" />
+        <Association Name="FK_return_sale_sale_details">
+          <End Role="sale_details" Type="Self.sale_details" Multiplicity="1" />
           <End Role="return_sale" Type="Self.return_sale" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="sales">
+            <Principal Role="sale_details">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="return_sale">
-              <PropertyRef Name="sale_id" />
+              <PropertyRef Name="saleDetails_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -958,8 +959,8 @@
             <End Role="return_sale" EntitySet="return_sale" />
             <End Role="return_details" EntitySet="return_details" />
           </AssociationSet>
-          <AssociationSet Name="FK_return_sales" Association="Self.FK_return_sales">
-            <End Role="sales" EntitySet="sales" />
+          <AssociationSet Name="FK_return_sale_sale_details" Association="Self.FK_return_sale_sale_details">
+            <End Role="sale_details" EntitySet="sale_details" />
             <End Role="return_sale" EntitySet="return_sale" />
           </AssociationSet>
           <AssociationSet Name="FK_return_supplier_import_inventory" Association="Self.FK_return_supplier_import_inventory">
@@ -1298,14 +1299,14 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="sale_id" Type="Int32" Nullable="false" />
+          <Property Name="saleDetails_id" Type="Int32" Nullable="false" />
           <Property Name="method" Type="Int32" Nullable="false" />
           <Property Name="create_at" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="difference" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
           <NavigationProperty Name="customer_debt" Relationship="Self.FK_customer_debt_return_sale" FromRole="return_sale" ToRole="customer_debt" />
           <NavigationProperty Name="debts" Relationship="Self.FK_debts_return_sale" FromRole="return_sale" ToRole="debts" />
           <NavigationProperty Name="return_details" Relationship="Self.FK_return_details_return" FromRole="return_sale" ToRole="return_details" />
-          <NavigationProperty Name="sale" Relationship="Self.FK_return_sales" FromRole="return_sale" ToRole="sales" />
+          <NavigationProperty Name="sale_details" Relationship="Self.FK_return_sale_sale_details" FromRole="return_sale" ToRole="sale_details" />
         </EntityType>
         <EntityType Name="return_supplier">
           <Key>
@@ -1349,7 +1350,9 @@
           <Property Name="created_at" Type="DateTime" Precision="0" />
           <Property Name="updated_at" Type="DateTime" Precision="0" />
           <Property Name="deleted_at" Type="DateTime" Precision="0" />
+          <Property Name="return_quantity" Type="Int32" />
           <NavigationProperty Name="product" Relationship="Self.sale_details_ibfk_1" FromRole="sale_details" ToRole="products" />
+          <NavigationProperty Name="return_sale" Relationship="Self.FK_return_sale_sale_details" FromRole="sale_details" ToRole="return_sale" />
           <NavigationProperty Name="revenues" Relationship="Self.FK_revenue_sale_details" FromRole="sale_details" ToRole="revenue" />
           <NavigationProperty Name="sale" Relationship="Self.sale_details_ibfk_2" FromRole="sale_details" ToRole="sales" />
         </EntityType>
@@ -1372,7 +1375,6 @@
           <NavigationProperty Name="customer_debt" Relationship="Self.FK_customer_debt_sales" FromRole="sales" ToRole="customer_debt" />
           <NavigationProperty Name="customer" Relationship="Self.FK_sales_customers" FromRole="sales" ToRole="customers" />
           <NavigationProperty Name="debts" Relationship="Self.debts_ibfk_1" FromRole="sales" ToRole="debts" />
-          <NavigationProperty Name="return_sale" Relationship="Self.FK_return_sales" FromRole="sales" ToRole="return_sale" />
           <NavigationProperty Name="sale_details" Relationship="Self.sale_details_ibfk_2" FromRole="sales" ToRole="sale_details" />
           <NavigationProperty Name="user" Relationship="Self.FK_sales_users" FromRole="sales" ToRole="users" />
         </EntityType>
@@ -1823,15 +1825,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_return_sales">
-          <End Role="sales" Type="Self.sale" Multiplicity="1" />
+        <Association Name="FK_return_sale_sale_details">
+          <End Role="sale_details" Type="Self.sale_details" Multiplicity="1" />
           <End Role="return_sale" Type="Self.return_sale" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="sales">
+            <Principal Role="sale_details">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="return_sale">
-              <PropertyRef Name="sale_id" />
+              <PropertyRef Name="saleDetails_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2034,8 +2036,8 @@
             <End Role="return_sale" EntitySet="return_sale" />
             <End Role="return_details" EntitySet="return_details" />
           </AssociationSet>
-          <AssociationSet Name="FK_return_sales" Association="Self.FK_return_sales">
-            <End Role="sales" EntitySet="sales" />
+          <AssociationSet Name="FK_return_sale_sale_details" Association="Self.FK_return_sale_sale_details">
+            <End Role="sale_details" EntitySet="sale_details" />
             <End Role="return_sale" EntitySet="return_sale" />
           </AssociationSet>
           <AssociationSet Name="FK_revenue_sale_details" Association="Self.FK_revenue_sale_details">
@@ -2307,7 +2309,7 @@
               <MappingFragment StoreEntitySet="return_sale">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="code" ColumnName="code" />
-                <ScalarProperty Name="sale_id" ColumnName="sale_id" />
+                <ScalarProperty Name="saleDetails_id" ColumnName="saleDetails_id" />
                 <ScalarProperty Name="method" ColumnName="method" />
                 <ScalarProperty Name="create_at" ColumnName="create_at" />
                 <ScalarProperty Name="difference" ColumnName="difference" />
@@ -2352,6 +2354,7 @@
                 <ScalarProperty Name="created_at" ColumnName="created_at" />
                 <ScalarProperty Name="updated_at" ColumnName="updated_at" />
                 <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
+                <ScalarProperty Name="return_quantity" ColumnName="return_quantity" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -15,7 +15,7 @@ namespace CAP_TEAM05_2022.Controllers
         // GET: return_sale
         public ActionResult Index()
         {
-            var return_sale = db.return_sale.Include(r => r.sale);
+            var return_sale = db.return_sale.Include(r => r.sale_details.sale);
             return View(return_sale.ToList());
         }
         public ActionResult Create_Return(int sale_details_id, int product_Current_id, int quality_OD,
@@ -23,6 +23,7 @@ namespace CAP_TEAM05_2022.Controllers
         {
             string message = "";
             bool status = true;
+            DateTime created_at = DateTime.Now;
             try
             {              
                 string unit = "";
@@ -39,9 +40,9 @@ namespace CAP_TEAM05_2022.Controllers
                 {
                     //Tạo đơn đổi trả sản phẩm
                     return_sale return_Sale = new return_sale();
-                    return_Sale.sale_id = sale_Details.sale_id;
+                    return_Sale.saleDetails_id = sale_Details.id;
                     return_Sale.method = return_option;
-                    return_Sale.create_at = DateTime.Now;
+                    return_Sale.create_at = created_at;
                     return_Sale.difference = price_PCurrent1 * quality_OD;
                     db.return_sale.Add(return_Sale);
 
@@ -136,16 +137,15 @@ namespace CAP_TEAM05_2022.Controllers
                            
                         }
                     }
-                    if (quality_OD < sale_Details.sold)
-                    {
+                   /* if (quality_OD < sale_Details.sold)
+                    {*/
                         decimal price = (sale_Details.price / sale_Details.sold) * quality_OD;
-                        sale_Details.price -= price;
-                        sale_Details.sold -= quality_OD;
+                        sale_Details.return_quantity += quality_OD;
                         db.Entry(sale_Details).State = EntityState.Modified;
                         sale.total -= price;
                         db.Entry(sale).State = EntityState.Modified;
                         db.SaveChanges();
-                    }
+                   /* }
                     else
                     {                      
                             decimal price = (sale_Details.price / sale_Details.sold) * quality_OD;
@@ -154,7 +154,7 @@ namespace CAP_TEAM05_2022.Controllers
                             db.sale_details.Remove(sale_Details);
                             db.SaveChanges();
                      
-                    }
+                    }*/
                     if (unit == product.unit)
                     {
                         product.quantity += quality_OD;
@@ -222,7 +222,7 @@ namespace CAP_TEAM05_2022.Controllers
                         sale.total += (decimal)(product_check.sell_price_swap * input_qualityProduct);
                     }
                     sale_Details_return.unit = choose_unit;
-                    sale_Details_return.created_at = DateTime.Now;
+                    sale_Details_return.created_at = created_at;
                     db.sale_details.Add(sale_Details_return);
                     int temp_quatity = (int)input_qualityProduct;
                     while (temp_quatity > 0)
@@ -494,9 +494,9 @@ namespace CAP_TEAM05_2022.Controllers
                     }
 
                     return_sale return_Sale = new return_sale();
-                    return_Sale.sale_id = sale_Details.sale_id;
+                    return_Sale.saleDetails_id = sale_Details.id;
                     return_Sale.method = return_option;
-                    return_Sale.create_at = DateTime.Now;
+                    return_Sale.create_at = created_at;
                     return_Sale.difference = (price_PCurrent1 * quality_OD) - total_return;
                     db.return_sale.Add(return_Sale);
                     return_details return_Details = new return_details();
@@ -587,16 +587,15 @@ namespace CAP_TEAM05_2022.Controllers
                             }
                         }
                     }
-                    if (quality_OD < sale_Details.sold)
-                    {
+                    /*if (quality_OD < sale_Details.sold)
+                    {*/
                         decimal price = (sale_Details.price / sale_Details.sold) * quality_OD;
-                        sale_Details.price -= price;
-                        sale_Details.sold -= quality_OD;
+                        sale_Details.return_quantity += quality_OD;
                         db.Entry(sale_Details).State = EntityState.Modified;
                         sale.total -= price;
                         db.Entry(sale).State = EntityState.Modified;
                         db.SaveChanges();
-                    }
+                   /* }
                     else
                     {
                        
@@ -606,7 +605,7 @@ namespace CAP_TEAM05_2022.Controllers
                             db.sale_details.Remove(sale_Details);
                             db.SaveChanges();
                        
-                    }
+                    }*/
                     if (unit == product.unit)
                     {
                         product.quantity += quality_OD;

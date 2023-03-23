@@ -33,6 +33,8 @@ namespace CAP_TEAM05_2022.Controllers
         {
             var sale = db.sales.Find(order_id);           
             ViewBag.Order = sale;
+            var returnSale = db.return_sale.Where(x=> x.sale_details.sale_id == order_id).ToList();
+            ViewBag.ReturnSale = returnSale;
             var OrderDetailsList = db.sale_details.Where(o => o.sale_id == order_id);
             return PartialView(OrderDetailsList.ToList());
         }
@@ -144,6 +146,7 @@ namespace CAP_TEAM05_2022.Controllers
                     sale_Details.price = item.price;
                     sale_Details.unit = item.unit;
                     sale_Details.created_at = DateTime.Now;
+                    sale_Details.return_quantity = 0;
                     db.sale_details.Add(sale_Details);
                     int temp_quatity = item.quantity;
                     while (temp_quatity > 0)
