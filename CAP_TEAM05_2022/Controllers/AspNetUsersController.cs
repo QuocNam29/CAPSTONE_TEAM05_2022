@@ -323,30 +323,25 @@ namespace CAP_TEAM05_2022.Controllers
             return View(user);
         }
 
-        // GET: AspNetUsers/Delete/5
-        public ActionResult Delete(string id)
+        public ActionResult Delete_User(AspNetUser aspNetUser)
         {
-            if (id == null)
+            bool status = true;
+            string mess = "";
+            try
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                user user = db.users.Find(aspNetUser.Id);
+                AspNetUser aspNet = db.AspNetUsers.Find(aspNetUser.Id);
+                db.users.Remove(user);
+                db.AspNetUsers.Remove(aspNet);
+                db.SaveChanges();
+                mess = "Xóa nhân viên thành công";
             }
-            AspNetUser aspNetUser = db.AspNetUsers.Find(id);
-            if (aspNetUser == null)
+            catch
             {
-                return HttpNotFound();
+                status = false;
+                mess = "Tài khoản đã được sử dụng !";
             }
-            return View(aspNetUser);
-        }
-
-        // POST: AspNetUsers/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
-        {
-            AspNetUser aspNetUser = db.AspNetUsers.Find(id);
-            db.AspNetUsers.Remove(aspNetUser);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            return Json(new { status = status, message = mess }, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)

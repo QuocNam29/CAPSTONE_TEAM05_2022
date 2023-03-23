@@ -2,6 +2,7 @@
 @{
     int no = 0;
 }
+<input hidden type="text" id="URLDelete" value="@Url.Action("Delete_User", "AspNetUsers")">
 <table id="example" class="table table-hover ">
     <thead>
         <tr>
@@ -25,11 +26,11 @@
                 <td>@no <input hidden type="text" name="record" value="@item.Id" /> </td>
                 <td>@item.users.FirstOrDefault().name</td>
                 <td>@item.Email</td>
-                <td>@item.PhoneNumber</td>              
+                <td>@item.PhoneNumber</td>
                 <td class="text-center">
-                   @item.AspNetRoles.FirstOrDefault().Name
+                    @item.AspNetRoles.FirstOrDefault().Name
                 </td>
-              
+
                 <td class="text-center">
                     @if (item.LockoutEnabled == true)
                     {
@@ -54,6 +55,10 @@
                 <td>
                     <button class="btn btn-success" onclick="GetUser(this, '@item.Id')">
                         <i class="feather icon-edit">
+                        </i>
+                    </button>
+                    <button class="btn btn-danger" onclick="deleteAlert('@item.Id', '@item.Id')" id="Delete">
+                        <i class="feather icon-trash-2">
                         </i>
                     </button>
                 </td>
