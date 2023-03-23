@@ -191,6 +191,7 @@
     <Compile Include="Controllers\customersController.cs" />
     <Compile Include="Controllers\debtsController.cs" />
     <Compile Include="Controllers\Debts_CollectionsController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ExcelController.cs" />
     <Compile Include="Controllers\groupsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -698,7 +699,6 @@
     <Content Include="Views\return_supplier\Edit.cshtml" />
     <Content Include="Views\return_supplier\Index.cshtml" />
     <Content Include="Views\return_supplier\_ReturnSupplier.cshtml" />
-    <Content Include="Views\Home\Error404.cshtml" />
     <Content Include="Views\LookUpOrder\Index.cshtml" />
     <Content Include="Views\LookUpOrder\LookUpOrder.cshtml" />
     <Content Include="Views\import_inventory\Create.cshtml" />
@@ -718,6 +718,7 @@
     <Content Include="Views\sale_details\_TemplateInvoicePreview.cshtml" />
     <Content Include="Views\Revenues\_RevenueList_Month.cshtml" />
     <Content Include="Views\inventory_order\ScriptContainer.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

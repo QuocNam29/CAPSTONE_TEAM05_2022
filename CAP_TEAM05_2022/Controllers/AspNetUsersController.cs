@@ -102,20 +102,25 @@ namespace CAP_TEAM05_2022.Controllers
 
                     if (result.Succeeded)
                     {
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-
                         UserManager.AddToRole(user.Id, role.Name);
-                        user users = new user();
-                        users.id = user.Id;
-                        users.email = email;
-                        users.remember_token = user.SecurityStamp;
-                        users.created_at = DateTime.Now;
-                        users.phone = phone;
-                        users.address = address;
-                        users.name = fullName;
-                        users.asp_id = user.Id;
+                        user users = new user
+                        {
+                            id = user.Id,
+                            email = email,
+                            remember_token = user.SecurityStamp,
+                            created_at = DateTime.Now,
+                            phone = phone,
+                            address = address,
+                            name = fullName,
+                            asp_id = user.Id
+                        };
                         db.users.Add(users);
                         db.SaveChanges();
+
+                        // Send confirmation email
+                        string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                        var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code }, protocol: Request.Url.Scheme);
+                        await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
                         return Json(new { status = true, message = "Thêm thành công!" }, JsonRequestBehavior.AllowGet);
                     }
                     else
@@ -132,9 +137,6 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 return Json(new { status = false, message = e.Message }, JsonRequestBehavior.AllowGet);
             }
-            
-
-
         }
         public ActionResult EditStatus_User(AspNetUser user)
         {
