@@ -6,6 +6,8 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using Constants = CAP_TEAM05_2022.Helper.Constants;
+
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -38,12 +40,13 @@ namespace CAP_TEAM05_2022.Controllers
             var OrderDetailsList = db.sale_details.Where(o => o.sale_id == order_id);
             return PartialView(OrderDetailsList.ToList());
         }
+        [HttpGet]
         public ActionResult _HistoryOrder(int order_customer, int? method)
         {
             var HistoryOrder = db.sales.Where(o => o.customer_id == order_customer);
-            if (method == 2)
+            if (method == Constants.DEBT_ORDER)
             {
-                HistoryOrder = HistoryOrder.Where(s => s.method == 2);
+                HistoryOrder = HistoryOrder.Where(s => s.method == Constants.DEBT_ORDER);
             }
             return PartialView(HistoryOrder.OrderByDescending(o => o.id).ToList());
         }
@@ -122,16 +125,16 @@ namespace CAP_TEAM05_2022.Controllers
                 sale.customer_id = createSale.customer_id;
                 if (createSale.method > 0)
                 {
-                    sale.method = 2;
+                    sale.method = Constants.DEBT_ORDER;
                     sale.prepayment = createSale.method;
                 }
                 else
                 {
-                    sale.method = 1;
+                    sale.method = Constants.PAYED_ORDER;
                 }
                 sale.total = createSale.total;
                 sale.note = createSale.note;
-                sale.status = 1;
+                sale.status = Constants.SHOW_STATUS;
                 sale.created_by = User.Identity.GetUserId();
                 sale.created_at = DateTime.Now;
                 db.sales.Add(sale);

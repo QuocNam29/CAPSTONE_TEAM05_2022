@@ -82,7 +82,7 @@ namespace CAP_TEAM05_2022.Controllers
                     }
                     else
                     {
-                        if (check_swap == 1 && (quantity_swap == null || String.IsNullOrEmpty(unit_swap) || String.IsNullOrEmpty(price_swap)))
+                        if (check_swap == Constants.UNIT_CONVERT && (quantity_swap == null || String.IsNullOrEmpty(unit_swap) || String.IsNullOrEmpty(price_swap)))
                         {
                             status = false;
                             message = "Thông tin quy đổi còn trống !";
@@ -91,7 +91,7 @@ namespace CAP_TEAM05_2022.Controllers
                         {
                             product product = new product();
                             product.name = name_product;
-                            product.status = 1;
+                            product.status = Constants.SHOW_STATUS;
                             product.unit = unit;
                             product.category_id = CategoryDropdown;
                             product.group_id = GroupProductDropdown;
@@ -145,7 +145,7 @@ namespace CAP_TEAM05_2022.Controllers
             {
 
                 int check = db.import_inventory.Where(i => i.product_id == product.id && i.sold == 0).Count();
-                if (check <= 1)
+                if (check <= Constants.UNIT_CONVERT)
                 {
                     import_inventory inventory = db.import_inventory.Where(i => i.product_id == product.id && i.sold == 0).FirstOrDefault();
                     db.import_inventory.Remove(inventory);
@@ -169,11 +169,11 @@ namespace CAP_TEAM05_2022.Controllers
             product product = db.products.Find(products.id);
             if (product.status == Constants.SHOW_STATUS)
             {
-                product.status = 2;
+                product.status = Constants.HIDDEN_STATUS;
             }
             else
             {
-                product.status = 1;
+                product.status = Constants.SHOW_STATUS;
             }
             product.updated_at = DateTime.Now;
             db.Entry(product).State = EntityState.Modified;

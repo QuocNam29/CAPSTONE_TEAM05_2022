@@ -24,7 +24,7 @@ namespace CAP_TEAM05_2022.Controllers
         // GET: categories
         public ActionResult Index()
         {
-            var categories = db.categories.Where(c => c.status != 3).OrderByDescending(c => c.id).ToList();
+            var categories = db.categories.OrderByDescending(c => c.id).ToList();
             return View(categories);
         }
         [HttpGet]
@@ -56,7 +56,7 @@ namespace CAP_TEAM05_2022.Controllers
                     }
                     else
                     {
-                        category.status = 1;
+                        category.status = Constants.SHOW_STATUS;
                         category.created_by = User.Identity.GetUserId();
                         category.created_at = DateTime.Now;
                         category.slug = category.name;
@@ -110,7 +110,7 @@ namespace CAP_TEAM05_2022.Controllers
         }
         public ActionResult _CategoryList()
         {
-            var categories = db.categories.Include(c => c.user).Where(c => c.status != 3).OrderByDescending(c => c.id);
+            var categories = db.categories.Include(c => c.user).OrderByDescending(c => c.id);
             return PartialView(categories.ToList());
         }
         public ActionResult Delete_Category(category categorys)
@@ -136,11 +136,11 @@ namespace CAP_TEAM05_2022.Controllers
             category categories = db.categories.Find(categorys.id);
             if (categories.status == Constants.SHOW_STATUS)
             {
-                categories.status = 2;
+                categories.status = Constants.HIDDEN_STATUS;
             }
             else
             {
-                categories.status = 1;
+                categories.status = Constants.SHOW_STATUS;
             }
             categories.updated_at = DateTime.Now;
             db.Entry(categories).State = EntityState.Modified;

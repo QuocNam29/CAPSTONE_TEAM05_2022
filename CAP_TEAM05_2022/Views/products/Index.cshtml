@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<CAP_TEAM05_2022.Models.product>
+@using Constants = CAP_TEAM05_2022.Helper.Constants
 
 @{
     ViewBag.Title = "Index";
@@ -366,7 +367,7 @@
                         <div class="col-md-12 mt-2">
                             <div class="form-group">
                                 <input type="checkbox" id="swap" name="swap">
-                                <input type="number" id="check_swap" name="check_swap" hidden value="0" />
+                                <input type="number" id="check_swap" name="check_swap" hidden value="@Constants.NO_UNIT_CONVERT" />
                                 <label for="swap">Quy đổi sang đơn vị khác</label>
                             </div>
                         </div>
@@ -681,13 +682,14 @@
         document.getElementById('swap').onclick = function (e) {
             if (this.checked) {
                 $(".swap").show();
-                $("#check_swap").val(1)
+                $("#check_swap").val(@Constants.UNIT_CONVERT)
                 var unit_buy = $("#unit_buy").val()
                 document.getElementsByClassName('unit_current')[0].innerHTML = unit_buy;
-
             }
             else {
                 $(".swap").hide();
+                $("#check_swap").val(@Constants.NO_UNIT_CONVERT)
+
             }
         };
         $("#unit_buy").change(function () {

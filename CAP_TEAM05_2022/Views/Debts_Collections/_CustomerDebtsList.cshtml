@@ -1,4 +1,6 @@
 ﻿@model IEnumerable<CAP_TEAM05_2022.Models.customer>
+@using Constants = CAP_TEAM05_2022.Helper.Constants
+
 @{
     int no = 0;
 }
@@ -18,8 +20,8 @@
     </thead>
     <tbody>
         @foreach (var item in Model)
-                {
-                    no++;
+        {
+            no++;
             <tr class="point-custom">
                 <td class="text-center">
                     @no
@@ -28,7 +30,7 @@
                 <td>@item.name</td>
                 <td>@item.sales.Where(s => s.method == 2).Count()</td>
                 <td class="text-center">
-                    @item.sales.Where(s=> s.method == 2).Sum(s =>s.total).ToString("N0")VNĐ
+                    @item.sales.Where(s => s.method == 2).Sum(s => s.total).ToString("N0")VNĐ
                 </td>
                 <td class="text-center">
                     @(((decimal)item.sales.Where(s => s.method == 2).Sum(s => s.prepayment)).ToString("N0")) VNĐ
@@ -37,8 +39,8 @@
                     @(((decimal)(item.sales.Where(s => s.method == 2).Sum(s => s.total) - item.sales.Where(s => s.method == 2).Sum(s => s.prepayment))).ToString("N0")) VNĐ
                 </td>
                 <td class="text-center">
-                    <button type="button" class="btn btn-info"  onclick="DebtCollection(this,'@item.id',1)">Chọn</button>
-                    <button type="button" class="btn btn-info"  onclick="GetList_History('@item.id')">Đơn hàng nợ</button>
+                    <button type="button" class="btn btn-info" onclick="DebtCollection(this,'@item.id','@Constants.COLLECTION_OF_CUSTOMERS')">Chọn</button>
+                    <button type="button" class="btn btn-info" onclick="GetList_History('@item.id')">Đơn hàng nợ</button>
                     <button type="button" title="Xem chi tiết" class="btn btn-secondary" onclick="GetList_orderDetails('@item.id')">
                         <span>
                             <i class="fa icon-4 icon-custom fa-info">

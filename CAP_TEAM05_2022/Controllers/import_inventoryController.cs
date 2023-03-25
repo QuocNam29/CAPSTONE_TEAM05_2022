@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 
+
 namespace CAP_TEAM05_2022.Controllers
 {
     [CustomAuthorize(Roles = "Quản trị viên, Nhân viên")]
@@ -39,20 +40,6 @@ namespace CAP_TEAM05_2022.Controllers
                                                     && s.created_at.Value.Year == date_end.Value.Year);
             return PartialView(import_inventory.OrderByDescending(i => i.id).ToList());
         }
-
-        public ActionResult Create()
-        {
-            ViewBag.Uniform = db.products.OrderByDescending(o => o.category_id).Select(x => new
-            {
-                Id = x.id,
-                Name = (x.category.name + " - " + x.name + " (" + x.unit + (x.unit_swap != null ? "/" + x.quantity_swap + x.unit_swap : "hihi") + ")").ToString()
-            });
-            ViewBag.Customer = new SelectList(db.customers.Where(c => c.type == 2), "id", "name");
-            ViewBag.isCreate = true;
-            return View();
-        }
-
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)

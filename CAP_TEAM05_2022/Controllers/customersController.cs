@@ -54,7 +54,7 @@ namespace CAP_TEAM05_2022.Controllers
                         customer.code = "MKH" + CodeRandom.RandomCode();
                         customer.created_by = User.Identity.GetUserId();
                         customer.created_at = DateTime.Now;
-                        customer.status = 1;
+                        customer.status = Constants.SHOW_STATUS;
                         db.customers.Add(customer);
                         db.SaveChanges();
                         message = "Thêm khách hàng thành công !";
@@ -158,7 +158,7 @@ namespace CAP_TEAM05_2022.Controllers
                     }
                     customer.created_by = User.Identity.GetUserId();
                     customer.created_at = DateTime.Now;
-                    customer.status = 1;
+                    customer.status = Constants.SHOW_STATUS;
                     db.customers.Add(customer);
                     db.SaveChanges();
                     message = "Thêm khách hàng thành công !";
@@ -411,7 +411,7 @@ namespace CAP_TEAM05_2022.Controllers
                     }
                     customer.created_by = User.Identity.GetUserId();
                     customer.created_at = DateTime.Now;
-                    customer.status = 1;
+                    customer.status = Constants.SHOW_STATUS;
                     db.customers.Add(customer);
                     db.SaveChanges();
                     message = "Thêm khách hàng thành công !";

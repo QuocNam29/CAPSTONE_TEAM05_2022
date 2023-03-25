@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<CAP_TEAM05_2022.Models.sale_details>
 @using CAP_TEAM05_2022.Models
+@using Constants = CAP_TEAM05_2022.Helper.Constants;
+
 @{
     int no = 0;
     var Order = (sale)ViewBag.Order;
@@ -7,61 +9,61 @@
 }
 <link href="~/Template/assets/css/style.css" rel="stylesheet" />
 
-    <div class="pcoded-content">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-body table-border-style">    
-                                <div class="card__header">
-                                    <div class="card__header-thumb">
-                                        <img src="@Url.Content("~/Template/assets/images/logoTT.png")" alt="" class="logo">
-                                    </div>
-                                    <div class="card__header-info">
-                                        <h3 class="card__info-name"> DOANH NGHIỆP BUÔN BÁN PHÂN BÓN THUỐC TRỪ SÂU TẤN THÀNH</h3>
-                                        <p>Địa chỉ: Tổ 20, ấp Tân Trung B, xã Tân Hưng, huyện Tân Châu, tỉnh Tây Ninh</p>
-                                        <p>Ngân Hàng: <span class="card__info-desc">BIDV - 75210000089921 - TRAN QUOC NAM </span></p>
-                                        <p>Điện thoại: 0854858818</p>
-                                    </div>
+<div class="pcoded-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body table-border-style">
+                            <div class="card__header">
+                                <div class="card__header-thumb">
+                                    <img src="@Url.Content("~/Template/assets/images/logoTT.png")" alt="" class="logo">
                                 </div>
-                                <div class="card__nav">
-                                    <div class="card__nav-info">
-                                        <h4 class="card__nav-name">HÓA ĐƠN BÁN HÀNG</h4>
-                                        <p class="card__nav-time">Ngày @Order.created_at.Value.Day Tháng @Order.created_at.Value.Month Năm @Order.created_at.Value.Year</p>
-                                        <p class="card__nav-desc">Mã đơn hàng: @Order.code</p>
-                                    </div>
+                                <div class="card__header-info">
+                                    <h3 class="card__info-name"> DOANH NGHIỆP BUÔN BÁN PHÂN BÓN THUỐC TRỪ SÂU TẤN THÀNH</h3>
+                                    <p>Địa chỉ: Tổ 20, ấp Tân Trung B, xã Tân Hưng, huyện Tân Châu, tỉnh Tây Ninh</p>
+                                    <p>Ngân Hàng: <span class="card__info-desc">BIDV - 75210000089921 - TRAN QUOC NAM </span></p>
+                                    <p>Điện thoại: 0854858818</p>
                                 </div>
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <td class="text" colspan="5">
-                                                <p class="txt-15">Nhân viên bán: @Order.user.name</p>
-                                                <p class="txt-15">Số ĐT: @Order.user.phone</p>
-                                                <p class="txt-15">Ngày tạo đơn:  @String.Format("{0:HH:mm - dd/MM/yyy}", Order.created_at)</p>
-                                            </td>
-                                            <td class="text" colspan="2">
-                                                <p class="txt-15">Mã khách hàng: @Order.customer.code</p>
-                                                <p class="txt-15">Người mua: @Order.customer.name</p>
-                                                <p class="txt-15">Số ĐT: @Order.customer.phone</p>
-                                            </td>
-                                        </tr>
-                                    </thead>
-                                    <thead>
-                                        <tr>
-                                            <th class="text-center">STT</th>
-                                            <th class="text-center">Mã sản phẩm</th>
-                                            <th class="text-center">Tên sản phẩm</th>
-                                            <th class="text-center">Đơn giá</th>
-                                            <th class="text-center">Số lượng</th>
-                                            <th class="text-center">Thành tiền</th>
-                                            <th class="text-center">Ghi chú</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in Model)
-                                        {
-                                            no++;
+                            </div>
+                            <div class="card__nav">
+                                <div class="card__nav-info">
+                                    <h4 class="card__nav-name">HÓA ĐƠN BÁN HÀNG</h4>
+                                    <p class="card__nav-time">Ngày @Order.created_at.Value.Day Tháng @Order.created_at.Value.Month Năm @Order.created_at.Value.Year</p>
+                                    <p class="card__nav-desc">Mã đơn hàng: @Order.code</p>
+                                </div>
+                            </div>
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <td class="text" colspan="5">
+                                            <p class="txt-15">Nhân viên bán: @Order.user.name</p>
+                                            <p class="txt-15">Số ĐT: @Order.user.phone</p>
+                                            <p class="txt-15">Ngày tạo đơn:  @String.Format("{0:HH:mm - dd/MM/yyy}", Order.created_at)</p>
+                                        </td>
+                                        <td class="text" colspan="2">
+                                            <p class="txt-15">Mã khách hàng: @Order.customer.code</p>
+                                            <p class="txt-15">Người mua: @Order.customer.name</p>
+                                            <p class="txt-15">Số ĐT: @Order.customer.phone</p>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">STT</th>
+                                        <th class="text-center">Mã sản phẩm</th>
+                                        <th class="text-center">Tên sản phẩm</th>
+                                        <th class="text-center">Đơn giá</th>
+                                        <th class="text-center">Số lượng</th>
+                                        <th class="text-center">Thành tiền</th>
+                                        <th class="text-center">Ghi chú</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        no++;
                                         <tr>
                                             <td class="text-center">
                                                 @no
@@ -86,83 +88,83 @@
                                                 @item.note
                                             </td>
                                         </tr>
-                                        }
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td colspan="4" class="text-right">
-                                            </td>
-                                            <td colspan="3" class="text-left">
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="4" class="text-right">
+                                        </td>
+                                        <td colspan="3" class="text-left">
+                                            <div>
+                                                Hình thức:
+                                                <span class="text-@(Order.total == Order.prepayment ? "info" : Order.method == Constants.PAYED_ORDER ? "success" : "danger")">
+                                                    @(Order.method == Constants.PAYED_ORDER ? "Đã thanh toán" : "Ghi nợ") @((Order.total == Order.prepayment ? "(Đã thanh toán xong)" : ""))
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" class="text-right">
+                                        </td>
+
+                                        <td colspan="3" class="text-left">
+                                            <div class="total-div">
                                                 <div>
-                                                    Hình thức:
-                                                    <span class="text-@(Order.total == Order.prepayment ? "info" : Order.method == 1 ? "success" : "danger")">
-                                                        @(Order.method == 1 ? "Đã thanh toán" : "Ghi nợ") @((Order.total == Order.prepayment ? "(Đã thanh toán xong)" : ""))
-                                                    </span>
+                                                    Thành tiền:
+                                                    <b>
+                                                        <span class="text">
+                                                            @Order.total.ToString("N0") VNĐ
+                                                        </span>
+                                                    </b>
                                                 </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="4" class="text-right">
-                                            </td>
-
-                                            <td colspan="3" class="text-left">
-                                                <div class="total-div">
+                                                @if (Order.prepayment >= 0)
+                                                {
                                                     <div>
-                                                        Thành tiền:
-                                                        <b>
-                                                            <span class="text">
-                                                                @Order.total.ToString("N0") VNĐ
-                                                            </span>
-                                                        </b>
+                                                        Đã thanh toán:
+                                                        <span class="text-success">
+                                                            @(((decimal)Order.prepayment).ToString("N0")) VNĐ
+                                                        </span>
                                                     </div>
-                                                    @if (Order.prepayment >= 0)
-                                            {
-                                                        <div>
-                                                            Đã thanh toán:
-                                                            <span class="text-success">
-                                                                @(((decimal)Order.prepayment).ToString("N0")) VNĐ
-                                                            </span>
-                                                        </div>
-                                                        <div>
-                                                            Còn nợ:
-                                                            <span class="text-danger">
-                                                                @(((decimal)(Order.total - Order.prepayment)).ToString("N0")) VNĐ
-                                                            </span>
-                                                        </div>
-                                                    }
+                                                    <div>
+                                                        Còn nợ:
+                                                        <span class="text-danger">
+                                                            @(((decimal)(Order.total - Order.prepayment)).ToString("N0")) VNĐ
+                                                        </span>
+                                                    </div>
+                                                }
 
 
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                                <div class="card__date">
-                                    <p>Ngày @DateTime.Now.Day, tháng @DateTime.Now.Month, năm @DateTime.Now.Year</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <div class="card__date">
+                                <p>Ngày @DateTime.Now.Day, tháng @DateTime.Now.Month, năm @DateTime.Now.Year</p>
+                            </div>
+                            <div class="card__signature">
+                                <div class="card__signature-customer">
+                                    <p class="card__signature-title">
+                                        Chữ ký khách hàng
+                                    </p>
                                 </div>
-                                <div class="card__signature">
-                                    <div class="card__signature-customer">
-                                        <p class="card__signature-title">
-                                            Chữ ký khách hàng
-                                        </p>
-                                    </div>
-                                    <div class="card__signature-company">
-                                        <p class="card__signature-title">
-                                            Chữ ký doanh nghiệp
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="card_footer">
-                                    <p class="card__footer-desc">Tra cứu đơn hàng tại Website: <a href="https://cntttest.vanlanguni.edu.vn:18081/CP25Team05/LookUpOrder">https://cntttest.vanlanguni.edu.vn:18081/CP25Team05/LookUpOrder</a> -<span> Mã tra cứu:</span> @Order.customer.code</p>
-
+                                <div class="card__signature-company">
+                                    <p class="card__signature-title">
+                                        Chữ ký doanh nghiệp
+                                    </p>
                                 </div>
                             </div>
-                                
+                            <div class="card_footer">
+                                <p class="card__footer-desc">Tra cứu đơn hàng tại Website: <a href="https://cntttest.vanlanguni.edu.vn:18081/CP25Team05/LookUpOrder">https://cntttest.vanlanguni.edu.vn:18081/CP25Team05/LookUpOrder</a> -<span> Mã tra cứu:</span> @Order.customer.code</p>
+
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
 

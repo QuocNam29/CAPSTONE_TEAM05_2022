@@ -7,6 +7,8 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using Constants = CAP_TEAM05_2022.Helper.Constants;
+
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -31,9 +33,9 @@ namespace CAP_TEAM05_2022.Controllers
         public ActionResult _HistoryInventory(int order_customer, int? method)
         {
             var HistoryOrder = db.inventory_order.Where(o => o.supplier_id == order_customer);
-            if (method == 2)
+            if (method == Constants.DEBT_ORDER)
             {
-                HistoryOrder = HistoryOrder.Where(s => s.state == 2);
+                HistoryOrder = HistoryOrder.Where(s => s.state == Constants.DEBT_ORDER);
             }
             return PartialView(HistoryOrder.OrderByDescending(o => o.id).ToList());
         }
@@ -73,7 +75,7 @@ namespace CAP_TEAM05_2022.Controllers
                 Id = x.id,
                 Name = (x.category.name + " - " + x.name + " (" + x.unit + (x.unit_swap != null ? "/" + x.quantity_swap + x.unit_swap : "") + ")").ToString()
             });
-            ViewBag.Customer = new SelectList(db.customers.Where(c => c.type == Helper.Constants.SUPPLIER), "id", "name");
+            ViewBag.Customer = new SelectList(db.customers.Where(c => c.type == Constants.SUPPLIER), "id", "name");
             ViewBag.isCreate = true;
             return View();
         }
@@ -121,14 +123,14 @@ namespace CAP_TEAM05_2022.Controllers
                 inventory_order.create_by = User.Identity.GetUserId();
                 inventory_order.Total = total;
                 inventory_order.state = method;
-                if (method == 2)
+                if (method == Constants.DEBT_ORDER)
                 {
                     decimal payment = decimal.Parse(Repayment.Replace(",", "").Replace(".", ""));
                     inventory_order.payment = payment;
                     inventory_order.debt = inventory_order.Total - inventory_order.payment;
                 }
                 db.inventory_order.Add(inventory_order);
-                if (method == 2)
+                if (method == Constants.DEBT_ORDER)
                 {
 
                     var check_debt = db.debts.Where(d => d.inventory_order.supplier_id == inventory_order.supplier_id && d.inventory_id != null).Count();
@@ -188,7 +190,7 @@ namespace CAP_TEAM05_2022.Controllers
                 Id = x.id,
                 Name = (x.category.name + " - " + x.name + " (" + x.unit + (x.unit_swap != null ? "/" + x.quantity_swap + x.unit_swap : "") + ")").ToString()
             });
-            ViewBag.Customer = new SelectList(db.customers.Where(c => c.type == 2), "id", "name");
+            ViewBag.Customer = new SelectList(db.customers.Where(c => c.type == Constants.SUPPLIER), "id", "name");
             ViewBag.isCreate = true;
             return View(inventory_order);
         }

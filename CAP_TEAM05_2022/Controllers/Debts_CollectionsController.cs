@@ -4,6 +4,8 @@ using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using Constants = CAP_TEAM05_2022.Helper.Constants;
+
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -26,14 +28,14 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 date_End = DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day));
             }
-            var sales = db.sales.Where(d => d.method == 2).Where(s => s.created_at >= date_Start && s.created_at <= date_End
+            var sales = db.sales.Where(d => d.method == Constants.DEBT_ORDER).Where(s => s.created_at >= date_Start && s.created_at <= date_End
                                                      || s.created_at.Value.Day == date_Start.Value.Day
                                                      && s.created_at.Value.Month == date_Start.Value.Month
                                                      && s.created_at.Value.Year == date_Start.Value.Year
                                                      || s.created_at.Value.Day == date_End.Value.Day
                                                      && s.created_at.Value.Month == date_End.Value.Month
                                                      && s.created_at.Value.Year == date_End.Value.Year);
-            var customer = db.customers.Where(c => c.sales.Where(s => s.method == 2).Count() > 0).ToList();
+            var customer = db.customers.Where(c => c.sales.Where(s => s.method == Constants.DEBT_ORDER).Count() > 0).ToList();
             return PartialView(customer.OrderByDescending(c => c.id).ToList());
         }
         public ActionResult _SupplierDebtsList(DateTime? date_Start, DateTime? date_End)
@@ -46,14 +48,14 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 date_End = DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day));
             }
-            var sales = db.sales.Where(d => d.method == 2).Where(s => s.created_at >= date_Start && s.created_at <= date_End
+            var sales = db.sales.Where(d => d.method == Constants.DEBT_ORDER).Where(s => s.created_at >= date_Start && s.created_at <= date_End
                                                      || s.created_at.Value.Day == date_Start.Value.Day
                                                      && s.created_at.Value.Month == date_Start.Value.Month
                                                      && s.created_at.Value.Year == date_Start.Value.Year
                                                      || s.created_at.Value.Day == date_End.Value.Day
                                                      && s.created_at.Value.Month == date_End.Value.Month
                                                      && s.created_at.Value.Year == date_End.Value.Year);
-            var customer = db.customers.Where(c => c.inventory_order.Where(s => s.state == 2).Count() > 0).ToList();
+            var customer = db.customers.Where(c => c.inventory_order.Where(s => s.state == Constants.DEBT_ORDER).Count() > 0).ToList();
             return PartialView(customer.OrderByDescending(c => c.id).ToList());
         }
         public ActionResult _DebtsDetailsList(int customer_id)
@@ -67,15 +69,15 @@ namespace CAP_TEAM05_2022.Controllers
             customer customer = db.customers.Find(id);
             var emp = new sale();
             emp.id = id;
-            if (method == 1)
+            if (method == Constants.PAYED_ORDER)
             {
-                emp.total = customer.sales.Where(s => s.method == 2).Sum(s => s.total);
-                emp.prepayment = customer.sales.Where(s => s.method == 2).Sum(s => s.prepayment);
+                emp.total = customer.sales.Where(s => s.method == Constants.DEBT_ORDER).Sum(s => s.total);
+                emp.prepayment = customer.sales.Where(s => s.method == Constants.DEBT_ORDER).Sum(s => s.prepayment);
             }
-            else if (method == 2)
+            else if (method == Constants.DEBT_ORDER)
             {
-                emp.total = (decimal)customer.inventory_order.Where(s => s.state == 2).Sum(s => s.Total);
-                emp.prepayment = customer.inventory_order.Where(s => s.state == 2).Sum(s => s.payment);
+                emp.total = (decimal)customer.inventory_order.Where(s => s.state == Constants.DEBT_ORDER).Sum(s => s.Total);
+                emp.prepayment = customer.inventory_order.Where(s => s.state == Constants.DEBT_ORDER).Sum(s => s.payment);
             }
             emp.code = customer.code;
             emp.note = customer.name;
@@ -98,9 +100,11 @@ namespace CAP_TEAM05_2022.Controllers
                     status = false;
                     return Json(new { status, message }, JsonRequestBehavior.AllowGet);
                 }
-                if (method == 1)
+                // Đối với thu nợ từ khách hàng
+                if (method == Constants.COLLECTION_OF_CUSTOMERS)
                 {
-                    var sale = db.sales.Where(s => s.customer_id == customer_id && s.total != s.prepayment && s.method == 2).ToList();
+                    //Lấy danh sách đơn nợ của khách hàng
+                    var sale = db.sales.Where(s => s.customer_id == customer_id && s.total != s.prepayment && s.method == Constants.DEBT_ORDER).ToList();
                     while (paid_temp > 0)
                     {
                         foreach (var item in sale)
@@ -147,9 +151,11 @@ namespace CAP_TEAM05_2022.Controllers
 
                     }
                 }
-                else if (method == 2)
+                // Đối với trả nợ cho nhà cung cấp
+                else if (method == Constants.PAYING_SUPPLIER)
                 {
-                    var inventory = db.inventory_order.Where(s => s.supplier_id == customer_id && s.Total != s.payment && s.state == 2).ToList();
+                    // lấy danh sách đơn nợ của nhà cung cấp
+                    var inventory = db.inventory_order.Where(s => s.supplier_id == customer_id && s.Total != s.payment && s.state == Constants.DEBT_ORDER).ToList();
                     while (paid_temp > 0)
                     {
                         foreach (var item in inventory)

@@ -55,7 +55,7 @@ namespace CAP_TEAM05_2022.Helper
             {SUPPLIER, new Tuple<string, string>("Nhà cung cấp", "cus-supplier") }
         };
 
-        ///Loan Form registration state
+        ///Trạng thái ẩn/hiện
         ///
         public static int SHOW_STATUS = 1;
         public static int HIDDEN_STATUS = 2;
@@ -64,6 +64,43 @@ namespace CAP_TEAM05_2022.Helper
             {HIDDEN_STATUS, "Trạng thái ẩn" }
         };
 
+        ///Phương thức thanh toán đơn hàng, đơn nhập hàng
+        ///
+        public static int PAYED_ORDER = 1;
+        public static int DEBT_ORDER = 2;
+        public static readonly Dictionary<int, string> MethodOrder = new Dictionary<int, string> {
+            {PAYED_ORDER, "Đã thanh toán"},
+            {DEBT_ORDER, "Ghi nợ" }
+        };
+
+        ///Đối tượng thu chi
+        ///
+        public static int COLLECTION_OF_CUSTOMERS = 1;
+        public static int PAYING_SUPPLIER = 2;
+        public static readonly Dictionary<int, string> RevenueExpenditureObject = new Dictionary<int, string> {
+            {COLLECTION_OF_CUSTOMERS, "Thu nợ từ khách hàng"},
+            {PAYING_SUPPLIER, "Chi trả cho nhầ cug cấp" }
+        };
+
+        ///Check quy đổi đơn vị sản phẩm
+        ///
+        public static int UNIT_CONVERT = 1;
+        public static int NO_UNIT_CONVERT = 0;
+
+        ///Lựa chọn đỏin trả sản phẩm đổi hàng / trả hàng
+        ///
+        public static int CHANGE_OPTION = 1;
+        public static int RETURN_OPTION = 2;
+
+        ///Lựa chọn xem chi tiết đơn hàng hoặc đổi trả (javascript)
+        ///
+        public static int VIEW_DETAILS = 1;
+        public static int MODAL_RETURN = 2;
+
+        ///Lọc báo cáo thu chi theo ngày và tháng
+        ///
+        public static int REVENUE_DAY = 1;
+        public static int REVENUE_MONTH = 2;
 
         /// <summary>
         /// connectionString for Import Excel Data

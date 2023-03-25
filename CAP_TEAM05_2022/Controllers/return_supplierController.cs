@@ -5,6 +5,8 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using Constants = CAP_TEAM05_2022.Helper.Constants;
+
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -64,7 +66,7 @@ namespace CAP_TEAM05_2022.Controllers
                     product.quantity -= quantity;
                     db.Entry(product).State = EntityState.Modified;
 
-                    if (inventory_Order.state == 2)
+                    if (inventory_Order.state == Constants.DEBT_ORDER)
                     {
                         var last_customer_Debt = db.customer_debt.Where(d => d.customer_id == inventory_Order.supplier_id).OrderByDescending(o => o.id).FirstOrDefault();
                         var last_debt = db.debts.Where(d => d.inventory_order.supplier_id == inventory_Order.supplier_id).OrderByDescending(o => o.id).FirstOrDefault();

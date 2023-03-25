@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<CAP_TEAM05_2022.Models.sale>
+@using Constants = CAP_TEAM05_2022.Helper.Constants;
 
 <style>
     .modal-lg {
@@ -95,7 +96,7 @@
                                                         foreach (var item1 in item.return_sale)
                                                         {
                                                             no++;
-                                                            if (item1.method == 1)
+                                                            if (item1.method == Constants.PAYED_ORDER)
                                                             {
                                                                 <tr>
                                                                     <td class="text-center ">
@@ -147,7 +148,7 @@
                                                                     </td>
                                                                 </tr>
                                                             }
-                                                            else if (item1.method == 2)
+                                                            else if (item1.method == Constants.DEBT_ORDER)
                                                             {
                                                                 <tr>
                                                                     <td class="text-center ">
@@ -217,15 +218,15 @@
                                                             {
                                                                 if (item1.paid != null)
                                                                 {
-                                                                <p>
-                                                                    Ngày thu nợ: <span> @String.Format("{0:HH:mm - dd/MM/yyy}", item1.created_at)</span>
-                                                                </p>
+                                                                    <p>
+                                                                        Ngày thu nợ: <span> @String.Format("{0:HH:mm - dd/MM/yyy}", item1.created_at)</span>
+                                                                    </p>
                                                                 }
                                                                 else
                                                                 {
-                                                                <p>
-                                                                    Ngày giao dịch: <span> @String.Format("{0:HH:mm - dd/MM/yyy}", item1.created_at)</span>
-                                                                </p>
+                                                                    <p>
+                                                                        Ngày giao dịch: <span> @String.Format("{0:HH:mm - dd/MM/yyy}", item1.created_at)</span>
+                                                                    </p>
                                                                 }
                                                             }
                                                         </td>

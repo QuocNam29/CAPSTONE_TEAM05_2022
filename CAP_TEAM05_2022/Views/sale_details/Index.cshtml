@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<CAP_TEAM05_2022.Models.sale_details>
+@using Constants = CAP_TEAM05_2022.Helper.Constants
 
 @{
     ViewBag.Title = "Index";
@@ -294,12 +295,7 @@
                                     Nhóm khách hàng<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <select id="sale_customer_type" name="customer_type" class="form-control" required>
-                                        <option value="" disabled="disabled" selected="selected">Chọn nhóm khách hàng</option>
-                                        <option value="1">Khách đơn lẻ</option>
-                                        <option value="2">Công ty (khách sỉ)</option>
-                                        <option value="3">Nhà cung cấp</option>
-                                    </select>
+                                    @Html.DropDownList("customer_type", new SelectList(Constants.TypeCustomer, "Key", "Value.Item1"), "---- Chọn nhóm khách hàng ----", new { @class = "form-control", @id = "sale_customer_type", @required = "required" })
                                     <div class="invalid-feedback">
                                         Vui lòng chọn nhóm khách hàng !
                                     </div>
@@ -581,9 +577,10 @@
         var id = $('#customer_id').val();
             $.ajax({
                 url: '@Url.Action("_HistoryOrder", "sales")',
+                type: 'GET',
                 data: {
                     order_customer: id,
-                    method: 1,
+                    method: @Constants.PAYED_ORDER,
                 }
             }).done(function (result) {
                 $('#dataContainer2').html(result);
@@ -707,13 +704,13 @@
         document.getElementById('swap').onclick = function (e) {
             if (this.checked) {
                 $(".swap").show();
-                $("#check_swap").val(1)
+                $("#check_swap").val(@Constants.UNIT_CONVERT)
                 var unit_buy = $("#unit_buy").val()
                 document.getElementsByClassName('unit_current')[0].innerHTML = unit_buy;
-
             }
             else {
                 $(".swap").hide();
+                $("#check_swap").val(@Constants.NO_UNIT_CONVERT)
             }
         };
         $("#unit_buy").change(function () {

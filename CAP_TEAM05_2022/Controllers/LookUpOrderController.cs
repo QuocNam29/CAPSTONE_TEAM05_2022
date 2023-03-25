@@ -19,7 +19,7 @@ namespace CAP_TEAM05_2022.Controllers
             if (!String.IsNullOrEmpty(code_customer))
             {
                 var customer = db.customers.Where(c => c.code == code_customer);
-                if (customer.Count() > 0)
+                if (customer.Any())
                 {
                     var sales = db.sales.Where(s => s.customer.code == code_customer);
                     return View(sales.OrderByDescending(c => c.id).ToList());

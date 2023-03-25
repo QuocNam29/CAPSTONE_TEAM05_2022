@@ -888,11 +888,11 @@ namespace CAP_TEAM05_2022.Controllers
                 Sheet.Cells[string.Format("B{0}", row)].Value = item.total;
                 Sheet.Cells[string.Format("C{0}", row)].Value = item.prepayment;
                 Sheet.Cells[string.Format("D{0}", row)].Value = item.total - item.prepayment;
-                if (item.method == 1)
+                if (item.method == Constants.PAYED_ORDER)
                 {
                     Sheet.Cells[string.Format("E{0}", row)].Value = "Đã thanh toán";
                 }
-                else if (item.method == 2)
+                else if (item.method == Constants.DEBT_ORDER)
                 {
                     Sheet.Cells[string.Format("E{0}", row)].Value = "Ghi nợ";
                 }
@@ -947,11 +947,11 @@ namespace CAP_TEAM05_2022.Controllers
                 Sheet.Cells[string.Format("B{0}", row)].Value = item.total;
                 Sheet.Cells[string.Format("C{0}", row)].Value = item.prepayment;
                 Sheet.Cells[string.Format("D{0}", row)].Value = item.total - item.prepayment;
-                if (item.method == 1)
+                if (item.method == Constants.PAYED_ORDER)
                 {
                     Sheet.Cells[string.Format("E{0}", row)].Value = "Đã thanh toán";
                 }
-                else if (item.method == 2)
+                else if (item.method == Constants.DEBT_ORDER)
                 {
                     Sheet.Cells[string.Format("E{0}", row)].Value = "Ghi nợ";
                 }

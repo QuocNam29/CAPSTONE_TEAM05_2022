@@ -1,4 +1,5 @@
 ﻿@model CAP_TEAM05_2022.Models.inventory_order
+@using Constants = CAP_TEAM05_2022.Helper.Constants
 
 @{
     ViewBag.Title = "Create";
@@ -60,11 +61,11 @@
                                         <label class="floating-label" for="Text">Phương thức thanh toán</label>
                                         <div>
                                             <div class="form-check form-check-inline">
-                                                <input type="radio" class="form-control-lg" name="method" value="1" onclick="Method1();" checked>
+                                                <input type="radio" class="form-control-lg" name="method" value="@Constants.PAYED_ORDER" onclick="Method1();" checked>
                                                 <label class="form-check-label" for="Subject">Đã thanh toán</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input type="radio" class="form-control-lg" name="method" onclick="Method2();" value="2">
+                                                <input type="radio" class="form-control-lg" name="method" value="@Constants.DEBT_ORDER" onclick="Method2();">
                                                 <label class="form-check-label" for="Subject">Ghi nợ</label>
                                             </div>
                                         </div>
@@ -258,12 +259,12 @@
         $(".debt_method").show();
     }
     </script>
-<script>
-            $('form').validate();
-                $.extend($.validator.messages, {
-                    required: "Không để trống",
-                });
-</script>
+    <script>
+        $('form').validate();
+        $.extend($.validator.messages, {
+            required: "Không để trống",
+        });
+    </script>
 }
 
 

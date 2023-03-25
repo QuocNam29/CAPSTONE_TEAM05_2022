@@ -53,7 +53,7 @@ namespace CAP_TEAM05_2022.Controllers
                     }
                     else
                     {
-                        group.status = 1;
+                        group.status = Constants.SHOW_STATUS;
                         group.created_by = User.Identity.GetUserId();
                         group.created_at = DateTime.Now;
                         group.slug = group.name;
@@ -128,7 +128,7 @@ namespace CAP_TEAM05_2022.Controllers
                     group GroupProduct = new group();
                     GroupProduct.name = Add_name;
                     GroupProduct.created_by = User.Identity.GetUserId();
-                    GroupProduct.status = 1;
+                    GroupProduct.status = Constants.SHOW_STATUS;
                     GroupProduct.created_at = DateTime.Now;
                     GroupProduct.slug = Add_name;
                     GroupProduct.code = "NH" + CodeRandom.RandomCode();
@@ -172,11 +172,11 @@ namespace CAP_TEAM05_2022.Controllers
             group group = db.groups.Find(GroupProducts.id);
             if (group.status == Constants.SHOW_STATUS)
             {
-                group.status = 2;
+                group.status = Constants.HIDDEN_STATUS;
             }
             else
             {
-                group.status = 1;
+                group.status = Constants.SHOW_STATUS;
             }
             group.updated_at = DateTime.Now;
             db.Entry(group).State = EntityState.Modified;

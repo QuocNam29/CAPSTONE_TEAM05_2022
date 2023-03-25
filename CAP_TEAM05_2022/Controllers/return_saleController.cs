@@ -5,6 +5,8 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using Constants = CAP_TEAM05_2022.Helper.Constants;
+
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -42,7 +44,7 @@ namespace CAP_TEAM05_2022.Controllers
                 var revenue = db.revenues.Where(r => r.sale_details_id == sale_details_id).OrderByDescending(o => o.id).ToList();
                 unit = sale_Details.unit;
                 decimal price_PCurrent1 = decimal.Parse(price_PCurrent.Replace(",", "").Replace(".", ""));
-                if (return_option == 2)
+                if (return_option == Constants.RETURN_OPTION)
                 {
                     //Tạo đơn đổi trả sản phẩm
                     return_sale return_Sale = new return_sale();
@@ -145,7 +147,7 @@ namespace CAP_TEAM05_2022.Controllers
                         }
                     }
                     db.SaveChanges();
-                    if (sale.method == 2)
+                    if (sale.method == Constants.DEBT_ORDER)
                     {
                         var last_customer_Debt = db.customer_debt.Where(d => d.customer_id == sale.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
                         var last_debt = db.debts.Where(d => d.sale.customer_id == sale.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
@@ -194,7 +196,7 @@ namespace CAP_TEAM05_2022.Controllers
 
                     message = "Trả sản phẩm thành công";
                 }
-                else if (return_option == 1)
+                else if (return_option == Constants.CHANGE_OPTION)
                 {
                     if (product_id == null)
                     {
@@ -615,7 +617,7 @@ namespace CAP_TEAM05_2022.Controllers
                         }
                     }
                     // tạp nợ cho lần đổi sản phẩm
-                    if (sale.method == 2)
+                    if (sale.method == Constants.DEBT_ORDER)
                     {
                         var last_customer_Debt = db.customer_debt.Where(d => d.customer_id == sale.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
                         var last_debt = db.debts.Where(d => d.sale.customer_id == sale.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
