@@ -76,7 +76,7 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 emp.total = (decimal)customer.inventory_order.Where(s => s.state == 2).Sum(s => s.Total);
                 emp.prepayment = customer.inventory_order.Where(s => s.state == 2).Sum(s => s.payment);
-            }        
+            }
             emp.code = customer.code;
             emp.note = customer.name;
             emp.created_by = customer.phone;
@@ -94,8 +94,8 @@ namespace CAP_TEAM05_2022.Controllers
                 var last_customer_Debt = db.customer_debt.Where(d => d.customer_id == customer_id).OrderByDescending(o => o.id).FirstOrDefault();
                 if (paid_temp > last_customer_Debt.remaining)
                 {
-                     message = "Số tiền thu nợ lớn hơn tồn nợ ( tồn nợ: " + String.Format("{0:0,00}", last_customer_Debt.remaining)+"đ )";                 
-                     status = false;
+                    message = "Số tiền thu nợ lớn hơn tồn nợ ( tồn nợ: " + String.Format("{0:0,00}", last_customer_Debt.remaining) + "đ )";
+                    status = false;
                     return Json(new { status, message }, JsonRequestBehavior.AllowGet);
                 }
                 if (method == 1)
@@ -195,8 +195,8 @@ namespace CAP_TEAM05_2022.Controllers
 
                     }
                 }
-              
-                decimal paid_debt =  decimal.Parse(paid.Replace(",", "").Replace(".", ""));
+
+                decimal paid_debt = decimal.Parse(paid.Replace(",", "").Replace(".", ""));
                 customer_debt customer_Debt = new customer_debt();
                 customer_Debt.customer_id = customer_id;
                 customer_Debt.created_by = User.Identity.GetUserId();

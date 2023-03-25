@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CAP_TEAM05_2022.Models;
+using System;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using CAP_TEAM05_2022.Helper;
-using CAP_TEAM05_2022.Models;
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -28,7 +24,7 @@ namespace CAP_TEAM05_2022.Controllers
         {
             if (date_start == null)
             {
-                date_start =DateTime.Now.AddDays((-DateTime.Now.Day) + 1);
+                date_start = DateTime.Now.AddDays((-DateTime.Now.Day) + 1);
             }
             if (date_end == null)
             {
@@ -49,9 +45,9 @@ namespace CAP_TEAM05_2022.Controllers
             ViewBag.Uniform = db.products.OrderByDescending(o => o.category_id).Select(x => new
             {
                 Id = x.id,
-                Name = (x.category.name + " - " + x.name + " (" +x.unit + ( x.unit_swap != null ? "/"+x.quantity_swap+x.unit_swap : "hihi")+")").ToString()
+                Name = (x.category.name + " - " + x.name + " (" + x.unit + (x.unit_swap != null ? "/" + x.quantity_swap + x.unit_swap : "hihi") + ")").ToString()
             });
-            ViewBag.Customer = new SelectList(db.customers.Where(c => c.type == 2),"id","name");
+            ViewBag.Customer = new SelectList(db.customers.Where(c => c.type == 2), "id", "name");
             ViewBag.isCreate = true;
             return View();
         }

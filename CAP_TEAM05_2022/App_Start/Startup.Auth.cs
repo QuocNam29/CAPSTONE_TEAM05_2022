@@ -1,11 +1,10 @@
-﻿using System;
+﻿using CAP_TEAM05_2022.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.Google;
 using Owin;
-using CAP_TEAM05_2022.Models;
+using System;
 
 namespace CAP_TEAM05_2022
 {
@@ -34,7 +33,7 @@ namespace CAP_TEAM05_2022
                         validateInterval: TimeSpan.FromMinutes(30),
                         regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
                 }
-            });            
+            });
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             // Enables the application to temporarily store user information when they are verifying the second factor in the two-factor authentication process.

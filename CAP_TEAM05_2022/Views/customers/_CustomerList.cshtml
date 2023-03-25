@@ -1,7 +1,10 @@
 ﻿@model IEnumerable<CAP_TEAM05_2022.Models.customer>
-@{ 
+@using Constants = CAP_TEAM05_2022.Helper.Constants
+
+@{
     int no = 0;
 }
+<input hidden type="text" id="URLDelete" value="@Url.Action("Delete_Customer", "customers")">
 <table id="example" class="table table-hover ">
     <thead>
         <tr>
@@ -25,35 +28,17 @@
         {
             no++;
             string customswitch_KH = "customswitch" + item.id;
+            var type = Constants.TypeCustomer.Single(x => x.Key == item.type).Value;
+
             <tr>
                 <td>@no <input hidden type="text" name="record" value="@item.code" /> </td>
                 <td>@item.code</td>
                 <td>@item.name</td>
                 <td>@item.email</td>
                 <td>@item.phone</td>
-                @if (item.type == 1)
-                {
-                    <td class="text-center">
-                        <p class="role-cus cus-simple">Khách mua lẻ</p>
-                    </td>
-                }
-                else if (item.type == 2)
-                {
-
-                    <td class="text-center">
-                        <p class="role-cus cus-multi">Khách mua sỉ</p>
-                    </td>
-
-                }
-                else if (item.type == 3)
-                {
-
-                    <td class="text-center">
-                        <p class="role-cus cus-supplier">Nhà cung cấp</p>
-                    </td>
-
-                }
-
+                <td class="text-center">
+                    <p class="role-cus @type.Item2">@type.Item1</p>
+                </td>
                 <td class="text-center">
                     @item.bank
                 </td>
@@ -62,7 +47,7 @@
                 </td>
                 <td>@item.address</td>
                 <td class="text-center">
-                    @if (item.status == 1)
+                    @if (item.status == Constants.SHOW_STATUS)
                     {
                         <div class="custom-control custom-switch">
                             <input type="checkbox" checked class="custom-control-input" id="@customswitch_KH">
@@ -89,10 +74,12 @@
                         <i class="feather icon-edit">
                         </i>
                     </button>
+                    <button class="btn btn-danger" onclick="deleteAlert('@item.id', '@item.code')" id="Delete">
+                        <i class="feather icon-trash-2">
+                        </i>
+                    </button>
                 </td>
             </tr>
         }
-
-
     </tbody>
 </table>

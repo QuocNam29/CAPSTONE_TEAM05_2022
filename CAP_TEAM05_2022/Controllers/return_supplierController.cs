@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CAP_TEAM05_2022.Models;
+using Microsoft.AspNet.Identity;
+using System;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using CAP_TEAM05_2022.Models;
-using Microsoft.AspNet.Identity;
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -35,13 +32,13 @@ namespace CAP_TEAM05_2022.Controllers
             }
             try
             {
-                
+
                 import_inventory inventory = db.import_inventory.Find(id_inventory);
                 if (quantity > (inventory.quantity - inventory.sold - inventory.return_quantity))
                 {
                     status = false;
-                    message = "Số lượng sản phẩm " + inventory.product.name + " do nhà cung cấp  " +'"'
-                        + inventory.customer.name + '"'+" cung cấp chỉ còn lại " 
+                    message = "Số lượng sản phẩm " + inventory.product.name + " do nhà cung cấp  " + '"'
+                        + inventory.customer.name + '"' + " cung cấp chỉ còn lại "
                         + (inventory.quantity - inventory.sold - inventory.return_quantity) + " " + inventory.product.unit;
                 }
                 else
@@ -56,11 +53,11 @@ namespace CAP_TEAM05_2022.Controllers
                     return_Supplier.created_at = create_at;
                     db.return_supplier.Add(return_Supplier);
 
-                    inventory.return_quantity += quantity;                   
+                    inventory.return_quantity += quantity;
                     db.Entry(inventory).State = EntityState.Modified;
 
                     inventory_order inventory_Order = db.inventory_order.Find(inventory.inventory_id);
-                    inventory_Order.Total = inventory_Order.import_inventory.Sum(x => (x.quantity - x.return_quantity) * x.price_import );
+                    inventory_Order.Total = inventory_Order.import_inventory.Sum(x => (x.quantity - x.return_quantity) * x.price_import);
                     inventory_Order.update_at = create_at;
 
                     product product = db.products.Find(inventory.product_id);
@@ -97,7 +94,7 @@ namespace CAP_TEAM05_2022.Controllers
 
 
                     db.SaveChanges();
-                    message = "Tổng tiền thu lại từ nhà cung cấp là: "+ (inventory.price_import * quantity).ToString("N0") + "VNĐ";
+                    message = "Tổng tiền thu lại từ nhà cung cấp là: " + (inventory.price_import * quantity).ToString("N0") + "VNĐ";
                 }
 
             }

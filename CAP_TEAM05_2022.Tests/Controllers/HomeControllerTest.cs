@@ -1,10 +1,5 @@
-﻿using CAP_TEAM05_2022;
-using CAP_TEAM05_2022.Controllers;
+﻿using CAP_TEAM05_2022.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Web.Mvc;
 
 namespace CAP_TEAM05_2022.Tests.Controllers

@@ -1,5 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CAP_TEAM05_2022.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using System;
 using System.Data;
 using System.Data.Entity;
 using System.IO;
@@ -8,9 +10,6 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using CAP_TEAM05_2022.Models;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -82,7 +81,7 @@ namespace CAP_TEAM05_2022.Controllers
             return View(aspNetUser);
         }
 
-       
+
         public async Task<ActionResult> Create_User(string email, string role_id, string fullName, string password, string phone, string address)
         {
             try
@@ -270,7 +269,7 @@ namespace CAP_TEAM05_2022.Controllers
                 {
                     Session["imgPath"] = "default-avatar.png";
                 }
-                user1.name = user.name; 
+                user1.name = user.name;
                 user1.address = user.address;
                 user1.phone = user.phone;
                 user1.updated_at = DateTime.Now;

@@ -4,7 +4,6 @@ using System;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
 using System.Web.Mvc;
 
 namespace CAP_TEAM05_2022.Controllers
@@ -125,12 +124,12 @@ namespace CAP_TEAM05_2022.Controllers
                                     if (temp_check > 0)
                                     {
                                         double temp_2 = (double)((quality_OD_revenue * 1.0000000) / import_Inventory.product.quantity_swap) - temp_1;
-                                       
-                                            import_Inventory.sold -= temp_1;
 
-                                            import_Inventory.quantity_remaining +=(int)(import_Inventory.product.quantity_swap*temp_2);
-                                            db.Entry(import_Inventory).State = EntityState.Modified;
-                                        }
+                                        import_Inventory.sold -= temp_1;
+
+                                        import_Inventory.quantity_remaining += (int)(import_Inventory.product.quantity_swap * temp_2);
+                                        db.Entry(import_Inventory).State = EntityState.Modified;
+                                    }
                                     else
                                     {
                                         import_Inventory.sold -= temp_1;
@@ -142,7 +141,7 @@ namespace CAP_TEAM05_2022.Controllers
                                 db.SaveChanges();
                                 break;
                             }
-                           
+
                         }
                     }
                     db.SaveChanges();
@@ -174,12 +173,12 @@ namespace CAP_TEAM05_2022.Controllers
 
 
                     decimal price = (sale_Details.price / sale_Details.sold) * quality_OD;
-                        sale_Details.return_quantity += quality_OD;
-                        db.Entry(sale_Details).State = EntityState.Modified;
-                        sale.total -= price;
-                        db.Entry(sale).State = EntityState.Modified;
-                        db.SaveChanges();
-                   
+                    sale_Details.return_quantity += quality_OD;
+                    db.Entry(sale_Details).State = EntityState.Modified;
+                    sale.total -= price;
+                    db.Entry(sale).State = EntityState.Modified;
+                    db.SaveChanges();
+
                     if (unit == product.unit)
                     {
                         product.quantity += quality_OD;
@@ -200,7 +199,7 @@ namespace CAP_TEAM05_2022.Controllers
                     if (product_id == null)
                     {
                         string message1 = "Bạn chưa chọn sản phẩm đổi mới !";
-                      
+
                         bool status1 = false;
                         return Json(new { status = status1, message = message1 }, JsonRequestBehavior.AllowGet);
                     }
@@ -512,7 +511,7 @@ namespace CAP_TEAM05_2022.Controllers
                     decimal total_return = 0;
                     if (product_check.unit == choose_unit)
                     {
-                         total_return = (decimal)(product_check.sell_price * input_qualityProduct);
+                        total_return = (decimal)(product_check.sell_price * input_qualityProduct);
                     }
                     else
                     {
@@ -535,8 +534,8 @@ namespace CAP_TEAM05_2022.Controllers
                     return_Details.product_return_id = product_id;
                     return_Details.quantity_return = input_qualityProduct;
                     return_Details.unit_current = sale_Details.unit;
-                    return_Details.unit_return = choose_unit;                   
-                    return_Details.total_return = total_return;                 
+                    return_Details.unit_return = choose_unit;
+                    return_Details.total_return = total_return;
                     return_Details.difference = (decimal)(return_Details.total_current - return_Details.total_return);
                     db.return_details.Add(return_Details);
                     db.SaveChanges();
@@ -636,8 +635,8 @@ namespace CAP_TEAM05_2022.Controllers
                             debt.total = (decimal)(last_debt.total);
                             debt.remaining = last_debt.remaining + debt.debt1;
                         }
-                        
-                      
+
+
                         debt.return_sale_id = return_Sale.id;
                         db.debts.Add(debt);
 
@@ -655,24 +654,24 @@ namespace CAP_TEAM05_2022.Controllers
                             customer_Debt.debt = -return_Sale.difference;
                             customer_Debt.remaining = last_customer_Debt.remaining + customer_Debt.debt;
                         }
-                            
+
                         customer_Debt.return_sale_id = return_Sale.id;
                         db.customer_debt.Add(customer_Debt);
                         db.SaveChanges();
 
                     }
                     decimal price = (sale_Details.price / sale_Details.sold) * quality_OD;
-                        sale_Details.return_quantity += quality_OD;
-                        db.Entry(sale_Details).State = EntityState.Modified;
-                        sale.total -= price;
-                        db.Entry(sale).State = EntityState.Modified;
-                        db.SaveChanges();
-                  
+                    sale_Details.return_quantity += quality_OD;
+                    db.Entry(sale_Details).State = EntityState.Modified;
+                    sale.total -= price;
+                    db.Entry(sale).State = EntityState.Modified;
+                    db.SaveChanges();
+
                     if (unit == product.unit)
                     {
                         product.quantity += quality_OD;
                         db.Entry(product).State = EntityState.Modified;
-                        
+
                     }
                     else if (unit == product.unit_swap)
                     {
@@ -704,7 +703,7 @@ namespace CAP_TEAM05_2022.Controllers
             return Json(new { status, message }, JsonRequestBehavior.AllowGet);
         }
 
-        
+
 
         protected override void Dispose(bool disposing)
         {

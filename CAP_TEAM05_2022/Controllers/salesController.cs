@@ -31,9 +31,9 @@ namespace CAP_TEAM05_2022.Controllers
 
         public ActionResult _OrderDetailsList(int order_id)
         {
-            var sale = db.sales.Find(order_id);           
+            var sale = db.sales.Find(order_id);
             ViewBag.Order = sale;
-            var returnSale = db.return_sale.Where(x=> x.sale_details.sale_id == order_id).ToList();
+            var returnSale = db.return_sale.Where(x => x.sale_details.sale_id == order_id).ToList();
             ViewBag.ReturnSale = returnSale;
             var OrderDetailsList = db.sale_details.Where(o => o.sale_id == order_id);
             return PartialView(OrderDetailsList.ToList());
@@ -220,7 +220,7 @@ namespace CAP_TEAM05_2022.Controllers
                             }
                             else
                             {
-                                int temp_inventory = (inventory.quantity - inventory.sold - (int)inventory.return_quantity) ;
+                                int temp_inventory = (inventory.quantity - inventory.sold - (int)inventory.return_quantity);
 
                                 int quantity_remaining = (int)inventory.quantity_remaining;
                                 if (temp_quatity <= quantity_remaining)
@@ -336,7 +336,7 @@ namespace CAP_TEAM05_2022.Controllers
                     var check_debt = db.debts.Where(d => d.sale.customer_id == createSale.customer_id && d.sale_id != null).Count();
                     if (check_debt > 0)
                     {
-                        var last_debt = db.debts.Where(d => d.sale.customer_id == createSale.customer_id ).OrderByDescending(o => o.id).FirstOrDefault();
+                        var last_debt = db.debts.Where(d => d.sale.customer_id == createSale.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
                         debt debt = new debt();
                         debt.sale_id = sale.id;
                         debt.paid = createSale.method;

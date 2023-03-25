@@ -1,8 +1,6 @@
 ﻿using CAP_TEAM05_2022.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace CAP_TEAM05_2022.Controllers
@@ -26,7 +24,7 @@ namespace CAP_TEAM05_2022.Controllers
                     var sales = db.sales.Where(s => s.customer.code == code_customer);
                     return View(sales.OrderByDescending(c => c.id).ToList());
                 }
-            }          
+            }
             ViewBag.CodeCustomer = true;
             return View("Index");
         }

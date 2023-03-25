@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using CAP_TEAM05_2022.Models;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using CAP_TEAM05_2022.Helper;
-using CAP_TEAM05_2022.Models;
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -24,7 +18,7 @@ namespace CAP_TEAM05_2022.Controllers
 
         public JsonResult CreateSale_Debit(debt createDebit)
         {
-            
+
             string message = "Record Saved Successfully ";
             bool status = true;
             return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);

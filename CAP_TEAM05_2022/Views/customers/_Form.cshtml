@@ -1,5 +1,5 @@
 ﻿@model CAP_TEAM05_2022.Models.customer
-@using Constants = MilitaryMonitoring.Helpers.Constants
+@using Constants = CAP_TEAM05_2022.Helper.Constants
 
 @{
     bool isCreate = ViewBag.isCreate;
@@ -87,11 +87,11 @@
                                 <div class="position-relative">
                                     @if ((bool)ViewBag.isCreate)
                                     {
-                                        @Html.DropDownList("type", new SelectList(Constants.TypeCustomer, "Key", "Value"), "---- Chọn nhóm khách hàng ----", new { @class = "form-control" })
+                                        @Html.DropDownList("type", new SelectList(Constants.TypeCustomer, "Key", "Value.Item1"), "---- Chọn nhóm khách hàng ----", new { @class = "form-control" })
                                     }
                                     else
                                     {
-                                        @Html.DropDownList("type", new SelectList(Constants.TypeCustomer, "Key", "Value", Model.type), new { @class = "form-control" })
+                                        @Html.DropDownList("type", new SelectList(Constants.TypeCustomer, "Key", "Value.Item1", Model.type), new { @class = "form-control" })
                                     }
                                     @Html.ValidationMessageFor(model => model.type, "", new { @class = "text-danger" })
                                 </div>

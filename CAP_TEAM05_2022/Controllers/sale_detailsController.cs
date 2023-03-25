@@ -1,11 +1,8 @@
-﻿using System.Data.Entity;
-using System.Drawing;
-using System.Linq;
-using System.Net;
-using System.Web.Mvc;
-using CAP_TEAM05_2022.Helper;
-using CAP_TEAM05_2022.Models;
+﻿using CAP_TEAM05_2022.Models;
 using Microsoft.AspNet.Identity;
+using System.Data.Entity;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -28,7 +25,7 @@ namespace CAP_TEAM05_2022.Controllers
                 cartName = x.product.name,
                 cartUnit = x.unit,
                 cartQuantity = x.sold,
-                cartPrice = x.price/ x.sold,                
+                cartPrice = x.price / x.sold,
                 cartTotal = x.price,
             }).ToList(), JsonRequestBehavior.AllowGet);
         }
@@ -37,7 +34,7 @@ namespace CAP_TEAM05_2022.Controllers
         {
             sale_details details = db.sale_details.Find(id);
             var emp = new sale();
-            emp.note = details.product.code + " - " + details.product.name;       
+            emp.note = details.product.code + " - " + details.product.name;
             emp.total = details.sold;
             emp.prepayment = details.price / details.sold;
             emp.id = details.id;

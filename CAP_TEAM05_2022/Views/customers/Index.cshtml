@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<CAP_TEAM05_2022.Models.customer>
+@using Constants = CAP_TEAM05_2022.Helper.Constants
 
 @{
     ViewBag.Title = "Index";
@@ -6,7 +7,7 @@
 
 }
 @section style {
-    <link href="~/Content/css/custom-css.css" rel="stylesheet" media="print"/>
+    <link href="~/Content/css/custom-css.css" rel="stylesheet" media="print" />
 }
 <input type="text" hidden id="URLCustomerList" value="@Url.Action("_CustomerList", "customers")" />
 <input type="text" hidden id="URLFindCustomer" value="@Url.Action("FindCustomer", "customers")/" />
@@ -46,12 +47,7 @@
                                     <h4>KHÁCH HÀNG</h4>
                                 </div>
                                 <div class="col-md-3">
-                                    <select name="filter_type" id="filter_type" class="form-control">
-                                        <option value="">Xem tất cả</option>
-                                        <option value="1">Khách mua lẻ</option>
-                                        <option value="2">Công ty (khách mua sỉ)</option>
-                                        <option value="3">Nhà cung cấp</option>
-                                    </select>
+                                    @Html.DropDownList("filter_type", new SelectList(Constants.TypeCustomer, "Key", "Value.Item1"), "---- Xem tất cả ----", new { @class = "form-control", @id = "filter_type" })
                                 </div>
                             </div>
                         </div>
@@ -73,11 +69,12 @@
 </div>
 @section scripts {
     <script type="text/javascript">
-    $(document).ready(function () {
-        $('#example').DataTable({
-            pagingType: 'full_numbers',
+        var row;
+        $(document).ready(function () {
+            $('#example').DataTable({
+                pagingType: 'full_numbers',
+            });
         });
-    });
     function editCustomer(id) {
             $.ajax({
                 url: '@Url.Action("_Form", "customers")',

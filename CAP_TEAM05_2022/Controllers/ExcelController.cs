@@ -15,6 +15,8 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Constants = CAP_TEAM05_2022.Helper.Constants;
+
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -45,7 +47,7 @@ namespace CAP_TEAM05_2022.Controllers
         {
             string nameFile = "SP_" + DateTime.Now + ".xlsx";
             var list = from l in db.products
-                       where l.@group.status == 1 && l.category.status == 1
+                       where l.@group.status == Constants.SHOW_STATUS && l.category.status == Constants.SHOW_STATUS
                        select l;
             if (group_id != -1)
             {
@@ -591,7 +593,7 @@ namespace CAP_TEAM05_2022.Controllers
                 {
                     Sheet.Cells[string.Format("A{0}", row)].Value = item.code;
                     Sheet.Cells[string.Format("B{0}", row)].Value = item.name;
-                    Sheet.Cells[string.Format("C{0}", row)].Value = inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity) + " " + item.unit + "(" +item.quantity_swap + item.unit_swap+")";
+                    Sheet.Cells[string.Format("C{0}", row)].Value = inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity) + " " + item.unit + "(" + item.quantity_swap + item.unit_swap + ")";
                     Sheet.Cells[string.Format("D{0}", row)].Value = item1.Key.ToString("N0") + "/" + item.unit;
                     Sheet.Cells[string.Format("E{0}", row)].Value = item.sell_price.ToString("N0") + "/" + item.unit;
                     if (item.unit_swap == null)
@@ -677,8 +679,8 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 Sheet_import.Cells[string.Format("A{0}", row_import)].Value = item.product.code;
                 Sheet_import.Cells[string.Format("B{0}", row_import)].Value = item.product.name;
-                Sheet_import.Cells[string.Format("C{0}", row_import)].Value = item.quantity + " "+ item.product.unit + "(" + item.product.quantity_swap + item.product.unit_swap + ")";
-                Sheet_import.Cells[string.Format("D{0}", row_import)].Value = item.price_import.ToString("N0")+ "/" + item.product.unit;
+                Sheet_import.Cells[string.Format("C{0}", row_import)].Value = item.quantity + " " + item.product.unit + "(" + item.product.quantity_swap + item.product.unit_swap + ")";
+                Sheet_import.Cells[string.Format("D{0}", row_import)].Value = item.price_import.ToString("N0") + "/" + item.product.unit;
                 Sheet_import.Cells[string.Format("E{0}", row_import)].Value = item.price_import * (item.quantity);
                 Sheet_import.Cells[string.Format("F{0}", row_import)].Value = item.customer.name;
                 Sheet_import.Cells[string.Format("G{0}", row_import)].Value = String.Format("{0:HH:mm - dd/MM/yyy}", item.created_at);

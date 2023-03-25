@@ -6,6 +6,8 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using Constants = CAP_TEAM05_2022.Helper.Constants;
+
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -34,7 +36,7 @@ namespace CAP_TEAM05_2022.Controllers
                 var category = db.categories.Find(id);
                 return PartialView("_Form", category);
             }
-            ViewBag.isCreate = true;     
+            ViewBag.isCreate = true;
             return PartialView("_Form", new category());
         }
         [ValidateAntiForgeryToken]
@@ -74,7 +76,7 @@ namespace CAP_TEAM05_2022.Controllers
             ViewBag.isCreate = true;
             return Json(new { status, message }, JsonRequestBehavior.AllowGet);
         }
-           [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(category category)
         {
             string message = "";
@@ -132,7 +134,7 @@ namespace CAP_TEAM05_2022.Controllers
         public ActionResult EditStatus_Category(category categorys)
         {
             category categories = db.categories.Find(categorys.id);
-            if (categories.status == 1)
+            if (categories.status == Constants.SHOW_STATUS)
             {
                 categories.status = 2;
             }
@@ -144,11 +146,11 @@ namespace CAP_TEAM05_2022.Controllers
             db.Entry(categories).State = EntityState.Modified;
             db.SaveChanges();
             return Json("EditStatus_Category", JsonRequestBehavior.AllowGet);
-        }       
+        }
         public ActionResult getCategory()
         {
 
-            return Json(db.categories.Where(c => c.status == 1).OrderByDescending(c => c.id).Select(x => new
+            return Json(db.categories.Where(c => c.status == Constants.SHOW_STATUS).OrderByDescending(c => c.id).Select(x => new
             {
                 categoryID = x.id,
                 categoryName = x.name

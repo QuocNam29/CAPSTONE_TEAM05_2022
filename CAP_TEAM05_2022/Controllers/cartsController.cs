@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CAP_TEAM05_2022.Models;
+using System;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using CAP_TEAM05_2022.Models;
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -19,7 +16,7 @@ namespace CAP_TEAM05_2022.Controllers
         public ActionResult Index(int customer_id)
         {
             var carts = db.carts.Include(c => c.product).Include(c => c.customer).Where(c => c.customer_id == customer_id);
-         
+
             return PartialView(carts.ToList().OrderByDescending(c => c.id));
         }
         public ActionResult getCartProduct(int id)
@@ -31,7 +28,7 @@ namespace CAP_TEAM05_2022.Controllers
                 cartUnit = x.unit,
                 cartQuantity = x.quantity,
                 cartPrice = x.product.sell_price,
-                cartTotal = x.price,             
+                cartTotal = x.price,
                 cartNote = x.note,
             }).ToList(), JsonRequestBehavior.AllowGet);
         }
@@ -65,7 +62,7 @@ namespace CAP_TEAM05_2022.Controllers
                     return Json(new { status = status1, message = message1 }, JsonRequestBehavior.AllowGet);
                 }
             }
-           
+
             cart cart_check = db.carts.Where(c => c.customer_id == cart_create.customer_id && c.product_id == cart_create.product_id && c.unit == cart_create.unit).FirstOrDefault();
             if (cart_check == null)
             {
@@ -111,12 +108,12 @@ namespace CAP_TEAM05_2022.Controllers
                         else
                         {
                             int temp_1 = (int)(check_quantity / product.quantity_swap);
-                            double temp_2 = (double)((check_quantity* 1.0000000) / product.quantity_swap) - temp_1;
-                            if (temp_2 > 0) 
+                            double temp_2 = (double)((check_quantity * 1.0000000) / product.quantity_swap) - temp_1;
+                            if (temp_2 > 0)
                             {
                                 product.quantity -= (temp_1 + 1);
-                                int temp = (int)(product.quantity_swap *(1 - temp_2));
-                                product.quantity_remaning +=  temp;
+                                int temp = (int)(product.quantity_swap * (1 - temp_2));
+                                product.quantity_remaning += temp;
                             }
                             else
                             {
@@ -126,7 +123,7 @@ namespace CAP_TEAM05_2022.Controllers
                         }
                     }
                 }
-              
+
             }
             db.Entry(product).State = EntityState.Modified;
             db.SaveChanges();
@@ -164,7 +161,7 @@ namespace CAP_TEAM05_2022.Controllers
                 }
                 else if (cart.unit == cart_create.unit && cart_create.unit != product.unit)
                 {
-                    int quantity = (int)(cart.quantity + product.quantity_remaning + product.quantity*product.quantity_swap);
+                    int quantity = (int)(cart.quantity + product.quantity_remaning + product.quantity * product.quantity_swap);
                     if (cart_create.quantity > quantity)
                     {
                         string message1 = quantity.ToString() + " " + cart_create.unit;
@@ -182,7 +179,7 @@ namespace CAP_TEAM05_2022.Controllers
                     int temp_1 = (int)(temp_quantity / product.quantity_swap);
                     int temp_check = (int)(temp_quantity % product.quantity_swap);
                     product.quantity = temp_1;
-                    
+
                     if (temp_check > 0)
                     {
                         product.quantity_remaning = (int)(temp_quantity - (temp_1 * product.quantity_swap));
@@ -220,8 +217,8 @@ namespace CAP_TEAM05_2022.Controllers
                 }
                 else if (cart.unit != cart_create.unit && cart_create.unit == product.unit)
                 {
-                    int quantity = (int)(cart.quantity  + product.quantity_remaning + product.quantity * product.quantity_swap);
-                    int temp_quantity_check  = (int)(quantity / product.quantity_swap);
+                    int quantity = (int)(cart.quantity + product.quantity_remaning + product.quantity * product.quantity_swap);
+                    int temp_quantity_check = (int)(quantity / product.quantity_swap);
 
                     if (cart_create.quantity > temp_quantity_check)
                     {
@@ -250,14 +247,14 @@ namespace CAP_TEAM05_2022.Controllers
                 }
 
                 message = "Record Saved Successfully";
-                 status = true;
+                status = true;
             }
             catch (Exception e)
             {
                 status = false;
                 message = e.Message;
             }
-            
+
             return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult Delete_CartProduct(cart cart)
@@ -285,7 +282,7 @@ namespace CAP_TEAM05_2022.Controllers
             db.SaveChanges();
             return Json("Delete_CartProduct", JsonRequestBehavior.AllowGet);
         }
-        
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

@@ -1,14 +1,12 @@
-﻿using System;
+﻿using CAP_TEAM05_2022.Helper;
+using CAP_TEAM05_2022.Models;
+using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using CAP_TEAM05_2022.Helper;
-using CAP_TEAM05_2022.Models;
-using Microsoft.AspNet.Identity;
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -79,11 +77,11 @@ namespace CAP_TEAM05_2022.Controllers
             ViewBag.isCreate = true;
             return View();
         }
-    
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,code,supplier_id,create_at,update_at,create_by,state,Total,payment,debt")] inventory_order inventory_order, 
-            List<import_inventory> importInventory, int method,string Repayment,string[] saleprice, string[] priceImport)
+        public ActionResult Create([Bind(Include = "id,code,supplier_id,create_at,update_at,create_by,state,Total,payment,debt")] inventory_order inventory_order,
+            List<import_inventory> importInventory, int method, string Repayment, string[] saleprice, string[] priceImport)
         {
             if (importInventory == null || importInventory.Count == 0)
             {
@@ -97,7 +95,7 @@ namespace CAP_TEAM05_2022.Controllers
                 int i = 0;
                 foreach (var inventory in importInventory)
                 {
-                   
+
                     inventory.inventory_id = inventory_order.id;
                     inventory.sold = 0;
                     inventory.sold_swap = 0;
@@ -128,11 +126,11 @@ namespace CAP_TEAM05_2022.Controllers
                     decimal payment = decimal.Parse(Repayment.Replace(",", "").Replace(".", ""));
                     inventory_order.payment = payment;
                     inventory_order.debt = inventory_order.Total - inventory_order.payment;
-                }             
+                }
                 db.inventory_order.Add(inventory_order);
                 if (method == 2)
                 {
-                   
+
                     var check_debt = db.debts.Where(d => d.inventory_order.supplier_id == inventory_order.supplier_id && d.inventory_id != null).Count();
                     if (check_debt > 0)
                     {
@@ -148,7 +146,7 @@ namespace CAP_TEAM05_2022.Controllers
                         db.debts.Add(debt);
 
                         var last_customer_Debt = db.customer_debt.Where(d => d.customer_id == inventory_order.supplier_id && d.inventory_id != null).OrderByDescending(o => o.id).FirstOrDefault();
-                        customer_debt customer_Debt = new customer_debt(); 
+                        customer_debt customer_Debt = new customer_debt();
                         customer_Debt.inventory_id = inventory_order.id;
                         customer_Debt.created_at = currentDate;
                         customer_Debt.created_by = User.Identity.GetUserId();
@@ -180,7 +178,7 @@ namespace CAP_TEAM05_2022.Controllers
 
                         db.SaveChanges();
                     }
-                    db.SaveChanges();                  
+                    db.SaveChanges();
                 }
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -195,7 +193,7 @@ namespace CAP_TEAM05_2022.Controllers
             return View(inventory_order);
         }
 
-        
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

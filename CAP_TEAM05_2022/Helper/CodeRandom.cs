@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace CAP_TEAM05_2022.Helper
 {
@@ -13,7 +10,7 @@ namespace CAP_TEAM05_2022.Helper
             Random random = new Random();
             for (int i = 0; i < 9; i++)
             {
-                int Numrd = random.Next(1,4);
+                int Numrd = random.Next(1, 4);
                 if (Numrd == 1)
                 {
                     code += random.Next(1, 10).ToString();

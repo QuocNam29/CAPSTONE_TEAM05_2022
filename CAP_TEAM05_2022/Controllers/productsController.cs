@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CAP_TEAM05_2022.Helper;
+using CAP_TEAM05_2022.Models;
+using Microsoft.AspNet.Identity;
+using System;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using CAP_TEAM05_2022.Helper;
-using CAP_TEAM05_2022.Models;
-using Microsoft.AspNet.Identity;
+using Constants = CAP_TEAM05_2022.Helper.Constants;
+
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -104,7 +103,7 @@ namespace CAP_TEAM05_2022.Controllers
                             product.code = "SP" + CodeRandom.RandomCode();
                             product.quantity_swap = quantity_swap;
                             product.unit_swap = unit_swap;
-                            
+
                             if (!String.IsNullOrEmpty(price_swap))
                             {
                                 product.sell_price_swap = decimal.Parse(price_swap.Replace(",", "").Replace(".", ""));
@@ -127,7 +126,7 @@ namespace CAP_TEAM05_2022.Controllers
                             return Json(new { status, message, id = product.id }, JsonRequestBehavior.AllowGet);
                         }
                     }
-                    
+
                 }
             }
             catch (Exception e)
@@ -144,7 +143,7 @@ namespace CAP_TEAM05_2022.Controllers
             string mess = "";
             try
             {
-              
+
                 int check = db.import_inventory.Where(i => i.product_id == product.id && i.sold == 0).Count();
                 if (check <= 1)
                 {
@@ -168,7 +167,7 @@ namespace CAP_TEAM05_2022.Controllers
         public ActionResult EditStatus_Product(product products)
         {
             product product = db.products.Find(products.id);
-            if (product.status == 1)
+            if (product.status == Constants.SHOW_STATUS)
             {
                 product.status = 2;
             }
@@ -209,7 +208,7 @@ namespace CAP_TEAM05_2022.Controllers
                 int check = db.products.Where(p => p.name == name_product
                                        && p.group_id == GroupProductDropdown
                                        && p.category_id == CategoryDropdown
-                                       && p.unit == unit 
+                                       && p.unit == unit
                                        && p.id != Product_id).Count();
                 if (check > 0)
                 {
@@ -218,7 +217,7 @@ namespace CAP_TEAM05_2022.Controllers
                 }
                 else
                 {
-                 
+
                     product product = db.products.Find(Product_id);
                     product.name = name_product;
                     product.unit = unit;
@@ -229,7 +228,7 @@ namespace CAP_TEAM05_2022.Controllers
                     db.Entry(product).State = EntityState.Modified;
                     db.SaveChanges();
                     message = "Chỉnh sửa thông tin sản phẩm thành công ";
-                    
+
                 }
             }
             catch (Exception e)
@@ -247,7 +246,7 @@ namespace CAP_TEAM05_2022.Controllers
             bool status = true;
             try
             {
-               
+
                 product product = db.products.Find(Product_id);
                 product.quantity += quantity;
                 product.updated_at = DateTime.Now;
@@ -308,11 +307,11 @@ namespace CAP_TEAM05_2022.Controllers
                 if (product.quantity_remaning != null)
 #pragma warning restore CS0472 // The result of the expression is always the same since a value of this type is never equal to 'null'
                 {
-                    emp.note += " và " + product.quantity_remaning  + product.unit_swap + " lẻ";
+                    emp.note += " và " + product.quantity_remaning + product.unit_swap + " lẻ";
                 }
             }
-           
-                
+
+
             emp.quantity = product.quantity;
             emp.unit = product.unit;
             emp.unit_swap = product.unit_swap;

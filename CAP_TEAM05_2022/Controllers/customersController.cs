@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CAP_TEAM05_2022.Helper;
+using CAP_TEAM05_2022.Models;
+using Microsoft.AspNet.Identity;
+using System;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using CAP_TEAM05_2022.Helper;
-using CAP_TEAM05_2022.Models;
-using Microsoft.AspNet.Identity;
+using Constants = CAP_TEAM05_2022.Helper.Constants;
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -79,22 +77,22 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    
-                        int check = db.customers.Where(c => c.phone == customer.phone && c.id != customer.id).Count();
-                        if (check > 0)
-                        {
-                            status = false;
-                            message = "Khách hàng đã tồn tại (Vui lòng kiểm tra lại số điện thoại) !";
-                        }
-                        else
-                        {                       
-                            customer.updated_at = DateTime.Now;
-                            db.Entry(customer).State = EntityState.Modified;
-                            db.SaveChanges();
-                            message = "Cập nhật thông tin khách hàng thành công !";
-                        }
+
+                    int check = db.customers.Where(c => c.phone == customer.phone && c.id != customer.id).Count();
+                    if (check > 0)
+                    {
+                        status = false;
+                        message = "Khách hàng đã tồn tại (Vui lòng kiểm tra lại số điện thoại) !";
                     }
-                
+                    else
+                    {
+                        customer.updated_at = DateTime.Now;
+                        db.Entry(customer).State = EntityState.Modified;
+                        db.SaveChanges();
+                        message = "Cập nhật thông tin khách hàng thành công !";
+                    }
+                }
+
             }
             catch (Exception e)
             {
@@ -123,7 +121,7 @@ namespace CAP_TEAM05_2022.Controllers
             bool status = true;
             try
             {
-                int check = db.customers.Where(c => c.phone == customer_phone ).Count();
+                int check = db.customers.Where(c => c.phone == customer_phone).Count();
                 if (check > 0)
                 {
                     status = false;
@@ -131,7 +129,7 @@ namespace CAP_TEAM05_2022.Controllers
                 }
                 else
                 {
-                   
+
                     customer customer = new customer();
                     customer.name = customer_name;
                     customer.code = "MKH" + CodeRandom.RandomCode();
@@ -177,13 +175,13 @@ namespace CAP_TEAM05_2022.Controllers
         public ActionResult EditStatus_Customer(customer customer_current)
         {
             customer customer = db.customers.Find(customer_current.id);
-            if (customer.status == 1)
+            if (customer.status == Constants.SHOW_STATUS)
             {
-                customer.status = 2;
+                customer.status = Constants.HIDDEN_STATUS;
             }
             else
             {
-                customer.status = 1;
+                customer.status = Constants.SHOW_STATUS;
             }
             customer.updated_at = DateTime.Now;
             db.Entry(customer).State = EntityState.Modified;
@@ -216,18 +214,7 @@ namespace CAP_TEAM05_2022.Controllers
             emp.id = customer.id;
             emp.name = customer.name;
             emp.phone = customer.phone;
-            if (customer.type == 1)
-            {
-                emp.note = "Khách mua lẻ";
-            }
-            else if (customer.type == 2)
-            {
-                emp.note = "Khách mua sĩ";
-            }
-            else if (customer.type == 3)
-            {
-                emp.note = "Nhà cung cấp";
-            }
+            emp.note = Constants.TypeCustomer.Single(x => x.Key == customer.type).Value.Item1;
             emp.code = customer.code;
             emp.status = customer.sales.Count();
             emp.type = (int)customer.sales.Where(s => s.method == 2).Sum(s => s.total - s.prepayment);
@@ -242,7 +229,7 @@ namespace CAP_TEAM05_2022.Controllers
             try
             {
                 customer customer = db.customers.Find(Customer_id);
-                if (customer.phone == customer_phone )
+                if (customer.phone == customer_phone)
                 {
                     customer.name = customer_name;
                     customer.phone = customer_phone;
@@ -313,7 +300,7 @@ namespace CAP_TEAM05_2022.Controllers
                         message = "Cập nhật thông tin khách hàng thành công !";
                     }
                 }
-             
+
             }
             catch (Exception e)
             {
@@ -321,7 +308,7 @@ namespace CAP_TEAM05_2022.Controllers
                 status = false;
                 message = e.Message;
             }
-            
+
             return Json(new { status, message }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
@@ -395,7 +382,7 @@ namespace CAP_TEAM05_2022.Controllers
                 }
                 else
                 {
-                    
+
                     customer customer = new customer();
                     customer.name = customer_name;
                     customer.code = "MKH" + CodeRandom.RandomCode();
@@ -443,11 +430,29 @@ namespace CAP_TEAM05_2022.Controllers
         public ActionResult getSupplier()
         {
 
-            return Json(db.customers.Where(c => c.status == 1 && c.type == 3).OrderByDescending(c => c.id).Select(x => new
+            return Json(db.customers.Where(c => c.status == Constants.SHOW_STATUS && c.type == Constants.SUPPLIER).OrderByDescending(c => c.id).Select(x => new
             {
                 supplierID = x.id,
                 supplierName = x.name
             }).ToList(), JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult Delete_Customer(customer customer)
+        {
+            bool status = true;
+            string mess = "";
+            try
+            {
+                customer customers = db.customers.Find(customer.id);
+                db.customers.Remove(customers);
+                db.SaveChanges();
+                mess = "Xóa khách hàng thành công";
+            }
+            catch
+            {
+                status = false;
+                mess = "Khách hàng đã có đơn hàng !";
+            }
+            return Json(new { status = status, message = mess }, JsonRequestBehavior.AllowGet);
         }
         protected override void Dispose(bool disposing)
         {

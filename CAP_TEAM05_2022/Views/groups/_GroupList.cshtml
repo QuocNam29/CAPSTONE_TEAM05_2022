@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<CAP_TEAM05_2022.Models.group>
-@{ 
+@using Constants = CAP_TEAM05_2022.Helper.Constants
+
+@{
     int no = 0;
 }
 <table id="example" class="table table-hover">
@@ -23,7 +25,7 @@
                 <td>@item.code</td>
                 <td>@item.name</td>
                 <td>
-                    @if (item.status == 1)
+                    @if (item.status == Constants.SHOW_STATUS)
                     {
                         <div class="custom-control custom-switch">
                             <input type="checkbox" checked class="custom-control-input" id="@customswitch_NH">

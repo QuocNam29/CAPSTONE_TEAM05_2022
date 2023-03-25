@@ -1,14 +1,10 @@
-﻿using CAP_TEAM05_2022.Controllers;
+﻿using CAP_TEAM05_2022.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.Web;
-using System.ComponentModel.DataAnnotations;
 using System.Collections;
-using CAP_TEAM05_2022.Models;
-using Moq;
-using System.Web.Mvc;
-using System.Web.Routing;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Web;
 
 namespace CAP_TEAM05_2022.Controllers.Tests
 {

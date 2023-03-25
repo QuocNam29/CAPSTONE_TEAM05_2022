@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CAP_TEAM05_2022.Helper;
+using CAP_TEAM05_2022.Models;
+using Microsoft.AspNet.Identity;
+using System;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using CAP_TEAM05_2022.Helper;
-using CAP_TEAM05_2022.Models;
-using Microsoft.AspNet.Identity;
+using Constants = CAP_TEAM05_2022.Helper.Constants;
+
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -23,7 +22,7 @@ namespace CAP_TEAM05_2022.Controllers
         // GET: groups
         public ActionResult Index()
         {
-          
+
             return View();
         }
         public PartialViewResult _Form(int? id)
@@ -121,11 +120,11 @@ namespace CAP_TEAM05_2022.Controllers
                 if (check > 0)
                 {
                     status = false;
-                    message = "Nhóm hàng đã tồn tại !";                   
+                    message = "Nhóm hàng đã tồn tại !";
                 }
                 else
                 {
-                   
+
                     group GroupProduct = new group();
                     GroupProduct.name = Add_name;
                     GroupProduct.created_by = User.Identity.GetUserId();
@@ -144,9 +143,9 @@ namespace CAP_TEAM05_2022.Controllers
                 status = false;
                 message = e.Message;
             }
-             return Json(new { status, message }, JsonRequestBehavior.AllowGet);
+            return Json(new { status, message }, JsonRequestBehavior.AllowGet);
         }
-       
+
 
         public ActionResult Delete_GroupProduct(group GroupProducts)
         {
@@ -165,13 +164,13 @@ namespace CAP_TEAM05_2022.Controllers
                 status = false;
                 mess = "Xóa thất bại ! (còn sản phẩm thuộc nhóm hàng).";
             }
-           
+
             return Json(new { status = status, message = mess }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult EditStatus_GroupProduct(group GroupProducts)
         {
             group group = db.groups.Find(GroupProducts.id);
-            if (group.status == 1)
+            if (group.status == Constants.SHOW_STATUS)
             {
                 group.status = 2;
             }
@@ -193,18 +192,18 @@ namespace CAP_TEAM05_2022.Controllers
             emp.name = group.name;
             return Json(emp);
         }
-      
+
         public ActionResult getGroupProduct()
         {
-           
-            return Json(db.groups.Where(c => c.status == 1).OrderByDescending(c => c.id).Select(x => new
+
+            return Json(db.groups.Where(c => c.status == Constants.SHOW_STATUS).OrderByDescending(c => c.id).Select(x => new
             {
                 groupID = x.id,
                 groupName = x.name
             }).ToList(), JsonRequestBehavior.AllowGet);
         }
-       
-        public JsonResult UpdateGroupProduct( int id, string Edit_name)
+
+        public JsonResult UpdateGroupProduct(int id, string Edit_name)
         {
             string message = "";
             bool status = true;

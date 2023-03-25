@@ -11,9 +11,9 @@ namespace CAP_TEAM05_2022.Helper
         public static readonly string subdomain = "";
         public static readonly string webUrl = "";
 
-       
-       
-       
+
+
+
 
         /// To use switch case User roles
         /// </summary>
@@ -45,18 +45,25 @@ namespace CAP_TEAM05_2022.Helper
         /// <summary>
         /// Type Customer
         ///  </summary>
-          public static readonly int CUSTOMER = 1;
+        public static readonly int CUSTOMER = 1;
         public static readonly int WHOLESALE_CUSTOMER = 2;
         public static readonly int SUPPLIER = 3;
         /// </summary>
-        public static readonly Dictionary<int, string> TypeCustomer = new Dictionary<int, string> {
-            {CUSTOMER, "khách mua lẻ"},
-            {WHOLESALE_CUSTOMER, "Khách mua sỉ (công ty)" },
-            {SUPPLIER, "Nhà cung cấp" },
-          
+        public static readonly Dictionary<int, Tuple<string, string>> TypeCustomer = new Dictionary<int, Tuple<string, string>> {
+            {CUSTOMER, new Tuple<string, string>("Khách mua lẻ", "cus-simple") },
+            {WHOLESALE_CUSTOMER,new Tuple<string, string>("Khách mua lẻ", "cus-multi") },
+            {SUPPLIER, new Tuple<string, string>("Nhà cung cấp", "cus-supplier") }
         };
 
-       
+        ///Loan Form registration state
+        ///
+        public static int SHOW_STATUS = 1;
+        public static int HIDDEN_STATUS = 2;
+        public static readonly Dictionary<int, string> Status = new Dictionary<int, string> {
+            {SHOW_STATUS, "Trạng thái hiện"},
+            {HIDDEN_STATUS, "Trạng thái ẩn" }
+        };
+
 
         /// <summary>
         /// connectionString for Import Excel Data

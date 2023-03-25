@@ -1,4 +1,6 @@
 ﻿@model IEnumerable<CAP_TEAM05_2022.Models.product>
+@using Constants = CAP_TEAM05_2022.Helper.Constants
+
 @{
     int no = 0;
 }
@@ -24,100 +26,100 @@
             string customswitch_SP = "customswitch" + item.id;
 
             no++;
-        <tr>
-            <td class="sticky-col first-col">@no  <input hidden type="text" name="record" value="@item.code"></td>
-            <td class="sticky-col first-col">
-                <div class="product-code">
-                    @item.code
-                </div>
-                <div class="product-name">
-                    @item.name
-                </div>
-            </td>
-            <td>@item.group.name</td>
-            <td>@item.category.name</td>
-            <td class="text-center">
-                @item.quantity.ToString("N0")<span class="txt-unit">@item.unit</span>
-                @if (item.unit_swap != null)
-                {
-                    <div>@item.quantity_remaning<span class="txt-unit">@item.unit_swap</span></div>
-                }
-            </td>
-            <td class="text-center">
-                <div>@item.sell_price.ToString("N0")<span class="txt-unit">/@item.unit</span></div>
-                @if (item.unit_swap != null)
-                {
-                    <div> @String.Format("{0:0,00}", item.sell_price_swap)<span class="txt-unit">/@item.unit_swap</span></div>
-                }
-            </td>
-            <td class="text-center">
-                @if (item.unit_swap != null)
-                {
-                    int temp1 = (int)(item.import_inventory.Sum(i => i.sold_swap) / item.quantity_swap);
-                    int temp2 = (int)(item.import_inventory.Sum(i => i.sold_swap) % item.quantity_swap);
-                    if (temp2 > 0)
+            <tr>
+                <td class="sticky-col first-col">@no  <input hidden type="text" name="record" value="@item.code"></td>
+                <td class="sticky-col first-col">
+                    <div class="product-code">
+                        @item.code
+                    </div>
+                    <div class="product-name">
+                        @item.name
+                    </div>
+                </td>
+                <td>@item.group.name</td>
+                <td>@item.category.name</td>
+                <td class="text-center">
+                    @item.quantity.ToString("N0")<span class="txt-unit">@item.unit</span>
+                    @if (item.unit_swap != null)
                     {
-                        double temp3 = (double)(item.import_inventory.Sum(i => i.sold_swap) * 1.000000001 / item.quantity_swap) - temp1;
+                        <div>@item.quantity_remaning<span class="txt-unit">@item.unit_swap</span></div>
+                    }
+                </td>
+                <td class="text-center">
+                    <div>@item.sell_price.ToString("N0")<span class="txt-unit">/@item.unit</span></div>
+                    @if (item.unit_swap != null)
+                    {
+                        <div> @String.Format("{0:0,00}", item.sell_price_swap)<span class="txt-unit">/@item.unit_swap</span></div>
+                    }
+                </td>
+                <td class="text-center">
+                    @if (item.unit_swap != null)
+                    {
+                        int temp1 = (int)(item.import_inventory.Sum(i => i.sold_swap) / item.quantity_swap);
+                        int temp2 = (int)(item.import_inventory.Sum(i => i.sold_swap) % item.quantity_swap);
+                        if (temp2 > 0)
+                        {
+                            double temp3 = (double)(item.import_inventory.Sum(i => i.sold_swap) * 1.000000001 / item.quantity_swap) - temp1;
 
-                        @(item.import_inventory.Sum(i => i.sold)-1)<span class="txt-unit">@item.unit</span>
-                        <div>@((int)(temp3 * item.quantity_swap))<span class="txt-unit">@item.unit_swap</span></div>
+                            @(item.import_inventory.Sum(i => i.sold)-1)<span class="txt-unit">@item.unit</span>
+                            <div>@((int)(temp3 * item.quantity_swap))<span class="txt-unit">@item.unit_swap</span></div>
+                        }
+                        else
+                        {
+                            @(item.import_inventory.Sum(i => i.sold))<span class="txt-unit">@item.unit</span>
+
+                        }
+
                     }
                     else
                     {
-                        @(item.import_inventory.Sum(i => i.sold))<span class="txt-unit">@item.unit</span>
+                        @item.import_inventory.Sum(i => i.sold)<span class="txt-unit">@item.unit</span>
 
                     }
-
-                }
-                else
-                {
-                    @item.import_inventory.Sum(i => i.sold)<span class="txt-unit">@item.unit</span>
-
-                }
-            <td class="text-center">
-                @if (item.status == 1)
-                {
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" checked class="custom-control-input" id="@customswitch_SP">
-                        <label class="custom-control-label" for="@customswitch_SP"></label>
-                    </div>
-                }
-                else
-                {
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="@customswitch_SP">
-                        <label class="custom-control-label" for="@customswitch_SP"></label>
-                    </div>
-                }
-                <input hidden type="text" id="URDEditStatus" value="@Url.Action("EditStatus_Product", "products")">
-                <script language="javascript">
+                <td class="text-center">
+                    @if (item.status == Constants.SHOW_STATUS)
+                    {
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" checked class="custom-control-input" id="@customswitch_SP">
+                            <label class="custom-control-label" for="@customswitch_SP"></label>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="@customswitch_SP">
+                            <label class="custom-control-label" for="@customswitch_SP"></label>
+                        </div>
+                    }
+                    <input hidden type="text" id="URDEditStatus" value="@Url.Action("EditStatus_Product", "products")">
+                    <script language="javascript">
                          document.getElementById('@customswitch_SP').onclick = function (e) {
                                                                 EditStatus(@item.id);
                                                         };
-                </script>
-            </td>
-            <td>
-                <button title="Thêm số lượng" class="btn btn-success" onclick="GetProduct_Stock(this, @item.id, '@item.code', '@item.name')">
-                    <i class="feather icon-plus-square">
-                    </i>
-                </button>
-                <button title="Sao chép" class="btn btn-primary" onclick="CopyProduct(this, @item.id)">
-                    <i class="feather icon-copy">
-                    </i>
-                </button>
-                <button title="Cập nhật" class="btn btn-success" onclick="GetProduct(this, @item.id)">
-                    <i class="feather icon-edit">
-                    </i>
-                </button>
+                    </script>
+                </td>
+                <td>
+                    <button title="Thêm số lượng" class="btn btn-success" onclick="GetProduct_Stock(this, @item.id, '@item.code', '@item.name')">
+                        <i class="feather icon-plus-square">
+                        </i>
+                    </button>
+                    <button title="Sao chép" class="btn btn-primary" onclick="CopyProduct(this, @item.id)">
+                        <i class="feather icon-copy">
+                        </i>
+                    </button>
+                    <button title="Cập nhật" class="btn btn-success" onclick="GetProduct(this, @item.id)">
+                        <i class="feather icon-edit">
+                        </i>
+                    </button>
 
 
-                <input hidden type="text" id="URLDelete" value="@Url.Action("Delete_Product", "products")">
-                <button class="btn btn-danger" onclick="deleteAlert('@item.id', '@item.code')" id="Delete">
-                    <i class="feather icon-trash-2">
-                    </i>
-                </button>
-            </td>
-        </tr>
+                    <input hidden type="text" id="URLDelete" value="@Url.Action("Delete_Product", "products")">
+                    <button class="btn btn-danger" onclick="deleteAlert('@item.id', '@item.code')" id="Delete">
+                        <i class="feather icon-trash-2">
+                        </i>
+                    </button>
+                </td>
+            </tr>
         }
 
     </tbody>
