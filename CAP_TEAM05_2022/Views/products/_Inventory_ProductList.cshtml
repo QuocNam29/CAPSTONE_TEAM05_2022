@@ -112,7 +112,7 @@
                                 }
                             </td>
                             @{
-                                total_temp1 = (item1.Key * (inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity - i.sold -(i.return_quantity!= null ? (int)i.return_quantity : 0 ))));
+                                total_temp1 = (item1.Key * (inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity - i.sold - i.return_quantity)));
                                 if (item.unit_swap != null)
                                 {
                                     total_temp2 = (decimal)((item1.Key / (item.quantity_swap)) * (inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity_remaining)));

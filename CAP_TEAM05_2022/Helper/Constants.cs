@@ -11,10 +11,6 @@ namespace CAP_TEAM05_2022.Helper
         public static readonly string subdomain = "";
         public static readonly string webUrl = "";
 
-
-
-
-
         /// To use switch case User roles
         /// </summary>
         public const string ACCOUNT_ADMIN = "1";
@@ -51,7 +47,7 @@ namespace CAP_TEAM05_2022.Helper
         /// </summary>
         public static readonly Dictionary<int, Tuple<string, string>> TypeCustomer = new Dictionary<int, Tuple<string, string>> {
             {CUSTOMER, new Tuple<string, string>("Khách mua lẻ", "cus-simple") },
-            {WHOLESALE_CUSTOMER,new Tuple<string, string>("Khách mua lẻ", "cus-multi") },
+            {WHOLESALE_CUSTOMER,new Tuple<string, string>("Khách mua sỉ", "cus-multi") },
             {SUPPLIER, new Tuple<string, string>("Nhà cung cấp", "cus-supplier") }
         };
 

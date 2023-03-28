@@ -147,7 +147,7 @@
                                         <td class="text-center"><div>@item.return_quantity<span class="txt-unit">@item.product.unit</span></div></td>
                                         <td class="text-center">@item.price_import.ToString("N0")</td>
                                         <td class="text-center">@((item.price_import * (item.quantity - (int)item.return_quantity)).ToString("N0")) </td>
-                                        <td class="text-center">@item.customer.name</td>
+                                        <td class="text-center">@(item.customer?.name)</td>
                                         <td class="text-center"> @String.Format("{0:HH:mm - dd/MM/yyy}", item.created_at)</td>
                                        
                                     </tr>

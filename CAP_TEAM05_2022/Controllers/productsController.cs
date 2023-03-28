@@ -30,6 +30,8 @@ namespace CAP_TEAM05_2022.Controllers
         {
             ViewBag.isCreate = true;
             ViewBag.CategoryId = new SelectList(db.categories, "Id", "Name");
+            ViewBag.GroupId = new SelectList(db.categories, "Id", "Name");
+            ViewBag.SupplierId = db.customers.Where(x => x.type == Constants.SUPPLIER).ToList();
             return PartialView("_Form", new product());
         }
         public ActionResult _ProductList(int group_id, int category_id)
@@ -240,42 +242,7 @@ namespace CAP_TEAM05_2022.Controllers
 
             return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult Import_Stock(int Product_id, int quantity, string purchase_price, int SupplierDropdown)
-        {
-            string message = "";
-            bool status = true;
-            try
-            {
 
-                product product = db.products.Find(Product_id);
-                product.quantity += quantity;
-                product.updated_at = DateTime.Now;
-                db.Entry(product).State = EntityState.Modified;
-                import_inventory import = new import_inventory();
-                import.product_id = Product_id;
-                import.quantity = quantity;
-                import.price_import = int.Parse(purchase_price.Replace(",", "").Replace(".", ""));
-                import.sold = 0;
-                import.sold_swap = 0;
-                import.quantity_remaining = 0;
-                import.created_at = DateTime.Now;
-                import.supplier_id = SupplierDropdown;
-                import.created_by = User.Identity.GetUserId();
-                db.import_inventory.Add(import);
-
-                db.SaveChanges();
-                message = "Nhập số lượng sản phẩm thành công ";
-                status = true;
-            }
-            catch (Exception e)
-            {
-
-                message = e.Message;
-                status = false;
-            }
-
-            return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
-        }
         [HttpPost]
         public JsonResult GetSearchValue(string search)
         {

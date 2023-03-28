@@ -37,6 +37,48 @@
             #topPage:hover {
                 background-color: #555;
             }
+        .card-with-title {
+            
+            padding: 12px 35px;
+        }
+
+        .card-with-title .card-title {
+            margin: 0;
+        }
+
+        .card-total {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 35px;
+            border-top: 1px solid #e2e5e8;
+        }
+
+        .card-total p {
+            text-align: left;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .card-total span {
+            font-weight: 400;
+        }
+
+        .card-total-item:last-child {
+            padding-left: 16px;
+        }
+
+        .card-title-name,
+        .card-title-desc {
+            text-align: center;
+        }
+
+        .card-title-name {
+            text-transform: uppercase;
+        }
+
+        .card-title-desc {
+            margin: 0;
+        }
     </style>
 </head>
 <body class="">
@@ -58,12 +100,27 @@
                 <div class="card borderless">
                     <div class="row align-items-center ">
                         <div class="col-md-12">
-                            <h4 class="text-center mt-2">
-                                Lịch sử đơn hàng
-                            </h4>
-                            <h5 class="text-center mt-2">
-                                Mã khách hàng - tên khách hàng
-                            </h5>
+                            <div class="card-with-title">
+                                <div class="card-title">
+                                    <h4 class=" card-title-name">
+                                        Lịch sử đơn hàng
+                                    </h4>
+                                    <h5 class=" card-title-desc">
+                                        Mã khách hàng - tên khách hàng
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="card-total">
+                                <div class="card-total-item">
+                                    <p>Tổng đơn hàng: <span>05</span></p>
+                                    <p>Số đơn thanh toán: <span>05</span></p>
+                                    <p>Số đơn nợ: <span>05</span></p>
+                                </div>
+                                <div class="card-total-item">
+                                    <p>Tổng đã trả: <span>05</span></p>
+                                    <p>Con nợ: <span>05</span></p>
+                                </div>
+                            </div>
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-hover">

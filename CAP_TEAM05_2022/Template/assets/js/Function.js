@@ -655,16 +655,6 @@ function CopyProduct(ele, id) {
     })
 }
 
-function GetProduct_Stock(ele, id, code, name) {
-    row = $(ele).closest('tr');
-   
-    $('#stock_pid').val(id);
-    $('#stock_pCode').val(code);
-    $('#stock_pName').val(name);
-            $('#Stock_import .close').css('display', 'none');
-            $('#Stock_import').modal('show');
-
-}
 //-------------------------------UPDATE PRODUCT--------------------------------
 
 //-------------------------Get Group Product -------------------------------

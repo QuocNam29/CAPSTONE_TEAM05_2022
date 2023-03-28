@@ -66,24 +66,48 @@ namespace CAP_TEAM05_2022.Controllers
             Sheet.Cells["B1"].Value = "Tên sản phẩm";
             Sheet.Cells["C1"].Value = "Nhóm hàng";
             Sheet.Cells["D1"].Value = "Danh mục";
-            Sheet.Cells["E1"].Value = "Đơn vị";
-            Sheet.Cells["F1"].Value = "Giá bán";
-            Sheet.Cells["G1"].Value = "Giá nhập";
-            Sheet.Cells["H1"].Value = "Số lượng nhập";
+            Sheet.Cells["E1"].Value = "Số lượng tồn";
+            Sheet.Cells["F1"].Value = "Số lượng tồn bán lẻ";
+            Sheet.Cells["G1"].Value = "Đơn vị quy đổi (nếu có)";
+            Sheet.Cells["H1"].Value = "Giá bán";
             Sheet.Cells["I1"].Value = "Đã bán";
+            Sheet.Cells["J1"].Value = "Đã bán lẻ";
 
             int row = 2;// dòng bắt đầu ghi dữ liệu
             foreach (var item in list)
             {
+                string sold = "";
+                string sold_swap = "";
+                string quantity = item.quantity + " " + item.unit;
+                string quantity_swap = "";
+                if (item.unit_swap != null)
+                {
+                    quantity_swap = item.quantity_remaning + " " + item.unit_swap; 
+                    int temp1 = (int)(item.import_inventory.Sum(i => i.sold_swap) / item.quantity_swap);
+                    int temp2 = (int)(item.import_inventory.Sum(i => i.sold_swap) % item.quantity_swap);
+                    if (temp2 > 0)
+                    {
+                        double temp3 = (double)(item.import_inventory.Sum(i => i.sold_swap) * 1.000000001 / item.quantity_swap) - temp1;
+                        sold += (item.import_inventory.Sum(i => i.sold) - 1) + " " + item.unit;
+                        sold_swap += (int)(temp3 * item.quantity_swap) + " " + item.unit_swap;
+
+                    }
+                    else
+                    {
+                        sold += item.import_inventory.Sum(i => i.sold) + " " + item.unit;
+
+                     }
+                }
                 Sheet.Cells[string.Format("A{0}", row)].Value = item.code;
                 Sheet.Cells[string.Format("B{0}", row)].Value = item.name;
                 Sheet.Cells[string.Format("C{0}", row)].Value = item.group.name;
                 Sheet.Cells[string.Format("D{0}", row)].Value = item.category.name;
-                Sheet.Cells[string.Format("E{0}", row)].Value = item.unit;
-                Sheet.Cells[string.Format("F{0}", row)].Value = item.sell_price;
-                Sheet.Cells[string.Format("G{0}", row)].Value = item.purchase_price;
-                Sheet.Cells[string.Format("H{0}", row)].Value = item.quantity;
-                Sheet.Cells[string.Format("I{0}", row)].Value = item.import_inventory.Where(i => i.product_id == item.id).Sum(s => s.sold);
+                Sheet.Cells[string.Format("E{0}", row)].Value = quantity;
+                Sheet.Cells[string.Format("F{0}", row)].Value = quantity_swap;
+                Sheet.Cells[string.Format("G{0}", row)].Value = item.unit_swap != null ? "1 " + item.unit + " = " + item.quantity_swap + " " + item.unit_swap : "";
+                Sheet.Cells[string.Format("H{0}", row)].Value = item.purchase_price;
+                Sheet.Cells[string.Format("I{0}", row)].Value = sold;
+                Sheet.Cells[string.Format("J{0}", row)].Value = sold_swap;
                 row++;
             }
             Sheet.Cells["A:AZ"].AutoFitColumns();
@@ -101,17 +125,23 @@ namespace CAP_TEAM05_2022.Controllers
 
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ExcelPackage ep = new ExcelPackage();
-            var list_group = db.groups.Where(g => g.status != 3).ToList();
-            var list_category = db.categories.Where(g => g.status != 3).ToList();
+            var list_group = db.groups.ToList();
+            var list_category = db.categories.ToList();
+            var list_supplier = db.customers.Where(g => g.type == Constants.SUPPLIER).ToList();
             ExcelWorksheet Sheet = ep.Workbook.Worksheets.Add("NhapSanPham");
             FormatExcel(Sheet, 3);
-            Sheet.Cells["A1"].Value = "Tên sản phẩm";
-            Sheet.Cells["B1"].Value = "Nhóm hàng";
-            Sheet.Cells["C1"].Value = "Danh mục";
-            Sheet.Cells["D1"].Value = "Đơn vị";
-            Sheet.Cells["E1"].Value = "Giá bán";
-            Sheet.Cells["F1"].Value = "Giá nhập";
-            Sheet.Cells["G1"].Value = "Số lượng nhập";
+            Sheet.Cells["A1"].Value = "Tên sản phẩm*";
+            Sheet.Cells["B1"].Value = "Nhóm hàng*";
+            Sheet.Cells["C1"].Value = "Danh mục*";
+            Sheet.Cells["D1"].Value = "Nhà cung cấp*";
+            Sheet.Cells["E1"].Value = "Đơn vị*";
+            Sheet.Cells["F1"].Value = "Số lượng tồn*";
+            Sheet.Cells["G1"].Value = "Giá bán*";
+            Sheet.Cells["H1"].Value = "Giá nhập*";
+            Sheet.Cells["I1"].Value = "Đơn vị quy đổi \r\n (bao -> kg)";
+            Sheet.Cells["J1"].Value = "Số lượng quy đổi \r\n (1bao = 50kg)";
+            Sheet.Cells["K1"].Value = "Đơn giá bán \r\n (theo quy đổi)";
+
             var validation_group = Sheet.Cells["B2:B999999"].DataValidation.AddListDataValidation();
             validation_group.ShowErrorMessage = true;
             validation_group.ErrorStyle = ExcelDataValidationWarningStyle.information;
@@ -121,6 +151,7 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 validation_group.Formula.Values.Add(item.name);
             }
+
             var validation_category = Sheet.Cells["C2:C999999"].DataValidation.AddListDataValidation();
             validation_category.ShowErrorMessage = true;
             validation_category.ErrorStyle = ExcelDataValidationWarningStyle.information;
@@ -130,40 +161,19 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 validation_category.Formula.Values.Add(item.name);
             }
+
+            var validation_supplier = Sheet.Cells["D2:D999999"].DataValidation.AddListDataValidation();
+            validation_supplier.ShowErrorMessage = true;
+            validation_supplier.ErrorStyle = ExcelDataValidationWarningStyle.information;
+            validation_supplier.ErrorTitle = "Lỗi nhập nhà cung cấp";
+            validation_supplier.Error = "Nhà cung cấp này không có trong hệ thống, vui lòng chọn lại !";
+            foreach (var item in list_supplier)
+            {
+                validation_supplier.Formula.Values.Add(item.name);
+            }
+
             Sheet.Cells["A:AZ"].AutoFitColumns();
             Response.Clear();
-            /*  ExcelWorksheet Sheet_group = ep.Workbook.Worksheets.Add("NhomHang");
-              FormatExcel(Sheet_group, 2);
-              Sheet_group.DefaultColWidth = 20;
-              Sheet_group.Cells.Style.WrapText = true;
-
-              Sheet_group.Cells["A1"].Value = "Mã nhóm hàng";
-              Sheet_group.Cells["B1"].Value = "Tên nhóm hàng";
-
-
-              int row_group = 2;// dòng bắt đầu ghi dữ liệu
-              foreach (var item in list_group)
-              {
-                  Sheet_group.Cells[string.Format("A{0}", row_group)].Value = item.code;
-                  Sheet_group.Cells[string.Format("B{0}", row_group)].Value = item.name;
-                  row_group++;
-              }
-              Sheet_group.Cells["A:AZ"].AutoFitColumns();
-              Response.Clear();
-
-              ExcelWorksheet Sheet_category = ep.Workbook.Worksheets.Add("DanhMuc");
-              FormatExcel(Sheet_category, 2);
-              Sheet_category.Cells["A1"].Value = "Mã danh mục";
-              Sheet_category.Cells["B1"].Value = "Tên danh mục";
-              int row_category = 2;// dòng bắt đầu ghi dữ liệu
-              foreach (var item in list_category)
-              {
-                  Sheet_category.Cells[string.Format("A{0}", row_category)].Value = item.code;
-                  Sheet_category.Cells[string.Format("B{0}", row_category)].Value = item.name;
-                  row_category++;
-              }
-              Sheet_category.Cells["A:AZ"].AutoFitColumns();
-              Response.Clear();*/
             Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             Response.AddHeader("content-disposition", "attachment; filename=" + nameFile);
             Response.BinaryWrite(ep.GetAsByteArray());
@@ -216,8 +226,8 @@ namespace CAP_TEAM05_2022.Controllers
             }
             else if (i == 3)
             {
-                // Lấy range vào tạo format cho range đó ở đây là từ A1 tới I1
-                using (var range = Sheet.Cells["A1:G1"])
+                // Lấy range vào tạo format cho range đó ở đây là từ A1 tới K1
+                using (var range = Sheet.Cells["A1:K1"])
                 {
 
                     // Canh giữa cho các text
@@ -579,6 +589,7 @@ namespace CAP_TEAM05_2022.Controllers
             Sheet.Cells["E1"].Value = "Đơn giá bán";
             Sheet.Cells["F1"].Value = "Đơn giá bán lẻ";
             Sheet.Cells["G1"].Value = "Số lượng bán";
+            Sheet.Cells["G1"].Value = "Số lượng đổi trả";
             Sheet.Cells["H1"].Value = "Tồn tổng";
             Sheet.Cells["I1"].Value = "Tồn lẻ (nếu có)";
             Sheet.Cells["J1"].Value = "Thành tiền";
@@ -588,10 +599,17 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 var inventory = item.import_inventory.ToList();
                 var invento_groupby = inventory.GroupBy(s => s.price_import).ToList();
+                decimal total_temp1 = 0;
+                decimal total_temp2 = 0;
 
                 foreach (var item1 in invento_groupby)
                 {
-                    Sheet.Cells[string.Format("A{0}", row)].Value = item.code;
+                    string quantityReturn = "";
+                    if (inventory.Where(i => i.price_import == item1.Key).Sum(i => i.return_quantity) > 0)
+                    {
+                        quantityReturn += inventory.Where(i => i.price_import == item1.Key).Sum(i => i.return_quantity) + " " + item.unit;
+                    }
+                        Sheet.Cells[string.Format("A{0}", row)].Value = item.code;
                     Sheet.Cells[string.Format("B{0}", row)].Value = item.name;
                     Sheet.Cells[string.Format("C{0}", row)].Value = inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity) + " " + item.unit + "(" + item.quantity_swap + item.unit_swap + ")";
                     Sheet.Cells[string.Format("D{0}", row)].Value = item1.Key.ToString("N0") + "/" + item.unit;
@@ -605,7 +623,8 @@ namespace CAP_TEAM05_2022.Controllers
                         Sheet.Cells[string.Format("F{0}", row)].Value = ((decimal)item.sell_price_swap).ToString("N0") + "/" + item.unit_swap;
                     }
                     Sheet.Cells[string.Format("G{0}", row)].Value = inventory.Where(i => i.price_import == item1.Key).Sum(i => i.sold) + " " + item.unit;
-                    Sheet.Cells[string.Format("H{0}", row)].Value = inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity - i.sold) + " " + item.unit;
+                    Sheet.Cells[string.Format("G{0}", row)].Value = quantityReturn;
+                    Sheet.Cells[string.Format("H{0}", row)].Value = inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity - i.sold - i.return_quantity) + " " + item.unit;
                     if (item.unit_swap == null)
                     {
                         Sheet.Cells[string.Format("I{0}", row)].Value = 0;
@@ -614,17 +633,12 @@ namespace CAP_TEAM05_2022.Controllers
                     {
                         Sheet.Cells[string.Format("I{0}", row)].Value = inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity_remaining) + " " + item.unit_swap;
                     }
-                    if (item.unit_swap == null)
+                    total_temp1 = (item1.Key * (inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity - i.sold - i.return_quantity)));
+                    if (item.unit_swap != null)
                     {
-                        Sheet.Cells[string.Format("J{0}", row)].Value = item1.Key * (inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity - i.sold));
+                        total_temp2 = (decimal)((item1.Key / (item.quantity_swap)) * (inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity_remaining)));
                     }
-                    else
-                    {
-                        decimal temp1 = item1.Key * (inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity - i.sold));
-                        decimal temp2 = (decimal)(item1.Key / item.quantity_swap * (inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity_remaining)));
-                        Sheet.Cells[string.Format("J{0}", row)].Value = temp1 + temp2;
-
-                    }
+                        Sheet.Cells[string.Format("J{0}", row)].Value = total_temp1 + total_temp2;                    
                     row++;
                 }
             }
@@ -682,7 +696,7 @@ namespace CAP_TEAM05_2022.Controllers
                 Sheet_import.Cells[string.Format("C{0}", row_import)].Value = item.quantity + " " + item.product.unit + "(" + item.product.quantity_swap + item.product.unit_swap + ")";
                 Sheet_import.Cells[string.Format("D{0}", row_import)].Value = item.price_import.ToString("N0") + "/" + item.product.unit;
                 Sheet_import.Cells[string.Format("E{0}", row_import)].Value = item.price_import * (item.quantity);
-                Sheet_import.Cells[string.Format("F{0}", row_import)].Value = item.customer.name;
+                Sheet_import.Cells[string.Format("F{0}", row_import)].Value = item.customer?.name;
                 Sheet_import.Cells[string.Format("G{0}", row_import)].Value = String.Format("{0:HH:mm - dd/MM/yyy}", item.created_at);
 
                 row_import++;

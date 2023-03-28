@@ -22,7 +22,7 @@
             <tr>
                 <td>@no</td>
                 <td>@item.code</td>
-                <td>@item.customer.name</td>
+                <td>@(item.customer?.name)</td>
                 <td class="text-center">
                     @(((decimal)item.Total).ToString("N0")) VNĐ
                 </td>

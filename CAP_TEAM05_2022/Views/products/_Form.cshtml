@@ -1,10 +1,41 @@
 ﻿@model CAP_TEAM05_2022.Models.product
+@using CAP_TEAM05_2022.Models
+@using Constants = CAP_TEAM05_2022.Helper.Constants
+
+
 @{
     bool isCreate = ViewBag.isCreate;
+    Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
+    List<customer> supplier = ViewBag.SupplierId;
 
 }
-<div id="AddProduct" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="AddProductLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+@section style {
+    <link href="~/Content/css/custom-css.css" rel="stylesheet" />
+}
+<section class="pcoded-main-container">
+    <div class="pcoded-content">
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">Tồn kho</h5>
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="https://tancool.net">
+                                    <i class="feather icon-home">
+                                    </i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="javascript:void(0)">Tồn kho</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
         <form class="ProductForm" method="post" action="@Url.Action("Create_Product", "products")" novalidate>
             <div class="modal-content">
                 <div class="modal-header bg-primary">
@@ -40,9 +71,8 @@
                                     Nhóm hàng<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <select class="custom-select" id="GroupProductDropdown" name="GroupProductDropdown" required>
-                                    </select>
-                                    <div class="invalid-feedback">Vui lòng chọn nhóm hàng</div>
+                                    @Html.DropDownListFor(m => m.category_id, (SelectList)ViewBag.GroupId, "---- Chọn nhóm sản phẩm ----", new { @class = "form-control custom-select", @aria_label = "Chọn danh mục thiết bị" })
+                                    @Html.ValidationMessageFor(model => model.category_id, "", new { @class = "text-danger" })
                                 </div> <!---->
 
                             </div>
@@ -53,7 +83,7 @@
                                     Danh mục sản phẩm<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    @Html.DropDownListFor(m => m.category_id, (SelectList)ViewBag.CategoryId, "---- Chọn danh mục sản phẩm ----", new { @class = "form-select", @aria_label = "Chọn danh mục thiết bị" })
+                                    @Html.DropDownListFor(m => m.category_id, (SelectList)ViewBag.CategoryId, "---- Chọn danh mục sản phẩm ----", new { @class = "form-control custom-select", @aria_label = "Chọn danh mục thiết bị" })
                                     @Html.ValidationMessageFor(model => model.category_id, "", new { @class = "text-danger" })
                                 </div> <!---->
 
@@ -65,9 +95,17 @@
                                     Nhà cung cấp<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <select class="custom-select SupplierDropdown" name="SupplierDropdown" required>
+                                    <select class="form-control" required data-val="true" data-val-required="Vui lòng chọn nhà cung cấp !" id="SupplierDropdown" name="SupplierDropdown">
+                                        <option value="">---Chọn nhà cung cấp---</option>
+                                        @foreach (var item in supplier)
+                                        {
+                                            <option value="@item.id">@item.name</option>
+                                        }
+
                                     </select>
-                                    <div class="invalid-feedback">Vui lòng chọn nhà cung cấp</div>
+
+                                    @Html.ValidationMessage("SupplierDropdown", "", new { @class = "text-danger" })
+
                                 </div> <!---->
 
                             </div>
@@ -79,9 +117,9 @@
                                 </label>
                                 <div class="position-relative">
                                     <div class="input-group mb-3">
-                                        <input type="number" data-model="quantity" placeholder="Nhập số lượng" id="add_quantity" name="quantity" max="999999999999" aria-describedby="quantity-buy" class="form-control" required>
+                                        <input type="number" data-model="quantity" placeholder="Nhập số lượng" required data-val="true" data-val-required="Vui lòng nhập số lượng tồn !" id="add_quantity" name="quantity" class="form-control">
                                         <div class="input-group-append">
-                                            <select id="unit_buy" class="input-group-text select-unit" name="unit">
+                                            <select id="unit_buy" class="input-group-text select-unit" name="unit" required data-val="true" data-val-required="Vui lòng đơn vị !">
                                                 <option disabled="disabled" value="" selected>Đơn vị</option>
                                                 <optgroup label="Khác">
                                                     <option data-name="bao" value="Bao">
@@ -117,12 +155,14 @@
                                                 </optgroup>
 
                                             </select>
+
                                         </div>
+
                                     </div>
-                                    <div class="invalid-feedback">
-                                        Vui lòng nhập số lượng sản phẩm và lớn hơn 0 !
-                                    </div>
+                                    @Html.ValidationMessage("quantity", "", new { @class = "text-danger" })
+                                    @Html.ValidationMessage("unit", "", new { @class = "text-danger" })
                                 </div> <!---->
+
                             </div>
                         </div>
 
@@ -243,218 +283,70 @@
             </div>
         </form>
     </div>
-</div>
+</section>
+@section scripts {
+    <!--Validation-->
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+                $('.CategoryForm').submit(function (e) {
+                    var form = $(this);
+                    var _this = $(this);
+                    var _form = _this.closest("form");
+                    var isvalid = _form.valid()
+                    // Check if form is valid then submit ajax
+                    if (isvalid) {
+                        e.preventDefault();
+                        var url = form.attr('action');
+                        $.ajax({
+                            url: url,
+                            type: 'POST',
+                            data: form.serialize(),
+                            success: function (data) {
+                                // Hide bootstrap modal to prevent conflict
+                                $('.modal').modal('hide');
 
-<!--Validation-->
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-<script>
-    $('.CategoryForm').submit(function (e) {
-        var form = $(this);
-        var _this = $(this);
-        var _form = _this.closest("form");
-        var isvalid = _form.valid()
-        // Check if form is valid then submit ajax
-        if (isvalid) {
-            e.preventDefault();
-            var url = form.attr('action');
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: form.serialize(),
-                success: function (data) {
-                    // Hide bootstrap modal to prevent conflict
-                    $('.modal').modal('hide');
+                                if (data.status) {
+                                    // Refresh table data
+                                    GetList_CategoryAndGroup();
+                                    Swal.fire('Thành công !', data.message, 'success')
 
-                    if (data.status) {
-                        // Refresh table data
-                        GetList_CategoryAndGroup();
-                        Swal.fire('Thành công !', data.message, 'success')
-
-                        form[0].reset();
-                        form.removeClass('was-validated');
-                    } else {
-                        Swal.fire('Lỗi !', data.message, 'error')
+                                    form[0].reset();
+                                    form.removeClass('was-validated');
+                                } else {
+                                    Swal.fire('Lỗi !', data.message, 'error')
+                                }
+                            }
+                        });
                     }
-                }
-            });
-        }
-    });
-</script>
+                });
+                 document.getElementById('swap').onclick = function (e) {
+            if (this.checked) {
+                $(".swap").show();
+                $("#check_swap").val(@Constants.UNIT_CONVERT)
+                var unit_buy = $("#unit_buy").val()
+                document.getElementsByClassName('unit_current')[0].innerHTML = unit_buy;
+            }
+            else {
+                $(".swap").hide();
+                $("#check_swap").val(@Constants.NO_UNIT_CONVERT)
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+            }
+        };
+        $("#unit_buy").change(function () {
+            var unit_buy = $("#unit_buy").val()
+            document.getElementsByClassName('unit_current')[0].innerHTML = unit_buy;
+        });
 
-    <div class="form-horizontal">
-        <h4>product</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.code, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.code, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.code, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.group_id, "group_id", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("group_id", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.group_id, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.category_id, "category_id", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(m => m.category_id, (SelectList)ViewBag.CategoryId, "---- Chọn danh mục sản phẩm ----", new { @class = "form-select", @aria_label = "Chọn danh mục thiết bị" })
-                @Html.ValidationMessageFor(model => model.category_id, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.unit, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.unit, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.unit, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.purchase_price, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.purchase_price, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.purchase_price, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.sell_price, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.sell_price, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.sell_price, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.quantity, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.quantity, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.quantity, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.status, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.status, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.note, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.note, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.note, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.created_by, "created_by", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("created_by", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.created_by, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.created_at, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.created_at, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.created_at, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.updated_at, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.updated_at, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.updated_at, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.deleted_at, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.deleted_at, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.deleted_at, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.name_group, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.name_group, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.name_group, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.name_category, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.name_category, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.name_category, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.unit_swap, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.unit_swap, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.unit_swap, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.quantity_swap, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.quantity_swap, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.quantity_swap, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.quantity_remaning, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.quantity_remaning, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.quantity_remaning, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.sell_price_swap, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.sell_price_swap, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.sell_price_swap, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
+        $("#add_quantity").change(function () {
+            var add_quantity = $("#add_quantity").val()
+            var purchase_price = $("#purchase_price").val().replace(/\,/g, '').replace(/\./g, '');
+            $("#Sum_purchase").val((add_quantity * purchase_price).toLocaleString());
+        });
+        $("#purchase_price").change(function () {
+            var add_quantity = $("#add_quantity").val()
+            var purchase_price = $("#purchase_price").val().replace(/\,/g, '').replace(/\./g, '');
+            $("#Sum_purchase").val((add_quantity * purchase_price).toLocaleString());
+        });
+    </script>
 }
-
