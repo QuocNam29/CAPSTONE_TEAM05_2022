@@ -198,6 +198,7 @@
     <Compile Include="Controllers\inventory_orderController.cs" />
     <Compile Include="Controllers\LookUpOrderController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\products1Controller.cs" />
     <Compile Include="Controllers\productsController.cs" />
     <Compile Include="Controllers\return_saleController.cs" />
     <Compile Include="Controllers\return_supplierController.cs" />
@@ -271,6 +272,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\price_product.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\product.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -290,6 +294,12 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sale_details.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_helpdiagrams_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sysdiagram.cs">
@@ -704,6 +714,11 @@
     <Content Include="Views\inventory_order\ScriptContainer.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\Revenues\_OrderDetailsList.cshtml" />
+    <Content Include="Views\products1\Create.cshtml" />
+    <Content Include="Views\products1\Delete.cshtml" />
+    <Content Include="Views\products1\Details.cshtml" />
+    <Content Include="Views\products1\Edit.cshtml" />
+    <Content Include="Views\products1\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

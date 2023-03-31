@@ -12,34 +12,27 @@ namespace CAP_TEAM05_2022.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class sale_details
+    public partial class price_product
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public sale_details()
+        public price_product()
         {
-            this.return_sale = new HashSet<return_sale>();
-            this.revenues = new HashSet<revenue>();
+            this.return_details = new HashSet<return_details>();
+            this.return_details1 = new HashSet<return_details>();
+            this.sale_details = new HashSet<sale_details>();
         }
     
         public int id { get; set; }
-        public int sale_id { get; set; }
-        public int product_id { get; set; }
-        public string unit { get; set; }
         public decimal price { get; set; }
-        public int sold { get; set; }
-        public string note { get; set; }
-        public Nullable<System.DateTime> created_at { get; set; }
-        public Nullable<System.DateTime> updated_at { get; set; }
-        public Nullable<System.DateTime> deleted_at { get; set; }
-        public Nullable<int> return_quantity { get; set; }
-        public Nullable<int> price_id { get; set; }
+        public int product_id { get; set; }
+        public System.DateTime updated_at { get; set; }
     
         public virtual product product { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<return_sale> return_sale { get; set; }
+        public virtual ICollection<return_details> return_details { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<revenue> revenues { get; set; }
-        public virtual sale sale { get; set; }
-        public virtual price_product price_product { get; set; }
+        public virtual ICollection<return_details> return_details1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<sale_details> sale_details { get; set; }
     }
 }

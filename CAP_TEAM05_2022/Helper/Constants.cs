@@ -98,6 +98,11 @@ namespace CAP_TEAM05_2022.Helper
         public static int REVENUE_DAY = 1;
         public static int REVENUE_MONTH = 2;
 
+        ///Kiểm tra pahir forr=m create không
+        ///
+        public static int CREATE_FORM = 1;
+        public static int NOT_CREATE_FORM = 0;
+
         /// <summary>
         /// connectionString for Import Excel Data
         /// </summary>

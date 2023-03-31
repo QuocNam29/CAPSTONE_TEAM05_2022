@@ -66,6 +66,11 @@
         <AssociationConnector Association="CP25Team05Model.sale_details_ibfk_2" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.FK_sales_users" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.AspNetUserRoles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="CP25Team05Model.price_product" Width="1.5" PointX="12" PointY="37.125" />
+        <AssociationConnector Association="CP25Team05Model.FK_price_product_products" />
+        <AssociationConnector Association="CP25Team05Model.FK_return_details_price_product" />
+        <AssociationConnector Association="CP25Team05Model.FK_return_details_price_product1" />
+        <AssociationConnector Association="CP25Team05Model.FK_sale_details_price_product" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

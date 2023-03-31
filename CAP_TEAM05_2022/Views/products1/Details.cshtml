@@ -1,0 +1,178 @@
+﻿@model CAP_TEAM05_2022.Models.product
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>product</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.code)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.code)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.unit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.unit)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.purchase_price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.purchase_price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.sell_price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.sell_price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.quantity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.quantity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.note)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.note)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.created_at)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.created_at)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updated_at)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.updated_at)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.deleted_at)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.deleted_at)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.name_group)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name_group)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.name_category)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name_category)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.unit_swap)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.unit_swap)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.quantity_swap)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.quantity_swap)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.quantity_remaning)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.quantity_remaning)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.sell_price_swap)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.sell_price_swap)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.category.code)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.category.code)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.group.code)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.group.code)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.user.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.user.name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

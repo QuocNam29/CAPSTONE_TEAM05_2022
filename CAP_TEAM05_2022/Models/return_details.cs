@@ -25,9 +25,13 @@ namespace CAP_TEAM05_2022.Models
         public Nullable<decimal> total_return { get; set; }
         public string unit_return { get; set; }
         public decimal difference { get; set; }
+        public Nullable<int> price_current_id { get; set; }
+        public Nullable<int> price_return_id { get; set; }
     
         public virtual product product { get; set; }
         public virtual product product1 { get; set; }
         public virtual return_sale return_sale { get; set; }
+        public virtual price_product price_product { get; set; }
+        public virtual price_product price_product1 { get; set; }
     }
 }

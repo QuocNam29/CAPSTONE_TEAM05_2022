@@ -7,7 +7,7 @@
 
 }
 @section style {
-    <link href="~/Content/css/custom-css.css" rel="stylesheet" media="print" />
+    <link href="~/Content/css/custom-css.css" rel="stylesheet" />
 }
 <input type="text" hidden id="URLCustomerList" value="@Url.Action("_CustomerList", "customers")" />
 <input type="text" hidden id="URLFindCustomer" value="@Url.Action("FindCustomer", "customers")/" />
@@ -88,8 +88,11 @@
                 }
             });
         }
-function createCustomer() {
-            $.ajax({
+        function createCustomer() {
+    if ($('#isCreate').val() != undefined && $('#isCreate').val() == @Constants.CREATE_FORM) {
+        $('#Customer').modal('show');
+            } else {
+             $.ajax({
                 url: '@Url.Action("_Form", "customers")',
                 type: 'GET',
                 data: {},
@@ -100,6 +103,9 @@ function createCustomer() {
                     $('#Customer').modal('show');
                 }
             });
+
+            }
+
         }
     </script>
 }

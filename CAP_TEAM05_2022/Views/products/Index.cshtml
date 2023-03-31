@@ -6,6 +6,9 @@
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
 
 }
+@section style {
+    <link href="~/Content/css/custom-css.css" rel="stylesheet" />
+}
 <input type="text" hidden id="URLProductList" value="@Url.Action("_ProductList", "products")" />
 <input type="text" hidden id="URLFindProduct" value="@Url.Action("FindProduct", "products")/" />
 <input type="text" hidden id="URLgetSupplier" value="@Url.Action("getSupplier", "customers")" />
@@ -66,7 +69,7 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <button type="button" class="btn btn-primary float-right ml-2" data-toggle="modal" data-target="#AddProduct">Tạo mới</button>
+                                    <button type="button" class="btn btn-primary float-right ml-2" @* data-toggle="modal" data-target="#AddProduct"*@ onclick="createProduct()">Tạo mới</button>
 
                                 </div>
                             </div>
@@ -170,8 +173,6 @@
         </div>
     </div>
 </section>
-<div class="table-responsive" id="dataContainer2">
-</div>
 <!-- Modal -->
 <div class="modal fade text-left" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -544,7 +545,8 @@
         </form>
     </div>
 </div>
-
+<div class="table-responsive" id="dataContainer2">
+</div>
 @{ Html.RenderAction("ProductList_import", "Excel");}
 @section scripts {
 
@@ -555,7 +557,10 @@
             });
         });
         function createProduct() {
-            $.ajax({
+            if ($('#isCreate').val() != undefined && $('#isCreate').val() == @Constants.CREATE_FORM) {
+                $('#ProductForm').modal('show');
+            } else {
+              $.ajax({
                 url: '@Url.Action("_Form", "products")',
                 type: 'GET',
                 data: {},
@@ -563,37 +568,15 @@
                     // Add response in Modal body
                     $('#dataContainer2').html(response);
                     // Display Modal
-                    $('#AddProduct').modal('show');
+                    $('#ProductForm').modal('show');
                 }
             });
+
+            }
+
         }
-        document.getElementById('swap').onclick = function (e) {
-            if (this.checked) {
-                $(".swap").show();
-                $("#check_swap").val(@Constants.UNIT_CONVERT)
-                var unit_buy = $("#unit_buy").val()
-                document.getElementsByClassName('unit_current')[0].innerHTML = unit_buy;
-            }
-            else {
-                $(".swap").hide();
-                $("#check_swap").val(@Constants.NO_UNIT_CONVERT)
 
-            }
-        };
-        $("#unit_buy").change(function () {
-            var unit_buy = $("#unit_buy").val()
-            document.getElementsByClassName('unit_current')[0].innerHTML = unit_buy;
-        });
+        
 
-        $("#add_quantity").change(function () {
-            var add_quantity = $("#add_quantity").val()
-            var purchase_price = $("#purchase_price").val().replace(/\,/g, '').replace(/\./g, '');
-            $("#Sum_purchase").val((add_quantity * purchase_price).toLocaleString());
-        });
-        $("#purchase_price").change(function () {
-            var add_quantity = $("#add_quantity").val()
-            var purchase_price = $("#purchase_price").val().replace(/\,/g, '').replace(/\./g, '');
-            $("#Sum_purchase").val((add_quantity * purchase_price).toLocaleString());
-        });
     </script>
 }

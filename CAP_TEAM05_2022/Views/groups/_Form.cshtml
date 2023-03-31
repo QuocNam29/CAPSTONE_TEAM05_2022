@@ -1,8 +1,12 @@
 ﻿@model CAP_TEAM05_2022.Models.group
+@using Constants = CAP_TEAM05_2022.Helper.Constants;
+
 @{
     bool isCreate = ViewBag.isCreate;
 
 }
+<input type="number" id="isCreate" value="@(isCreate ? Constants.CREATE_FORM : Constants.NOT_CREATE_FORM)" />
+
 <div class="modal fade" id="Group" tabindex="-1">
     <div class="modal-dialog" role="document">
         <form class="GroupForm" method="post" action="@Url.Action(isCreate ? "Create" : "Edit", "groups")">
@@ -60,12 +64,12 @@
                     if (data.status) {
                         // Refresh table data
                         GetList_CategoryAndGroup();
-                        Swal.fire('Thành công !', data.message, 'success')     
+                        Swal.fire('Thành công !', data.message, 'success')
 
                         form[0].reset();
                         form.removeClass('was-validated');
                     } else {
-                        Swal.fire('Lỗi !', data.message, 'error')     
+                        Swal.fire('Lỗi !', data.message, 'error')
                     }
                 }
             });

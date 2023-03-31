@@ -4,6 +4,8 @@
 @{
     bool isCreate = ViewBag.isCreate;
 }
+<input type="number" id="isCreate" value="@(isCreate ? Constants.CREATE_FORM : Constants.NOT_CREATE_FORM)" />
+
 <div id="Customer" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <form class="CusomerForm" method="post" action="@Url.Action(isCreate ? "Create" : "Edit", "customers")">
@@ -150,12 +152,12 @@
                         // Refresh table data
                         var type = $("#filter_type").val();
                         GetList_Customer(type)
-                        Swal.fire('Thành công !', data.message, 'success')     
+                        Swal.fire('Thành công !', data.message, 'success')
 
                         form[0].reset();
                         form.removeClass('was-validated');
                     } else {
-                        Swal.fire('Lỗi !', data.message, 'error')     
+                        Swal.fire('Lỗi !', data.message, 'error')
                     }
                 }
             });

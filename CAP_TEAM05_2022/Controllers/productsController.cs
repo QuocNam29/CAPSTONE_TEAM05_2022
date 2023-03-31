@@ -30,10 +30,107 @@ namespace CAP_TEAM05_2022.Controllers
         {
             ViewBag.isCreate = true;
             ViewBag.CategoryId = new SelectList(db.categories, "Id", "Name");
-            ViewBag.GroupId = new SelectList(db.categories, "Id", "Name");
+            ViewBag.GroupId = new SelectList(db.groups, "Id", "Name");
             ViewBag.SupplierId = db.customers.Where(x => x.type == Constants.SUPPLIER).ToList();
             return PartialView("_Form", new product());
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "name,group_id,category_id,unit,quantity,unit_swap,quantity_swap")] product product, 
+                                   string purchase_price, string sell_price, int check_swap, string price_swap, int SupplierDropdown)
+        {
+            if (ModelState.IsValid)
+            {
+                string message = "";
+                bool status = true;
+                DateTime currentDate = DateTime.Now;
+                try
+                {
+                    int check = db.products.Where(p => p.name == product.name
+                                            && p.group_id == product.group_id
+                                            && p.category_id == product.category_id
+                                            && p.unit == product.unit).Count();
+                    if (check > 0)
+                    {
+                        status = false;
+                        message = "Sản phẩm đã tồn tại trong hệ thống !";
+                    }
+                    else
+                    {
+                        if (String.IsNullOrEmpty(product.unit))
+                        {
+                            status = false;
+                            message = "Vui lòng chọn đơn vị của sản phẩm !";
+                        }
+                        else
+                        {
+                            if (check_swap == Constants.UNIT_CONVERT && (product.quantity_swap == null || String.IsNullOrEmpty(product.unit_swap) || String.IsNullOrEmpty(price_swap)))
+                            {
+                                status = false;
+                                message = "Thông tin quy đổi còn trống !";
+                            }
+                            else
+                            {
+                                product.status = Constants.SHOW_STATUS;
+
+                                product.created_by = User.Identity.GetUserId();
+                                product.sell_price = decimal.Parse(sell_price.Replace(",", "").Replace(".", ""));
+                                product.purchase_price = decimal.Parse(purchase_price.Replace(",", "").Replace(".", ""));
+                                product.created_at = currentDate;
+                                product.code = "SP" + CodeRandom.RandomCode();
+
+                                if (!String.IsNullOrEmpty(price_swap))
+                                {
+                                    product.sell_price_swap = decimal.Parse(price_swap.Replace(",", "").Replace(".", ""));
+                                }
+                                db.products.Add(product);
+
+                                inventory_order inventory_Order = new inventory_order();
+                                inventory_Order.code = "MPN" + CodeRandom.RandomCode();
+                                inventory_Order.create_at = currentDate;
+                                inventory_Order.update_at = currentDate;
+                                inventory_Order.create_by = User.Identity.GetUserId();
+                                inventory_Order.Total = decimal.Parse(purchase_price.Replace(",", "").Replace(".", "")) * product.quantity;
+                                inventory_Order.state = Constants.PAYED_ORDER;
+                                inventory_Order.supplier_id = SupplierDropdown;
+                                db.inventory_order.Add(inventory_Order);
+
+                                import_inventory inventory = new import_inventory();
+                                inventory.inventory_id = inventory_Order.id;
+                                inventory.product_id = product.id;
+                                inventory.quantity = product.quantity;
+                                inventory.price_import = int.Parse(purchase_price.Replace(",", "").Replace(".", ""));
+                                inventory.sold = 0;
+                                inventory.sold_swap = 0;
+                                inventory.return_quantity = 0;
+                                inventory.quantity_remaining = 0;
+                                inventory.created_by = User.Identity.GetUserId();
+                                inventory.created_at = currentDate;
+                                inventory.supplier_id = SupplierDropdown;
+                                db.import_inventory.Add(inventory);
+                                db.SaveChanges();
+                                message = "Tạo sản phẩm thành công";
+                                return Json(new { status, message, id = product.id }, JsonRequestBehavior.AllowGet);
+                            }
+                        }
+
+                    }
+                }
+                catch (Exception e)
+                {
+                    status = false;
+                    message = e.Message;
+                }
+                return Json(new { status, message, id = product.id }, JsonRequestBehavior.AllowGet);
+            }
+
+            ViewBag.category_id = new SelectList(db.categories, "id", "code", product.category_id);
+            ViewBag.group_id = new SelectList(db.groups, "id", "code", product.group_id);
+            ViewBag.created_by = new SelectList(db.users, "id", "name", product.created_by);
+            return View("_Form",product);
+        }
+
         public ActionResult _ProductList(int group_id, int category_id)
         {
             var links = from l in db.products
