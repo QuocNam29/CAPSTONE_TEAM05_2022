@@ -56,6 +56,15 @@ namespace CAP_TEAM05_2022.Controllers
 
             return PartialView(sales.OrderByDescending(c => c.id).ToList());
         }
+        public ActionResult _OrderDetailsList(int order_id)
+        {
+            var sale = db.sales.Find(order_id);
+            ViewBag.Order = sale;
+            var returnSale = db.return_sale.Where(x => x.sale_details.sale_id == order_id).ToList();
+            ViewBag.ReturnSale = returnSale;
+            var OrderDetailsList = db.sale_details.Where(o => o.sale_id == order_id);
+            return PartialView(OrderDetailsList.ToList());
+        }
 
     }
 }

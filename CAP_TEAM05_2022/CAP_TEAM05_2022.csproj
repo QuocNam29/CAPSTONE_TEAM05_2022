@@ -703,6 +703,7 @@
     <Content Include="Views\Revenues\_RevenueList_Month.cshtml" />
     <Content Include="Views\inventory_order\ScriptContainer.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Revenues\_OrderDetailsList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

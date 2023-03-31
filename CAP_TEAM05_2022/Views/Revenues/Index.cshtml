@@ -110,12 +110,11 @@
                 pagingType: 'full_numbers',
             });
         });
-        function GetList_orderDetails(id, method) {
+        function GetList_orderDetails(id) {
             $.ajax({
-                url: '@Url.Action("_OrderDetailsList", "sales")',
+                url: '@Url.Action("_OrderDetailsList", "Revenues")',
                 data: {
                     order_id: id,
-
                 }
             }).done(function (result) {
                 $('#dataContainer2').html(result);

@@ -264,6 +264,26 @@ namespace CAP_TEAM05_2022.Controllers
                     range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 }
             }
+            else if (i == 5)
+            {
+                // Lấy range vào tạo format cho range đó ở đây là từ A1 tới I1
+                using (var range = Sheet.Cells["A1:H1"])
+                {
+
+                    // Canh giữa cho các text
+                    range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    // Set Border
+                    range.Style.Border.Bottom.Style = ExcelBorderStyle.Thick;
+                    // Set màu ch Border
+                    range.Style.Border.Bottom.Color.SetColor(Color.Black);
+                    range.Style.Font.Bold = true;
+                }
+                using (var range = Sheet.Cells["A:F"])
+                {
+                    // Canh giữa cho các text
+                    range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                }
+            }
 
         }
 
@@ -574,7 +594,7 @@ namespace CAP_TEAM05_2022.Controllers
                                                     && s.created_at.Value.Year == date_start.Value.Year
                                                     || s.created_at.Value.Day == date_end.Value.Day
                                                     && s.created_at.Value.Month == date_end.Value.Month
-                                                    && s.created_at.Value.Year == date_end.Value.Year).ToList();
+                                                    && s.created_at.Value.Year == date_end.Value.Year).OrderByDescending(i => i.id).ToList();
             var product = db.products.Where(c => c.status != 3).OrderByDescending(c => c.id).ToList();
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ExcelPackage ep = new ExcelPackage();
@@ -659,7 +679,7 @@ namespace CAP_TEAM05_2022.Controllers
             int row_sell = 2;// dòng bắt đầu ghi dữ liệu
             foreach (var item in import_inventory.Where(s => s.sold > 0))
             {
-                var revenues = item.revenues.ToList();
+                var revenues = item.revenues.OrderByDescending(x=> x.sale_details.created_at).ToList();
                 foreach (var item1 in revenues)
                 {
                     Sheet_sell.Cells[string.Format("A{0}", row_sell)].Value = item1.sale_details.product.code;
@@ -667,7 +687,7 @@ namespace CAP_TEAM05_2022.Controllers
                     Sheet_sell.Cells[string.Format("C{0}", row_sell)].Value = item1.quantity + " " + item1.unit;
                     Sheet_sell.Cells[string.Format("D{0}", row_sell)].Value = item1.Price.ToString("N0") + "/" + item1.unit;
                     Sheet_sell.Cells[string.Format("E{0}", row_sell)].Value = (item1.Price * item1.quantity);
-                    Sheet_sell.Cells[string.Format("F{0}", row_sell)].Value = String.Format("{0:HH:mm - dd/MM/yyy}", item1.sale_details.sale.created_at);
+                    Sheet_sell.Cells[string.Format("F{0}", row_sell)].Value = String.Format("{0:HH:mm - dd/MM/yyy}", item1.sale_details.created_at);
 
                     row_sell++;
                 }
@@ -676,16 +696,17 @@ namespace CAP_TEAM05_2022.Controllers
             Response.Clear();
 
             ExcelWorksheet Sheet_import = ep.Workbook.Worksheets.Add("ThongKeNhap");
-            FormatExcel(Sheet_import, 4);
+            FormatExcel(Sheet_import, 5);
             Sheet_import.DefaultColWidth = 20;
             Sheet_import.Cells.Style.WrapText = true;
             Sheet_import.Cells["A1"].Value = "Mã sản phẩm";
             Sheet_import.Cells["B1"].Value = "Tên sản phẩm";
             Sheet_import.Cells["C1"].Value = "Số lượng nhập";
-            Sheet_import.Cells["D1"].Value = "Đơn giá nhập";
-            Sheet_import.Cells["E1"].Value = "Thành tiền";
-            Sheet_import.Cells["F1"].Value = "Nhà cung cấp";
-            Sheet_import.Cells["G1"].Value = "Ngày nhập";
+            Sheet_import.Cells["D1"].Value = "Số lương trả";
+            Sheet_import.Cells["E1"].Value = "Đơn giá nhập";
+            Sheet_import.Cells["F1"].Value = "Thành tiền";
+            Sheet_import.Cells["G1"].Value = "Nhà cung cấp";
+            Sheet_import.Cells["H1"].Value = "Ngày nhập";
 
 
             int row_import = 2;// dòng bắt đầu ghi dữ liệu
@@ -693,11 +714,12 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 Sheet_import.Cells[string.Format("A{0}", row_import)].Value = item.product.code;
                 Sheet_import.Cells[string.Format("B{0}", row_import)].Value = item.product.name;
-                Sheet_import.Cells[string.Format("C{0}", row_import)].Value = item.quantity + " " + item.product.unit + "(" + item.product.quantity_swap + item.product.unit_swap + ")";
-                Sheet_import.Cells[string.Format("D{0}", row_import)].Value = item.price_import.ToString("N0") + "/" + item.product.unit;
-                Sheet_import.Cells[string.Format("E{0}", row_import)].Value = item.price_import * (item.quantity);
-                Sheet_import.Cells[string.Format("F{0}", row_import)].Value = item.customer?.name;
-                Sheet_import.Cells[string.Format("G{0}", row_import)].Value = String.Format("{0:HH:mm - dd/MM/yyy}", item.created_at);
+                Sheet_import.Cells[string.Format("C{0}", row_import)].Value = item.quantity + " " + item.product.unit + ( item.product.quantity_swap != null ? "(" + item.product.quantity_swap + item.product.unit_swap + ")": "");
+                Sheet_import.Cells[string.Format("D{0}", row_import)].Value = item.return_quantity + " " + item.product.unit;
+                Sheet_import.Cells[string.Format("E{0}", row_import)].Value = item.price_import.ToString("N0") + "/" + item.product.unit;
+                Sheet_import.Cells[string.Format("F{0}", row_import)].Value = item.price_import * (item.quantity - item.return_quantity);
+                Sheet_import.Cells[string.Format("G{0}", row_import)].Value = item.customer?.name;
+                Sheet_import.Cells[string.Format("H{0}", row_import)].Value = String.Format("{0:HH:mm - dd/MM/yyy}", item.created_at);
 
                 row_import++;
             }
