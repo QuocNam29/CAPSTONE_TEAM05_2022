@@ -71,6 +71,7 @@
         <AssociationConnector Association="CP25Team05Model.FK_return_details_price_product" />
         <AssociationConnector Association="CP25Team05Model.FK_return_details_price_product1" />
         <AssociationConnector Association="CP25Team05Model.FK_sale_details_price_product" />
+        <AssociationConnector Association="CP25Team05Model.FK_carts_price_product" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

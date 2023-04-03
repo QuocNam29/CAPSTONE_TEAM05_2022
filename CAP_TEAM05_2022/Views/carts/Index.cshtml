@@ -60,9 +60,8 @@
                                     <td class="text-center">
                                         <div> @item.quantity<span class="txt-unit"> @item.unit</span></div>
                                     </td>
-                                    <td class="text-center">@((item.price/ item.quantity).ToString("N0")) VNĐ</td>
-
-                                    <td class="text-center">@item.price.ToString("N0") VNĐ</td>
+                                    <td class="text-center">@((item.price_product.price).ToString("N0")) VNĐ</td>
+                                    <td class="text-center">@((item.price_product.price * item.quantity).ToString("N0")) VNĐ</td>
                                     <td>@item.note</td>
                                     <td>
                                         <button class="btn btn-success" onclick="FillProduct_cart('@item.id', '@item.product_id','@item.product.name','@item.quantity', '@item.unit')">

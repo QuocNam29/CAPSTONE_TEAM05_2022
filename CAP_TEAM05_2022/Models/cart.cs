@@ -23,8 +23,10 @@ namespace CAP_TEAM05_2022.Models
         public string note { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }
+        public Nullable<int> price_id { get; set; }
     
         public virtual product product { get; set; }
         public virtual customer customer { get; set; }
+        public virtual price_product price_product { get; set; }
     }
 }

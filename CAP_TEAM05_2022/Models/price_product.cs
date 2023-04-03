@@ -20,12 +20,14 @@ namespace CAP_TEAM05_2022.Models
             this.return_details = new HashSet<return_details>();
             this.return_details1 = new HashSet<return_details>();
             this.sale_details = new HashSet<sale_details>();
+            this.carts = new HashSet<cart>();
         }
     
         public int id { get; set; }
         public decimal price { get; set; }
         public int product_id { get; set; }
         public System.DateTime updated_at { get; set; }
+        public string unit { get; set; }
     
         public virtual product product { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -34,5 +36,7 @@ namespace CAP_TEAM05_2022.Models
         public virtual ICollection<return_details> return_details1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<sale_details> sale_details { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<cart> carts { get; set; }
     }
 }

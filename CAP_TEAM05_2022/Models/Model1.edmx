@@ -79,6 +79,7 @@
           <Property Name="note" Type="varchar(max)" />
           <Property Name="created_at" Type="datetime2" Precision="0" />
           <Property Name="updated_at" Type="datetime2" Precision="0" />
+          <Property Name="price_id" Type="int" />
         </EntityType>
         <EntityType Name="categories">
           <Key>
@@ -208,6 +209,7 @@
           <Property Name="price" Type="money" Nullable="false" />
           <Property Name="product_id" Type="int" Nullable="false" />
           <Property Name="updated_at" Type="datetime" Nullable="false" />
+          <Property Name="unit" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="products">
           <Key>
@@ -392,6 +394,18 @@
             </Principal>
             <Dependent Role="debts">
               <PropertyRef Name="created_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_carts_price_product">
+          <End Role="price_product" Type="Self.price_product" Multiplicity="0..1" />
+          <End Role="carts" Type="Self.carts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="price_product">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="carts">
+              <PropertyRef Name="price_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -955,6 +969,10 @@
             <End Role="users" EntitySet="users" />
             <End Role="debts" EntitySet="debts" />
           </AssociationSet>
+          <AssociationSet Name="FK_carts_price_product" Association="Self.FK_carts_price_product">
+            <End Role="price_product" EntitySet="price_product" />
+            <End Role="carts" EntitySet="carts" />
+          </AssociationSet>
           <AssociationSet Name="FK_categories_users" Association="Self.FK_categories_users">
             <End Role="users" EntitySet="users" />
             <End Role="categories" EntitySet="categories" />
@@ -1195,6 +1213,8 @@
           <Property Name="updated_at" Type="DateTime" Precision="0" />
           <NavigationProperty Name="product" Relationship="Self.carts_ibfk_1" FromRole="carts" ToRole="products" />
           <NavigationProperty Name="customer" Relationship="Self.carts_ibfk_2" FromRole="carts" ToRole="customers" />
+          <Property Name="price_id" Type="Int32" />
+          <NavigationProperty Name="price_product" Relationship="CP25Team05Model.FK_carts_price_product" FromRole="cart" ToRole="price_product" />
         </EntityType>
         <EntityType Name="category">
           <Key>
@@ -2217,6 +2237,10 @@
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
+          <AssociationSet Name="FK_carts_price_product" Association="CP25Team05Model.FK_carts_price_product">
+            <End Role="price_product" EntitySet="price_product" />
+            <End Role="cart" EntitySet="carts" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="price_product">
           <Key>
@@ -2230,6 +2254,8 @@
           <NavigationProperty Name="return_details" Relationship="CP25Team05Model.FK_return_details_price_product" FromRole="price_product" ToRole="return_details" />
           <NavigationProperty Name="return_details1" Relationship="CP25Team05Model.FK_return_details_price_product1" FromRole="price_product" ToRole="return_details" />
           <NavigationProperty Name="sale_details" Relationship="CP25Team05Model.FK_sale_details_price_product" FromRole="price_product" ToRole="sale_details" />
+          <NavigationProperty Name="carts" Relationship="CP25Team05Model.FK_carts_price_product" FromRole="price_product" ToRole="cart" />
+          <Property Name="unit" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_price_product_products">
           <End Type="CP25Team05Model.product" Role="product" Multiplicity="1" />
@@ -2290,6 +2316,18 @@
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
+        <Association Name="FK_carts_price_product">
+          <End Type="CP25Team05Model.price_product" Role="price_product" Multiplicity="0..1" />
+          <End Type="CP25Team05Model.cart" Role="cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="price_product">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="cart">
+              <PropertyRef Name="price_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2354,6 +2392,7 @@
           <EntitySetMapping Name="carts">
             <EntityTypeMapping TypeName="CP25Team05Model.cart">
               <MappingFragment StoreEntitySet="carts">
+                <ScalarProperty Name="price_id" ColumnName="price_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="product_id" ColumnName="product_id" />
                 <ScalarProperty Name="customer_id" ColumnName="customer_id" />
@@ -2651,6 +2690,7 @@
           <EntitySetMapping Name="price_product">
             <EntityTypeMapping TypeName="CP25Team05Model.price_product">
               <MappingFragment StoreEntitySet="price_product">
+                <ScalarProperty Name="unit" ColumnName="unit" />
                 <ScalarProperty Name="updated_at" ColumnName="updated_at" />
                 <ScalarProperty Name="product_id" ColumnName="product_id" />
                 <ScalarProperty Name="price" ColumnName="price" />

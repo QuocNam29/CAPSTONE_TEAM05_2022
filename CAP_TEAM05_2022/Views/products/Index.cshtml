@@ -576,7 +576,23 @@
 
         }
 
-        
+        function PriceHistory(id) {
+            $.ajax({
+                url: '@Url.Action("_PriceHistory", "products")',
+                data: {
+                    id: id,
+                }
+            }).done(function (result) {
+                $('#dataContainer2').html(result);
+                $('#priceHistory.close').css('display', 'none');
+                $('#priceHistory').modal('show');
+
+            }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(textStatus)
+                console.log(errorThrown)
+                alert("Something Went Wrong, Try Later");
+            });
+    }
 
     </script>
 }

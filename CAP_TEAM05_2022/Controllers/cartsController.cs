@@ -62,7 +62,7 @@ namespace CAP_TEAM05_2022.Controllers
                     return Json(new { status = status1, message = message1 }, JsonRequestBehavior.AllowGet);
                 }
             }
-
+            var price = db.price_product.Where(x => x.product_id == cart_create.product_id && x.unit == cart_create.unit);
             cart cart_check = db.carts.Where(c => c.customer_id == cart_create.customer_id && c.product_id == cart_create.product_id && c.unit == cart_create.unit).FirstOrDefault();
             if (cart_check == null)
             {
@@ -70,7 +70,8 @@ namespace CAP_TEAM05_2022.Controllers
                 cart.product_id = cart_create.product_id;
                 cart.customer_id = cart_create.customer_id;
                 cart.quantity = cart_create.quantity;
-                cart.price = cart_create.price;
+                cart.price = price.Any() ? (int)price.OrderByDescending(x=>x.id).FirstOrDefault().price : 0;
+                cart.price_id = price.Any() ? price.OrderByDescending(x=>x.id).FirstOrDefault().id : 0;
                 cart.note = cart_create.note;
                 cart.unit = cart_create.unit;
                 db.carts.Add(cart);
@@ -79,7 +80,6 @@ namespace CAP_TEAM05_2022.Controllers
             else
             {
                 cart_check.quantity += cart_create.quantity;
-                cart_check.price += cart_create.price;
                 db.Entry(cart_check).State = EntityState.Modified;
                 db.SaveChanges();
             }
@@ -138,6 +138,8 @@ namespace CAP_TEAM05_2022.Controllers
             try
             {
                 product product = db.products.Find(cart_create.product_id);
+                var price = db.price_product.Where(x => x.product_id == cart_create.product_id && x.unit == cart_create.unit);
+
                 cart cart = db.carts.Find(cart_create.id);
                 if (cart.unit == cart_create.unit && cart_create.unit == product.unit)
                 {
@@ -150,7 +152,8 @@ namespace CAP_TEAM05_2022.Controllers
                     }
                     cart.quantity = cart_create.quantity;
                     cart.unit = cart_create.unit;
-                    cart.price = cart_create.price;
+                    cart.price = price.Any() ? (int)price.OrderByDescending(x => x.id).FirstOrDefault().price : 0;
+                    cart.price_id = price.Any() ? price.OrderByDescending(x => x.id).FirstOrDefault().id : 0;
                     cart.note = cart_create.note;
                     db.Entry(cart).State = EntityState.Modified;
                     db.SaveChanges();
@@ -170,7 +173,8 @@ namespace CAP_TEAM05_2022.Controllers
                     }
                     cart.quantity = cart_create.quantity;
                     cart.unit = cart_create.unit;
-                    cart.price = cart_create.price;
+                    cart.price = price.Any() ? (int)price.OrderByDescending(x => x.id).FirstOrDefault().price : 0;
+                    cart.price_id = price.Any() ? price.OrderByDescending(x => x.id).FirstOrDefault().id : 0; 
                     cart.note = cart_create.note;
                     db.Entry(cart).State = EntityState.Modified;
                     db.SaveChanges();
@@ -198,7 +202,8 @@ namespace CAP_TEAM05_2022.Controllers
                     }
                     cart.quantity = cart_create.quantity;
                     cart.unit = cart_create.unit;
-                    cart.price = cart_create.price;
+                    cart.price = price.Any() ? (int)price.OrderByDescending(x => x.id).FirstOrDefault().price : 0;
+                    cart.price_id = price.Any() ? price.OrderByDescending(x => x.id).FirstOrDefault().id : 0; 
                     cart.note = cart_create.note;
                     db.Entry(cart).State = EntityState.Modified;
                     db.SaveChanges();
@@ -228,7 +233,8 @@ namespace CAP_TEAM05_2022.Controllers
                     }
                     cart.quantity = cart_create.quantity;
                     cart.unit = cart_create.unit;
-                    cart.price = cart_create.price;
+                    cart.price = price.Any() ? (int)price.OrderByDescending(x => x.id).FirstOrDefault().price : 0;
+                    cart.price_id = price.Any() ? price.OrderByDescending(x => x.id).FirstOrDefault().id : 0;
                     cart.note = cart_create.note;
                     db.Entry(cart).State = EntityState.Modified;
                     db.SaveChanges();

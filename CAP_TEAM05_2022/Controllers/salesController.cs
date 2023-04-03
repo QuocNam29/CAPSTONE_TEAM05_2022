@@ -120,6 +120,7 @@ namespace CAP_TEAM05_2022.Controllers
             bool status = true;
             try
             {
+                var cart = db.carts.Where(c => c.customer_id == createSale.customer_id).ToList();
                 sale sale = new sale();
                 sale.code = "MDH" + CodeRandom.RandomCode();
                 sale.customer_id = createSale.customer_id;
@@ -132,14 +133,13 @@ namespace CAP_TEAM05_2022.Controllers
                 {
                     sale.method = Constants.PAYED_ORDER;
                 }
-                sale.total = createSale.total;
+                sale.total = cart.Sum(c=> c.price_product.price* c.quantity);
                 sale.note = createSale.note;
                 sale.status = Constants.SHOW_STATUS;
                 sale.created_by = User.Identity.GetUserId();
                 sale.created_at = DateTime.Now;
                 db.sales.Add(sale);
                 db.SaveChanges();
-                var cart = db.carts.Where(c => c.customer_id == createSale.customer_id).ToList();
                 foreach (var item in cart)
                 {
                     sale_details sale_Details = new sale_details();
@@ -147,6 +147,7 @@ namespace CAP_TEAM05_2022.Controllers
                     sale_Details.product_id = item.product_id;
                     sale_Details.sold = item.quantity;
                     sale_Details.price = item.price;
+                    sale_Details.price_id = item.price_id;
                     sale_Details.unit = item.unit;
                     sale_Details.created_at = DateTime.Now;
                     sale_Details.return_quantity = 0;
@@ -163,7 +164,7 @@ namespace CAP_TEAM05_2022.Controllers
                                 revenue revenue = new revenue();
                                 revenue.sale_details_id = sale_Details.id;
                                 revenue.inventory_id = inventory.id;
-                                revenue.Price = item.price / item.quantity;
+                                revenue.Price = item.price;
                                 revenue.quantity = temp_quatity;
                                 revenue.unit = item.unit;
                                 db.revenues.Add(revenue);
@@ -182,7 +183,7 @@ namespace CAP_TEAM05_2022.Controllers
                                     revenue revenue = new revenue();
                                     revenue.sale_details_id = sale_Details.id;
                                     revenue.inventory_id = inventory.id;
-                                    revenue.Price = item.price / item.quantity;
+                                    revenue.Price = item.price;
                                     revenue.quantity = temp_inventory;
                                     revenue.unit = item.unit;
                                     db.revenues.Add(revenue);
@@ -195,7 +196,7 @@ namespace CAP_TEAM05_2022.Controllers
                                     revenue revenue = new revenue();
                                     revenue.sale_details_id = sale_Details.id;
                                     revenue.inventory_id = inventory.id;
-                                    revenue.Price = item.price / item.quantity;
+                                    revenue.Price = item.price;
                                     revenue.quantity = temp_inventory;
                                     revenue.unit = item.unit;
                                     db.revenues.Add(revenue);
@@ -211,7 +212,7 @@ namespace CAP_TEAM05_2022.Controllers
                                 revenue revenue = new revenue();
                                 revenue.sale_details_id = sale_Details.id;
                                 revenue.inventory_id = inventory.id;
-                                revenue.Price = item.price / item.quantity;
+                                revenue.Price = item.price;
                                 revenue.quantity = temp_quatity;
                                 revenue.unit = item.unit;
                                 db.revenues.Add(revenue);
@@ -234,7 +235,7 @@ namespace CAP_TEAM05_2022.Controllers
                                     revenue revenue = new revenue();
                                     revenue.sale_details_id = sale_Details.id;
                                     revenue.inventory_id = inventory.id;
-                                    revenue.Price = item.price / item.quantity;
+                                    revenue.Price = item.price;
                                     revenue.quantity = quantity_remaining;
                                     revenue.unit = item.unit;
                                     db.revenues.Add(revenue);
@@ -248,7 +249,7 @@ namespace CAP_TEAM05_2022.Controllers
                                     revenue revenue = new revenue();
                                     revenue.sale_details_id = sale_Details.id;
                                     revenue.inventory_id = inventory.id;
-                                    revenue.Price = item.price / item.quantity;
+                                    revenue.Price = item.price;
                                     revenue.quantity = quantity_remaining;
                                     revenue.unit = item.unit;
                                     db.revenues.Add(revenue);
@@ -271,7 +272,7 @@ namespace CAP_TEAM05_2022.Controllers
                                             revenue revenue = new revenue();
                                             revenue.sale_details_id = sale_Details.id;
                                             revenue.inventory_id = inventory.id;
-                                            revenue.Price = item.price / item.quantity;
+                                            revenue.Price = item.price;
                                             revenue.quantity = temp_quatity;
                                             revenue.unit = item.unit;
                                             db.revenues.Add(revenue);
@@ -285,7 +286,7 @@ namespace CAP_TEAM05_2022.Controllers
                                             revenue revenue = new revenue();
                                             revenue.sale_details_id = sale_Details.id;
                                             revenue.inventory_id = inventory.id;
-                                            revenue.Price = item.price / item.quantity;
+                                            revenue.Price = item.price;
                                             revenue.quantity = temp;
                                             revenue.unit = item.unit;
                                             db.revenues.Add(revenue);
@@ -302,7 +303,7 @@ namespace CAP_TEAM05_2022.Controllers
                                             revenue revenue = new revenue();
                                             revenue.sale_details_id = sale_Details.id;
                                             revenue.inventory_id = inventory.id;
-                                            revenue.Price = item.price / item.quantity;
+                                            revenue.Price = item.price;
                                             revenue.quantity = temp_remaining;
                                             revenue.unit = item.unit;
                                             db.revenues.Add(revenue);
@@ -316,7 +317,7 @@ namespace CAP_TEAM05_2022.Controllers
                                             revenue revenue = new revenue();
                                             revenue.sale_details_id = sale_Details.id;
                                             revenue.inventory_id = inventory.id;
-                                            revenue.Price = item.price / item.quantity;
+                                            revenue.Price = item.price;
                                             revenue.quantity = temp;
                                             revenue.unit = item.unit;
                                             db.revenues.Add(revenue);

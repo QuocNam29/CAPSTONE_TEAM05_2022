@@ -719,6 +719,7 @@
     <Content Include="Views\products1\Details.cshtml" />
     <Content Include="Views\products1\Edit.cshtml" />
     <Content Include="Views\products1\Index.cshtml" />
+    <Content Include="Views\products\_PriceHistory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

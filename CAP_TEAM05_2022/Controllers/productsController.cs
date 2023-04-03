@@ -38,7 +38,7 @@ namespace CAP_TEAM05_2022.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "name,group_id,category_id,unit,quantity,unit_swap,quantity_swap")] product product, 
-                                   string purchase_price, string sell_price, int check_swap, string price_swap, int SupplierDropdown)
+                                   string purchase_price, string sell_price, int CheckSwapValue, string price_swap, int SupplierDropdown)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +65,7 @@ namespace CAP_TEAM05_2022.Controllers
                         }
                         else
                         {
-                            if (check_swap == Constants.UNIT_CONVERT && (product.quantity_swap == null || String.IsNullOrEmpty(product.unit_swap) || String.IsNullOrEmpty(price_swap)))
+                            if (CheckSwapValue == Constants.UNIT_CONVERT && (product.quantity_swap == null || String.IsNullOrEmpty(product.unit_swap) || String.IsNullOrEmpty(price_swap)))
                             {
                                 status = false;
                                 message = "Thông tin quy đổi còn trống !";
@@ -79,12 +79,38 @@ namespace CAP_TEAM05_2022.Controllers
                                 product.purchase_price = decimal.Parse(purchase_price.Replace(",", "").Replace(".", ""));
                                 product.created_at = currentDate;
                                 product.code = "SP" + CodeRandom.RandomCode();
-
-                                if (!String.IsNullOrEmpty(price_swap))
+                                if (CheckSwapValue != Constants.UNIT_CONVERT)
                                 {
-                                    product.sell_price_swap = decimal.Parse(price_swap.Replace(",", "").Replace(".", ""));
+                                    product.unit_swap = null;
+                                    product.quantity_swap = null;
+                                    product.sell_price_swap = null;
+
                                 }
+                                else
+                                {
+                                    if (!String.IsNullOrEmpty(price_swap))
+                                    {
+                                        product.sell_price_swap = decimal.Parse(price_swap.Replace(",", "").Replace(".", ""));
+                                    }
+                                }
+                                
                                 db.products.Add(product);
+
+                                price_product price_Product = new price_product();
+                                price_Product.product_id = product.id;
+                                price_Product.price = decimal.Parse(sell_price.Replace(",", "").Replace(".", ""));
+                                price_Product.updated_at = currentDate;
+                                price_Product.unit = product.unit;
+                                db.price_product.Add(price_Product);
+                                if (CheckSwapValue == Constants.UNIT_CONVERT)
+                                {
+                                    price_product price_Product_swap = new price_product();
+                                    price_Product_swap.product_id = product.id;
+                                    price_Product_swap.price = decimal.Parse(price_swap.Replace(",", "").Replace(".", ""));
+                                    price_Product_swap.updated_at = currentDate;
+                                    price_Product_swap.unit = product.unit_swap;
+                                    db.price_product.Add(price_Product_swap);
+                                }
 
                                 inventory_order inventory_Order = new inventory_order();
                                 inventory_Order.code = "MPN" + CodeRandom.RandomCode();
@@ -144,8 +170,17 @@ namespace CAP_TEAM05_2022.Controllers
                 links = links.Where(p => p.category_id == category_id);
             }
             return PartialView(links.Where(c => c.status != 3).OrderByDescending(c => c.id));
+        }
+
+        public ActionResult _PriceHistory(int id)
+        {
+            var priceHistory = db.price_product.Where(x=> x.product_id == id);
+            var product = db.products.Find(id);
+            ViewBag.Product = product;
+            return PartialView(priceHistory.ToList());
 
         }
+
         public ActionResult _Inventory_ProductList()
         {
             var links = from l in db.products

@@ -94,7 +94,7 @@
                                     <div class="input-group mb-3">
                                         @Html.EditorFor(model => model.quantity, new { htmlAttributes = new { @class = "form-control" } })
                                         <div class="input-group-append">
-                                            <select id="unit_buy" class="input-group-text select-unit" name="unit" required data-val="true" data-val-required="Vui lòng đơn vị !">
+                                            <select id="UnitBy" class="input-group-text select-unit" name="unit" required data-val="true" data-val-required="Vui lòng đơn vị !">
                                                 <option disabled="disabled" value="" selected>Đơn vị</option>
                                                 <optgroup label="Khác">
                                                     <option data-name="bao" value="Bao">
@@ -171,8 +171,8 @@
 
                         <div class="col-md-12 mt-2">
                             <div class="form-group">
-                                <input type="checkbox" id="swap" name="swap">
-                                <input type="number" id="check_swap" name="check_swap" hidden value="0" />
+                                <input type="checkbox" id="CheckSwap" name="swap">
+                                <input type="number" id="CheckSwapValue" name="CheckSwapValue" hidden value="0" />
                                 <label for="swap">Quy đổi sang đơn vị khác</label>
                             </div>
                         </div>
@@ -183,7 +183,7 @@
                                         <input type="number" value="1" disabled data-model="unit_current_quantity" id="unit-quantity-current" aria-describedby="basic-addon2" class="form-control"
                                                required="required">
                                         <div class="input-group-append">
-                                            <span id="unit_current" class="input-group-text unit_current"></span>
+                                            <span id="UnitCurrent" class="input-group-text UnitCurrent"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -299,24 +299,24 @@
                             }
                         });
                     }
-                });
+        });
 
-                 document.getElementById('swap').onclick = function (e) {
-            if (this.checked) {
+            document.getElementById('CheckSwap').onclick = function (e) {
+                if (this.checked) {
                 $(".swap").show();
-                $("#check_swap").val(@Constants.UNIT_CONVERT)
-                var unit_buy = $("#unit_buy").val()
-                document.getElementsByClassName('unit_current')[0].innerHTML = unit_buy;
-            }
-            else {
-                $(".swap").hide();
-                $("#check_swap").val(@Constants.NO_UNIT_CONVERT)
-
-            }
+                    $("#CheckSwapValue").val(@Constants.UNIT_CONVERT);
+                var UnitBy = $("#UnitBy").val()
+                document.getElementsByClassName('UnitCurrent')[0].innerHTML = UnitBy;
+                }
+                else {
+                    $(".swap").hide();
+                    $("#CheckSwapValue").val(@Constants.NO_UNIT_CONVERT);
+                }
         };
-        $("#unit_buy").change(function () {
-            var unit_buy = $("#unit_buy").val()
-            document.getElementsByClassName('unit_current')[0].innerHTML = unit_buy;
+            $("#UnitBy").change(function () {
+                console.log("hihi");
+            var UnitBy = $("#UnitBy").val()
+            document.getElementsByClassName('UnitCurrent')[0].innerHTML = UnitBy;
         });
 
         $("#add_quantity").change(function () {
