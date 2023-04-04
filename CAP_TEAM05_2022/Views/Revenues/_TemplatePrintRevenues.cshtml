@@ -1,0 +1,54 @@
+﻿
+@{
+    Layout = null;
+}
+<link href="~/Template/assets/css/style.css" rel="stylesheet" />
+
+<div class="pcoded-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body table-border-style">
+                            <div class="card__header">
+                                <div class="card__header-thumb">
+                                    <img src="@Url.Content("~/Template/assets/images/logoTT.png")" alt="" class="logo">
+                                </div>
+                                <div class="card__header-info">
+                                    <h3 class="card__info-name"> DOANH NGHIỆP BUÔN BÁN PHÂN BÓN THUỐC TRỪ SÂU TẤN THÀNH</h3>
+                                    <p>Địa chỉ: Tổ 20, ấp Tân Trung B, xã Tân Hưng, huyện Tân Châu, tỉnh Tây Ninh</p>
+                                    <p>Ngân Hàng: <span class="card__info-desc">BIDV - 75210000089921 - TRAN QUOC NAM </span></p>
+                                    <p>Điện thoại: 0854858818</p>
+                                </div>
+                            </div>
+                            <div class="card__nav">
+                                <div class="card__nav-info">
+                                    <h4 class="card__nav-name">BÁO CÁO BÁN HÀNG</h4>
+                                    @if (ViewBag.Method == "Day")
+                                    {
+                                        <p class="card__nav-time">Từ ngày : @String.Format("{0:dd/MM/yyy}", ViewBag.DateStart) - Đến hết ngày: @String.Format("{0:dd/MM/yyy}", ViewBag.DateEnd)</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="card__nav-time">Từ tháng : @String.Format("{0:MM/yyy}", ViewBag.DateStart) - Đến hết tháng: @String.Format("{0:MM/yyy}", ViewBag.DateEnd)</p>
+
+                                    }
+                                </div>
+                            </div>
+                            @if (ViewBag.Method == "Day")
+                            {
+                                Html.RenderAction("_PrintRevenueList_Date", "Revenues", new { date_Start = ViewBag.DateStart, date_End = ViewBag.DateEnd });
+                            }
+                            else
+                            {
+                                 Html.RenderAction("_PrintRevenueList_Month", "Revenues", new { date_Start = ViewBag.DateStart, date_End = ViewBag.DateEnd });
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

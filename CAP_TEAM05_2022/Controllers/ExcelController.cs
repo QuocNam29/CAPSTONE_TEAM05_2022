@@ -42,7 +42,26 @@ namespace CAP_TEAM05_2022.Controllers
         {
             return View();
         }
+        
+        public void HeaderExcel(ExcelWorksheet Sheet)
+        {
+            Sheet.DefaultColWidth = 20;
+            Sheet.Cells.Style.WrapText = true;
+            Sheet.Cells["A1:H1"].Merge = true;
+            Sheet.Cells["A1:H1"].Style.Font.Bold = true;
+            Sheet.Cells["A1:H1"].Style.Font.Size = 16;
+            Sheet.Cells["A1"].Value = "DOANH NGHIỆP BUÔN BÁN PHÂN BÓN THUỐC TRỪ SÂU TẤN THÀNH";
 
+            Sheet.Cells["A2:H2"].Merge = true;
+            Sheet.Cells["A2"].Value = "Địa chỉ: Tổ 20, ấp Tân Trung B, xã Tân Hưng, huyện Tân Châu, tỉnh Tây Ninh";
+
+            Sheet.Cells["A3:H3"].Merge = true;
+            Sheet.Cells["A3"].Value = "Ngân Hàng: BIDV - 75210000089921 - TRAN QUOC NAM";
+
+            Sheet.Cells["A4:H4"].Merge = true;
+            Sheet.Cells["A4"].Value = "Điện thoại: 0854858818";
+            Sheet.Cells["A1:H4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+        }
         public void ExportExcel(int group_id, int category_id)
         {
             string nameFile = "SP_" + DateTime.Now + ".xlsx";
@@ -892,7 +911,7 @@ namespace CAP_TEAM05_2022.Controllers
         public void ExportExcel_RevenueDate(DateTime? date_Start, DateTime? date_End)
         {
 
-            string nameFile = "Doanh thu" + String.Format("{0:dd-MM-yyyy}", date_Start) + " đến " + String.Format("{0:dd-MM-yyyy}", date_End) + ".xlsx";
+            string nameFile = "Doanh thu_" + String.Format("{0:dd-MM-yyyy}", date_Start) + " đến " + String.Format("{0:dd-MM-yyyy}", date_End) + ".xlsx";
 
             var sales = db.sales.Include(s => s.customer).Include(s => s.user).Where(s => s.created_at >= date_Start && s.created_at <= date_End
                                                     || s.created_at.Value.Day == date_Start.Value.Day
@@ -902,38 +921,93 @@ namespace CAP_TEAM05_2022.Controllers
                                                     && s.created_at.Value.Month == date_End.Value.Month
                                                     && s.created_at.Value.Year == date_End.Value.Year)
                 .OrderByDescending(o => o.id);
+            decimal tongNhap = 0;
+            foreach (var item in sales)
+            {
+                foreach (var item1 in item.sale_details)
+                {
+                    foreach (var item2 in item1.revenues)
+                    {
+                        if (item2.unit == item2.import_inventory.product.unit)
+                        {
+                            tongNhap += item2.quantity * item2.import_inventory.price_import;
+                        }
+                        else
+                        {
+                            tongNhap += item2.quantity * (decimal)(item2.import_inventory.price_import / item2.import_inventory.product.quantity_swap);
+
+                        }
+                    }
+                }
+            }
 
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ExcelPackage ep = new ExcelPackage();
-            ExcelWorksheet Sheet = ep.Workbook.Worksheets.Add("TonKho");
-            FormatExcel(Sheet, 1);
-            Sheet.DefaultColWidth = 20;
-            Sheet.Cells.Style.WrapText = true;
-            Sheet.Cells["A1"].Value = "Mã hóa đơn";
-            Sheet.Cells["B1"].Value = "Tổng hóa đơn";
-            Sheet.Cells["C1"].Value = "Trả trước(nếu có)";
-            Sheet.Cells["D1"].Value = "Còn nợ";
-            Sheet.Cells["E1"].Value = "Trạng thái";
-            Sheet.Cells["F1"].Value = "Ngày giao dịch";
+            ExcelWorksheet Sheet = ep.Workbook.Worksheets.Add("Doanh Thu");
+            HeaderExcel(Sheet);
+            Sheet.Cells["A6:A6"].Style.Font.Bold = true;
+            Sheet.Cells["A6:A6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+            Sheet.Cells["A6"].Value = "Từ ngày: ";
+            Sheet.Cells["B6:B6"].Merge = true;
+            Sheet.Cells["B6:B6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            Sheet.Cells["B6"].Value = String.Format("{0:dd-MM-yyyy}", date_Start);
 
-            int row = 2;// dòng bắt đầu ghi dữ liệu
+            Sheet.Cells["C6:C6"].Merge = true;
+            Sheet.Cells["C6:C6"].Style.Font.Bold = true;
+            Sheet.Cells["C6:C6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+            Sheet.Cells["C6"].Value = "Đến hết ngày: ";
+            Sheet.Cells["D6:D6"].Merge = true;
+            Sheet.Cells["D6:D6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            Sheet.Cells["D6"].Value = String.Format("{0:dd-MM-yyyy}", date_End);
+
+            Sheet.Cells["E7:F7"].Merge = true;
+            Sheet.Cells["E7:F7"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+            Sheet.Cells["E7"].Value = "Tổng tiền bán được: ";
+            Sheet.Cells["G7:H7"].Merge = true;
+            Sheet.Cells["G7:H7"].Style.Font.Bold = true;
+            Sheet.Cells["G7"].Value = sales.Sum(x => x.total).ToString("N0") + " VNĐ";
+
+            Sheet.Cells["E8:F8"].Merge = true;
+            Sheet.Cells["E8:F8"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+            Sheet.Cells["E8"].Value = "Tổng tiền bán được: ";
+            Sheet.Cells["G8:H8"].Merge = true;
+            Sheet.Cells["G8:H8"].Style.Font.Bold = true;
+            Sheet.Cells["G8"].Value = tongNhap.ToString("N0") + " VNĐ";
+            
+            Sheet.Cells["E9:F9"].Merge = true;
+            Sheet.Cells["E9:F9"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+            Sheet.Cells["E9"].Value = "Tổng tiền bán được: ";
+            Sheet.Cells["G9:H9"].Merge = true;
+            Sheet.Cells["G9:H9"].Style.Font.Bold = true;
+            Sheet.Cells["G9"].Value = (sales.Sum(x => x.total) - tongNhap).ToString("N0") + " VNĐ";
+
+            Sheet.Cells["A11:H11"].Style.Font.Bold = true;
+            Sheet.Cells["A11:H11"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            Sheet.Cells["A11:H11"].Style.Fill.BackgroundColor.SetColor(Color.LightSkyBlue);
+            //Sheet.Cells["A11:H11"].Style.Font.Color.SetColor(Color.White);
+
+
+            Sheet.Cells["A11"].Value = "Khách hàng";
+            Sheet.Cells["B11"].Value = "Mã hóa đơn";
+            Sheet.Cells["C11"].Value = "Ngày giao dịch";
+            Sheet.Cells["D11"].Value = "Tổng hóa đơn";
+            Sheet.Cells["E11"].Value = "Thanh toán";
+            Sheet.Cells["F11"].Value = "Tồn nợ";
+            Sheet.Cells["G11"].Value = "Trạng Thái";
+            Sheet.Cells["H11"].Value = "Nhân viên bán";
+
+            int row = 12;// dòng bắt đầu ghi dữ liệu
             foreach (var item in sales)
             {
 
-                Sheet.Cells[string.Format("A{0}", row)].Value = item.code;
-                Sheet.Cells[string.Format("B{0}", row)].Value = item.total;
-                Sheet.Cells[string.Format("C{0}", row)].Value = item.prepayment;
-                Sheet.Cells[string.Format("D{0}", row)].Value = item.total - item.prepayment;
-                if (item.method == Constants.PAYED_ORDER)
-                {
-                    Sheet.Cells[string.Format("E{0}", row)].Value = "Đã thanh toán";
-                }
-                else if (item.method == Constants.DEBT_ORDER)
-                {
-                    Sheet.Cells[string.Format("E{0}", row)].Value = "Ghi nợ";
-                }
-
-                Sheet.Cells[string.Format("F{0}", row)].Value = String.Format("{0:dd-MM-yyyy HH:mm:yy}", item.created_at); ;
+                Sheet.Cells[string.Format("A{0}", row)].Value = item.customer.name;
+                Sheet.Cells[string.Format("B{0}", row)].Value = item.code;
+                Sheet.Cells[string.Format("C{0}", row)].Value = String.Format("{0:HH:mm - dd/MM/yyy}", item.created_at);
+                Sheet.Cells[string.Format("D{0}", row)].Value = item.total;
+                Sheet.Cells[string.Format("E{0}", row)].Value = item.prepayment != null ? (int)item.prepayment : 0;
+                Sheet.Cells[string.Format("F{0}", row)].Value = item.prepayment != null ? (int)(item.total - item.prepayment) : 0;
+                Sheet.Cells[string.Format("G{0}", row)].Value = (item.method == 1 ? "Đã thanh toán" : "Ghi nợ") + (item.total == item.prepayment ? "(Đã thanh toán xong)" : "");
+                Sheet.Cells[string.Format("H{0}", row)].Value = item.user?.name;
                 row++;
 
             }
@@ -950,49 +1024,104 @@ namespace CAP_TEAM05_2022.Controllers
             string nameFile = "";
             if (date_Start == date_End)
             {
-                nameFile = "Doanh thu tháng " + String.Format("{0:MM-yyyy}", date_End) + ".xlsx";
+                nameFile = "Doanh_Thu_Thang_" + String.Format("{0:MM-yyyy}", date_End) + ".xlsx";
             }
             else
             {
-                nameFile = "Doanh thu từ tháng" + String.Format("{0:MM-yyyy}", date_Start) + " đến tháng " + String.Format("{0:MM-yyyy}", date_End) + ".xlsx";
+                nameFile = "Doanh_Thu_Thang_" + String.Format("{0:MM-yyyy}", date_Start) + "_Den_Thang_ " + String.Format("{0:MM-yyyy}", date_End) + ".xlsx";
             }
 
             var sales = db.sales.Include(s => s.customer).Include(s => s.user).Where(s => s.created_at >= date_Start && s.created_at <= date_End
                                                     || s.created_at.Value.Month == date_Start.Value.Month && s.created_at.Value.Year == date_Start.Value.Year
                                                     || s.created_at.Value.Month == date_End.Value.Month && s.created_at.Value.Year == date_End.Value.Year)
                 .OrderByDescending(o => o.id);
+            decimal tongNhap = 0;
+            foreach (var item in sales)
+            {
+                foreach (var item1 in item.sale_details)
+                {
+                    foreach (var item2 in item1.revenues)
+                    {
+                        if (item2.unit == item2.import_inventory.product.unit)
+                        {
+                            tongNhap += item2.quantity * item2.import_inventory.price_import;
+                        }
+                        else
+                        {
+                            tongNhap += item2.quantity * (decimal)(item2.import_inventory.price_import / item2.import_inventory.product.quantity_swap);
+
+                        }
+                    }
+                }
+            }
 
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ExcelPackage ep = new ExcelPackage();
-            ExcelWorksheet Sheet = ep.Workbook.Worksheets.Add("TonKho");
-            FormatExcel(Sheet, 1);
-            Sheet.DefaultColWidth = 20;
-            Sheet.Cells.Style.WrapText = true;
-            Sheet.Cells["A1"].Value = "Mã hóa đơn";
-            Sheet.Cells["B1"].Value = "Tổng hóa đơn";
-            Sheet.Cells["C1"].Value = "Trả trước(nếu có)";
-            Sheet.Cells["D1"].Value = "Còn nợ";
-            Sheet.Cells["E1"].Value = "Trạng thái";
-            Sheet.Cells["F1"].Value = "Ngày giao dịch";
+            ExcelWorksheet Sheet = ep.Workbook.Worksheets.Add("Doanh Thu");
+            HeaderExcel(Sheet);
+            Sheet.Cells["A6:A6"].Style.Font.Bold = true;
+            Sheet.Cells["A6:A6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+            Sheet.Cells["A6"].Value = "Từ tháng: ";
+            Sheet.Cells["B6:B6"].Merge = true;
+            Sheet.Cells["B6:B6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            Sheet.Cells["B6"].Value = String.Format("{0:MM-yyyy}", date_Start);
 
-            int row = 2;// dòng bắt đầu ghi dữ liệu
+            Sheet.Cells["C6:C6"].Merge = true;
+            Sheet.Cells["C6:C6"].Style.Font.Bold = true;
+            Sheet.Cells["C6:C6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+            Sheet.Cells["C6"].Value = "Đến cuối tháng: ";
+            Sheet.Cells["D6:D6"].Merge = true;
+            Sheet.Cells["D6:D6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            Sheet.Cells["D6"].Value = String.Format("{0:MM-yyyy}", date_End);
+
+            Sheet.Cells["E7:F7"].Merge = true;
+            Sheet.Cells["E7:F7"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+            Sheet.Cells["E7"].Value = "Tổng tiền bán được: ";
+            Sheet.Cells["G7:H7"].Merge = true;
+            Sheet.Cells["G7:H7"].Style.Font.Bold = true;
+            Sheet.Cells["G7"].Value = sales.Sum(x => x.total).ToString("N0") + " VNĐ";
+
+            Sheet.Cells["E8:F8"].Merge = true;
+            Sheet.Cells["E8:F8"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+            Sheet.Cells["E8"].Value = "Tổng tiền bán được: ";
+            Sheet.Cells["G8:H8"].Merge = true;
+            Sheet.Cells["G8:H8"].Style.Font.Bold = true;
+            Sheet.Cells["G8"].Value = tongNhap.ToString("N0") + " VNĐ";
+
+            Sheet.Cells["E9:F9"].Merge = true;
+            Sheet.Cells["E9:F9"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+            Sheet.Cells["E9"].Value = "Tổng tiền bán được: ";
+            Sheet.Cells["G9:H9"].Merge = true;
+            Sheet.Cells["G9:H9"].Style.Font.Bold = true;
+            Sheet.Cells["G9"].Value = (sales.Sum(x => x.total) - tongNhap).ToString("N0") + " VNĐ";
+
+            Sheet.Cells["A11:H11"].Style.Font.Bold = true;
+            Sheet.Cells["A11:H11"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            Sheet.Cells["A11:H11"].Style.Fill.BackgroundColor.SetColor(Color.LightSkyBlue);
+            //Sheet.Cells["A11:H11"].Style.Font.Color.SetColor(Color.White);
+
+
+            Sheet.Cells["A11"].Value = "Khách hàng";
+            Sheet.Cells["B11"].Value = "Mã hóa đơn";
+            Sheet.Cells["C11"].Value = "Ngày giao dịch";
+            Sheet.Cells["D11"].Value = "Tổng hóa đơn";
+            Sheet.Cells["E11"].Value = "Thanh toán";
+            Sheet.Cells["F11"].Value = "Tồn nợ";
+            Sheet.Cells["G11"].Value = "Trạng Thái";
+            Sheet.Cells["H11"].Value = "Nhân viên bán";
+
+            int row = 12;// dòng bắt đầu ghi dữ liệu
             foreach (var item in sales)
             {
 
-                Sheet.Cells[string.Format("A{0}", row)].Value = item.code;
-                Sheet.Cells[string.Format("B{0}", row)].Value = item.total;
-                Sheet.Cells[string.Format("C{0}", row)].Value = item.prepayment;
-                Sheet.Cells[string.Format("D{0}", row)].Value = item.total - item.prepayment;
-                if (item.method == Constants.PAYED_ORDER)
-                {
-                    Sheet.Cells[string.Format("E{0}", row)].Value = "Đã thanh toán";
-                }
-                else if (item.method == Constants.DEBT_ORDER)
-                {
-                    Sheet.Cells[string.Format("E{0}", row)].Value = "Ghi nợ";
-                }
-
-                Sheet.Cells[string.Format("F{0}", row)].Value = String.Format("{0:dd-MM-yyyy HH:mm:yy}", item.created_at);
+                Sheet.Cells[string.Format("A{0}", row)].Value = item.customer.name;
+                Sheet.Cells[string.Format("B{0}", row)].Value = item.code;
+                Sheet.Cells[string.Format("C{0}", row)].Value = String.Format("{0:HH:mm - dd/MM/yyy}", item.created_at);
+                Sheet.Cells[string.Format("D{0}", row)].Value = item.total;
+                Sheet.Cells[string.Format("E{0}", row)].Value = item.prepayment != null ? (int)item.prepayment : 0;
+                Sheet.Cells[string.Format("F{0}", row)].Value = item.prepayment != null ? (int)(item.total - item.prepayment) : 0;
+                Sheet.Cells[string.Format("G{0}", row)].Value = (item.method == 1 ? "Đã thanh toán" : "Ghi nợ") + (item.total == item.prepayment ? "(Đã thanh toán xong)" : "");
+                Sheet.Cells[string.Format("H{0}", row)].Value = item.user?.name;
                 row++;
 
             }

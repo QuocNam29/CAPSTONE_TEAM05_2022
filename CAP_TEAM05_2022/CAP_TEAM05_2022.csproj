@@ -720,6 +720,9 @@
     <Content Include="Views\products1\Edit.cshtml" />
     <Content Include="Views\products1\Index.cshtml" />
     <Content Include="Views\products\_PriceHistory.cshtml" />
+    <Content Include="Views\Revenues\_TemplatePrintRevenues.cshtml" />
+    <Content Include="Views\Revenues\_PrintRevenueList_Date.cshtml" />
+    <Content Include="Views\Revenues\_PrintRevenueList_Month.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
