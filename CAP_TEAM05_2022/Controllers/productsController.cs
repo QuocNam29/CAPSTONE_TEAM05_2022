@@ -35,6 +35,17 @@ namespace CAP_TEAM05_2022.Controllers
             return PartialView("_Form", new product());
         }
 
+        [HttpGet]
+        public PartialViewResult _FormEdit(int? id)
+        {
+            product product = db.products.Find(id);
+            ViewBag.isCreate = true;
+            ViewBag.CategoryId = new SelectList(db.categories, "Id", "Name");
+            ViewBag.GroupId = new SelectList(db.groups, "Id", "Name");
+            ViewBag.SupplierId = db.customers.Where(x => x.type == Constants.SUPPLIER).ToList();
+            return PartialView("_FormEdit", product);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "name,group_id,category_id,unit,quantity,unit_swap,quantity_swap")] product product, 
@@ -155,6 +166,106 @@ namespace CAP_TEAM05_2022.Controllers
             ViewBag.group_id = new SelectList(db.groups, "id", "code", product.group_id);
             ViewBag.created_by = new SelectList(db.users, "id", "name", product.created_by);
             return View("_Form",product);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "id,code,name,group_id,category_id,unit,purchase_price,sell_price,quantity,status,note,created_by,created_at,updated_at,deleted_at,name_group,name_category,unit_swap,quantity_swap,quantity_remaning,sell_price_swap")] product product,
+                                    string Editsell_price, int CheckSwapValue, string price_swap)
+        {
+            if (ModelState.IsValid)
+            {
+                string message = "";
+                bool status = true;
+                DateTime currentDate = DateTime.Now;
+                try
+                {
+                    bool check = db.products.Where(p => p.name == product.name
+                                            && p.group_id == product.group_id
+                                            && p.category_id == product.category_id
+                                            && p.unit == product.unit 
+                                            && p.id != product.id).Any();
+                    if (check)
+                    {
+                        status = false;
+                        message = "Sản phẩm đã tồn tại trong hệ thống !";
+                    }
+                    else
+                    {
+                        if (String.IsNullOrEmpty(product.unit))
+                        {
+                            status = false;
+                            message = "Vui lòng chọn đơn vị của sản phẩm !";
+                        }
+                        else
+                        {
+                            if (CheckSwapValue == Constants.UNIT_CONVERT && (product.quantity_swap == null || String.IsNullOrEmpty(product.unit_swap) || String.IsNullOrEmpty(price_swap)))
+                            {
+                                status = false;
+                                message = "Thông tin quy đổi còn trống !";
+                            }
+                            else
+                            {
+                                decimal sellPrice = decimal.Parse(Editsell_price.Replace(",", "").Replace(".", ""));
+                                product.status = Constants.SHOW_STATUS;
+                                product.sell_price = sellPrice;
+                                product.updated_at = currentDate;
+                                if (CheckSwapValue != Constants.UNIT_CONVERT)
+                                {
+                                    product.unit_swap = null;
+                                    product.quantity_swap = null;
+                                    product.sell_price_swap = null;
+                                }
+                                else
+                                {
+                                    if (!String.IsNullOrEmpty(price_swap))
+                                    {
+                                        product.sell_price_swap = decimal.Parse(price_swap.Replace(",", "").Replace(".", ""));
+                                    }
+                                }
+
+                                db.products.Add(product);
+                                if (sellPrice != product.sell_price)
+                                {
+                                    price_product price_Product = new price_product();
+                                    price_Product.product_id = product.id;
+                                    price_Product.price = sellPrice;
+                                    price_Product.updated_at = currentDate;
+                                    price_Product.unit = product.unit;
+                                    db.price_product.Add(price_Product);
+                                }
+                               
+                                if (CheckSwapValue == Constants.UNIT_CONVERT && decimal.Parse(price_swap.Replace(",", "").Replace(".", "")) != product.sell_price_swap)
+                                {
+                                    price_product price_Product_swap = new price_product();
+                                    price_Product_swap.product_id = product.id;
+                                    price_Product_swap.price = decimal.Parse(price_swap.Replace(",", "").Replace(".", ""));
+                                    price_Product_swap.updated_at = currentDate;
+                                    price_Product_swap.unit = product.unit_swap;
+                                    db.price_product.Add(price_Product_swap);
+                                }
+                                db.Entry(product).State = EntityState.Modified;
+
+                                db.SaveChanges();
+                                message = "Cập nhật sản phẩm thành công";
+                                return Json(new { status, message, id = product.id }, JsonRequestBehavior.AllowGet);
+                            }
+                        }
+
+                    }
+                }
+                catch (Exception e)
+                {
+                    status = false;
+                    message = e.Message;
+                }
+                return Json(new { status, message, id = product.id }, JsonRequestBehavior.AllowGet);
+            }
+
+            ViewBag.category_id = new SelectList(db.categories, "id", "code", product.category_id);
+            ViewBag.group_id = new SelectList(db.groups, "id", "code", product.group_id);
+            ViewBag.created_by = new SelectList(db.users, "id", "name", product.created_by);
+            return View("_Form", product);
         }
 
         public ActionResult _ProductList(int group_id, int category_id)

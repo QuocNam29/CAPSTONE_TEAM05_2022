@@ -573,8 +573,21 @@
             });
 
             }
-
         }
+        function EditProduct(id) {
+
+              $.ajax({
+                url: '@Url.Action("_FormEdit", "products")',
+                type: 'GET',
+                data: {id:id},
+                success: function (response) {
+                    // Add response in Modal body
+                    $('#dataContainer2').html(response);
+                    // Display Modal
+                    $('#ProductForm').modal('show');
+                }
+            });
+            }
 
         function PriceHistory(id) {
             $.ajax({

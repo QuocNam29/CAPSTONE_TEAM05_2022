@@ -106,7 +106,7 @@
                         <i class="feather icon-copy">
                         </i>
                     </button>
-                    <button title="Cập nhật" class="btn btn-success" onclick="GetProduct(this, @item.id)">
+                    <button title="Cập nhật" class="btn btn-success" @*onclick="GetProduct(this, @item.id)"*@ onclick="EditProduct('@item.id')">
                         <i class="feather icon-edit">
                         </i>
                     </button>
