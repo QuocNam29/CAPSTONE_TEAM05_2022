@@ -28,7 +28,6 @@ namespace CAP_TEAM05_2022.Controllers
         [HttpGet]
         public PartialViewResult _Form(int? id)
         {
-            ViewBag.isCreate = true;
             ViewBag.CategoryId = new SelectList(db.categories, "Id", "Name");
             ViewBag.GroupId = new SelectList(db.groups, "Id", "Name");
             ViewBag.SupplierId = db.customers.Where(x => x.type == Constants.SUPPLIER).ToList();
@@ -37,6 +36,7 @@ namespace CAP_TEAM05_2022.Controllers
                 product product = db.products.Find(id);
                 return PartialView("_Form", product);
             }
+            ViewBag.isCreate = true;
             return PartialView("_Form", new product());
         }
 

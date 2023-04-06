@@ -6,39 +6,6 @@ namespace CAP_TEAM05_2022.Helper
     public class Constants
     {
         /// <summary>
-        /// subdomain
-        /// </summary>
-        public static readonly string subdomain = "";
-        public static readonly string webUrl = "";
-
-        /// To use switch case User roles
-        /// </summary>
-        public const string ACCOUNT_ADMIN = "1";
-        public const string ACCOUNT_STUDENT = "2";
-        public const string ACCOUNT_STAFF = "3";
-        public const string ACCOUNT_TEACHER = "4";
-        public const string ACCOUNT_LEADER = "5";
-        public const string TEMP_ACCOUNT = "temp";
-
-        /// <summary>
-        /// Alert Type For Message
-        /// </summary>
-        public const string ALERT_TYPE_SUCCESS = "success"; // THÀNH CÔNG
-        public const string ALERT_TYPE_ERROR = "error"; // THẤT BẠI
-        public const string ALERT_TYPE_WARNING = "warning"; // CẢNH BÁO
-
-        /// </summary>
-        /// To use in MailMessages
-        /// </summary>
-        public static readonly string adminSuffix = "";
-        public static readonly string EMAIL_FROM = "";
-        public static readonly string EMAIL_SERVER = "";
-        public static readonly string EMAIL_CREDENTAIL = "";
-        public static readonly int EMAIL_PORT = 25;
-
-
-
-        /// <summary>
         /// Type Customer
         ///  </summary>
         public static readonly int CUSTOMER = 1;
@@ -102,6 +69,11 @@ namespace CAP_TEAM05_2022.Helper
         ///
         public static int CREATE_FORM = 1;
         public static int NOT_CREATE_FORM = 0;
+
+        ///Kiểm tra tạo mới hay copy sản phẩm
+        ///
+        public static int CREATE_PRODUCT = 1;
+        public static int COPY_PRODUCT = 2;
 
         /// <summary>
         /// connectionString for Import Excel Data

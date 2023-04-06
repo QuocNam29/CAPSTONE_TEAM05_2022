@@ -51,6 +51,7 @@ namespace CAP_TEAM05_2022.Models
         public string name_group { get; set; }
         public string name_category { get; set; }
         public string unit_swap { get; set; }
+        [Required]
         public int quantity_swap { get; set; }
         public int quantity_remaning { get; set; }
         public decimal sell_price_swap { get; set; }

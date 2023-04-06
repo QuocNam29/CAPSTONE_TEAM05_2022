@@ -69,7 +69,7 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <button type="button" class="btn btn-primary float-right ml-2" @* data-toggle="modal" data-target="#AddProduct"*@ onclick="createProduct()">Tạo mới</button>
+                                    <button type="button" class="btn btn-primary float-right ml-2" @* data-toggle="modal" data-target="#AddProduct"*@ onclick="createProduct(null, @Constants.CREATE_PRODUCT)">Tạo mới</button>
 
                                 </div>
                             </div>
@@ -465,8 +465,8 @@
             });
         });
 
-        function createProduct(id) {
-            if ($('#isCreate').val() != undefined && $('#isCreate').val() == @Constants.CREATE_FORM) {
+        function createProduct(id, method) {
+            if ($('#isCreate').val() != undefined && $('#isCreate').val() == @Constants.CREATE_FORM && method == @Constants.CREATE_PRODUCT) {
                 $('#ProductForm').modal('show');
             } else {
               $.ajax({
@@ -485,7 +485,6 @@
         }
 
         function EditProduct(id) {
-
               $.ajax({
                 url: '@Url.Action("_FormEdit", "products")',
                 type: 'GET',

@@ -88,43 +88,30 @@
                                         <div class="input-group-append">
                                             <select id="UnitBy" class="input-group-text select-unit" name="unit" required data-val="true" data-val-required="Vui lòng đơn vị !">
                                                 <option disabled="disabled" value="" selected>Đơn vị</option>
-                                                <optgroup label="Khác">
-                                                    <option data-name="bao" value="Bao">
-                                                        bao
-                                                    </option>
-                                                    <option data-name="chai" value="Chai">
-                                                        chai
-                                                    </option>
-                                                    <option data-name="gói" value="Gói">
-                                                        Gói
-                                                    </option>
-                                                </optgroup>
-                                                <optgroup label="Khối lượng">
-
-                                                    <option data-name="tạ" value="Tạ">
-                                                        tạ
-                                                    </option>
-
-                                                    <option data-name="kg" value="Kg">
-                                                        kg
-                                                    </option>
-                                                    <option data-name="gam" value="Gam">
-                                                        gam
-                                                    </option>
-                                                </optgroup>
-                                                <optgroup label="Thể tích">
-                                                    <option data-name="lít" value="Lít">
-                                                        lít
-                                                    </option>
-                                                    <option data-name="ml" value="ml">
-                                                        ml
-                                                    </option>
-                                                </optgroup>
+                                                <option data-name="bao" value="Bao">
+                                                    bao
+                                                </option>
+                                                <option data-name="chai" value="Chai">
+                                                    chai
+                                                </option>
+                                                <option data-name="can" value="Can">
+                                                    can
+                                                </option>
+                                                <option data-name="gói" value="Gói">
+                                                    gói
+                                                </option>
+                                                <option data-name="hộp" value="Hộp">
+                                                    hộp
+                                                </option>
+                                                <option data-name="xô" value="Xô">
+                                                    xô
+                                                </option>
 
                                             </select>
 
                                         </div>
                                     </div>
+
                                     @Html.ValidationMessageFor(model => model.quantity, "", new { @class = "text-danger" })
                                     @Html.ValidationMessage("unit", "", new { @class = "text-danger" })
                                 </div> <!---->
@@ -208,38 +195,32 @@
                                 </label>
                                 <div class="position-relative">
                                     <div class="input-group mb-3">
-                                        <input type="number" name="quantity_swap" data-model="unit_swap_quantity" placeholder="Nhập số lượng"
-                                               required data-val="true" data-val-required="Vui lòng nhập số lượng quy đổi !" id="unit-quantity-input" min="1" max="999999999999" aria-describedby="unit-quantity" class="form-control">
+                                        @Html.EditorFor(model => model.quantity_swap, new { htmlAttributes = new { @class = "form-control" } })
                                         <div class="input-group-append">
                                             <select id="unit_swap" name="unit_swap" class="input-group-text select-unit" required data-val="true" data-val-required="Vui lòng đơn vị quy đổi !">
                                                 <option disabled="disabled" value="" selected>Đơn vị</option>
-                                                <optgroup label="Khác">
-                                                    <option data-name="bao" value="Bao">
-                                                        bao
-                                                    </option>
-                                                    <option data-name="chai" value="Chai">
-                                                        chai
-                                                    </option>
-                                                </optgroup>
-                                                <optgroup label="Khối lượng">
-
-                                                    <option data-name="tạ" value="Tạ">
-                                                        tạ
-                                                    </option>
-
-                                                    <option data-name="kg" value="Kg">
-                                                        kg
-                                                    </option>
-                                                    <option data-name="gam" value="Gam">
-                                                        gam
-                                                    </option>
-                                                </optgroup>
                                                 <optgroup label="Thể tích">
                                                     <option data-name="lít" value="Lít">
                                                         lít
                                                     </option>
                                                     <option data-name="ml" value="ml">
                                                         ml
+                                                    </option>
+                                                </optgroup>
+                                                <optgroup label="Khối lượng">
+                                                    <option data-name="kg" value="Kg">
+                                                        Kg
+                                                    </option>
+                                                    <option data-name="gam" value="gam">
+                                                        Gam
+                                                    </option>
+                                                </optgroup>
+                                                <optgroup label="Khác">
+                                                    <option data-name="gói" value="Gói">
+                                                        Gói
+                                                    </option>
+                                                    <option data-name="viên" value="Viên">
+                                                        Viên
                                                     </option>
                                                 </optgroup>
 
@@ -283,74 +264,82 @@
             </div>
         </form>
     </div>
-    </div>
-        <!--Validation-->
-        <script src="~/Scripts/jquery.validate.min.js"></script>
-        <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-        <script>
-        $('.ProductForm').submit(function (e) {
-                    var form = $(this);
-                    var _this = $(this);
-                    var _form = _this.closest("form");
-                    var isvalid = _form.valid()
-                    // Check if form is valid then submit ajax
-                    if (isvalid) {
-                        e.preventDefault();
-                        var url = form.attr('action');
-                        console.log(url);
-                        $.ajax({
-                            url: url,
-                            type: 'POST',
-                            data: form.serialize(),
-                            success: function (data) {
-                                // Hide bootstrap modal to prevent conflict
-                                $('.modal').modal('hide');
+</div>
+@if (!isCreate)
+{
+<script>
+        $("#UnitBy").val('@Model.unit');
+        document.getElementsByClassName('UnitCurrent')[0].innerHTML = '@Model.unit';
+        $("#unitSwap").val('@Model.unit_swap');
+</script>
+}
+<!--Validation-->
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    $('.ProductForm').submit(function (e) {
+        var form = $(this);
+        var _this = $(this);
+        var _form = _this.closest("form");
+        var isvalid = _form.valid()
+        // Check if form is valid then submit ajax
+        if (isvalid) {
+            e.preventDefault();
+            var url = form.attr('action');
+            console.log(url);
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: form.serialize(),
+                success: function (data) {
+                    // Hide bootstrap modal to prevent conflict
+                    $('.modal').modal('hide');
 
-                                if (data.status) {
-                                    // Refresh table data
-                                    var group_id = $("#filter_GroupProduct").val();
-                                    var category_id = $("#filter_Category").val();
-                                    GetList(group_id, category_id);
-                                    Swal.fire('Thành công !', data.message, 'success')
+                    if (data.status) {
+                        // Refresh table data
+                        var group_id = $("#filter_GroupProduct").val();
+                        var category_id = $("#filter_Category").val();
+                        GetList(group_id, category_id);
+                        Swal.fire('Thành công !', data.message, 'success')
 
-                                    form[0].reset();
-                                    form.removeClass('was-validated');
-                                } else {
-                                    Swal.fire('Lỗi !', data.message, 'error')
-                                }
-                            }
-                        });
+                        form[0].reset();
+                        form.removeClass('was-validated');
+                    } else {
+                        Swal.fire('Lỗi !', data.message, 'error')
                     }
-        });
+                }
+            });
+        }
+    });
 
-            $("#UnitBy").change(function () {
-                console.log("hihi");
-            var UnitBy = $("#UnitBy").val()
-            document.getElementsByClassName('UnitCurrent')[0].innerHTML = UnitBy;
-        });
+    $("#UnitBy").change(function () {
+        console.log("hihi");
+        var UnitBy = $("#UnitBy").val()
+        document.getElementsByClassName('UnitCurrent')[0].innerHTML = UnitBy;
+    });
 
-        $("#add_quantity").change(function () {
-            var add_quantity = $("#add_quantity").val()
-            var purchase_price = $("#purchase_price").val().replace(/\,/g, '').replace(/\./g, '');
-            $("#Sum_purchase").val((add_quantity * purchase_price).toLocaleString());
-        });
-        $("#purchase_price").change(function () {
-            var add_quantity = $("#add_quantity").val()
-            var purchase_price = $("#purchase_price").val().replace(/\,/g, '').replace(/\./g, '');
-            $("#Sum_purchase").val((add_quantity * purchase_price).toLocaleString());
-        });
-            $('.Price').keydown(function (e) {
-                setTimeout(() => {
-                    let parts = $(this).val().split(".");
-                    let v = parts[0].replace(/\D/g, ""),
-                        dec = parts[1]
-                    let calc_num = Number((dec !== undefined ? v + "." + dec : v));
-                    // use this for numeric calculations
-                    // console.log('number for calculations: ', calc_num);
-                    let n = new Intl.NumberFormat('en-EN').format(v);
-                    n = dec !== undefined ? n + "." + dec : n;
-                    $(this).val(n);
-                })
-            })
-        </script>
-    
+    $("#add_quantity").change(function () {
+        var add_quantity = $("#add_quantity").val()
+        var purchase_price = $("#purchase_price").val().replace(/\,/g, '').replace(/\./g, '');
+        $("#Sum_purchase").val((add_quantity * purchase_price).toLocaleString());
+    });
+    $("#purchase_price").change(function () {
+        var add_quantity = $("#add_quantity").val()
+        var purchase_price = $("#purchase_price").val().replace(/\,/g, '').replace(/\./g, '');
+        $("#Sum_purchase").val((add_quantity * purchase_price).toLocaleString());
+    });
+    $('.Price').keydown(function (e) {
+        setTimeout(() => {
+            let parts = $(this).val().split(".");
+            let v = parts[0].replace(/\D/g, ""),
+                dec = parts[1]
+            let calc_num = Number((dec !== undefined ? v + "." + dec : v));
+            // use this for numeric calculations
+            // console.log('number for calculations: ', calc_num);
+            let n = new Intl.NumberFormat('en-EN').format(v);
+            n = dec !== undefined ? n + "." + dec : n;
+            $(this).val(n);
+        })
+    })
+</script>
+
