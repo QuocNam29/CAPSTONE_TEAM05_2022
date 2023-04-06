@@ -26,12 +26,17 @@ namespace CAP_TEAM05_2022.Controllers
 
         }
         [HttpGet]
-        public PartialViewResult _Form()
+        public PartialViewResult _Form(int? id)
         {
             ViewBag.isCreate = true;
             ViewBag.CategoryId = new SelectList(db.categories, "Id", "Name");
             ViewBag.GroupId = new SelectList(db.groups, "Id", "Name");
             ViewBag.SupplierId = db.customers.Where(x => x.type == Constants.SUPPLIER).ToList();
+            if (id != null)
+            {
+                product product = db.products.Find(id);
+                return PartialView("_Form", product);
+            }
             return PartialView("_Form", new product());
         }
 
@@ -48,8 +53,8 @@ namespace CAP_TEAM05_2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "name,group_id,category_id,unit,quantity,unit_swap,quantity_swap")] product product, 
-                                   string purchase_price, string sell_price, int CheckSwapValue, string price_swap, int SupplierDropdown)
+        public ActionResult Create([Bind(Include = "name,group_id,category_id,unit,quantity,unit_swap,quantity_swap")] product product,
+                                   string purchase_price, string sell_price, string price_swap, string debt_price, string debt_price_swap, int SupplierDropdown)
         {
             if (ModelState.IsValid)
             {
@@ -76,80 +81,66 @@ namespace CAP_TEAM05_2022.Controllers
                         }
                         else
                         {
-                            if (CheckSwapValue == Constants.UNIT_CONVERT && (product.quantity_swap == null || String.IsNullOrEmpty(product.unit_swap) || String.IsNullOrEmpty(price_swap)))
-                            {
-                                status = false;
-                                message = "Thông tin quy đổi còn trống !";
-                            }
-                            else
-                            {
-                                product.status = Constants.SHOW_STATUS;
+                            decimal sellPrice = decimal.Parse(sell_price.Replace(",", "").Replace(".", ""));
+                            decimal purchasePrice = decimal.Parse(purchase_price.Replace(",", "").Replace(".", ""));
+                            decimal priceSwap = decimal.Parse(price_swap.Replace(",", "").Replace(".", ""));
+                            decimal debtPrice = decimal.Parse(debt_price.Replace(",", "").Replace(".", ""));
+                            decimal debtPriceSwap = decimal.Parse(debt_price_swap.Replace(",", "").Replace(".", ""));
 
-                                product.created_by = User.Identity.GetUserId();
-                                product.sell_price = decimal.Parse(sell_price.Replace(",", "").Replace(".", ""));
-                                product.purchase_price = decimal.Parse(purchase_price.Replace(",", "").Replace(".", ""));
-                                product.created_at = currentDate;
-                                product.code = "SP" + CodeRandom.RandomCode();
-                                if (CheckSwapValue != Constants.UNIT_CONVERT)
-                                {
-                                    product.unit_swap = null;
-                                    product.quantity_swap = null;
-                                    product.sell_price_swap = null;
+                            product.status = Constants.SHOW_STATUS;
+                            product.created_by = User.Identity.GetUserId();
+                            product.sell_price = sellPrice;
+                            product.sell_price_swap = priceSwap;
+                            product.sell_price_debt = debtPrice;
+                            product.sell_price_debt_swap = debtPriceSwap;
+                            product.purchase_price = purchasePrice;
+                            product.created_at = currentDate;
+                            product.code = "SP" + CodeRandom.RandomCode();
+                            product.sell_price_swap = priceSwap;
+                            db.products.Add(product);
 
-                                }
-                                else
-                                {
-                                    if (!String.IsNullOrEmpty(price_swap))
-                                    {
-                                        product.sell_price_swap = decimal.Parse(price_swap.Replace(",", "").Replace(".", ""));
-                                    }
-                                }
-                                
-                                db.products.Add(product);
+                            price_product price_Product = new price_product();
+                            price_Product.product_id = product.id;
+                            price_Product.price = sellPrice;
+                            price_Product.price_debt = debtPrice;
+                            price_Product.updated_at = currentDate;
+                            price_Product.unit = product.unit;
+                            db.price_product.Add(price_Product);
 
-                                price_product price_Product = new price_product();
-                                price_Product.product_id = product.id;
-                                price_Product.price = decimal.Parse(sell_price.Replace(",", "").Replace(".", ""));
-                                price_Product.updated_at = currentDate;
-                                price_Product.unit = product.unit;
-                                db.price_product.Add(price_Product);
-                                if (CheckSwapValue == Constants.UNIT_CONVERT)
-                                {
-                                    price_product price_Product_swap = new price_product();
-                                    price_Product_swap.product_id = product.id;
-                                    price_Product_swap.price = decimal.Parse(price_swap.Replace(",", "").Replace(".", ""));
-                                    price_Product_swap.updated_at = currentDate;
-                                    price_Product_swap.unit = product.unit_swap;
-                                    db.price_product.Add(price_Product_swap);
-                                }
+                            price_product price_Product_swap = new price_product();
+                            price_Product_swap.product_id = product.id;
+                            price_Product_swap.price = priceSwap;
+                            price_Product_swap.price_debt = debtPriceSwap;
+                            price_Product_swap.updated_at = currentDate;
+                            price_Product_swap.unit = product.unit_swap;
+                            db.price_product.Add(price_Product_swap);
 
-                                inventory_order inventory_Order = new inventory_order();
-                                inventory_Order.code = "MPN" + CodeRandom.RandomCode();
-                                inventory_Order.create_at = currentDate;
-                                inventory_Order.update_at = currentDate;
-                                inventory_Order.create_by = User.Identity.GetUserId();
-                                inventory_Order.Total = decimal.Parse(purchase_price.Replace(",", "").Replace(".", "")) * product.quantity;
-                                inventory_Order.state = Constants.PAYED_ORDER;
-                                inventory_Order.supplier_id = SupplierDropdown;
-                                db.inventory_order.Add(inventory_Order);
+                            inventory_order inventory_Order = new inventory_order();
+                            inventory_Order.code = "MPN" + CodeRandom.RandomCode();
+                            inventory_Order.create_at = currentDate;
+                            inventory_Order.update_at = currentDate;
+                            inventory_Order.create_by = User.Identity.GetUserId();
+                            inventory_Order.Total = purchasePrice * product.quantity;
+                            inventory_Order.state = Constants.PAYED_ORDER;
+                            inventory_Order.supplier_id = SupplierDropdown;
+                            db.inventory_order.Add(inventory_Order);
 
-                                import_inventory inventory = new import_inventory();
-                                inventory.inventory_id = inventory_Order.id;
-                                inventory.product_id = product.id;
-                                inventory.quantity = product.quantity;
-                                inventory.price_import = int.Parse(purchase_price.Replace(",", "").Replace(".", ""));
-                                inventory.sold = 0;
-                                inventory.sold_swap = 0;
-                                inventory.return_quantity = 0;
-                                inventory.quantity_remaining = 0;
-                                inventory.created_by = User.Identity.GetUserId();
-                                inventory.created_at = currentDate;
-                                inventory.supplier_id = SupplierDropdown;
-                                db.import_inventory.Add(inventory);
-                                db.SaveChanges();
-                                message = "Tạo sản phẩm thành công";
-                                return Json(new { status, message, id = product.id }, JsonRequestBehavior.AllowGet);
-                            }
+                            import_inventory inventory = new import_inventory();
+                            inventory.inventory_id = inventory_Order.id;
+                            inventory.product_id = product.id;
+                            inventory.quantity = product.quantity;
+                            inventory.price_import = purchasePrice;
+                            inventory.sold = 0;
+                            inventory.sold_swap = 0;
+                            inventory.return_quantity = 0;
+                            inventory.quantity_remaining = 0;
+                            inventory.created_by = User.Identity.GetUserId();
+                            inventory.created_at = currentDate;
+                            inventory.supplier_id = SupplierDropdown;
+                            db.import_inventory.Add(inventory);
+                            db.SaveChanges();
+                            message = "Tạo sản phẩm thành công";
+                            return Json(new { status, message, id = product.id }, JsonRequestBehavior.AllowGet);
                         }
 
                     }
@@ -165,13 +156,13 @@ namespace CAP_TEAM05_2022.Controllers
             ViewBag.category_id = new SelectList(db.categories, "id", "code", product.category_id);
             ViewBag.group_id = new SelectList(db.groups, "id", "code", product.group_id);
             ViewBag.created_by = new SelectList(db.users, "id", "name", product.created_by);
-            return View("_Form",product);
+            return View("_Form", product);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "id,code,name,group_id,category_id,unit,purchase_price,sell_price,quantity,status,note,created_by,created_at,updated_at,deleted_at,name_group,name_category,unit_swap,quantity_swap,quantity_remaning,sell_price_swap")] product product,
-                                    string Editsell_price, int CheckSwapValue, string price_swap)
+                                    string Editsell_price, string Editprice_swap, string Editdebt_price, string Editdebt_price_swap)
         {
             if (ModelState.IsValid)
             {
@@ -183,7 +174,7 @@ namespace CAP_TEAM05_2022.Controllers
                     bool check = db.products.Where(p => p.name == product.name
                                             && p.group_id == product.group_id
                                             && p.category_id == product.category_id
-                                            && p.unit == product.unit 
+                                            && p.unit == product.unit
                                             && p.id != product.id).Any();
                     if (check)
                     {
@@ -199,57 +190,40 @@ namespace CAP_TEAM05_2022.Controllers
                         }
                         else
                         {
-                            if (CheckSwapValue == Constants.UNIT_CONVERT && (product.quantity_swap == null || String.IsNullOrEmpty(product.unit_swap) || String.IsNullOrEmpty(price_swap)))
-                            {
-                                status = false;
-                                message = "Thông tin quy đổi còn trống !";
-                            }
-                            else
-                            {
-                                decimal sellPrice = decimal.Parse(Editsell_price.Replace(",", "").Replace(".", ""));
-                                product.status = Constants.SHOW_STATUS;
-                                product.sell_price = sellPrice;
-                                product.updated_at = currentDate;
-                                if (CheckSwapValue != Constants.UNIT_CONVERT)
-                                {
-                                    product.unit_swap = null;
-                                    product.quantity_swap = null;
-                                    product.sell_price_swap = null;
-                                }
-                                else
-                                {
-                                    if (!String.IsNullOrEmpty(price_swap))
-                                    {
-                                        product.sell_price_swap = decimal.Parse(price_swap.Replace(",", "").Replace(".", ""));
-                                    }
-                                }
+                            decimal sellPrice = decimal.Parse(Editsell_price.Replace(",", "").Replace(".", ""));
+                            decimal priceSwap = decimal.Parse(Editprice_swap.Replace(",", "").Replace(".", ""));
+                            decimal debtPrice = decimal.Parse(Editdebt_price.Replace(",", "").Replace(".", ""));
+                            decimal debtPriceSwap = decimal.Parse(Editdebt_price_swap.Replace(",", "").Replace(".", ""));
 
-                                db.products.Add(product);
-                                if (sellPrice != product.sell_price)
-                                {
-                                    price_product price_Product = new price_product();
-                                    price_Product.product_id = product.id;
-                                    price_Product.price = sellPrice;
-                                    price_Product.updated_at = currentDate;
-                                    price_Product.unit = product.unit;
-                                    db.price_product.Add(price_Product);
-                                }
-                               
-                                if (CheckSwapValue == Constants.UNIT_CONVERT && decimal.Parse(price_swap.Replace(",", "").Replace(".", "")) != product.sell_price_swap)
-                                {
-                                    price_product price_Product_swap = new price_product();
-                                    price_Product_swap.product_id = product.id;
-                                    price_Product_swap.price = decimal.Parse(price_swap.Replace(",", "").Replace(".", ""));
-                                    price_Product_swap.updated_at = currentDate;
-                                    price_Product_swap.unit = product.unit_swap;
-                                    db.price_product.Add(price_Product_swap);
-                                }
-                                db.Entry(product).State = EntityState.Modified;
-
-                                db.SaveChanges();
-                                message = "Cập nhật sản phẩm thành công";
-                                return Json(new { status, message, id = product.id }, JsonRequestBehavior.AllowGet);
+                            if (sellPrice != product.sell_price || debtPrice != product.sell_price_debt)
+                            {
+                                price_product price_Product = new price_product();
+                                price_Product.product_id = product.id;
+                                price_Product.price = sellPrice;
+                                price_Product.price_debt = debtPrice;
+                                price_Product.updated_at = currentDate;
+                                price_Product.unit = product.unit;
+                                db.price_product.Add(price_Product);
                             }
+                            if (priceSwap != product.sell_price_swap || debtPriceSwap != product.sell_price_debt_swap)
+                            {
+                                price_product price_Product_swap = new price_product();
+                                price_Product_swap.product_id = product.id;
+                                price_Product_swap.price = priceSwap;
+                                price_Product_swap.price_debt = debtPriceSwap;
+                                price_Product_swap.updated_at = currentDate;
+                                price_Product_swap.unit = product.unit_swap;
+                                db.price_product.Add(price_Product_swap);
+                            }
+                            product.updated_at = currentDate;
+                            product.sell_price = sellPrice;
+                            product.sell_price_swap = priceSwap;
+                            product.sell_price_debt = debtPrice;
+                            product.sell_price_debt_swap = debtPriceSwap;
+                            db.Entry(product).State = EntityState.Modified;
+                            db.SaveChanges();
+                            message = "Cập nhật sản phẩm thành công";
+                            return Json(new { status, message, id = product.id }, JsonRequestBehavior.AllowGet);
                         }
 
                     }
@@ -285,7 +259,7 @@ namespace CAP_TEAM05_2022.Controllers
 
         public ActionResult _PriceHistory(int id)
         {
-            var priceHistory = db.price_product.Where(x=> x.product_id == id);
+            var priceHistory = db.price_product.Where(x => x.product_id == id);
             var product = db.products.Find(id);
             ViewBag.Product = product;
             return PartialView(priceHistory.ToList());
@@ -302,7 +276,7 @@ namespace CAP_TEAM05_2022.Controllers
         }
         public ActionResult Create_Product(string name_product, string unit,
             int quantity, int GroupProductDropdown, int CategoryDropdown,
-            string sell_price, string purchase_price, int? quantity_swap, string unit_swap,
+            string sell_price, string purchase_price, int quantity_swap, string unit_swap,
             string price_swap, int check_swap, int SupplierDropdown)
         {
             string message = "";
@@ -327,49 +301,41 @@ namespace CAP_TEAM05_2022.Controllers
                     }
                     else
                     {
-                        if (check_swap == Constants.UNIT_CONVERT && (quantity_swap == null || String.IsNullOrEmpty(unit_swap) || String.IsNullOrEmpty(price_swap)))
-                        {
-                            status = false;
-                            message = "Thông tin quy đổi còn trống !";
-                        }
-                        else
-                        {
-                            product product = new product();
-                            product.name = name_product;
-                            product.status = Constants.SHOW_STATUS;
-                            product.unit = unit;
-                            product.category_id = CategoryDropdown;
-                            product.group_id = GroupProductDropdown;
-                            product.created_by = User.Identity.GetUserId();
-                            product.sell_price = decimal.Parse(sell_price.Replace(",", "").Replace(".", ""));
-                            product.purchase_price = decimal.Parse(purchase_price.Replace(",", "").Replace(".", ""));
-                            product.quantity = quantity;
-                            product.created_at = DateTime.Now;
-                            product.code = "SP" + CodeRandom.RandomCode();
-                            product.quantity_swap = quantity_swap;
-                            product.unit_swap = unit_swap;
+                        product product = new product();
+                        product.name = name_product;
+                        product.status = Constants.SHOW_STATUS;
+                        product.unit = unit;
+                        product.category_id = CategoryDropdown;
+                        product.group_id = GroupProductDropdown;
+                        product.created_by = User.Identity.GetUserId();
+                        product.sell_price = decimal.Parse(sell_price.Replace(",", "").Replace(".", ""));
+                        product.purchase_price = decimal.Parse(purchase_price.Replace(",", "").Replace(".", ""));
+                        product.quantity = quantity;
+                        product.created_at = DateTime.Now;
+                        product.code = "SP" + CodeRandom.RandomCode();
+                        product.quantity_swap = quantity_swap;
+                        product.unit_swap = unit_swap;
 
-                            if (!String.IsNullOrEmpty(price_swap))
-                            {
-                                product.sell_price_swap = decimal.Parse(price_swap.Replace(",", "").Replace(".", ""));
-                            }
-                            db.products.Add(product);
-                            import_inventory inventory = new import_inventory();
-                            inventory.product_id = product.id;
-                            inventory.quantity = quantity;
-                            inventory.price_import = int.Parse(purchase_price.Replace(",", "").Replace(".", ""));
-                            inventory.sold = 0;
-                            inventory.sold_swap = 0;
-                            inventory.return_quantity = 0;
-                            inventory.quantity_remaining = 0;
-                            inventory.created_by = User.Identity.GetUserId();
-                            inventory.created_at = DateTime.Now;
-                            inventory.supplier_id = SupplierDropdown;
-                            db.import_inventory.Add(inventory);
-                            db.SaveChanges();
-                            message = "Tạo sản phẩm thành công";
-                            return Json(new { status, message, id = product.id }, JsonRequestBehavior.AllowGet);
+                        if (!String.IsNullOrEmpty(price_swap))
+                        {
+                            product.sell_price_swap = decimal.Parse(price_swap.Replace(",", "").Replace(".", ""));
                         }
+                        db.products.Add(product);
+                        import_inventory inventory = new import_inventory();
+                        inventory.product_id = product.id;
+                        inventory.quantity = quantity;
+                        inventory.price_import = int.Parse(purchase_price.Replace(",", "").Replace(".", ""));
+                        inventory.sold = 0;
+                        inventory.sold_swap = 0;
+                        inventory.return_quantity = 0;
+                        inventory.quantity_remaining = 0;
+                        inventory.created_by = User.Identity.GetUserId();
+                        inventory.created_at = DateTime.Now;
+                        inventory.supplier_id = SupplierDropdown;
+                        db.import_inventory.Add(inventory);
+                        db.SaveChanges();
+                        message = "Tạo sản phẩm thành công";
+                        return Json(new { status, message, id = product.id }, JsonRequestBehavior.AllowGet);
                     }
 
                 }
@@ -393,7 +359,17 @@ namespace CAP_TEAM05_2022.Controllers
                 if (check <= Constants.UNIT_CONVERT)
                 {
                     import_inventory inventory = db.import_inventory.Where(i => i.product_id == product.id && i.sold == 0).FirstOrDefault();
+                    inventory_order invenOrder = inventory.inventory_order;
                     db.import_inventory.Remove(inventory);
+                    if (!invenOrder.import_inventory.Any())
+                    {
+                        db.inventory_order.Remove(invenOrder);
+                    }
+                }
+                var priceProduct = db.price_product.Where(x => x.product_id == product.id).ToList();
+                foreach (var item in priceProduct)
+                {
+                    db.price_product.Remove(item);
                 }
                 product product1 = db.products.Find(product.id);
                 db.products.Remove(product1);
@@ -508,24 +484,14 @@ namespace CAP_TEAM05_2022.Controllers
             emp.id = product.id;
             emp.code = product.code;
             emp.name = product.name;
-            emp.note = "Số lượng tồn: " + product.quantity + product.unit;
-            if (product.quantity_swap != null)
-            {
-                emp.name_group = string.Format("{0:0,00}", product.sell_price_swap);
-                emp.note += "/" + product.quantity_swap + product.unit_swap;
-#pragma warning disable CS0472 // The result of the expression is always the same since a value of this type is never equal to 'null'
-                if (product.quantity_remaning != null)
-#pragma warning restore CS0472 // The result of the expression is always the same since a value of this type is never equal to 'null'
-                {
-                    emp.note += " và " + product.quantity_remaning + product.unit_swap + " lẻ";
-                }
-            }
-
-
+            emp.name_group = string.Format("{0:0,00}", product.sell_price_swap);
             emp.quantity = product.quantity;
             emp.unit = product.unit;
             emp.unit_swap = product.unit_swap;
             emp.name_category = product.sell_price.ToString("N0");
+            emp.note = "Số lượng tồn: " + product.quantity + product.unit;
+            emp.note += "/" + product.quantity_swap + product.unit_swap;
+            emp.note += " và " + product.quantity_remaning + product.unit_swap + " lẻ";
             return Json(emp);
         }
 

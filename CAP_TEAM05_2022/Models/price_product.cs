@@ -28,6 +28,7 @@ namespace CAP_TEAM05_2022.Models
         public int product_id { get; set; }
         public System.DateTime updated_at { get; set; }
         public string unit { get; set; }
+        public decimal price_debt { get; set; }
     
         public virtual product product { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -24,7 +24,8 @@
                                     <tr>
                                         <th class="text-center">STT</th>
                                         <th class="text-center">Đơn vị</th>
-                                        <th class="text-center">Giá sản phẩm</th>
+                                        <th class="text-center">Giá bán </th>
+                                        <th class="text-center">Giá bán ghi nợ</th>
                                         <th class="text-center">Ngày cập nhật</th>
                                     </tr>
                                 </thead>
@@ -42,6 +43,9 @@
                                         </td>
                                         <td class="text-center">
                                             @item.price.ToString("N0")
+                                        </td>
+                                        <td class="text-center">
+                                            @item.price_debt.ToString("N0")
                                         </td>
                                         <td class="text-center">
                                             @String.Format("{0:HH:mm - dd/MM/yyy}", item.updated_at)

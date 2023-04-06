@@ -20,14 +20,6 @@
 
                 <div class="modal-body ">
                     @Html.AntiForgeryToken()
-                    @if (!isCreate)
-                    {
-                        @Html.HiddenFor(m => m.id)
-                        @Html.HiddenFor(m => m.code)
-                        @Html.HiddenFor(m => m.created_at)
-                        @Html.HiddenFor(m => m.created_by)
-                        @Html.HiddenFor(m => m.status)
-                    }
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -85,7 +77,7 @@
 
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label>
                                     Tồn kho<span class="text-danger">*</span>
@@ -140,6 +132,21 @@
                             </div>
                         </div>
 
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="product-price-import">
+                                    Đơn giá nhập<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <input type="text" placeholder="Nhập giá tiền" id="purchase_price" class="form-control Price"
+                                           data-val="true" data-val-required="Vui lòng nhập đơn giá nhập !" pattern="[0-9.,]+" data-type="number" name="purchase_price" required>
+                                    @Html.ValidationMessage("sell_price", "", new { @class = "text-danger" })
+
+                                </div>
+                                <!---->
+                            </div>
+                        </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>
@@ -156,28 +163,27 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="product-price-import">
-                                    Đơn giá nhập<span class="text-danger">*</span>
+                                <label>
+                                    Đơn giá bán ghi nợ <span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input type="text" placeholder="Nhập giá tiền" id="purchase_price" class="form-control Price"
-                                           data-val="true" data-val-required="Vui lòng nhập đơn giá nhập !" pattern="[0-9.,]+" data-type="number" name="purchase_price" required>
-                                    @Html.ValidationMessage("sell_price", "", new { @class = "text-danger" })
+                                    <input type="text" placeholder="Nhập giá tiền" id="product-price-debt" class="form-control Price"
+                                           data-val="true" data-val-required="Vui lòng nhập đơn giá bán ghi nợ !" pattern="[0-9.,]+" data-type="number" name="debt_price" required>
+                                    @Html.ValidationMessage("debt_price", "", new { @class = "text-danger" })
+                                </div> <!---->
 
-                                </div>
-                                <!---->
                             </div>
                         </div>
-
                         <div class="col-md-12 mt-2">
                             <div class="form-group">
-                                <input type="checkbox" id="CheckSwap" name="swap">
-                                <input type="number" id="CheckSwapValue" name="CheckSwapValue" hidden value="0" />
                                 <label for="swap">Quy đổi sang đơn vị khác</label>
                             </div>
                         </div>
-                        <div class="col-md-3 swap" style="display: none;">
+                        <div class="col-md-2 swap">
                             <div class="form-group">
+                                <label>
+                                    Quy đổi <span class="text-danger">*</span>
+                                </label>
                                 <div class="position-relative">
                                     <div class="input-group mb-3">
                                         <input type="number" value="1" disabled data-model="unit_current_quantity" id="unit-quantity-current" aria-describedby="basic-addon2" class="form-control"
@@ -189,18 +195,21 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-1 col-icon swap" style="display: none;">
-                            <div class="form-group">
+                        <div class="col-md-1 col-icon swap">
+                            <div class="form-group text-center">
                                 <i aria-hidden="true" class="feather icon-arrow-right icon-swap">
                                 </i>
                             </div>
                         </div>
-                        <div class="col-md-4 swap" style="display: none;">
+                        <div class="col-md-3 swap">
                             <div class="form-group">
+                                <label>
+                                    Số lượng quy đổi <span class="text-danger">*</span>
+                                </label>
                                 <div class="position-relative">
                                     <div class="input-group mb-3">
                                         <input type="number" name="quantity_swap" data-model="unit_swap_quantity" placeholder="Nhập số lượng"
-                                               required data-val="true" data-val-required="Vui lòng nhập số lượng quy đổi !" id="unit-quantity-input" max="999999999999" aria-describedby="unit-quantity" class="form-control">
+                                               required data-val="true" data-val-required="Vui lòng nhập số lượng quy đổi !" id="unit-quantity-input" min="1" max="999999999999" aria-describedby="unit-quantity" class="form-control">
                                         <div class="input-group-append">
                                             <select id="unit_swap" name="unit_swap" class="input-group-text select-unit" required data-val="true" data-val-required="Vui lòng đơn vị quy đổi !">
                                                 <option disabled="disabled" value="" selected>Đơn vị</option>
@@ -242,12 +251,25 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 swap" style="display: none;">
+                        <div class="col-md-3 swap">
                             <div class="form-group">
+                                <label>
+                                    Đơn giá bán (theo đơn vị quy đổi) <span class="text-danger">*</span>
+                                </label>
                                 <input type="text" name="price_swap" placeholder="Nhập giá tiền" id="product-price-swap"
-                                       required data-val="true" data-val-required="Vui lòng nhập đơn giá quy đổi !" data-model="unit_price" class="form-control Price">
+                                       required data-val="true" data-val-required="Vui lòng nhập đơn giá quy đổi !" class="form-control Price">
                             </div>
                             @Html.ValidationMessage("price_swap", "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-3 swap">
+                            <div class="form-group">
+                                <label>
+                                    Đơn giá bán ghi nợ (theo đơn vị ghi nợ) <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" name="debt_price_swap" placeholder="Nhập giá tiền" id="product-price-swap"
+                                       required data-val="true" data-val-required="Vui lòng nhập đơn giá ghi nợ khi quy đổi !" class="form-control Price">
+                            </div>
+                            @Html.ValidationMessage("debt_price_swap", "", new { @class = "text-danger" })
                         </div>
 
                     </div>
@@ -301,18 +323,6 @@
                     }
         });
 
-            document.getElementById('CheckSwap').onclick = function (e) {
-                if (this.checked) {
-                $(".swap").show();
-                    $("#CheckSwapValue").val(@Constants.UNIT_CONVERT);
-                var UnitBy = $("#UnitBy").val()
-                document.getElementsByClassName('UnitCurrent')[0].innerHTML = UnitBy;
-                }
-                else {
-                    $(".swap").hide();
-                    $("#CheckSwapValue").val(@Constants.NO_UNIT_CONVERT);
-                }
-        };
             $("#UnitBy").change(function () {
                 console.log("hihi");
             var UnitBy = $("#UnitBy").val()

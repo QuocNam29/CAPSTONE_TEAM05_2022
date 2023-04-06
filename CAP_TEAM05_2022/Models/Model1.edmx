@@ -207,6 +207,7 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="price" Type="money" Nullable="false" />
+          <Property Name="price_debt" Type="money" Nullable="false" />
           <Property Name="product_id" Type="int" Nullable="false" />
           <Property Name="updated_at" Type="datetime" Nullable="false" />
           <Property Name="unit" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -223,6 +224,7 @@
           <Property Name="unit" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="purchase_price" Type="money" Nullable="false" />
           <Property Name="sell_price" Type="money" Nullable="false" />
+          <Property Name="sell_price_debt" Type="money" Nullable="false" />
           <Property Name="quantity" Type="int" Nullable="false" />
           <Property Name="status" Type="int" Nullable="false" />
           <Property Name="note" Type="nvarchar(max)" />
@@ -232,10 +234,11 @@
           <Property Name="deleted_at" Type="datetime2" Precision="0" />
           <Property Name="name_group" Type="nvarchar" MaxLength="255" />
           <Property Name="name_category" Type="nvarchar" MaxLength="255" />
-          <Property Name="unit_swap" Type="nvarchar" MaxLength="100" />
-          <Property Name="quantity_swap" Type="int" />
+          <Property Name="unit_swap" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="quantity_swap" Type="int" Nullable="false" />
           <Property Name="quantity_remaning" Type="int" Nullable="false" />
-          <Property Name="sell_price_swap" Type="money" />
+          <Property Name="sell_price_swap" Type="money" Nullable="false" />
+          <Property Name="sell_price_debt_swap" Type="money" Nullable="false" />
         </EntityType>
         <EntityType Name="return_details">
           <Key>
@@ -1388,10 +1391,10 @@
           <Property Name="deleted_at" Type="DateTime" Precision="0" />
           <Property Name="name_group" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="name_category" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="unit_swap" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="quantity_swap" Type="Int32" />
+          <Property Name="unit_swap" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="quantity_swap" Type="Int32" Nullable="false" />
           <Property Name="quantity_remaning" Type="Int32" Nullable="false" />
-          <Property Name="sell_price_swap" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="sell_price_swap" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
           <NavigationProperty Name="carts" Relationship="Self.carts_ibfk_1" FromRole="products" ToRole="carts" />
           <NavigationProperty Name="category" Relationship="Self.products_ibfk_4" FromRole="products" ToRole="categories" />
           <NavigationProperty Name="group" Relationship="Self.products_ibfk_5" FromRole="products" ToRole="groups" />
@@ -1401,6 +1404,8 @@
           <NavigationProperty Name="return_details1" Relationship="Self.FK_return_details_products1" FromRole="products" ToRole="return_details" />
           <NavigationProperty Name="sale_details" Relationship="Self.sale_details_ibfk_1" FromRole="products" ToRole="sale_details" />
           <NavigationProperty Name="price_product" Relationship="CP25Team05Model.FK_price_product_products" FromRole="product" ToRole="price_product" />
+          <Property Name="sell_price_debt" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="sell_price_debt_swap" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
         </EntityType>
         <EntityType Name="return_details">
           <Key>
@@ -2256,6 +2261,7 @@
           <NavigationProperty Name="sale_details" Relationship="CP25Team05Model.FK_sale_details_price_product" FromRole="price_product" ToRole="sale_details" />
           <NavigationProperty Name="carts" Relationship="CP25Team05Model.FK_carts_price_product" FromRole="price_product" ToRole="cart" />
           <Property Name="unit" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="price_debt" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
         </EntityType>
         <Association Name="FK_price_product_products">
           <End Type="CP25Team05Model.product" Role="product" Multiplicity="1" />
@@ -2535,6 +2541,8 @@
           <EntitySetMapping Name="products">
             <EntityTypeMapping TypeName="CP25Team05Model.product">
               <MappingFragment StoreEntitySet="products">
+                <ScalarProperty Name="sell_price_debt_swap" ColumnName="sell_price_debt_swap" />
+                <ScalarProperty Name="sell_price_debt" ColumnName="sell_price_debt" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="code" ColumnName="code" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -2690,6 +2698,7 @@
           <EntitySetMapping Name="price_product">
             <EntityTypeMapping TypeName="CP25Team05Model.price_product">
               <MappingFragment StoreEntitySet="price_product">
+                <ScalarProperty Name="price_debt" ColumnName="price_debt" />
                 <ScalarProperty Name="unit" ColumnName="unit" />
                 <ScalarProperty Name="updated_at" ColumnName="updated_at" />
                 <ScalarProperty Name="product_id" ColumnName="product_id" />

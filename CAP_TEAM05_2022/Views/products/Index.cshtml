@@ -452,99 +452,7 @@
         </form>
     </div>
 </div>
-<div id="EditProduct" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="EditProductLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <form class="needs-validation ProductForm" method="post" action="@Url.Action("UpdateProduct","products")" id="EditProduct" novalidate>
-            <div class="modal-content">
-                <div class="modal-header bg-primary">
-                    <h5 class="modal-title" id="EditProductLabel">Chỉnh sửa thông tin sản phẩm</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                </div>
 
-                <div class="modal-body ">
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>
-                                    Tên sản phẩm<span class="text-danger">*</span>
-                                </label>
-                                <input hidden id="edit_id" name="Product_id" />
-                                <div class="position-relative">
-                                    <input type="text" placeholder="Nhập tên sản phẩm" id="edit_name" class="form-control" name="name_product" pattern="\S+.*" required>
-                                    <div class="invalid-feedback">
-                                        Vui lòng nhập tên sản phẩm !
-                                    </div>
-                                </div> <!---->
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>
-                                    Đơn vị tính<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    <input type="text" placeholder="Nhập đơn vị tính " id="edit_unit" class="form-control" name="unit" pattern="\S+.*" required>
-                                    <div class="invalid-feedback">
-                                        Vui lòng nhập tên đơn vị tính !
-                                    </div>
-                                </div> <!---->
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>
-                                    Nhóm hàng<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    <select class="custom-select" id="edit_GroupProduct" name="GroupProductDropdown" required>
-                                    </select>
-                                    <div class="invalid-feedback">Vui lòng chọn nhóm hàng</div>
-                                </div> <!---->
-
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>
-                                    Danh mục sản phẩm<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    <select class="custom-select" id="edit_Category" name="CategoryDropdown" required>
-                                    </select>
-                                    <div class="invalid-feedback">Vui lòng chọn danh mục</div>
-                                </div> <!---->
-
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>
-                                    Đơn giá bán<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    <input type="text" placeholder="Nhập giá tiền" id="edit_sell_price" max="999999999999" class="form-control Price"
-                                           pattern="[0-9.,]+" data-type="number" name="sell_price" required>
-                                    <div class="invalid-feedback">
-                                        Giá tiền bán không được để trống !
-                                    </div>
-                                </div> <!---->
-
-                            </div>
-                        </div>
-
-                    </div>
-
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
-                    <button type="submit" class="btn btn-primary">thay đổi</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
 <div class="table-responsive" id="dataContainer2">
 </div>
 @{ Html.RenderAction("ProductList_import", "Excel");}
@@ -556,14 +464,15 @@
                 pagingType: 'full_numbers',
             });
         });
-        function createProduct() {
+
+        function createProduct(id) {
             if ($('#isCreate').val() != undefined && $('#isCreate').val() == @Constants.CREATE_FORM) {
                 $('#ProductForm').modal('show');
             } else {
               $.ajax({
                 url: '@Url.Action("_Form", "products")',
                 type: 'GET',
-                data: {},
+                data: {id : id},
                 success: function (response) {
                     // Add response in Modal body
                     $('#dataContainer2').html(response);
@@ -574,6 +483,7 @@
 
             }
         }
+
         function EditProduct(id) {
 
               $.ajax({
