@@ -157,6 +157,79 @@
 
                                                 </tbody>
                                             }
+                                            else
+                                            {
+                                <tbody>
+                                    <tr>
+                                        <td colspan="6" class="text-center">
+                                            <b>ĐƠN NỢ CŨ</b>
+                                            </td>
+                                </tbody>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="3">
+                                            <p>
+                                                Mã đơn hàng: <span>@item.code</span>
+                                            </p>
+                                            <!---->
+                                            @foreach (var item1 in history_debt)
+                                            {
+                                                if (item1.return_supplier_id == null)
+                                                {
+                                                    no_debt++;
+                                                    <p>
+                                                        Đợt @no_debt: <span>
+                                                            @String.Format("{0:0,00}", item1.paid)VNĐ
+                                                        </span>
+                                                    </p>
+                                                }
+
+                                            }
+                                        </td>
+                                        <td colspan="2">
+                                            <p>
+                                                Ngày mua hàng : <span> @String.Format("{0:HH:mm - dd/MM/yyy}", item.create_at)</span>
+                                            </p>
+                                            <!---->
+                                            @foreach (var item1 in history_debt)
+                                            {
+                                                if (item1.return_supplier_id == null)
+                                                {
+                                                    <p>
+                                                        Ngày thu nợ: <span> @String.Format("{0:HH:mm - dd/MM/yyy}", item1.created_at)</span>
+                                                    </p>
+                                                }
+                                            }
+                                        </td>
+                                        <td colspan="2" class="text-left">
+                                            <div class="total-div">
+                                                <div>
+                                                    Thành tiền:
+                                                    <span class="text">
+                                                        @String.Format("{0:0,00}", item.Total)VNĐ
+                                                    </span>
+                                                </div>
+                                                @if (item.payment >= 0)
+                                                {
+                                                    <div>
+                                                        Đã thanh toán:
+                                                        <span class="text-success">
+                                                            @String.Format("{0:0,00}", item.payment)VNĐ
+                                                        </span>
+                                                    </div>
+                                                    <div>
+                                                        Còn nợ:
+                                                        <span class="text-danger">
+                                                            @String.Format("{0:0,00}", item.Total - item.payment)VNĐ
+                                                        </span>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                                            }
                                         }
                                     }
                                     else

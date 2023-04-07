@@ -1,4 +1,5 @@
-﻿using CAP_TEAM05_2022.Models;
+﻿using CAP_TEAM05_2022.Helper;
+using CAP_TEAM05_2022.Models;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Data.Entity;
@@ -11,13 +12,111 @@ namespace CAP_TEAM05_2022.Controllers
 {
     public class Debts_CollectionsController : Controller
     {
+        public Debts_CollectionsController()
+        {
+            ViewBag.isCreate = false;
+        }
         private CP25Team05Entities db = new CP25Team05Entities();
 
         // GET: Debts_Collections
         public ActionResult Index()
         {
+
             return View();
         }
+        [HttpGet]
+        public PartialViewResult _FormOldDebt()
+        {
+            ViewBag.isCreate = false;
+            ViewBag.SupplierId = new SelectList(db.customers.Where(x => x.type == Constants.SUPPLIER).ToList(), "id", "name");
+            return PartialView("_FormOldDebt", new inventory_order());
+        }
+        [ValidateAntiForgeryToken]
+        public ActionResult OldDebt([Bind(Include = "id,code,supplier_id,create_at")] inventory_order inventory_order,
+                                    string debtPrice, string paymentPrice)
+        {
+            string message = "";
+            bool status = true;
+            try
+            {
+                if (ModelState.IsValid)
+                {
+
+                    DateTime currentDate = DateTime.Now;
+                    decimal payment = decimal.Parse(paymentPrice.Replace(",", "").Replace(".", ""));
+                    decimal total = decimal.Parse(debtPrice.Replace(",", "").Replace(".", ""));
+
+                    inventory_order.code = "MNC" + CodeRandom.RandomCode();
+                    inventory_order.update_at = currentDate;
+                    inventory_order.create_by = User.Identity.GetUserId();
+                    inventory_order.Total = total;
+                    inventory_order.state = Constants.OLD_DEBT_ORDER;
+                    inventory_order.payment = payment;
+                    inventory_order.debt = inventory_order.Total - inventory_order.payment;
+
+                    db.inventory_order.Add(inventory_order);
+                    var check_debt = db.debts.Where(d => d.inventory_order.supplier_id == inventory_order.supplier_id && d.inventory_id != null).Count();
+                    if (check_debt > 0)
+                    {
+                        var last_debt = db.debts.Where(d => d.inventory_order.supplier_id == inventory_order.supplier_id && d.inventory_id != null).OrderByDescending(o => o.id).FirstOrDefault();
+                        debt debt = new debt();
+                        debt.inventory_id = inventory_order.id;
+                        debt.paid = inventory_order.payment;
+                        debt.created_at = currentDate;
+                        debt.created_by = User.Identity.GetUserId();
+                        debt.total = last_debt.total + inventory_order.payment;
+                        debt.debt1 = total;
+                        debt.remaining = last_debt.remaining + (total - debt.paid);
+                        db.debts.Add(debt);
+
+                        var last_customer_Debt = db.customer_debt.Where(d => d.customer_id == inventory_order.supplier_id && d.inventory_id != null).OrderByDescending(o => o.id).FirstOrDefault();
+                        customer_debt customer_Debt = new customer_debt();
+                        customer_Debt.inventory_id = inventory_order.id;
+                        customer_Debt.created_at = currentDate;
+                        customer_Debt.created_by = User.Identity.GetUserId();
+                        customer_Debt.customer_id = inventory_order.supplier_id;
+                        customer_Debt.debt = (total - debt.paid);
+                        customer_Debt.remaining = last_debt.remaining + (total - debt.paid);
+                        db.customer_debt.Add(customer_Debt);
+                    }
+                    else
+                    {
+                        debt debt = new debt();
+                        debt.inventory_id = inventory_order.id;
+                        debt.paid = inventory_order.payment;
+                        debt.created_at = currentDate;
+                        debt.created_by = User.Identity.GetUserId();
+                        debt.total = inventory_order.payment;
+                        debt.debt1 = total;
+                        debt.remaining = total - debt.paid;
+                        db.debts.Add(debt);
+
+                        customer_debt customer_Debt = new customer_debt();
+                        customer_Debt.inventory_id = inventory_order.id;
+                        customer_Debt.created_at = currentDate;
+                        customer_Debt.created_by = User.Identity.GetUserId();
+                        customer_Debt.customer_id = inventory_order.supplier_id;
+                        customer_Debt.debt = total - debt.paid;
+                        customer_Debt.remaining = total - debt.paid;
+                        db.customer_debt.Add(customer_Debt);
+
+                        db.SaveChanges();
+                    }
+                    db.SaveChanges();
+
+                    message = "Tạo thành công đơn nợ cũ với nhà cung cấp";
+                    return Json(new { status, message }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception e)
+            {
+                status = false;
+                message = e.Message;
+            }
+            ViewBag.isCreate = true;
+            return Json(new { status, message }, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult _CustomerDebtsList(DateTime? date_Start, DateTime? date_End)
         {
             if (date_Start == null)
@@ -55,7 +154,7 @@ namespace CAP_TEAM05_2022.Controllers
                                                      || s.created_at.Value.Day == date_End.Value.Day
                                                      && s.created_at.Value.Month == date_End.Value.Month
                                                      && s.created_at.Value.Year == date_End.Value.Year);
-            var customer = db.customers.Where(c => c.inventory_order.Where(s => s.state == Constants.DEBT_ORDER).Count() > 0).ToList();
+            var customer = db.customers.Where(c => c.inventory_order.Where(s => s.state == Constants.DEBT_ORDER || s.state == Constants.OLD_DEBT_ORDER).Count() > 0).ToList();
             return PartialView(customer.OrderByDescending(c => c.id).ToList());
         }
         public ActionResult _DebtsDetailsList(int customer_id)
@@ -76,8 +175,8 @@ namespace CAP_TEAM05_2022.Controllers
             }
             else if (method == Constants.DEBT_ORDER)
             {
-                emp.total = (decimal)customer.inventory_order.Where(s => s.state == Constants.DEBT_ORDER).Sum(s => s.Total);
-                emp.prepayment = customer.inventory_order.Where(s => s.state == Constants.DEBT_ORDER).Sum(s => s.payment);
+                emp.total = (decimal)customer.inventory_order.Where(s => s.state == Constants.DEBT_ORDER || s.state == Constants.OLD_DEBT_ORDER).Sum(s => s.Total);
+                emp.prepayment = customer.inventory_order.Where(s => s.state == Constants.DEBT_ORDER || s.state == Constants.OLD_DEBT_ORDER).Sum(s => s.payment);
             }
             emp.code = customer.code;
             emp.note = customer.name;

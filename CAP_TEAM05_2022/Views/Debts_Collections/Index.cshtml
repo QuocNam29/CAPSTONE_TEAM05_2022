@@ -4,6 +4,9 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
 }
+@section style {
+    <link href="~/Content/css/custom-css.css" rel="stylesheet" />
+}
 <style>
     .table thead th {
         background: #1abc9c !important;
@@ -92,7 +95,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <button class="btn btn-primary float-right mb-3" data-toggle="modal" data-target="#oldDebt">Tạo mới</button>
+                                                        <button class="btn btn-primary float-right mb-3" onclick="createOldDebt()">Tạo mới</button>
                                                     </div>
                                                 </div>
                                                 <div class="table-responsive" id="dataContainer1">
@@ -250,7 +253,8 @@
 </div>
 
 @section scripts {
-
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     <script>
      var row;
     $(document).ready(function () {
@@ -312,7 +316,26 @@
                 console.log(errorThrown)
                 alert("Something Went Wrong, Try Later");
             });
-    }
+        }
+        function createOldDebt() {
+           if ($('#isCreate').val() != undefined && $('#isCreate').val() == @Constants.CREATE_FORM) {
+                $('#OldDebtCollectionModal').modal('show');
+
+            } else {
+            $.ajax({
+                url: '@Url.Action("_FormOldDebt", "Debts_Collections")',
+                type: 'GET',
+                data: {},
+                success: function (response) {
+                    // Add response in Modal body
+                    $('#dataContainer2').html(response);
+                    // Display Modal
+                    $('#OldDebtCollectionModal').modal('show');
+                }
+            });
+
+            }
+        }
     </script>
 }
 

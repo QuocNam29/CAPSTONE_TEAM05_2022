@@ -724,6 +724,7 @@
     <Content Include="Views\Revenues\_PrintRevenueList_Date.cshtml" />
     <Content Include="Views\Revenues\_PrintRevenueList_Month.cshtml" />
     <Content Include="Views\products\_FormEdit.cshtml" />
+    <Content Include="Views\Debts_Collections\_FormOldDebt.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

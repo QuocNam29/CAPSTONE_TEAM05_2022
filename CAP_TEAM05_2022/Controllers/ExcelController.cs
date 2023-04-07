@@ -149,19 +149,29 @@ namespace CAP_TEAM05_2022.Controllers
             var list_supplier = db.customers.Where(g => g.type == Constants.SUPPLIER).ToList();
             ExcelWorksheet Sheet = ep.Workbook.Worksheets.Add("NhapSanPham");
             FormatExcel(Sheet, 3);
-            Sheet.Cells["A1"].Value = "Tên sản phẩm*";
-            Sheet.Cells["B1"].Value = "Nhóm hàng*";
-            Sheet.Cells["C1"].Value = "Danh mục*";
-            Sheet.Cells["D1"].Value = "Nhà cung cấp*";
-            Sheet.Cells["E1"].Value = "Đơn vị*";
-            Sheet.Cells["F1"].Value = "Số lượng tồn*";
-            Sheet.Cells["G1"].Value = "Giá bán*";
-            Sheet.Cells["H1"].Value = "Giá nhập*";
-            Sheet.Cells["I1"].Value = "Đơn vị quy đổi \r\n (bao -> kg)";
-            Sheet.Cells["J1"].Value = "Số lượng quy đổi \r\n (1bao = 50kg)";
-            Sheet.Cells["K1"].Value = "Đơn giá bán \r\n (theo quy đổi)";
+            Sheet.Cells["A1"].Value = "Tên sản phẩm";
+            Sheet.Cells["B1"].Value = "Nhà cung cấp";
+            Sheet.Cells["C1"].Value = "Nhóm hàng";
+            Sheet.Cells["D1"].Value = "Danh mục";
+            Sheet.Cells["E1"].Value = "Số lượng tồn";
+            Sheet.Cells["F1"].Value = "Đơn vị";
+            Sheet.Cells["G1"].Value = "Số lượng quy đổi";
+            Sheet.Cells["H1"].Value = "Đơn vị quy đổi";
+            Sheet.Cells["I1"].Value = "Đơn giá nhập";
+            Sheet.Cells["J1"].Value = "Đơn giá bán";
+            Sheet.Cells["K1"].Value = "Đơn giá bán nợ";
 
-            var validation_group = Sheet.Cells["B2:B999999"].DataValidation.AddListDataValidation();
+            var validation_supplier = Sheet.Cells["B2:B999999"].DataValidation.AddListDataValidation();
+            validation_supplier.ShowErrorMessage = true;
+            validation_supplier.ErrorStyle = ExcelDataValidationWarningStyle.information;
+            validation_supplier.ErrorTitle = "Lỗi nhập nhà cung cấp";
+            validation_supplier.Error = "Nhà cung cấp này không có trong hệ thống, vui lòng chọn lại !";
+            foreach (var item in list_supplier)
+            {
+                validation_supplier.Formula.Values.Add(item.name);
+            }
+
+            var validation_group = Sheet.Cells["C2:C999999"].DataValidation.AddListDataValidation();
             validation_group.ShowErrorMessage = true;
             validation_group.ErrorStyle = ExcelDataValidationWarningStyle.information;
             validation_group.ErrorTitle = "Lỗi nhập nhóm hàng";
@@ -171,7 +181,7 @@ namespace CAP_TEAM05_2022.Controllers
                 validation_group.Formula.Values.Add(item.name);
             }
 
-            var validation_category = Sheet.Cells["C2:C999999"].DataValidation.AddListDataValidation();
+            var validation_category = Sheet.Cells["D2:D999999"].DataValidation.AddListDataValidation();
             validation_category.ShowErrorMessage = true;
             validation_category.ErrorStyle = ExcelDataValidationWarningStyle.information;
             validation_category.ErrorTitle = "Lỗi nhập danh mục";
@@ -181,15 +191,7 @@ namespace CAP_TEAM05_2022.Controllers
                 validation_category.Formula.Values.Add(item.name);
             }
 
-            var validation_supplier = Sheet.Cells["D2:D999999"].DataValidation.AddListDataValidation();
-            validation_supplier.ShowErrorMessage = true;
-            validation_supplier.ErrorStyle = ExcelDataValidationWarningStyle.information;
-            validation_supplier.ErrorTitle = "Lỗi nhập nhà cung cấp";
-            validation_supplier.Error = "Nhà cung cấp này không có trong hệ thống, vui lòng chọn lại !";
-            foreach (var item in list_supplier)
-            {
-                validation_supplier.Formula.Values.Add(item.name);
-            }
+            
 
             Sheet.Cells["A:AZ"].AutoFitColumns();
             Response.Clear();
@@ -208,6 +210,7 @@ namespace CAP_TEAM05_2022.Controllers
                 // Lấy range vào tạo format cho range đó ở đây là từ A1 tới I1
                 using (var range = Sheet.Cells["A1:J1"])
                 {
+                    Sheet.Cells["A1:J1"].Style.Font.Size = 13;
 
                     // Canh giữa cho các text
                     range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
@@ -228,6 +231,7 @@ namespace CAP_TEAM05_2022.Controllers
                 // Lấy range vào tạo format cho range đó ở đây là từ A1 tới I1
                 using (var range = Sheet.Cells["A1:B1"])
                 {
+                    Sheet.Cells["A1:B1"].Style.Font.Size = 13;
 
                     // Canh giữa cho các text
                     range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
@@ -248,6 +252,7 @@ namespace CAP_TEAM05_2022.Controllers
                 // Lấy range vào tạo format cho range đó ở đây là từ A1 tới K1
                 using (var range = Sheet.Cells["A1:K1"])
                 {
+                    Sheet.Cells["A1:K1"].Style.Font.Size = 13;
 
                     // Canh giữa cho các text
                     range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
@@ -259,6 +264,7 @@ namespace CAP_TEAM05_2022.Controllers
                 }
                 using (var range = Sheet.Cells["A:C"])
                 {
+
                     // Canh giữa cho các text
                     range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 }
@@ -268,6 +274,7 @@ namespace CAP_TEAM05_2022.Controllers
                 // Lấy range vào tạo format cho range đó ở đây là từ A1 tới I1
                 using (var range = Sheet.Cells["A1:F1"])
                 {
+                    Sheet.Cells["A1:F1"].Style.Font.Size = 13;
 
                     // Canh giữa cho các text
                     range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
@@ -288,6 +295,7 @@ namespace CAP_TEAM05_2022.Controllers
                 // Lấy range vào tạo format cho range đó ở đây là từ A1 tới I1
                 using (var range = Sheet.Cells["A1:H1"])
                 {
+                    Sheet.Cells["A1:H1"].Style.Font.Size = 13;
 
                     // Canh giữa cho các text
                     range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
@@ -372,6 +380,7 @@ namespace CAP_TEAM05_2022.Controllers
                     int rowExist = 0;
                     int missData = 0;
                     int row_excel = 1;
+                    DateTime curentDate = DateTime.Now;
                     Product_list.Clear();
                     try
                     {
@@ -380,33 +389,40 @@ namespace CAP_TEAM05_2022.Controllers
                         {
                             row_excel++;
                             if (!String.IsNullOrEmpty(row["Tên sản phẩm"].ToString().Trim())
+                               && !String.IsNullOrEmpty(row["Nhà cung cấp"].ToString().Trim())
                                && !String.IsNullOrEmpty(row["Nhóm hàng"].ToString().Trim())
                            && !String.IsNullOrEmpty(row["Danh mục"].ToString().Trim())
+                           && !String.IsNullOrEmpty(row["Số lượng tồn"].ToString().Trim())
                             && !String.IsNullOrEmpty(row["Đơn vị"].ToString().Trim())
-                             && !String.IsNullOrEmpty(row["Giá bán"].ToString().Trim())
-                              && !String.IsNullOrEmpty(row["Giá nhập"].ToString().Trim())
-                              && !String.IsNullOrEmpty(row["Số lượng nhập"].ToString().Trim()))
+                            && !String.IsNullOrEmpty(row["Số lượng quy đổi"].ToString().Trim())
+                            && !String.IsNullOrEmpty(row["Đơn vị quy đổi"].ToString().Trim())
+                             && !String.IsNullOrEmpty(row["Đơn giá nhập"].ToString().Trim())
+                              && !String.IsNullOrEmpty(row["Đơn giá bán"].ToString().Trim())
+                              && !String.IsNullOrEmpty(row["Đơn giá bán nợ"].ToString().Trim()))
                             {
                                 Session["name_product"] = row["Tên sản phẩm"].ToString().Trim();
+                                Session["supplier_product"] = row["Nhà cung cấp"].ToString().Trim();
                                 Session["group_product"] = row["Nhóm hàng"].ToString().Trim();
                                 Session["category_product"] = row["Danh mục"].ToString().Trim();
+                                Session["quantity_product"] = row["Số lượng tồn"].ToString().Trim();
                                 Session["unit_product"] = row["Đơn vị"].ToString().Trim();
-                                Session["sell_price_product"] = row["Giá bán"].ToString().Trim();
-                                Session["purchase_price_product"] = row["Giá nhập"].ToString().Trim();
-                                Session["quantity_product"] = row["Số lượng nhập"].ToString().Trim();
+                                Session["quantity_swap_product"] = row["Số lượng quy đổi"].ToString().Trim();
+                                Session["unit_swap_product"] = row["Đơn vị quy đổi"].ToString().Trim();
+                                Session["purchase_price_product"] = row["Đơn giá nhập"].ToString().Trim();
+                                Session["sell_price_product"] = row["Đơn giá bán"].ToString().Trim();
+                                Session["sell_debt_product"] = row["Đơn giá bán nợ"].ToString().Trim();
 
                             }
-                            else if (String.IsNullOrEmpty(row["Nhóm hàng"].ToString())
-                               || String.IsNullOrEmpty(row["Danh mục"].ToString())
+                            else if (
+                                  String.IsNullOrEmpty(row["Số lượng tồn"].ToString())
                                || String.IsNullOrEmpty(row["Đơn vị"].ToString())
-                               || String.IsNullOrEmpty(row["Giá bán"].ToString())
-                               || String.IsNullOrEmpty(row["Giá nhập"].ToString())
-                               || String.IsNullOrEmpty(row["Số lượng nhập"].ToString()))
+                               || String.IsNullOrEmpty(row["Số lượng quy đổi"].ToString())
+                               || String.IsNullOrEmpty(row["Đơn vị quy đổi"].ToString())
+                               || String.IsNullOrEmpty(row["Đơn giá nhập"].ToString())
+                               || String.IsNullOrEmpty(row["Đơn giá bán"].ToString())
+                               || String.IsNullOrEmpty(row["Đơn giá bán nợ"].ToString()))
 
                             {
-                                Session["name_product"] = row["Tên sản phẩm"].ToString().Trim();
-                                Session["group_product"] = row["Nhóm hàng"].ToString().Trim();
-                                Session["category_product"] = row["Danh mục"].ToString().Trim();
                                 Session["unit_product"] = null;
                             }
                             else
@@ -418,65 +434,102 @@ namespace CAP_TEAM05_2022.Controllers
                             if (Session["name_product"] != null)
                             {
                                 string name_product = Session["name_product"].ToString();
+                                // thực hiện nhập dữ liệu nếu không có trường dữ liệu nào trống
                                 if (Session["unit_product"] != null)
                                 {
+                                    string name_supplier = Session["supplier_product"].ToString();
                                     string name_group = Session["group_product"].ToString();
                                     string name_category = Session["category_product"].ToString();
-                                    var check_group = db.groups.Where(g => g.name == name_group && g.status != 3).FirstOrDefault();
-                                    var check_category = db.categories.Where(g => g.name == name_category && g.status != 3).FirstOrDefault();
+                                    var check_supplier = db.customers.Where(g => g.name == name_supplier && g.type == Constants.SUPPLIER).FirstOrDefault();
+                                    var check_group = db.groups.Where(g => g.name == name_group).FirstOrDefault();
+                                    var check_category = db.categories.Where(g => g.name == name_category).FirstOrDefault();
 
-                                    if (check_group != null && check_category != null)
+                                    string unit_product = Session["unit_product"].ToString().Trim();
+                                    decimal sell_price_product = decimal.Parse(Session["sell_price_product"].ToString().Trim());
+                                    decimal purchase_price_product = decimal.Parse(Session["purchase_price_product"].ToString().Trim());
+                                    int quantity_product = int.Parse(Session["quantity_product"].ToString().Trim());
+                                    int quantity_swap_product = int.Parse(Session["quantity_swap_product"].ToString().Trim());
+                                    string unit_swap_product = Session["unit_swap_product"].ToString().Trim();
+                                    decimal sell_debt_product = decimal.Parse(Session["sell_debt_product"].ToString().Trim());
+
+                                    // kiểm tra nhóm hàng, danh mục, nhà cung cấp đã tồn tại chưa
+                                    if (check_group != null && check_category != null && check_supplier != null)
                                     {
+                                        //thực hiện nhập sản phẩm
                                         int group_id = check_group.id;
                                         int category_id = check_category.id;
-                                        string unit_product = Session["unit_product"].ToString().Trim();
-                                        int sell_price_product = int.Parse(Session["sell_price_product"].ToString().Trim());
-                                        int purchase_price_product = int.Parse(Session["purchase_price_product"].ToString().Trim());
-                                        int quantity_product = int.Parse(Session["quantity_product"].ToString().Trim());
-
+                                        int supplier_id = check_supplier.id;
 
                                         var check_product = db.products.Where(c => c.name == name_product && c.group_id == group_id
-                                        && c.category_id == category_id && c.status != 3).FirstOrDefault();
+                                        && c.category_id == category_id).FirstOrDefault();
                                         if (check_product == null)
                                         {
 
                                             product product = new product();
                                             product.name = name_product;
-                                            product.status = 1;
+                                            product.status = Constants.SHOW_STATUS;
                                             product.unit = unit_product;
                                             product.category_id = category_id;
                                             product.group_id = group_id;
                                             product.created_by = User.Identity.GetUserId();
                                             product.sell_price = sell_price_product;
+                                            product.sell_price_debt = sell_debt_product;
                                             product.purchase_price = purchase_price_product;
                                             product.quantity = quantity_product;
-                                            product.created_at = DateTime.Now;
+                                            product.quantity_swap = quantity_swap_product;
+                                            product.unit_swap = unit_swap_product;
+                                            product.sell_price_swap = (decimal)(sell_price_product / quantity_product);
+                                            product.sell_price_debt_swap = (decimal)(sell_debt_product / quantity_product);
+                                            product.created_at = curentDate;
                                             product.code = "SP" + CodeRandom.RandomCode();
+                                            product.name_group = Session["group_product"].ToString();
+                                            product.name_category = Session["category_product"].ToString();
+
                                             db.products.Add(product);
+
+                                            price_product price_Product = new price_product();
+                                            price_Product.product_id = product.id;
+                                            price_Product.price = product.sell_price;
+                                            price_Product.price_debt = product.sell_price_debt;
+                                            price_Product.updated_at = curentDate;
+                                            price_Product.unit = product.unit;
+                                            db.price_product.Add(price_Product);
+
+                                            price_product price_Product_swap = new price_product();
+                                            price_Product_swap.product_id = product.id;
+                                            price_Product_swap.price = product.sell_price_swap;
+                                            price_Product_swap.price_debt = product.sell_price_debt_swap;
+                                            price_Product_swap.updated_at = curentDate;
+                                            price_Product_swap.unit = product.unit_swap;
+                                            db.price_product.Add(price_Product_swap);
+
+                                            inventory_order inventory_Order = new inventory_order();
+                                            inventory_Order.code = "MPN" + CodeRandom.RandomCode();
+                                            inventory_Order.create_at = curentDate;
+                                            inventory_Order.update_at = curentDate;
+                                            inventory_Order.create_by = User.Identity.GetUserId();
+                                            inventory_Order.Total = product.purchase_price * product.quantity;
+                                            inventory_Order.state = Constants.PAYED_ORDER;
+                                            inventory_Order.supplier_id = supplier_id;
+                                            db.inventory_order.Add(inventory_Order);
+
                                             import_inventory inventory = new import_inventory();
+                                            inventory.inventory_id = inventory_Order.id;
                                             inventory.product_id = product.id;
-                                            inventory.quantity = quantity_product;
-                                            inventory.price_import = purchase_price_product;
+                                            inventory.quantity = product.quantity;
+                                            inventory.price_import = product.purchase_price;
                                             inventory.sold = 0;
+                                            inventory.sold_swap = 0;
+                                            inventory.return_quantity = 0;
+                                            inventory.quantity_remaining = 0;
                                             inventory.created_by = User.Identity.GetUserId();
-                                            inventory.created_at = DateTime.Now;
+                                            inventory.created_at = curentDate;
+                                            inventory.supplier_id = supplier_id;
                                             db.import_inventory.Add(inventory);
                                             db.SaveChanges();
 
                                             addRow++;
-                                            Product_list.Add(new product
-                                            {
-                                                id = row_excel,
-                                                name = name_product,
-                                                status = 4,
-                                                name_group = Session["group_product"].ToString(),
-                                                name_category = Session["category_product"].ToString(),
-                                                unit = unit_product,
-                                                purchase_price = purchase_price_product,
-                                                sell_price = sell_price_product,
-                                                quantity = quantity_product,
-
-                                            });
+                                            Product_list.Add(product);
                                         }
                                         else
                                         {
@@ -484,7 +537,7 @@ namespace CAP_TEAM05_2022.Controllers
                                             check_product.sell_price = sell_price_product;
                                             check_product.purchase_price = purchase_price_product;
                                             check_product.quantity += quantity_product;
-                                            check_product.updated_at = DateTime.Now;
+                                            check_product.updated_at = curentDate;
                                             db.Entry(check_product).State = EntityState.Modified;
                                             import_inventory inventory = new import_inventory();
                                             inventory.product_id = check_product.id;
@@ -492,7 +545,7 @@ namespace CAP_TEAM05_2022.Controllers
                                             inventory.price_import = purchase_price_product;
                                             inventory.sold = 0;
                                             inventory.created_by = User.Identity.GetUserId();
-                                            inventory.created_at = DateTime.Now;
+                                            inventory.created_at = curentDate;
                                             db.import_inventory.Add(inventory);
                                             db.SaveChanges();
                                             rowExist++;
@@ -514,10 +567,6 @@ namespace CAP_TEAM05_2022.Controllers
                                     else
                                     {
                                         rowFailFormat++;
-                                        string unit_product = Session["unit_product"].ToString().Trim();
-                                        int sell_price_product = int.Parse(Session["sell_price_product"].ToString().Trim());
-                                        int purchase_price_product = int.Parse(Session["purchase_price_product"].ToString().Trim());
-                                        int quantity_product = int.Parse(Session["quantity_product"].ToString().Trim());
                                         Product_list.Add(new product
                                         {
                                             id = row_excel,
@@ -733,7 +782,7 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 Sheet_import.Cells[string.Format("A{0}", row_import)].Value = item.product.code;
                 Sheet_import.Cells[string.Format("B{0}", row_import)].Value = item.product.name;
-                Sheet_import.Cells[string.Format("C{0}", row_import)].Value = item.quantity + " " + item.product.unit + ( item.product.quantity_swap != null ? "(" + item.product.quantity_swap + item.product.unit_swap + ")": "");
+                Sheet_import.Cells[string.Format("C{0}", row_import)].Value = item.quantity + " " + item.product.unit +  "(" + item.product.quantity_swap + item.product.unit_swap + ")";
                 Sheet_import.Cells[string.Format("D{0}", row_import)].Value = item.return_quantity + " " + item.product.unit;
                 Sheet_import.Cells[string.Format("E{0}", row_import)].Value = item.price_import.ToString("N0") + "/" + item.product.unit;
                 Sheet_import.Cells[string.Format("F{0}", row_import)].Value = item.price_import * (item.quantity - item.return_quantity);

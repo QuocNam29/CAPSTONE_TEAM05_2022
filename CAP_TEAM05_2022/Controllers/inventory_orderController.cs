@@ -35,7 +35,7 @@ namespace CAP_TEAM05_2022.Controllers
             var HistoryOrder = db.inventory_order.Where(o => o.supplier_id == order_customer);
             if (method == Constants.DEBT_ORDER)
             {
-                HistoryOrder = HistoryOrder.Where(s => s.state == Constants.DEBT_ORDER);
+                HistoryOrder = HistoryOrder.Where(s => s.state == Constants.DEBT_ORDER || s.state == Constants.OLD_DEBT_ORDER);
             }
             return PartialView(HistoryOrder.OrderByDescending(o => o.id).ToList());
         }
@@ -70,7 +70,7 @@ namespace CAP_TEAM05_2022.Controllers
         // GET: inventory_order/Create
         public ActionResult Create()
         {
-            ViewBag.Uniform = db.products.Select(x => new
+            ViewBag.Product = db.products.Select(x => new
             {
                 Id = x.id,
                 Name = (x.category.name + " - " + x.name + " (" + x.unit + (x.unit_swap != null ? "/" + x.quantity_swap + x.unit_swap : "") + ")").ToString()
@@ -83,7 +83,7 @@ namespace CAP_TEAM05_2022.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "id,code,supplier_id,create_at,update_at,create_by,state,Total,payment,debt")] inventory_order inventory_order,
-            List<import_inventory> importInventory, int method, string Repayment, string[] saleprice, string[] priceImport)
+            List<import_inventory> importInventory, int method, string Repayment, string[] saleprice, string[] debtPrice, string[] priceImport)
         {
             if (importInventory == null || importInventory.Count == 0)
             {
@@ -111,9 +111,38 @@ namespace CAP_TEAM05_2022.Controllers
                     db.import_inventory.Add(inventory);
                     total += inventory.price_import * inventory.quantity;
 
+                    
                     product product = db.products.Find(inventory.product_id);
+                    decimal sellPrice = decimal.Parse(saleprice[i].Replace(",", "").Replace(".", ""));
+                    decimal debtPrice1 = decimal.Parse(debtPrice[i].Replace(",", "").Replace(".", ""));
+                    decimal priceSwap = sellPrice / product.quantity_swap;
+                    decimal debtPriceSwap = debtPrice1 / product.quantity_swap;
+                    if (sellPrice != product.sell_price || debtPrice1 != product.sell_price_debt)
+                    {
+                        price_product price_Product = new price_product();
+                        price_Product.product_id = product.id;
+                        price_Product.price = sellPrice;
+                        price_Product.price_debt = debtPrice1;
+                        price_Product.updated_at = currentDate;
+                        price_Product.unit = product.unit;
+                        db.price_product.Add(price_Product);
+                    }
+
+                    if (priceSwap != product.sell_price_swap || debtPriceSwap != product.sell_price_debt_swap)
+                    {
+                        price_product price_Product_swap = new price_product();
+                        price_Product_swap.product_id = product.id;
+                        price_Product_swap.price = priceSwap;
+                        price_Product_swap.price_debt = debtPriceSwap;
+                        price_Product_swap.updated_at = currentDate;
+                        price_Product_swap.unit = product.unit_swap;
+                        db.price_product.Add(price_Product_swap);
+                    }
                     product.quantity += inventory.quantity;
-                    product.sell_price = decimal.Parse(saleprice[i].Replace(",", "").Replace(".", ""));
+                    product.sell_price = sellPrice;
+                    product.sell_price_debt = debtPrice1;
+                    product.sell_price_swap = priceSwap;
+                    product.sell_price_debt_swap = debtPriceSwap;
                     db.Entry(product).State = EntityState.Modified;
                     i++;
                 }

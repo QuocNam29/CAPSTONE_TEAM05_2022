@@ -31,6 +31,8 @@ namespace CAP_TEAM05_2022.Helper
         ///
         public static int PAYED_ORDER = 1;
         public static int DEBT_ORDER = 2;
+        public static int OLD_DEBT_ORDER = 3;
+
         public static readonly Dictionary<int, string> MethodOrder = new Dictionary<int, string> {
             {PAYED_ORDER, "Đã thanh toán"},
             {DEBT_ORDER, "Ghi nợ" }
