@@ -17,14 +17,26 @@ namespace CAP_TEAM05_2022.Controllers
         public customersController()
         {
             ViewBag.isCreate = false;
+            ViewBag.isCustomer = false;
+
         }
         // GET: customers
-        public ActionResult Index()
+        public ActionResult Customers()
         {
-            return View();
+            ViewBag.isCustomer = true;
+            return View("Index");
         }
-        public PartialViewResult _Form(int? id)
+        public ActionResult Suppliers()
         {
+            return View("Index");
+        }
+        public PartialViewResult _Form(int? id, int role)
+        {
+            if (role == Constants.CUSTOMER)
+            {
+                ViewBag.isCustomer = true;
+
+            }
             if (id != null)
             {
                 ViewBag.isCreate = false;
@@ -43,11 +55,11 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    int check = db.customers.Where(c => c.phone == customer.phone).Count();
-                    if (check > 0)
+                    bool check = db.customers.Where(c => c.phone == customer.phone).Any();
+                    if (check)
                     {
                         status = false;
-                        message = "Khách hàng đã tồn tại ! (Vui lòng kiểm tra lại số điện thoại)";
+                        message = "Số điện thoại đã tồn tại";
                     }
                     else
                     {
@@ -57,7 +69,7 @@ namespace CAP_TEAM05_2022.Controllers
                         customer.status = Constants.SHOW_STATUS;
                         db.customers.Add(customer);
                         db.SaveChanges();
-                        message = "Thêm khách hàng thành công !";
+                        message = "Thêm thành công !";
                     }
                 }
             }
@@ -102,17 +114,19 @@ namespace CAP_TEAM05_2022.Controllers
             }
             return Json(new { status, message }, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult _CustomerList(int? type)
+       
+        public ActionResult _CustomerList()
         {
-            var links = from l in db.customers
-                        select l;
-            if (type != null)
-            {
-                links = links.Where(p => p.type == type);
-            }
-
+            var links = db.customers.Where(x => x.type == Constants.CUSTOMER);
             return PartialView(links.OrderByDescending(c => c.id));
         }
+
+        public ActionResult _SupplierList()
+        {
+            var links = db.customers.Where(x => x.type == Constants.SUPPLIER);
+            return PartialView(links.OrderByDescending(c => c.id));
+        }
+
         public ActionResult Create_Customer(string customer_name, string customer_phone,
            string customer_email, DateTime? customers_birth, string customer_account,
            string customer_bank, int customer_type, string customer_address, string customer_note)

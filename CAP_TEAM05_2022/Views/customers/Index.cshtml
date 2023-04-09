@@ -4,13 +4,12 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
-
+    bool isCustomer = ViewBag.isCustomer;
+    int role = isCustomer ? Constants.CUSTOMER : Constants.SUPPLIER;
 }
 @section style {
     <link href="~/Content/css/custom-css.css" rel="stylesheet" />
 }
-<input type="text" hidden id="URLCustomerList" value="@Url.Action("_CustomerList", "customers")" />
-<input type="text" hidden id="URLFindCustomer" value="@Url.Action("FindCustomer", "customers")/" />
 
 <section class="pcoded-main-container">
     <div class="pcoded-content">
@@ -29,7 +28,7 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="javascript:void(0)">Quản lý khách hàng</a>
+                                <a href="javascript:void(0)"> @(isCustomer ? "Quản lý khách hàng" :"Quản lý nhà cung cấp")</a>
                             </li>
                         </ul>
                     </div>
@@ -44,17 +43,21 @@
                             <button type="button" class="btn btn-primary float-right ml-2" onclick="createCustomer()">Tạo mới</button>
                             <div class="row">
                                 <div class="col-md-9">
-                                    <h4>KHÁCH HÀNG</h4>
+                                    <h4>@(isCustomer ? "KHÁCH HÀNG" : "NHÀ CUNG CẤP")</h4>
                                 </div>
-                                <div class="col-md-3">
-                                    @Html.DropDownList("filter_type", new SelectList(Constants.TypeCustomer, "Key", "Value.Item1"), "---- Xem tất cả ----", new { @class = "form-control", @id = "filter_type" })
-                                </div>
+                                
                             </div>
                         </div>
                         <div class="card-body table-border-style">
                             <div class="table-responsive" id="dataContainer">
-
-                                @{ Html.RenderAction("_CustomerList", "customers");}
+                                @if (isCustomer)
+                                {
+                                    Html.RenderAction("_CustomerList", "customers");
+                                }
+                                else
+                                {
+                                    Html.RenderAction("_SupplierList", "customers");
+                                }
 
                                 <!---->
                             </div>
@@ -79,7 +82,9 @@
             $.ajax({
                 url: '@Url.Action("_Form", "customers")',
                 type: 'GET',
-                data: { id },
+                data: {
+                    id: id,
+                    role : @role},
                 success: function (response) {
                     // Add response in Modal body
                     $('#dataContainer2').html(response);
@@ -95,7 +100,7 @@
              $.ajax({
                 url: '@Url.Action("_Form", "customers")',
                 type: 'GET',
-                data: {},
+                 data: { role : @role},
                 success: function (response) {
                     // Add response in Modal body
                     $('#dataContainer2').html(response);
@@ -105,7 +110,19 @@
             });
 
             }
-
+        }
+        function GetList_Customer() {
+            $.ajax({
+                url: '@(isCustomer ? Url.Action("_CustomerList", "customers"): Url.Action("_SupplierList", "customers"))',
+                data: {}
+            }).done(function (result) {
+                $('#dataContainer').html(result);
+                $('#example').DataTable();
+            }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(textStatus)
+                console.log(errorThrown)
+                Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
+            });
         }
     </script>
 }

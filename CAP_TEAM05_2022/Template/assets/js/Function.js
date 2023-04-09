@@ -751,34 +751,8 @@ function GetList_Inventory(date_start, date_end) {
     });
 }
 //----------------------FILTER CusomerForm------------------------------------------------
-$('#URLCustomerList')
-    .keypress(function () {
-        URLCustomerList = $(this).val();
-    })
-    .keypress();
-$("#filter_type").change(function () {
-    var type = $("#filter_type").val();
-    GetList_Customer(type);
-    TestPrint();
-});
 
-function GetList_Customer(type) {
-    $.ajax({
-        url: URLCustomerList,
-        data: {
-            type,
 
-        }
-    }).done(function (result) {
-
-        $('#dataContainer').html(result);
-        $('#example').DataTable();
-    }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
-        console.log(textStatus)
-        console.log(errorThrown)
-        Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
-    });
-}
 
 $('#URLTestPrint')
     .keypress(function () {

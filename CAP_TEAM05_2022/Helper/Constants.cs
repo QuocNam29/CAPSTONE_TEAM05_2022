@@ -9,12 +9,10 @@ namespace CAP_TEAM05_2022.Helper
         /// Type Customer
         ///  </summary>
         public static readonly int CUSTOMER = 1;
-        public static readonly int WHOLESALE_CUSTOMER = 2;
-        public static readonly int SUPPLIER = 3;
+        public static readonly int SUPPLIER = 2;
         /// </summary>
         public static readonly Dictionary<int, Tuple<string, string>> TypeCustomer = new Dictionary<int, Tuple<string, string>> {
-            {CUSTOMER, new Tuple<string, string>("Khách mua lẻ", "cus-simple") },
-            {WHOLESALE_CUSTOMER,new Tuple<string, string>("Khách mua sỉ", "cus-multi") },
+            {CUSTOMER, new Tuple<string, string>("Khách hàng", "cus-simple") },
             {SUPPLIER, new Tuple<string, string>("Nhà cung cấp", "cus-supplier") }
         };
 

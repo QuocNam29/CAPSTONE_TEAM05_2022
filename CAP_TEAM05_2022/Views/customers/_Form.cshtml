@@ -3,6 +3,7 @@
 
 @{
     bool isCreate = ViewBag.isCreate;
+    bool isCustomer = ViewBag.isCustomer;
 }
 <input type="number" id="isCreate" value="@(isCreate ? Constants.CREATE_FORM : Constants.NOT_CREATE_FORM)" />
 
@@ -26,100 +27,140 @@
                         @Html.HiddenFor(m => m.created_at)
                         @Html.HiddenFor(m => m.status)
                     }
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>
-                                    Họ và tên<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập họ và tên" } })
-                                    @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
-                                </div>
+                    @if (!isCustomer)
+                    {
+                        <input type="hidden" name="type" value="@Constants.SUPPLIER" />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>
+                                        Họ và tên<span class="text-danger">*</span>
+                                    </label>
+                                    <div class="position-relative">
+                                        @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập họ và tên" } })
+                                        @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+                                    </div>
 
-                                <!---->
-                            </div>
-                            <div class="form-group">
-                                <label>
-                                    Số điện thoại<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập số điện thoại" } })
-                                    @Html.ValidationMessageFor(model => model.phone, "", new { @class = "text-danger" })
+                                    <!---->
                                 </div>
-                                <!---->
                             </div>
-                            <div class="form-group">
-                                <label>Địa chỉ Email</label>
-                                <div class="position-relative">
-                                    @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập Email" } })
-                                    @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>
+                                        Số điện thoại<span class="text-danger">*</span>
+                                    </label>
+                                    <div class="position-relative">
+                                        @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập số điện thoại" } })
+                                        @Html.ValidationMessageFor(model => model.phone, "", new { @class = "text-danger" })
+                                    </div>
+                                    <!---->
                                 </div>
-                                <!---->
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>
+                                        Địa chỉ<span class="text-danger">*</span>
+                                    </label>
+                                    <div class="position-relative">
+                                        @Html.EditorFor(model => model.address, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập địa chỉ" } })
+                                        @Html.ValidationMessageFor(model => model.address, "", new { @class = "text-danger" })
+                                    </div>
+                                    <!---->
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Địa chỉ Email</label>
+                                    <div class="position-relative">
+                                        @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập Email" } })
+                                        @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                                    </div>
+                                    <!---->
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label>Số tài khoản ngân hàng</label>
+                                    <div class="position-relative">
+                                        @Html.EditorFor(model => model.account_number, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập số tài khoản ngân hàng" } })
+                                        @Html.ValidationMessageFor(model => model.account_number, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Tên ngân hàng</label>
+                                        <div class="position-relative">
+                                            @Html.EditorFor(model => model.bank, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập tên ngân hàng" } })
+                                            @Html.ValidationMessageFor(model => model.bank, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Ghi chú</label>
+                                        <div class="position-relative">
+                                            @Html.TextAreaFor(model => model.note, new { @class = "form-control", @placeholder = "Ghi chú" })
+                                            @Html.ValidationMessageFor(model => model.note, "", new { @class = "text-danger" })
+                                        </div>
+                                        <!---->
+                                    </div>
+                                </div>
+                            </div>
+                            }
+                            else
+                            {
+                            <input type="hidden" name="type" value="@Constants.CUSTOMER" />
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>
+                                            Họ và tên<span class="text-danger">*</span>
+                                        </label>
+                                        <div class="position-relative">
+                                            @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập họ và tên" } })
+                                            @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <!---->
+                                    </div>
+                                    <div class="form-group">
+                                        <label>
+                                            Số điện thoại<span class="text-danger">*</span>
+                                        </label>
+                                        <div class="position-relative">
+                                            @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập số điện thoại" } })
+                                            @Html.ValidationMessageFor(model => model.phone, "", new { @class = "text-danger" })
+                                        </div>
+                                        <!---->
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>
+                                            Địa chỉ<span class="text-danger">*</span>
+                                        </label>
+                                        <div class="position-relative">
+                                            @Html.EditorFor(model => model.address, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập địa chỉ" } })
+                                            @Html.ValidationMessageFor(model => model.address, "", new { @class = "text-danger" })
+                                        </div>
+                                        <!---->
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Ghi chú</label>
+                                        <div class="position-relative">
+                                            @Html.TextAreaFor(model => model.note, new { @class = "form-control", @placeholder = "Ghi chú" })
+                                            @Html.ValidationMessageFor(model => model.note, "", new { @class = "text-danger" })
+                                        </div>
+                                        <!---->
+                                    </div>
+                                </div>
+                            </div>
+                            }
+
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Ngày sinh</label>
-                                <div class="position-relative">
-                                    @Html.EditorFor(model => model.birthday, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập ngày sinh" } })
-                                    @Html.ValidationMessageFor(model => model.birthday, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Số tài khoản ngân hàng</label>
-                                <div class="position-relative">
-                                    @Html.EditorFor(model => model.account_number, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập số tài khoản ngân hàng" } })
-                                    @Html.ValidationMessageFor(model => model.account_number, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Tên ngân hàng</label>
-                                <div class="position-relative">
-                                    @Html.EditorFor(model => model.bank, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập tên ngân hàng" } })
-                                    @Html.ValidationMessageFor(model => model.bank, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>
-                                    Nhóm khách hàng<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    @if ((bool)ViewBag.isCreate)
-                                    {
-                                        @Html.DropDownList("type", new SelectList(Constants.TypeCustomer, "Key", "Value.Item1"), "---- Chọn nhóm khách hàng ----", new { @class = "form-control" })
-                                    }
-                                    else
-                                    {
-                                        @Html.DropDownList("type", new SelectList(Constants.TypeCustomer, "Key", "Value.Item1", Model.type), new { @class = "form-control" })
-                                    }
-                                    @Html.ValidationMessageFor(model => model.type, "", new { @class = "text-danger" })
-                                </div>
-                                <!---->
-                            </div>
-                            <div class="form-group">
-                                <label>
-                                    Địa chỉ<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    @Html.EditorFor(model => model.address, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập địa chỉ" } })
-                                    @Html.ValidationMessageFor(model => model.address, "", new { @class = "text-danger" })
-                                </div>
-                                <!---->
-                            </div>
-                            <div class="form-group">
-                                <label>Ghi chú</label>
-                                <div class="position-relative">
-                                    @Html.TextAreaFor(model => model.note, new { @class = "form-control", @placeholder = "Ghi chú" })
-                                    @Html.ValidationMessageFor(model => model.note, "", new { @class = "text-danger" })
-                                </div>
-                                <!---->
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ bỏ</button>
                     <button type="submit" class="btn btn-primary">Thêm mới</button>
@@ -150,8 +191,7 @@
 
                     if (data.status) {
                         // Refresh table data
-                        var type = $("#filter_type").val();
-                        GetList_Customer(type)
+                        GetList_Customer()
                         Swal.fire('Thành công !', data.message, 'success')
 
                         form[0].reset();
