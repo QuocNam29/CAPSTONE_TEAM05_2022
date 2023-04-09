@@ -63,16 +63,12 @@ namespace CAP_TEAM05_2022.Controllers
             Sheet.Cells["A4"].Value = "Điện thoại: 0854858818";
             Sheet.Cells["A1:H4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
         }
-        public void ExportExcel(int group_id, int category_id)
+        public void ExportExcel( int? category_id)
         {
             string nameFile = "SP_" + DateTime.Now + ".xlsx";
             var list = from l in db.products
-                       where l.@group.status == Constants.SHOW_STATUS && l.category.status == Constants.SHOW_STATUS
+                       where /*l.@group.status == Constants.SHOW_STATUS &&*/ l.category.status == Constants.SHOW_STATUS
                        select l;
-            if (group_id != -1)
-            {
-                list = list.Where(p => p.group_id == group_id);
-            }
             if (category_id != -1)
             {
                 list = list.Where(p => p.category_id == category_id);

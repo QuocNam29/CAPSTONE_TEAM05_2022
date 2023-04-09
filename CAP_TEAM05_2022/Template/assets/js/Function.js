@@ -267,9 +267,8 @@ $('.ProductForm').submit(function (e) {
 
                 if (data.status) {
                     // Refresh table data
-                    var group_id = $("#filter_GroupProduct").val();
                     var category_id = $("#filter_Category").val();
-                    GetList(group_id, category_id)
+                    GetList(category_id)
                     Swal.fire('Thành công!', data.message, 'success')                  
                     form[0].reset();
                     form.removeClass('was-validated');
@@ -478,7 +477,7 @@ $.ajax({
 });
 
 //------------ Load dropdown FILTER add product----------------------------------
-$.ajax({
+/*$.ajax({
     type: "GET",
     url: URLgetGroupProduct,
     data: "{}",
@@ -501,7 +500,7 @@ $.ajax({
         }
         $("#filter_Category").html(s);
     }
-});
+});*/
 
 //----------------------FILTER PRODUCT------------------------------------------------
 
@@ -511,22 +510,15 @@ $('#URLProductList')
     })
     .keypress();
 
-$("#filter_GroupProduct").change(function () {
-    var group_id = $("#filter_GroupProduct").val();
-    var category_id = $("#filter_Category").val();
-    GetList(group_id, category_id)
-});
 $("#filter_Category").change(function () {
-    var group_id = $("#filter_GroupProduct").val();
     var category_id = $("#filter_Category").val();
-    GetList(group_id, category_id)
+    GetList( category_id)
 });
 
-function GetList(group_id, category_id) {
+function GetList(category_id) {
     $.ajax({
         url: URLProductList,
         data: {
-            group_id: group_id,
             category_id: category_id,
         }
     }).done(function (result) {
@@ -548,7 +540,7 @@ $('#URLFindProduct')
     })
     .keypress();
 
-function GetProduct(ele, id) {
+/*function GetProduct(ele, id) {
     row = $(ele).closest('tr');
     $.ajax({
         type: 'POST',
@@ -600,9 +592,9 @@ function GetProduct(ele, id) {
             $('#EditProduct').modal('show');
         }
     })
-}
+}*/
 
-function CopyProduct(ele, id) {
+/*function CopyProduct(ele, id) {
     row = $(ele).closest('tr');
     $.ajax({
         type: 'POST',
@@ -653,7 +645,7 @@ function CopyProduct(ele, id) {
             $('#AddProduct').modal('show');
         }
     })
-}
+}*/
 
 //-------------------------------UPDATE PRODUCT--------------------------------
 
@@ -686,12 +678,12 @@ $('#URLExportExcel')
 
 
 $('#btnExportExcel').click(function () {
-    group_id = $("#filter_GroupProduct").val();
+    /*group_id = $("#filter_GroupProduct").val();*/
     category_id = $("#filter_Category").val();
-    if (group_id == null || category_id == null) {
+    if (/*group_id == null ||*/ category_id == null) {
        
     } else {
-       var URLExportExcel1 = URLExportExcel + "?group_id=" + group_id + "&category_id=" + category_id;
+       var URLExportExcel1 = URLExportExcel + /*"?group_id=" + group_id +*/ "&category_id=" + category_id;
         window.location.href = URLExportExcel1;       
     }
 })

@@ -32,19 +32,7 @@
                                 </div> <!---->
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>
-                                    Nhóm hàng<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    @Html.DropDownListFor(m => m.group_id, (SelectList)ViewBag.GroupId, "---- Chọn nhóm sản phẩm ----", new { @class = "form-control custom-select", @aria_label = "Chọn danh mục thiết bị" })
-                                    @Html.ValidationMessageFor(model => model.group_id, "", new { @class = "text-danger" })
-                                </div> <!---->
-
-                            </div>
-                        </div>
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label>
                                     Danh mục sản phẩm<span class="text-danger">*</span>
@@ -80,7 +68,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label>
-                                    Tồn kho<span class="text-danger">*</span>
+                                    Số lượng nhập (hoặc tồn kho)<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
                                     <div class="input-group mb-3">

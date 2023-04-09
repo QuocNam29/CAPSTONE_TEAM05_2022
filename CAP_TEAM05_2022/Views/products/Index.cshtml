@@ -44,31 +44,21 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-md-12 mb-3">
+                                <div class="col-md-6 mb-3">
                                     <input type="text" hidden id="URLExportExcel" value="@Url.Action("ExportExcel", "Excel")" />
                                     <button type="button" class="btn btn-secondary" id="btnExportExcel">Xuất tệp Excel</button>
-                                    @*                                    <button type="button" class="btn btn-secondary" onclick="location.href='@Url.Action("ExportExcel","products")';">Xuất tệp Excel</button>
-                                    *@
                                     <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#ImportModal">Nhập tệp Excel</button>
                                     <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("ExportTemplateExcel","Excel")';">Mẫu tệp Excel</button>
                                 </div>
 
-                                <div class="col-md-3">
+
+                                <div class="col-md-4">
                                     <input type="text" hidden id="URLgetCategory" value="@Url.Action("getCategory", "categories")" />
-                                    <select class="custom-select" id="filter_GroupProduct" name="filter_GroupProduct" required>
-                                        <option value="" disabled="disabled" selected="selected">Xem tất cả nhóm hàng</option>
+                                    @Html.DropDownList("filter_Category", (SelectList)ViewBag.CategoryId, "---- Xem tất cả danh mục sản phẩm ----", new { @class = "form-control custom-select", @id= "filter_Category" })
 
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="text" hidden id="URLgetGroupProduct" value="@Url.Action("getGroupProduct", "groups")" />
-                                    <select class="custom-select" id="filter_Category" name="filter_Category" required>
-                                        <option value="" disabled="disabled" selected="selected">Xem tất cả danh mục</option>
-
-                                    </select>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-2">
                                     <button type="button" class="btn btn-primary float-right ml-2" @* data-toggle="modal" data-target="#AddProduct"*@ onclick="createProduct(null, @Constants.CREATE_PRODUCT)">Tạo mới</button>
 
                                 </div>

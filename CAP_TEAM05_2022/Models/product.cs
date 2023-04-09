@@ -30,8 +30,7 @@ namespace CAP_TEAM05_2022.Models
         public string code { get; set; }
         [Required]
         public string name { get; set; }
-        [Required]
-        public int group_id { get; set; }
+        public int? group_id { get; set; }
         [Required]
         public int category_id { get; set; }
         [Required]

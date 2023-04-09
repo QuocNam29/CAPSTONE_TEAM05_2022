@@ -22,6 +22,7 @@ namespace CAP_TEAM05_2022.Controllers
         // GET: products
         public ActionResult Index()
         {
+            ViewBag.CategoryId = new SelectList(db.categories, "Id", "Name");
             return View();
 
         }
@@ -29,7 +30,6 @@ namespace CAP_TEAM05_2022.Controllers
         public PartialViewResult _Form(int? id)
         {
             ViewBag.CategoryId = new SelectList(db.categories, "Id", "Name");
-            ViewBag.GroupId = new SelectList(db.groups, "Id", "Name");
             ViewBag.SupplierId = db.customers.Where(x => x.type == Constants.SUPPLIER).ToList();
             if (id != null)
             {
@@ -46,7 +46,6 @@ namespace CAP_TEAM05_2022.Controllers
             product product = db.products.Find(id);
             ViewBag.isCreate = true;
             ViewBag.CategoryId = new SelectList(db.categories, "Id", "Name");
-            ViewBag.GroupId = new SelectList(db.groups, "Id", "Name");
             ViewBag.SupplierId = db.customers.Where(x => x.type == Constants.SUPPLIER).ToList();
             return PartialView("_FormEdit", product);
         }
@@ -242,14 +241,10 @@ namespace CAP_TEAM05_2022.Controllers
             return View("_Form", product);
         }
 
-        public ActionResult _ProductList(int group_id, int category_id)
+        public ActionResult _ProductList( int? category_id)
         {
             var links = from l in db.products
                         select l;
-            if (group_id != -1)
-            {
-                links = links.Where(p => p.group_id == group_id);
-            }
             if (category_id != -1)
             {
                 links = links.Where(p => p.category_id == category_id);
