@@ -36,18 +36,13 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="row mb-3">
-                                <div class="col-md-2">
-                                    <select id="selectDate" class="form-control">
-                                        <option value="@Constants.REVENUE_DAY">Theo ngày</option>
-                                        <option value="@Constants.REVENUE_MONTH">Theo tháng</option>
-                                    </select>
-                                </div>
+                                
                                 <div class="row col-md-10" id="RevenueDate">
 
                                     <div class="col-md-4">
                                         <div class="mx-datepicker">
                                             <div class="mx-input-wrapper">
-                                                <input name="date_start" id="revenue_DateStart" placeholder="" class="form-control custom-width flatpickr" value="@(TempData["date_Start"] == null ? String.Format("{0:yyyy-MM-dd}", DateTime.Now): String.Format("{0:yyyy-MM-dd}", TempData["date_Start"]))">
+                                                <input name="date_start" id="revenue_DateStart" placeholder="" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}", DateTime.Now.AddMonths(-1))">
                                             </div>
 
                                         </div>
@@ -55,56 +50,27 @@
                                     <div class="col-md-4">
                                         <div class="mx-datepicker">
                                             <div class="mx-input-wrapper">
-                                                <input name="date_end" id="revenue_DateEnd" class="form-control custom-width flatpickr" value="@(TempData["date_End"] == null ? String.Format("{0:yyyy-MM-dd}", DateTime.Now): String.Format("{0:yyyy-MM-dd}", TempData["date_End"]))">
+                                                <input name="date_end" id="revenue_DateEnd" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}",DateTime.Now)">
                                             </div>
 
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="float-right">
-                                            <button type="button" class="btn btn-secondary" id="btnExportExcel_RevenueDate">Xuất Excel</button>
+                                            <button type="button" class="btn btn-secondary" id="btnExportExcel_SumRevenue">Xuất Excel</button>
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="float-right">
-                                            <button type="button" class="btn btn-secondary" onclick="PrintRevenues('Day')">In doanh thu</button>
+                                            <button type="button" class="btn btn-secondary" onclick="PrintRevenues()">In doanh thu</button>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row col-md-10" id="RevenueMonth" style="display: none">
-                                    <div class="col-md-4">
-                                        <div class="mx-datepicker">
-
-                                            <div class="mx-input-wrapper">
-                                                <input name="date_start" id="revenue_DateStart_Month" type="month" placeholder="" class="form-control custom-width" value="@String.Format("{0:yyyy-MM}", DateTime.Now)">
-                                            </div>
-                                        </div>
-                                    </div> <div class="col-md-4">
-                                        <div class="mx-datepicker">
-
-                                            <div class="mx-input-wrapper">
-                                                <input name="date_end" id="revenue_DateEnd_Month" type="month" class="form-control custom-width" value="@String.Format("{0:yyyy-MM}",DateTime.Now)">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="float-right">
-                                            <button type="button" class="btn btn-secondary" id="btnExportExcel_RevenueMonth">Xuất Excel</button>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="float-right">
-                                            <button type="button" class="btn btn-secondary" onclick="PrintRevenues('Month')">In doanh thu</button>
-                                        </div>
-                                    </div>
-                                </div>
-                               
-
                             </div>
                         </div>
                     </div>
                     <div class="card" id="dataContainer">
-                        @{ Html.RenderAction("_RevenueList_Date", "Revenues");}
+                        @{ Html.RenderAction("_SumRevenueList", "Revenues");}
                     </div>
                 </div>
             </div>
@@ -160,61 +126,10 @@
                 Swal.fire('Lỗi', 'Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc !', 'error')
             }
         });
-        $("#selectDate").change(function () {
-            var selectDate = $("#selectDate").val();
-            if (selectDate == @Constants.REVENUE_DAY) {
-                $("#RevenueDate").show();
-                $("#RevenueMonth").hide();
-                var date_start = $("#revenue_DateStart").val();
-                var date_end = $("#revenue_DateEnd").val();
-                GetRevenueDateList(date_start, date_end);
-            } else {
-                $("#RevenueDate").hide();
-                $("#RevenueMonth").show();
-                var date_start = $("#revenue_DateStart_Month").val();
-                var date_end = $("#revenue_DateEnd_Month").val();
-                GetRevenueMonthList(date_start, date_end);
-            }
-        });
-        $("#revenue_DateStart_Month").change(function () {
-            var date_start = $("#revenue_DateStart_Month").val();
-            var date_end = $("#revenue_DateEnd_Month").val();
-            if (date_start <= date_end) {
-                GetRevenueMonthList(date_start, date_end);
-            } else {
-                Swal.fire('Lỗi', 'Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc !', 'error')
-            }
-
-        });
-        $("#revenue_DateEnd_Month").change(function () {
-            var date_start = $("#revenue_DateStart_Month").val();
-            var date_end = $("#revenue_DateEnd_Month").val();
-            if (date_start <= date_end) {
-                GetRevenueMonthList(date_start, date_end);
-            } else {
-                Swal.fire('Lỗi', 'Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc !', 'error')
-            }
-        });
-        function GetRevenueMonthList(date_start, date_end) {
-            $.ajax({
-                url: '@Url.Action("_RevenueList_Month", "Revenues")',
-                data: {
-                    date_Start: date_start,
-                    date_End: date_end,
-                }
-            }).done(function (result) {
-                $('#dataContainer').html(result);
-                $('#example1').DataTable();
-            }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                console.log(textStatus)
-                console.log(errorThrown)
-                Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
-            });
-        }
-
+       
         function GetRevenueDateList(date_start, date_end) {
             $.ajax({
-                url: '@Url.Action("_RevenueList_Date", "Revenues")',
+                url: '@Url.Action("_SumRevenueList", "Revenues")',
                 data: {
                     date_Start: date_start,
                     date_End: date_end,
@@ -229,28 +144,22 @@
             });
         }
 
-        $('#btnExportExcel_RevenueDate').click(function () {
+        $('#btnExportExcel_SumRevenue').click(function () {
             var date_start = $("#revenue_DateStart").val();
             var date_end = $("#revenue_DateEnd").val();
-            var URLExportExcel_RevenueDate = "@Url.Action("ExportExcel_RevenueDate", "Excel")" + "?date_Start=" + date_start + "&date_End=" + date_end;
+            var URLExportExcel_RevenueDate = "@Url.Action("ExportExcel_SumRevenue", "Excel")" + "?date_Start=" + date_start + "&date_End=" + date_end;
             window.location.href = URLExportExcel_RevenueDate;
         })
 
-        $('#btnExportExcel_RevenueMonth').click(function () {
-            var date_start = $("#revenue_DateStart_Month").val();
-            var date_end = $("#revenue_DateEnd_Month").val();
-            var URLExportExcel_RevenueDate = "@Url.Action("ExportExcel_RevenueMonth", "Excel")" + "?date_Start=" + date_start + "&date_End=" + date_end;
-            window.location.href = URLExportExcel_RevenueDate;
-        })
-        function PrintRevenues(method) {
+      
+        function PrintRevenues() {
             var date_start = $("#revenue_DateStart").val();
             var date_end = $("#revenue_DateEnd").val();
             $.ajax({
-                url: '@Url.Action("_TemplatePrintRevenues", "Revenues")',
+                url: '@Url.Action("_TemplatePrintSumRevenues", "Revenues")',
                 data: {
                     date_Start: date_start,
                     date_End: date_end,
-                    method : method
                 },
                 async: false,
             }).done(function (result) {

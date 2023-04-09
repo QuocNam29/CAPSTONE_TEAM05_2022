@@ -1,0 +1,107 @@
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.sale>
+@{
+    int no1 = 0;
+    var first_item = Model.FirstOrDefault();
+    decimal tongNhap = 0;
+}
+@if (Model.Any())
+{
+    <div class="card-body">
+        <div class="table-responsive" id="dataContainer">
+            <table id="example" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="text-center">STT</th>
+                        <th class="text-center">Ngày giao dịch</th>
+                        <th class="text-center">Số đơn hàng</th>
+                        <th class="text-center">Tổng tiền</th>
+                        <th class="text-center"> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.GroupBy(x=> x.created_at.Value.Date))
+                    {
+
+                        no1++;
+                    <tr class="click-hover" >
+                        <td class="text-center">
+                            @no1
+                        </td>
+                        <td class="text-center">
+                            <a href="@Url.Action("Index","Revenues",new { date_Start = item.Key, date_End =item.Key})">@String.Format("{0:dd-MM-yyyy}", item.Key)</a>
+                        </td>
+                        <td class="text-center">
+                            @Model.Where(x => x.created_at.Value.Date == item.Key).Count()
+                        </td>
+                        <td class="text-center">
+                            @Model.Where(x => x.created_at.Value.Date == item.Key).Sum(x => x.total).ToString("N0") VNĐ
+                        </td>
+                        <td class="text-center">
+                            
+                        </td>
+
+                    </tr>
+                    }
+                    @foreach (var item in Model)
+                    {
+                        foreach (var item1 in item.sale_details)
+                        {
+                            foreach (var item2 in item1.revenues)
+                            {
+                                if (item2.unit == item2.import_inventory.product.unit)
+                                {
+                                    tongNhap += item2.quantity * item2.import_inventory.price_import;
+                                }
+                                else
+                                {
+                                    tongNhap += item2.quantity * (decimal)(item2.import_inventory.price_import / item2.import_inventory.product.quantity_swap);
+
+                                }
+                            }
+                        }
+
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="car-body border-report">
+        <div class="row">
+            <div class="col-md-9">
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <p class="mb-0">
+                        Tổng tiền bán được: <span><b>@Model.Sum(x => x.total).ToString("N0")VNĐ</b></span>
+                    </p>
+                </div>
+                <div class="form-group">
+                    <p class="mb-0">
+                        
+                        Tổng tiền nhập hàng: <span><b>@tongNhap.ToString("N0")VNĐ</b></span>
+                    </p>
+                </div>
+                <div class="form-group">
+                    <p class="mb-0">
+                        
+                        Lợi nhuận: <span class="text-@((Model.Sum(x => x.total) - tongNhap) >= 0 ? "success" : "danger")"><b>@((Model.Sum(x => x.total) - tongNhap).ToString("N0"))VNĐ</b></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="card-body table-border-style">
+        <div class="table-responsive">
+            <div>
+                <div class="alert alert-warning text-center">
+                    <p>Hôm nay chưa có đơn hàng nào</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
