@@ -54,11 +54,11 @@ namespace CAP_TEAM05_2022.Controllers
         {
             if (date_Start == null)
             {
-                date_Start = DateTime.Now.AddDays((-DateTime.Now.Day) + 1);
+                date_Start = (DateTime.Now.AddMonths(-1));
             }
             if (date_End == null)
             {
-                date_End = DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day));
+                date_End = (DateTime.Now);
             }
             var sales = db.sales.Include(s => s.customer).Include(s => s.user).Where(s => s.created_at >= date_Start && s.created_at <= date_End
                                                     || s.created_at.Value.Day == date_Start.Value.Day
@@ -159,8 +159,9 @@ namespace CAP_TEAM05_2022.Controllers
 
             return PartialView(sales.OrderByDescending(c => c.id).ToList());
         }
-
-        public JsonResult CreateSale(sale createSale, int methodPrice)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult CreateSale([Bind(Include = "customer_id, method, created_at")] sale createSale, int? methodPrice)
         {
             string message = "";
             bool status = true;
@@ -185,7 +186,7 @@ namespace CAP_TEAM05_2022.Controllers
                 sale.note = createSale.note;
                 sale.status = Constants.SHOW_STATUS;
                 sale.created_by = User.Identity.GetUserId();
-                sale.created_at = DateTime.Now;
+                sale.created_at = createSale.created_at != null ? createSale.created_at : DateTime.Now;
                 db.sales.Add(sale);
                 db.SaveChanges();
                 foreach (var item in cart)

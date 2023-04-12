@@ -1013,13 +1013,10 @@ function GetList_Cart(customer_id) {
         url: URLCartList,
         data: {
             customer_id: customer_id,
-
         }
     }).done(function (result) {
         $('#dataContainer').html(result);
         $('#example').DataTable()
-
-       
     }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
         console.log(textStatus)
         console.log(errorThrown)
@@ -1228,67 +1225,139 @@ $('#URLCreateSale')
     })
     .keypress();
 function Payment_order(method) {
-    Swal.fire({
-        title: 'Thanh toán?',
-        text: 'Bạn có chắc chắn muốn thanh toán',
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonText: 'xác nhận',
-    }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-            var sale = {};
-            sale.customer_id = $('#customer_id').val();
-            sale.total = Number($('#total').val().replace(/\,/g, '').replace(/\./g, ''));
-            sale.note = $('#cart_note').val();
-            sale.method = method;
-            sale.prepayment = Number($('#cart_Prepay').val().replace(/\,/g, '').replace(/\./g, ''));
-            var methodPrice = $('input[name="methodPrice"]:checked').val();
-            sale.methodPrice = methodPrice;
-            $.ajax({
-                url: URLCreateSale,
-                async: false,
-                type: "Post",
-                data: JSON.stringify(sale),
-                contentType: "application/json; charset=UTF-8",
-                dataType: "json",
-                success: function (response) {
-                    if (response.status) {
-                        GetList_Cart($('#customer_id').val());
-                        document.querySelector("#customer_name").disabled = false;
-                        document.querySelector("#product_name").disabled = false;
-                        $('#product_code').val('');
-                        $('#product_unit').val('');
-                        $('#product_price').val('');
-                        $('#product_name').val('');
-                        $('#sum_price').val('');
-                        $('#product_quantity').val(1);
-                        $("#submit_addCart").show();
-                        $("#refresh_cart").show();
-                        $("#submit_updateCart").hide();
-                        $("#Cancel_Cart").hide();                       
+    if (method == 1) {
+        Swal.fire({
+            title: 'Thanh toán?',
+            text: 'Bạn có chắc chắn muốn thanh toán',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'xác nhận',
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                var sale = {};
+                sale.customer_id = $('#customer_id').val();
+                sale.total = Number($('#total').val().replace(/\,/g, '').replace(/\./g, ''));
+                sale.note = $('#cart_note').val();
+                sale.method = method;
+                sale.prepayment = Number($('#cart_Prepay').val().replace(/\,/g, '').replace(/\./g, ''));
+                var methodPrice = $('input[name="methodPrice"]:checked').val();
+                sale.methodPrice = methodPrice;
+                sale.create_at = dateFormat($('#cart_datime').val(), "mm/dd/yyyy HH:MM:ss");
+                console.log(sale)
+                $.ajax({
+                    url: URLCreateSale,
+                    async: false,
+                    type: "Post",
+                    data: JSON.stringify(sale),
+                    contentType: "application/json; charset=UTF-8",
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.status) {
+                            GetList_Cart($('#customer_id').val());
+                            document.querySelector("#customer_name").disabled = false;
+                            document.querySelector("#product_name").disabled = false;
+                            $('#product_code').val('');
+                            $('#product_unit').val('');
+                            $('#product_price').val('');
+                            $('#product_name').val('');
+                            $('#sum_price').val('');
+                            $('#product_quantity').val(1);
+                            $("#submit_addCart").show();
+                            $("#refresh_cart").show();
+                            $("#submit_updateCart").hide();
+                            $("#Cancel_Cart").hide();
                             $("#payment_btn").hide();
                             $("#order_btn").hide();
-                        
-                        Swal.fire({
-                            title: 'Thành công!',
-                            text: 'Bạn có muốn in hóa đơn ?',
-                            icon: 'success',
-                            showCancelButton: true,
-                            confirmButtonText: 'In hóa đơn',
-                        }).then((result) => {
-                            /* Read more about isConfirmed, isDenied below */
-                            if (result.isConfirmed) {
-                                PrintOrder(response.sale_id);                            }
-                        })
-                    } else {
-                        Swal.fire('Lỗi !', response.message, 'error');                 
-                    }
 
-                }
-            });
-        }
-    })
+                            Swal.fire({
+                                title: 'Thành công!',
+                                text: 'Bạn có muốn in hóa đơn ?',
+                                icon: 'success',
+                                showCancelButton: true,
+                                confirmButtonText: 'In hóa đơn',
+                            }).then((result) => {
+                                /* Read more about isConfirmed, isDenied below */
+                                if (result.isConfirmed) {
+                                    PrintOrder(response.sale_id);
+                                }
+                            })
+                        } else {
+                            Swal.fire('Lỗi !', response.message, 'error');
+                        }
+
+                    }
+                });
+            }
+        })
+    } else {
+        Swal.fire({
+            title: 'Ghi nợ?',
+            text: 'Bạn đã chắc chắn muốn ghi nợ đơn hàng ?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'xác nhận',
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                var sale = {};
+                sale.customer_id = $('#customer_id').val();
+                sale.total = Number($('#total').val().replace(/\,/g, '').replace(/\./g, ''));
+                sale.note = $('#cart_note').val();
+                sale.method = method;
+                sale.prepayment = Number($('#cart_Prepay').val().replace(/\,/g, '').replace(/\./g, ''));
+                var methodPrice = $('input[name="methodPrice"]:checked').val();
+                sale.methodPrice = methodPrice;
+                sale.created_at = $('#cart_datime').val().toJSON();
+                console.log(sale)
+
+                $.ajax({
+                    url: URLCreateSale,
+                    async: false,
+                    type: "Post",
+                    data: JSON.stringify(sale),
+                    contentType: "application/json; charset=UTF-8",
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.status) {
+                            GetList_Cart($('#customer_id').val());
+                            document.querySelector("#customer_name").disabled = false;
+                            document.querySelector("#product_name").disabled = false;
+                            $('#product_code').val('');
+                            $('#product_unit').val('');
+                            $('#product_price').val('');
+                            $('#product_name').val('');
+                            $('#sum_price').val('');
+                            $('#product_quantity').val(1);
+                            $("#submit_addCart").show();
+                            $("#refresh_cart").show();
+                            $("#submit_updateCart").hide();
+                            $("#Cancel_Cart").hide();
+                            $("#payment_btn").hide();
+                            $("#order_btn").hide();
+
+                            Swal.fire({
+                                title: 'Thành công!',
+                                text: 'Bạn có muốn in hóa đơn ?',
+                                icon: 'success',
+                                showCancelButton: true,
+                                confirmButtonText: 'In hóa đơn',
+                            }).then((result) => {
+                                /* Read more about isConfirmed, isDenied below */
+                                if (result.isConfirmed) {
+                                    PrintOrder(response.sale_id);
+                                }
+                            })
+                        } else {
+                            Swal.fire('Lỗi !', response.message, 'error');
+                        }
+
+                    }
+                });
+            }
+        })
+    }
+    
 
     
 }

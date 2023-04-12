@@ -11,7 +11,10 @@ namespace CAP_TEAM05_2022.Controllers
     public class cartsController : Controller
     {
         private CP25Team05Entities db = new CP25Team05Entities();
-
+        public cartsController()
+        {
+            ViewBag.isNewCreate = false;
+        }
         // GET: carts
         public ActionResult Index(int customer_id)
         {

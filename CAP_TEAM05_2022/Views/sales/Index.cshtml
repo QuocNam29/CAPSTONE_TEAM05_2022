@@ -58,7 +58,7 @@
                                 <div class="col-md-4">
                                     <div class="mx-datepicker">
                                         <div class="mx-input-wrapper">
-                                            <input id="sale_DateStart" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}", DateTime.Now.AddDays((-DateTime.Now.Day) + 1))">
+                                            <input id="sale_DateStart" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}", DateTime.Now.AddMonths(-1))">
 
                                         </div>
                                     </div>
@@ -66,17 +66,20 @@
                                 <div class="col-md-4">
                                     <div class="mx-datepicker">
                                         <div class="mx-input-wrapper">
-                                            <input id="sale_DateEnd" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}",DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day)))">
+                                            <input id="sale_DateEnd" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}",DateTime.Now))">
 
                                         </div>
                                     </div>
+                                </div>
+                                <div class="col-md-2">
+                                </div>
+                                <div class="col-md-2">
+                                    <a href="@Url.Action("CreateOldOrder","sale_details")" class="btn  btn-primary btn-block" >Tạo đơn hàng cũ</a>
                                 </div>
 
                             </div>
                             <div class="table-responsive" id="dataContainer3">
                                 @{ Html.RenderAction("_OrderList", "sales");}
-
-
                             </div>
                         </div>
                     </div>

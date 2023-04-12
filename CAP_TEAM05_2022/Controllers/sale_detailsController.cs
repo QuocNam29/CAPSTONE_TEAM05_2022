@@ -10,12 +10,20 @@ namespace CAP_TEAM05_2022.Controllers
     public class sale_detailsController : Controller
     {
         private CP25Team05Entities db = new CP25Team05Entities();
-
+        public sale_detailsController()
+        {
+            ViewBag.isNewCreate = false;
+        }
         // GET: sale_details
         public ActionResult Index()
         {
-            var sale_details = db.sale_details.Include(s => s.product).Include(s => s.sale);
-            return View(sale_details.ToList());
+            ViewBag.isNewCreate = true;
+            return View();
+        }
+
+        public ActionResult CreateOldOrder()
+        {
+            return View("Index");
         }
         public ActionResult getCartProduct(int id)
         {

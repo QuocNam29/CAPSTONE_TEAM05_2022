@@ -3,7 +3,6 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
-    bool isNewCreate = ViewBag.isNewCreate;
 }
 
 <input type="text" hidden id="URLCreateCart" value="@Url.Action("CreateCart", "carts")" />
@@ -22,7 +21,6 @@
 <input type="text" hidden id="URLgetSupplier" value="@Url.Action("getSupplier", "customers")" />
 <input type="text" hidden id="URLTestPrint" value="@Url.Action("_TemplateOrderDetails", "sales")" />
 
-<input type="hidden" id="isNewCreate" value="@(isNewCreate ? 1 : 2)" />
 
 <section class="pcoded-main-container">
     <div class="pcoded-content">

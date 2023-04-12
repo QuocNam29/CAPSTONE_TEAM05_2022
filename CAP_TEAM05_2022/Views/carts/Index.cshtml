@@ -6,75 +6,241 @@
     int no = 0;
     float total = Model.Sum(s => s.price);
 }
+<link href="~/Content/css/custom-css.css" rel="stylesheet" />
+
 @if (Model.Any())
 {
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Tổng đơn hàng theo tiền mặt: </label>
-                                <input type="text" id="total" disabled="disabled" class="form-control" value="@Model.Sum(x=> x.price_product.price * x.quantity).ToString("N0")">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Tổng đơn hàng theo tiền ghi nợ: </label>
-                                <input type="text" id="total" disabled="disabled" class="form-control" value="@Model.Sum(x=> x.price_product.price_debt * x.quantity).ToString("N0")">
+    <form class="CreateOderForm" id="CreateOderForm" action="@Url.Action("CreateSale", "sales")" method="post" novalidate>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            @Html.AntiForgeryToken()
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Tổng đơn hàng theo tiền mặt: </label>
+                                    <input type="text" id="total" disabled="disabled" class="form-control" value="@Model.Sum(x=> x.price_product.price * x.quantity).ToString("N0")">
+                                </div>
 
                             </div>
-                        </div>
-                        <div class="col-md-3 ">
-                            <div class="form-group">
-                                <label>Trả trước <label class="text-danger">(đối với ghi nợ)</label>: </label>
-                                <input type="text" placeholder="Thanh toán 1 phần" id="cart_Prepay" max="999999999999" class="form-control Price"
-                                       pattern="[0-9.,]+" data-type="number" name="purchase_price" onchange="ButtonDebit()">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Phương thức giá <label class="text-danger">(đối với ghi nợ)</label>:</label>
-                            <div class="mt-2">
-                                <div class="form-check form-check-inline">
-                                    <input type="radio" name="methodPrice" value="@Constants.DEBT_METHOD_PRICE" checked />
-                                    <label class="form-check-label" for="methodPrice">
-                                        Bán giá ghi nợ
-                                    </label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input type="radio" name="methodPrice" value="@Constants.CASH_METHOD_PRICE" />
-                                    <label class="form-check-label" for="methodPrice">
-                                        Bán giá tiền mặt
-                                    </label>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Tổng đơn hàng theo tiền ghi nợ: </label>
+                                    <input type="text" id="total" disabled="disabled" class="form-control" value="@Model.Sum(x=> x.price_product.price_debt * x.quantity).ToString("N0")">
+
                                 </div>
                             </div>
-                        </div>
-
-
-                        <div class="col-md-9">
-                            <div class="form-group">
-                                <label>Ghi chú</label>
-                                <input type="text" id="cart_note" placeholder="Ghi chú" class="form-control">
+                            <div class="col-md-3 ">
+                                <div class="form-group">
+                                    <label>Trả trước <label class="text-danger">(đối với ghi nợ)</label>: </label>
+                                    <input type="text" placeholder="Thanh toán 1 phần" id="cart_Prepay" max="999999999999" class="form-control Price"
+                                           pattern="[0-9.,]+" data-type="number" name="purchase_price" onchange="ButtonDebit()">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <button type="button" id="payment_btn" onclick="Payment_order('@Constants.PAYED_ORDER')" class="btn btn-warning btn-block">
-                                    Thanh toán
-                                </button>
-                                <button type="button" onclick="Payment_order('@Constants.DEBT_ORDER')" class="btn btn-dark btn-block" id="btn_debit">
-                                    Ghi nợ
-                                </button>
+                            <div class="col-md-3">
+                                <label class="form-label">Phương thức giá <label class="text-danger">(đối với ghi nợ)</label>:</label>
+                                <div class="mt-2">
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" name="methodPrice" value="@Constants.DEBT_METHOD_PRICE" checked />
+                                        <label class="form-check-label" for="methodPrice">
+                                            Bán giá ghi nợ
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" name="methodPrice" value="@Constants.CASH_METHOD_PRICE" />
+                                        <label class="form-check-label" for="methodPrice">
+                                            Bán giá tiền mặt
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                            <div class="col-md-9 newOrder">
+                                <div class="form-group">
+                                    <label>Ghi chú</label>
+                                    <input type="text" id="cart_note" placeholder="Ghi chú" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6 oldOrder">
+                                <div class="form-group">
+                                    <label>Ghi chú</label>
+                                    <input type="text" id="cart_note" placeholder="Ghi chú" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-3 oldOrder">
+                                <div class="form-group">
+                                    <label for="product-price-import">
+                                        Đơn giá nhập<span class="text-danger">*</span>
+                                    </label>
+                                    <div class="position-relative">
+                                        <input type="datetime-local" id="cart_datime" name="created_at" class="form-control" required data-val="true" data-val-required="Vui lòng nhập ngày tạo hóa đơn !">
+                                        @Html.ValidationMessage("created_at", "", new { @class = "text-danger" })
+                                    </div>
+                                    <!---->
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input type="hidden" id="methodOrder" name="method" value="0" />
+                                    <input type="hidden" id="formCustomer_id" name="customer_id" value="0" />
+                                    <button type="button" id="payment_btn" onclick="hihi('@Constants.PAYED_ORDER')" class="btn btn-warning btn-block">
+                                        Thanh toán
+                                    </button>
+                                    <button type="submit" hidden id="payment_btn_hihi" class="btn btn-warning btn-block">
+                                        Thanh toán
+                                    </button>
+                                    <button type="button" onclick="hihi('@Constants.DEBT_ORDER')" class="btn btn-dark btn-block" id="btn_debit">
+                                        Ghi nợ
+                                    </button>
+                                </div>
+                            </div>
 
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        function hihi(method) {
+            $('#methodOrder').val(method);
+            document.getElementById('payment_btn_hihi').click();
+        }
+        $('.CreateOderForm').submit(function (e) {
+            var form = $(this);
+            var _this = $(this);
+            var _form = _this.closest("form");
+            var isvalid = _form.valid();
+            console.log(form.serialize())
+            // Check if form is valid then submit ajax
+            if (isvalid) {
+                e.preventDefault();
+                var url = form.attr('action');
 
+                var method = $('#methodOrder').val();
+                if (method == 1) {
+                    Swal.fire({
+                        title: 'Thanh toán?',
+                        text: 'Bạn có chắc chắn muốn thanh toán',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'xác nhận',
+                    }).then((result) => {
+                        /* Read more about isConfirmed, isDenied below */
+                        if (result.isConfirmed) {
+                            
+                            $.ajax({
+                                async: false,
+                                url: url,
+                                type: 'POST',
+                                data: form.serialize(),
+                                success: function (response) {
+                                    if (response.status) {
+                                        GetList_Cart($('#customer_id').val());
+                                        document.querySelector("#customer_name").disabled = false;
+                                        document.querySelector("#product_name").disabled = false;
+                                        $('#product_code').val('');
+                                        $('#product_unit').val('');
+                                        $('#product_price').val('');
+                                        $('#product_name').val('');
+                                        $('#sum_price').val('');
+                                        $('#product_quantity').val(1);
+                                        $("#submit_addCart").show();
+                                        $("#refresh_cart").show();
+                                        $("#submit_updateCart").hide();
+                                        $("#Cancel_Cart").hide();
+                                        $("#payment_btn").hide();
+                                        $("#order_btn").hide();
+
+                                        Swal.fire({
+                                            title: 'Thành công!',
+                                            text: 'Bạn có muốn in hóa đơn ?',
+                                            icon: 'success',
+                                            showCancelButton: true,
+                                            confirmButtonText: 'In hóa đơn',
+                                        }).then((result) => {
+                                            /* Read more about isConfirmed, isDenied below */
+                                            if (result.isConfirmed) {
+                                                PrintOrder(response.sale_id);
+                                            }
+                                        })
+                                    } else {
+                                        Swal.fire('Lỗi !', response.message, 'error');
+                                    }
+
+                                }
+                            });
+                        }
+                    })
+                } else {
+                    Swal.fire({
+                        title: 'Ghi nợ?',
+                        text: 'Bạn đã chắc chắn muốn ghi nợ đơn hàng ?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'xác nhận',
+                    }).then((result) => {
+                        /* Read more about isConfirmed, isDenied below */
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                async: false,
+                                url: url,
+                                type: 'POST',
+                                data: form.serialize(),
+                                success: function (response) {
+                                    if (response.status) {
+                                        GetList_Cart($('#customer_id').val());
+                                        document.querySelector("#customer_name").disabled = false;
+                                        document.querySelector("#product_name").disabled = false;
+                                        $('#product_code').val('');
+                                        $('#product_unit').val('');
+                                        $('#product_price').val('');
+                                        $('#product_name').val('');
+                                        $('#sum_price').val('');
+                                        $('#product_quantity').val(1);
+                                        $("#submit_addCart").show();
+                                        $("#refresh_cart").show();
+                                        $("#submit_updateCart").hide();
+                                        $("#Cancel_Cart").hide();
+                                        $("#payment_btn").hide();
+                                        $("#order_btn").hide();
+
+                                        Swal.fire({
+                                            title: 'Thành công!',
+                                            text: 'Bạn có muốn in hóa đơn ?',
+                                            icon: 'success',
+                                            showCancelButton: true,
+                                            confirmButtonText: 'In hóa đơn',
+                                        }).then((result) => {
+                                            /* Read more about isConfirmed, isDenied below */
+                                            if (result.isConfirmed) {
+                                                PrintOrder(response.sale_id);
+                                            }
+                                        })
+                                    } else {
+                                        Swal.fire('Lỗi !', response.message, 'error');
+                                    }
+
+                                }
+                            });
+                        }
+                    })
+                }
+            }
+        });
+        $('#formCustomer_id').val($('#customer_id').val());
+        var isNewCreate = $('#isNewCreate').val();
+        if (isNewCreate == 1) {
+            $('.newOrder').show();
+            $('.oldOrder').hide();
+        } else {
+            $('.newOrder').hide();
+            $('.oldOrder').show();
+        }
+    </script>
 }
 
 <div class="row">
@@ -102,34 +268,34 @@
                             @foreach (var item in Model)
                             {
                                 no++;
-                            <tr>
-                                <td>@no </td>
-                                <td>@item.product.code</td>
-                                <td>@item.product.name</td>
+                                <tr>
+                                    <td>@no </td>
+                                    <td>@item.product.code</td>
+                                    <td>@item.product.name</td>
 
-                                <td class="text-center">@((item.price_product.price).ToString("N0")) VNĐ</td>
-                                <td class="text-center">@((item.price_product.price_debt).ToString("N0")) VNĐ</td>
-                                <td class="text-center">
-                                    <div> @item.quantity<span class="txt-unit"> @item.unit</span></div>
-                                </td>
-                                <td class="text-center">@((item.price_product.price * item.quantity).ToString("N0")) VNĐ</td>
-                                <td class="text-center">@((item.price_product.price_debt * item.quantity).ToString("N0")) VNĐ</td>
-                                <td>@item.note</td>
-                                <td>
-                                    <button class="btn btn-success" onclick="FillProduct_cart('@item.id', '@item.product_id','@item.product.name','@item.quantity', '@item.unit')">
-                                        <i class="feather icon-edit">
-                                        </i>
-                                    </button>
-                                    <input hidden type="text" id="URLDelete" value="@Url.Action("Delete_CartProduct", "carts")">
-                                    <button class="btn btn-danger" onclick="deleteAlert('@item.id')" id="Delete">
-                                        <i class="feather icon-trash-2">
-                                        </i>
-                                    </button>
+                                    <td class="text-center">@((item.price_product.price).ToString("N0")) VNĐ</td>
+                                    <td class="text-center">@((item.price_product.price_debt).ToString("N0")) VNĐ</td>
+                                    <td class="text-center">
+                                        <div> @item.quantity<span class="txt-unit"> @item.unit</span></div>
+                                    </td>
+                                    <td class="text-center">@((item.price_product.price * item.quantity).ToString("N0")) VNĐ</td>
+                                    <td class="text-center">@((item.price_product.price_debt * item.quantity).ToString("N0")) VNĐ</td>
+                                    <td>@item.note</td>
+                                    <td>
+                                        <button class="btn btn-success" onclick="FillProduct_cart('@item.id', '@item.product_id','@item.product.name','@item.quantity', '@item.unit')">
+                                            <i class="feather icon-edit">
+                                            </i>
+                                        </button>
+                                        <input hidden type="text" id="URLDelete" value="@Url.Action("Delete_CartProduct", "carts")">
+                                        <button class="btn btn-danger" onclick="deleteAlert('@item.id')" id="Delete">
+                                            <i class="feather icon-trash-2">
+                                            </i>
+                                        </button>
 
-                                </td>
+                                    </td>
 
 
-                            </tr>
+                                </tr>
                             }
 
                         </tbody>
@@ -139,12 +305,12 @@
         </div>
     </div>
 </div>
-@section scripts {
     <script type="text/javascript">
         $(document).ready(function () {
             $('#example').DataTable({
                 pagingType: 'full_numbers',
             });
+
         });
 
         $('#cart_Prepay').keydown(function (e) {
@@ -160,9 +326,11 @@
                 $(this).val(n);
             })
         })
+
     </script>
-}
+
 <script>
+
     function deleteAlert(id) {
         Swal.fire({
             title: 'Bạn có chắc chắn muốn xóa',
