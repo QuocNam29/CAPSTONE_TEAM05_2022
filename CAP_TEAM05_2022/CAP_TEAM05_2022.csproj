@@ -729,6 +729,7 @@
     <Content Include="Views\customers\_SupplierList.cshtml" />
     <Content Include="Views\inventory_order\CreateDetails.cshtml" />
     <Content Include="Views\sales\_RevenueList.cshtml" />
+    <Content Include="Views\sales\_TemplatePrintRevenueList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

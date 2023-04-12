@@ -132,5 +132,29 @@
             var URLExportExcel_RevenueDate = "@Url.Action("ExportExcel_DetailsRevenue", "Excel")" + "?date_Start=" + date_start + "&date_End=" + date_end;
             window.location.href = URLExportExcel_RevenueDate;
         })
+        function PrintRevenues() {
+            var date_start = $("#revenue_DateStart").val();
+            var date_end = $("#revenue_DateEnd").val();
+            $.ajax({
+                url: '@Url.Action("_TemplatePrintRevenueList", "sales")',
+                data: {
+                    date_Start: date_start,
+                    date_End: date_end,
+                },
+                async: false,
+            }).done(function (result) {
+                var WinPrint = window.open('', '', 'width=1200,height=800');
+                WinPrint.document.write('<html><head>');
+                WinPrint.document.write('</head><body onload="print();">');
+                WinPrint.document.write(result);
+                WinPrint.document.write('</body></html>');
+                WinPrint.document.close();
+                WinPrint.focus();
+            }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(textStatus)
+                console.log(errorThrown)
+                Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
+            });
+        }
     </script>
 }
