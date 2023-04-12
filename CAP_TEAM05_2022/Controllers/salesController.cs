@@ -71,9 +71,31 @@ namespace CAP_TEAM05_2022.Controllers
             return PartialView(sales.OrderByDescending(c => c.id).ToList());
         }
 
-        public ActionResult Revenue()
+        public ActionResult Revenue(DateTime? date_Start, DateTime? date_End)
         {
-            return View(db.revenues.OrderByDescending(c => c.id).ToList());
+            TempData["date_Start"] = date_Start;
+            TempData["date_End"] = date_End;
+            return View();
+        }
+        public ActionResult _RevenueList(DateTime? date_Start, DateTime? date_End)
+        {
+            if (date_Start == null)
+            {
+                date_Start = (DateTime.Now);
+            }
+            if (date_End == null)
+            {
+                date_End = (DateTime.Now);
+            }
+            var revenues = db.revenues.Where(s => s.sale_details.sale.created_at >= date_Start && s.sale_details.sale.created_at <= date_End
+                                                    || s.sale_details.sale.created_at.Value.Day == date_Start.Value.Day
+                                                    && s.sale_details.sale.created_at.Value.Month == date_Start.Value.Month
+                                                    && s.sale_details.sale.created_at.Value.Year == date_Start.Value.Year
+                                                    || s.sale_details.sale.created_at.Value.Day == date_End.Value.Day
+                                                    && s.sale_details.sale.created_at.Value.Month == date_End.Value.Month
+                                                    && s.sale_details.sale.created_at.Value.Year == date_End.Value.Year);
+
+            return PartialView(revenues.OrderByDescending(c => c.id).ToList());
         }
         public ActionResult _RevenueList_Date(DateTime? date_Start, DateTime? date_End)
         {

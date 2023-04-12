@@ -676,8 +676,6 @@
     <Content Include="Views\carts\Index.cshtml" />
     <Content Include="Views\sales\Index.cshtml" />
     <Content Include="Views\sales\Revenue.cshtml" />
-    <Content Include="Views\sales\_RevenueList_Date.cshtml" />
-    <Content Include="Views\sales\_RevenueList_Month.cshtml" />
     <Content Include="Views\sales\_OrderList.cshtml" />
     <Content Include="Views\sales\_OrderDetailsList.cshtml" />
     <Content Include="Views\products\_Inventory_ProductList.cshtml" />
@@ -730,6 +728,7 @@
     <Content Include="Views\Revenues\_TemplatePrintSumRevenues.cshtml" />
     <Content Include="Views\customers\_SupplierList.cshtml" />
     <Content Include="Views\inventory_order\CreateDetails.cshtml" />
+    <Content Include="Views\sales\_RevenueList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

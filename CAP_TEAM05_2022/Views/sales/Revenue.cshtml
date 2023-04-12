@@ -5,12 +5,7 @@
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
 
 }
-<input type="text" hidden id="URL_RevenueList_Date" value="@Url.Action("_RevenueList_Date", "sales")" />
-<input type="text" hidden id="URL_RevenueList_Month" value="@Url.Action("_RevenueList_Month", "sales")" />
-<input type="text" hidden id="URLExportExcel_RevenueDate" value="@Url.Action("ExportExcel_RevenueDate", "Excel")" />
-<input type="text" hidden id="URLExportExcel_RevenueMonth" value="@Url.Action("ExportExcel_RevenueMonth", "Excel")" />
 <input type="text" hidden id="URLExportExcel_profit" value="@Url.Action("ExportExcel_profit", "Excel")" />
-
 <section class="pcoded-main-container">
     <div class="pcoded-content">
         <div class="page-header">
@@ -19,9 +14,10 @@
                     <div class="col-md-12">
                         <div class="page-header-title">
                             <h5 class="m-b-10">Doanh thu</h5>
-                        </div> <ul class="breadcrumb">
+                        </div>
+                        <ul class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="https://tancool.net">
+                                <a href="https://dnqt.net">
                                     <i class="feather icon-home">
                                     </i>
                                 </a>
@@ -33,143 +29,56 @@
                     </div>
                 </div>
             </div>
-        </div> <div>
+        </div>
+        <div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <div class="row mb-3" id="RevenueDate">
-                                <div class="col-md-4">
-                                    <div class="mx-datepicker">
-                                        <div class="mx-input-wrapper">
-                                            <input name="date_start" id="revenue_DateStart" placeholder="" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}", DateTime.Now)">
-                                        </div>
+                            <div class="row mb-3">
 
-                                    </div>
-                                </div> <div class="col-md-4">
-                                    <div class="mx-datepicker">
-                                        <div class="mx-input-wrapper">
-                                            <input name="date_end" id="revenue_DateEnd" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}",DateTime.Now)">
-                                        </div>
+                                <div class="row col-md-10" id="RevenueDate">
 
+                                    <div class="col-md-4">
+                                        <div class="mx-datepicker">
+                                            <div class="mx-input-wrapper">
+                                                <input name="date_start" id="revenue_DateStart" placeholder="" class="form-control custom-width flatpickr" value="@(TempData["date_Start"] == null ? String.Format("{0:yyyy-MM-dd}", DateTime.Now): String.Format("{0:yyyy-MM-dd}", TempData["date_Start"]))">
+                                            </div>
+
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="float-right">
-                                        <button type="button" class="btn btn-secondary" id="btnExportExcel_RevenueDate">Xuất doanh thu chi tiết</button>
+                                    <div class="col-md-4">
+                                        <div class="mx-datepicker">
+                                            <div class="mx-input-wrapper">
+                                                <input name="date_end" id="revenue_DateEnd" class="form-control custom-width flatpickr" value="@(TempData["date_End"] == null ? String.Format("{0:yyyy-MM-dd}", DateTime.Now): String.Format("{0:yyyy-MM-dd}", TempData["date_End"]))">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="float-right">
+                                            <button type="button" class="btn btn-secondary" id="btnExportExcel_SumRevenue">Xuất Excel</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="float-right">
+                                            <button type="button" class="btn btn-secondary" onclick="PrintRevenues()">In doanh thu</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table id="example" class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>Mã sản phẩm</th>
-                                                <th>Tên sản phẩm</th>
-                                                <th class="text-center">Đơn vị</th>
-                                                <th class="text-center">Đơn giá nhập</th>
-                                                <th class="text-center">Số lượng bán</th>
-                                                <th class="text-center">Đơn giá bán</th>
-                                                <th class="text-center">Tổng giá bán</th>
-                                                <th class="text-center">Lợi nhuận</th>
-                                                <th class="text-center">Ngày giao dịch</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var item in Model)
-                                            {
-                                                <tr>
-                                                    <td>@item.sale_details.product.code</td>
-                                                    <td>@item.sale_details.product.name</td>
-                                                    <td class="text-center">
+                    <div class="card" id="dataContainer">
+                        @{ Html.RenderAction("_RevenueList", "sales");}
 
-                                                        @if (item.sale_details.product.unit_swap != null)
-                                                        {
-                                                            <div>
-                                                                1 @item.sale_details.product.unit = @item.sale_details.product.quantity_swap@item.sale_details.product.unit_swap
-                                                            </div>
-                                                        }
-                                                        else
-                                                        {
-                                                            @item.sale_details.product.unit
-                                                        }
-                                                    </td>
-
-                                                    <td class="text-center">
-                                                        @(item.import_inventory.price_import.ToString("N0") )đ / @item.sale_details.product.unit
-                                                        @if (item.sale_details.product.unit_swap != null)
-                                                        {
-                                                            <div>
-                                                                @String.Format("{0:0,00}", (item.import_inventory.price_import / item.sale_details.product.quantity_swap))đ / @item.sale_details.product.unit_swap
-                                                            </div>
-                                                        }
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @item.quantity @item.unit
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @String.Format("{0:0,00}", item.Price) đ
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @String.Format("{0:0,00}", item.Price * item.quantity) đ
-                                                    </td>
-                                                    @if (item.unit == item.sale_details.product.unit)
-                                                    {
-                                                        if ((item.Price - item.import_inventory.price_import) * item.quantity >= 0)
-                                                        {
-                                                            <td class="text-right text-success">
-                                                                + @String.Format("{0:0,00}", (((item.Price - item.import_inventory.price_import) * item.quantity))) đ
-                                                            </td>
-                                                        }
-                                                        else
-                                                        {
-                                                            <td class="text-right text-danger">
-                                                                - @String.Format("{0:0,00}", (((item.Price - item.import_inventory.price_import) * item.quantity))) đ
-                                                            </td>
-                                                        }
-                                                    }
-                                                    else if (item.unit == item.sale_details.product.unit_swap)
-                                                    {
-                                                        if ((item.Price - (item.import_inventory.price_import / item.sale_details.product.quantity_swap)) * item.quantity >= 0)
-                                                        {
-                                                            <td class="text-right text-success">
-                                                                + @String.Format("{0:0,00}", (((item.Price - (item.import_inventory.price_import / item.sale_details.product.quantity_swap)) * item.quantity))) đ
-                                                            </td>
-                                                        }
-                                                        else
-                                                        {
-                                                            <td class="text-right text-danger">
-                                                                - @String.Format("{0:0,00}", (((item.Price - (item.import_inventory.price_import / item.sale_details.product.quantity_swap)) * item.quantity))) đ
-                                                            </td>
-                                                        }
-                                                    }
-
-                                                    <td class="text-center">
-                                                        @String.Format("{0:HH:mm - dd/MM/yyy}", item.sale_details.sale.created_at)
-                                                    </td>
-                                                </tr>
-                                            }
-
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
-
-
 </section>
+
 <div id="dataContainer2">
 </div>
 @section scripts {
@@ -181,28 +90,41 @@
             pagingType: 'full_numbers',
         });
     });
-    function GetList_orderDetails(id, method) {
-            $.ajax({
-                url: '@Url.Action("_OrderDetailsList", "sales")',
-                data: {
-                    order_id: id,
+         $("#revenue_DateStart").change(function () {
+            var date_start = $("#revenue_DateStart").val();
+            var date_end = $("#revenue_DateEnd").val();
+            if (date_start <= date_end) {
+                GetRevenueList(date_start, date_end);
+            } else {
+                Swal.fire('Lỗi', 'Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc !', 'error')
+            }
 
+        });
+        $("#revenue_DateEnd").change(function () {
+            var date_start = $("#revenue_DateStart").val();
+            var date_end = $("#revenue_DateEnd").val();
+            if (date_start <= date_end) {
+                GetRevenueList(date_start, date_end);
+            } else {
+                Swal.fire('Lỗi', 'Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc !', 'error')
+            }
+        });
+
+        function GetRevenueList(date_start, date_end) {
+            $.ajax({
+                url: '@Url.Action("_RevenueList", "sales")',
+                data: {
+                    date_Start: date_start,
+                    date_End: date_end,
                 }
             }).done(function (result) {
-                $('#dataContainer2').html(result);
-                if (method ==1 ) {
-                    $('#detailModal.close').css('display', 'none');
-                    $('#detailModal').modal('show');
-                }
-                else if (method == 2) {
-                    $('#productSelectModal.close').css('display', 'none');
-                    $('#productSelectModal').modal('show');
-                }
+                $('#dataContainer').html(result);
+                $('#example').DataTable()
             }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log(textStatus)
                 console.log(errorThrown)
                 Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
             });
-    }
+        }
     </script>
 }

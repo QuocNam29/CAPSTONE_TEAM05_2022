@@ -1,0 +1,155 @@
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.revenue>
+@{
+    var first_item = Model.FirstOrDefault();
+    int no = 0;
+    decimal sumSell = 0;
+    decimal sumRevenue = 0;
+}
+@if (Model.Any())
+{
+    <div class="card">
+        <div class="card-body">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="example" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã sản phẩm</th>
+                                <th>Tên sản phẩm</th>
+                                <th class="text-center">Đơn vị</th>
+                                <th class="text-center">Đơn giá nhập</th>
+                                <th class="text-center">Số lượng bán</th>
+                                <th class="text-center">Đơn giá bán</th>
+                                <th class="text-center">Tổng giá bán</th>
+                                <th class="text-center">Lợi nhuận</th>
+                                <th class="text-center">Ngày giao dịch</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                no++;
+                                <tr>
+                                    <td>@no</td>
+                                    <td>@item.sale_details.product.code</td>
+                                    <td>@item.sale_details.product.name</td>
+                                    <td class="text-center">
+
+                                        @if (item.sale_details.product.unit_swap != null)
+                                        {
+                                            <div>
+                                                1 @item.sale_details.product.unit = @item.sale_details.product.quantity_swap@item.sale_details.product.unit_swap
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            @item.sale_details.product.unit
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        @(item.import_inventory.price_import.ToString("N0") )đ / @item.sale_details.product.unit
+                                        @if (item.sale_details.product.unit_swap != null)
+                                        {
+                                            <div>
+                                                @String.Format("{0:0,00}", (item.import_inventory.price_import / item.sale_details.product.quantity_swap))đ / @item.sale_details.product.unit_swap
+                                            </div>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        @item.quantity @item.unit
+                                    </td>
+                                    <td class="text-center">
+                                        @String.Format("{0:0,00}", item.Price) đ
+                                    </td>
+                                    <td class="text-center">
+                                        @String.Format("{0:0,00}", item.Price * item.quantity) đ
+                                        @{sumSell += item.Price * item.quantity;}
+                                    </td>
+                                    @if (item.unit == item.sale_details.product.unit)
+                                    {
+                                        sumRevenue += (item.Price - item.import_inventory.price_import) * item.quantity;
+
+                                        if ((item.Price - item.import_inventory.price_import) * item.quantity >= 0)
+                                        {
+                                            <td class="text-right text-success">
+                                                + @String.Format("{0:0,00}", (((item.Price - item.import_inventory.price_import) * item.quantity))) đ
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="text-right text-danger">
+                                                - @String.Format("{0:0,00}", (((item.Price - item.import_inventory.price_import) * item.quantity))) đ
+                                            </td>
+                                        }
+                                    }
+                                    else if (item.unit == item.sale_details.product.unit_swap)
+                                    {
+                                        sumRevenue += (item.Price - (item.import_inventory.price_import / item.sale_details.product.quantity_swap)) * item.quantity;
+
+                                        if ((item.Price - (item.import_inventory.price_import / item.sale_details.product.quantity_swap)) * item.quantity >= 0)
+                                        {
+                                            <td class="text-right text-success">
+                                                + @String.Format("{0:0,00}", (((item.Price - (item.import_inventory.price_import / item.sale_details.product.quantity_swap)) * item.quantity))) đ
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="text-right text-danger">
+                                                - @String.Format("{0:0,00}", (((item.Price - (item.import_inventory.price_import / item.sale_details.product.quantity_swap)) * item.quantity))) đ
+                                            </td>
+                                        }
+                                    }
+
+                                    <td class="text-center">
+                                        @String.Format("{0:HH:mm - dd/MM/yyy}", item.sale_details.sale.created_at)
+                                    </td>
+                                </tr>
+                            }
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="car-body border-report">
+        <div class="row">
+            <div class="col-md-9">
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <p class="mb-0">
+                        Tổng tiền bán được: <span><b>@sumSell.ToString("N0") VNĐ</b></span>
+                    </p>
+                </div>
+                <div class="form-group">
+                    <p class="mb-0">
+
+                        Tổng tiền nhập hàng: <span><b>@((sumSell - sumRevenue).ToString("N0")) VNĐ</b></span>
+                    </p>
+                </div>
+                <div class="form-group">
+                    <p class="mb-0">
+
+                        Lợi nhuận: <span class="text-@(sumRevenue >= 0 ? "success" : "danger")"><b>@(sumRevenue.ToString("N0")) VNĐ</b></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="card-body table-border-style">
+        <div class="table-responsive">
+            <div>
+                <div class="alert alert-warning text-center">
+                    <p>Không tìm thấy dữ liệu</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
