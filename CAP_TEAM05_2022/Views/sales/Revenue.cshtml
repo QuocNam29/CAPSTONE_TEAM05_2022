@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Revevue";
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
+
 }
 <input type="text" hidden id="URL_RevenueList_Date" value="@Url.Action("_RevenueList_Date", "sales")" />
 <input type="text" hidden id="URL_RevenueList_Month" value="@Url.Action("_RevenueList_Month", "sales")" />
@@ -55,41 +56,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="float-right">
-                                        <button type="button" class="btn btn-secondary" id="btnExportExcel_RevenueDate">Xuất doanh thu theo ngày</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-3" id="RevenueMonth" style="display: none">
-                                <div class="col-md-4">
-                                    <div class="mx-datepicker">
-
-                                        <div class="mx-input-wrapper">
-                                            <input name="date_start" id="revenue_DateStart_Month" type="month" placeholder="" class="form-control custom-width" value="@String.Format("{0:yyyy-MM}", DateTime.Now)">
-                                        </div>
-                                    </div>
-                                </div> <div class="col-md-4">
-                                    <div class="mx-datepicker">
-
-                                        <div class="mx-input-wrapper">
-                                            <input name="date_end" id="revenue_DateEnd_Month" type="month" class="form-control custom-width" value="@String.Format("{0:yyyy-MM}",DateTime.Now)">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="float-right">
-                                        <button type="button" class="btn btn-secondary" id="btnExportExcel_RevenueMonth">Xuất doanh thu theo tháng </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-3" id="ProfitAndLoss" style="display: none">
-                                <div class="col-md-8">
-
-                                    <h4>Doanh thu lợi nhuận</h4>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="float-right">
-                                        <button type="button" class="btn btn-secondary" id="btnExportExcel_profit">Xuất lợi nhuận </button>
+                                        <button type="button" class="btn btn-secondary" id="btnExportExcel_RevenueDate">Xuất doanh thu chi tiết</button>
                                     </div>
                                 </div>
                             </div>
@@ -98,160 +65,110 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="card-body">
-                                <ul id="pills-tab" role="tablist" class="nav nav-pills mb-3">
-                                    <li class="nav-item">
-                                        <a id="pills-contact-tab" onclick="revenue_Date()" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="true" class="nav-link active">
-                                            Doanh thu theo ngày <input type="hidden" value="1">
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a id="pills-home-tab" onclick="revenue_Month()" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="false" class="nav-link">
-                                            Doanh thu theo tháng <input type="hidden" value="1">
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a id="pills-profile-tab" onclick="ProfitAndLoss()" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false" class="nav-link">
-                                            Doanh thu chi tiết lãi lỗ <input type="hidden" value="1">
-                                        </a>
-                                    </li>
-                                </ul> <div id="pills-tabContent" class="tab-content">
-                                    <div id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" class="tab-pane fade">
-                                        <div class="card">
-                                            <div class="card-body table-border-style">
-                                                <div>
-                                                    <div class="table-responsive" id="dataContainer1">
-                                                        @{ Html.RenderAction("_RevenueList_Month", "sales");}
-                                                    </div>
+                                <div class="table-responsive">
+                                    <table id="example" class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Mã sản phẩm</th>
+                                                <th>Tên sản phẩm</th>
+                                                <th class="text-center">Đơn vị</th>
+                                                <th class="text-center">Đơn giá nhập</th>
+                                                <th class="text-center">Số lượng bán</th>
+                                                <th class="text-center">Đơn giá bán</th>
+                                                <th class="text-center">Tổng giá bán</th>
+                                                <th class="text-center">Lợi nhuận</th>
+                                                <th class="text-center">Ngày giao dịch</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>@item.sale_details.product.code</td>
+                                                    <td>@item.sale_details.product.name</td>
+                                                    <td class="text-center">
 
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" class="tab-pane fade">
-                                        <div class="card">
-                                            <div class="card-body table-border-style">
-                                                <div>
-                                                    <div class="table-responsive">
-                                                        <table id="example" class="table table-hover">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Mã sản phẩm</th>
-                                                                    <th>Tên sản phẩm</th>
-                                                                    <th class="text-center">Đơn vị</th>
-                                                                    <th class="text-center">Đơn giá nhập</th>
-                                                                    <th class="text-center">Số lượng bán</th>
-                                                                    <th class="text-center">Đơn giá bán</th>
-                                                                    <th class="text-center">Tổng giá bán</th>
-                                                                    <th class="text-center">Lợi nhuận</th>
-                                                                    <th class="text-center">Ngày giao dịch</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                @foreach (var item in Model)
-                                                                {
-                                                                    <tr>
-                                                                        <td>@item.sale_details.product.code</td>
-                                                                        <td>@item.sale_details.product.name</td>
-                                                                        <td class="text-center">
+                                                        @if (item.sale_details.product.unit_swap != null)
+                                                        {
+                                                            <div>
+                                                                1 @item.sale_details.product.unit = @item.sale_details.product.quantity_swap@item.sale_details.product.unit_swap
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            @item.sale_details.product.unit
+                                                        }
+                                                    </td>
 
-                                                                            @if (item.sale_details.product.unit_swap != null)
-                                                                            {
-                                                                                <div>
-                                                                                    1 @item.sale_details.product.unit = @item.sale_details.product.quantity_swap@item.sale_details.product.unit_swap
-                                                                                </div>
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                @item.sale_details.product.unit
-                                                                            }
-                                                                        </td>
+                                                    <td class="text-center">
+                                                        @(item.import_inventory.price_import.ToString("N0") )đ / @item.sale_details.product.unit
+                                                        @if (item.sale_details.product.unit_swap != null)
+                                                        {
+                                                            <div>
+                                                                @String.Format("{0:0,00}", (item.import_inventory.price_import / item.sale_details.product.quantity_swap))đ / @item.sale_details.product.unit_swap
+                                                            </div>
+                                                        }
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.quantity @item.unit
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @String.Format("{0:0,00}", item.Price) đ
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @String.Format("{0:0,00}", item.Price * item.quantity) đ
+                                                    </td>
+                                                    @if (item.unit == item.sale_details.product.unit)
+                                                    {
+                                                        if ((item.Price - item.import_inventory.price_import) * item.quantity >= 0)
+                                                        {
+                                                            <td class="text-right text-success">
+                                                                + @String.Format("{0:0,00}", (((item.Price - item.import_inventory.price_import) * item.quantity))) đ
+                                                            </td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td class="text-right text-danger">
+                                                                - @String.Format("{0:0,00}", (((item.Price - item.import_inventory.price_import) * item.quantity))) đ
+                                                            </td>
+                                                        }
+                                                    }
+                                                    else if (item.unit == item.sale_details.product.unit_swap)
+                                                    {
+                                                        if ((item.Price - (item.import_inventory.price_import / item.sale_details.product.quantity_swap)) * item.quantity >= 0)
+                                                        {
+                                                            <td class="text-right text-success">
+                                                                + @String.Format("{0:0,00}", (((item.Price - (item.import_inventory.price_import / item.sale_details.product.quantity_swap)) * item.quantity))) đ
+                                                            </td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td class="text-right text-danger">
+                                                                - @String.Format("{0:0,00}", (((item.Price - (item.import_inventory.price_import / item.sale_details.product.quantity_swap)) * item.quantity))) đ
+                                                            </td>
+                                                        }
+                                                    }
 
-                                                                        <td class="text-center">
-                                                                            @(item.import_inventory.price_import.ToString("N0") )đ / @item.sale_details.product.unit
-                                                                            @if (item.sale_details.product.unit_swap != null)
-                                                                            {
-                                                                                <div>
-                                                                                    @String.Format("{0:0,00}", (item.import_inventory.price_import / item.sale_details.product.quantity_swap))đ / @item.sale_details.product.unit_swap
-                                                                                </div>
-                                                                            }
-
-                                                                        </td>
-
-                                                                        <td class="text-center">
-                                                                            @item.quantity @item.unit
-                                                                        </td>
-                                                                        <td class="text-center">
-                                                                            @String.Format("{0:0,00}", item.Price) đ
-                                                                        </td>
-                                                                        <td class="text-center">
-                                                                            @String.Format("{0:0,00}", item.Price * item.quantity) đ
-                                                                        </td>
-                                                                        @if (item.unit == item.sale_details.product.unit)
-                                                                        {
-                                                                            if ((item.Price - item.import_inventory.price_import) * item.quantity >= 0)
-                                                                            {
-                                                                                <td class="text-right text-success">
-                                                                                    + @String.Format("{0:0,00}", (((item.Price - item.import_inventory.price_import) * item.quantity))) đ
-                                                                                </td>
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                <td class="text-right text-danger">
-                                                                                    - @String.Format("{0:0,00}", (((item.Price - item.import_inventory.price_import) * item.quantity))) đ
-                                                                                </td>
-                                                                            }
-                                                                        }
-                                                                        else if (item.unit == item.sale_details.product.unit_swap)
-                                                                        {
-                                                                            if ((item.Price - (item.import_inventory.price_import / item.sale_details.product.quantity_swap)) * item.quantity >= 0)
-                                                                            {
-                                                                                <td class="text-right text-success">
-                                                                                    + @String.Format("{0:0,00}", (((item.Price - (item.import_inventory.price_import / item.sale_details.product.quantity_swap)) * item.quantity))) đ
-                                                                                </td>
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                <td class="text-right text-danger">
-                                                                                    - @String.Format("{0:0,00}", (((item.Price - (item.import_inventory.price_import / item.sale_details.product.quantity_swap)) * item.quantity))) đ
-                                                                                </td>
-                                                                            }
-                                                                        }
-
-                                                                        <td class="text-center">
-                                                                            @String.Format("{0:HH:mm - dd/MM/yyy}", item.sale_details.sale.created_at)
-                                                                        </td>
-                                                                    </tr>
-                                                                }
+                                                    <td class="text-center">
+                                                        @String.Format("{0:HH:mm - dd/MM/yyy}", item.sale_details.sale.created_at)
+                                                    </td>
+                                                </tr>
+                                            }
 
 
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" class="tab-pane fade active show">
-                                        <div class="card">
-                                            <div class="card-body table-border-style">
-                                                <div>
-                                                    <div class="table-responsive" id="dataContainer">
-                                                        @{ Html.RenderAction("_RevenueList_Date", "sales");}
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
+
             </div>
         </div>
     </div>
+
+
 </section>
 <div id="dataContainer2">
 </div>
@@ -264,29 +181,6 @@
             pagingType: 'full_numbers',
         });
     });
-    $(document).ready(function () {
-        $('#example').DataTable({
-            pagingType: 'full_numbers',
-        });
-    });
-    function revenue_Month() {
-
-        $("#RevenueDate").hide();
-        $("#RevenueMonth").show();
-        $("#ProfitAndLoss").hide();
-
-
-    }
-    function revenue_Date() {
-        $("#RevenueDate").show();
-        $("#RevenueMonth").hide();
-        $("#ProfitAndLoss").hide();
-    }
-    function ProfitAndLoss() {
-        $("#RevenueDate").hide();
-        $("#RevenueMonth").hide();
-        $("#ProfitAndLoss").show();
-    }
     function GetList_orderDetails(id, method) {
             $.ajax({
                 url: '@Url.Action("_OrderDetailsList", "sales")',

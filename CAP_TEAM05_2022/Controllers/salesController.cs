@@ -124,7 +124,7 @@ namespace CAP_TEAM05_2022.Controllers
                 sale sale = new sale();
                 sale.code = "MDH" + CodeRandom.RandomCode();
                 sale.customer_id = createSale.customer_id;
-                sale.method = Constants.DEBT_ORDER;
+                sale.method = createSale.method;
                 sale.prepayment = createSale.method == Constants.DEBT_ORDER ? createSale.prepayment : 0;
                 if (sale.method == Constants.DEBT_ORDER  && methodPrice == Constants.DEBT_METHOD_PRICE)
                 {

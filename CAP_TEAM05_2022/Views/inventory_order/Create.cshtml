@@ -4,7 +4,6 @@
 @{
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
-    int i = 0;
 
 }
 <link href="~/Content/css/custom-css.css" rel="stylesheet" />
@@ -15,7 +14,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Tồn kho</h5>
+                            <h5 class="m-b-10">Tạo đơn nhập hàng</h5>
                         </div>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item">
@@ -25,7 +24,12 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="javascript:void(0)">Tồn kho</a>
+                                <a href="@Url.Action("Index", "inventory_order")">
+                                   Quản lý nhập hàng
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="javascript:void(0)">Tạo đơn nhập hàng</a>
                             </li>
                         </ul>
                     </div>
@@ -36,7 +40,7 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5>Nhập kho</h5>
+                        <h5>Tạo đơn nhập hàng</h5>
                     </div>
                     <div class="card-body">
                         @Html.ValidationSummary()
@@ -44,111 +48,62 @@
                         {
                             @Html.AntiForgeryToken()
 
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Nhà cung cấp</label>
-                                        @if ((bool)ViewBag.isCreate)
-                                        {
-                                            @Html.DropDownListFor(model => model.supplier_id, (SelectList)ViewBag.Customer, "---- Chọn nhà cung cấp ----", new { @class = "form-control", @aria_label = "Chọn danh mục thiết bị", @required = "required" })
-                                        }
-                                        @Html.ValidationMessageFor(model => model.supplier_id, "", new { @class = "text-danger" })
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="form-label">Nhà cung cấp</label>
+                                    @if ((bool)ViewBag.isCreate)
+                                    {
+                                        @Html.DropDownListFor(model => model.supplier_id, (SelectList)ViewBag.Customer, "---- Chọn công ty ----", new { @class = "form-control",@id="Supplier", @aria_label = "Chọn danh mục thiết bị", @required = "required" })
+                                    }
+                                    @Html.ValidationMessageFor(model => model.supplier_id, "", new { @class = "text-danger" })
 
-                                    </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label class="floating-label" for="Text">Phương thức thanh toán</label>
-                                        <div>
-                                            <div class="form-check form-check-inline">
-                                                <input type="radio" class="form-control-lg" name="method" value="@Constants.PAYED_ORDER" onclick="Method1();" checked>
-                                                <label class="form-check-label" for="Subject">Đã thanh toán</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input type="radio" class="form-control-lg" name="method" value="@Constants.DEBT_ORDER" onclick="Method2();">
-                                                <label class="form-check-label" for="Subject">Ghi nợ</label>
-                                            </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="floating-label" for="Text">Phương thức thanh toán</label>
+                                    <div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio" class="form-control-lg" name="method" value="@Constants.PAYED_ORDER" onclick="Method1();" checked>
+                                            <label class="form-check-label" for="Subject">Đã thanh toán</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio" class="form-control-lg" name="method" value="@Constants.DEBT_ORDER" onclick="Method2();">
+                                            <label class="form-check-label" for="Subject">Ghi nợ</label>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-6 debt_method" style="display: none">
-                                    <div class="form-group">
-                                        <label class="form-label">Tổng hóa đơn: </label>
-                                        <input type="text" class="form-control" disabled id="totalInventory" value="2">
-                                    </div>
+                            </div>
+                            <div class="col-sm-6 debt_method">
+                                <div class="form-group">
+                                    <label class="form-label">Tổng hóa đơn: </label>
+                                    <input type="text" class="form-control" disabled id="totalInventory" value="0">
                                 </div>
-                                <div class="col-sm-6 debt_method" style="display: none">
-                                    <div class="form-group">
-                                        <label class="form-label">Thanh toán trước: </label>
-                                        <input class="form-control Price text-box single-line" data-val="true" 
-                                               data-val-length="Vui lòng nhập một giá trị nhỏ hơn hoặc bằng 999,999,999,999" 
-                                               data-val-length-max="15" data-val-number="Vui lòng nhập số vào giá tiền." 
-                                               data-val-required="Vui lòng nhập số tiền thanh toán trước !" 
-                                               id="Repayment" name="Repayment" pattern="[0-9.,]+" placeholder="Nhập số tiền thanh toán trước..." type="text" value="">
-                                        @Html.ValidationMessage("Repayment", "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-sm-6 debt_method" style="display: none">
+                                <div class="form-group">
+                                    <label class="form-label">Thanh toán trước: </label>
+                                    <input class="form-control Price text-box single-line" data-val="true"
+                                           data-val-length="Vui lòng nhập một giá trị nhỏ hơn hoặc bằng 999,999,999,999"
+                                           data-val-length-max="15" data-val-number="Vui lòng nhập số vào giá tiền."
+                                           data-val-required="Vui lòng nhập số tiền thanh toán trước !"
+                                           id="Repayment" name="Repayment" pattern="[0-9.,]+" placeholder="Nhập số tiền thanh toán trước..." type="text" value="">
+                                    @Html.ValidationMessage("Repayment", "", new { @class = "text-danger" })
 
 
+                                </div>
+                            </div>
+                            <div class="table-responsive" id="dataContainer">
+                                <div class="card-body table-border-style">
+                                    <div class="table-responsive">
+                                        <div>
+                                            <div class="alert alert-warning text-center">
+                                                <p>Vui lòng chọn công ty cung cấp để có thể thực hiện chức năng</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="ovf-table col-sm-12">
-                                    <table class="min-w-600 table table-group-divider">
-                                        <thead>
-                                            <tr>
-                                                <th>
-                                                    Tên sản phẩm
-                                                </th>
-                                                <th>
-                                                    Số lượng
-                                                </th>
-                                                <th>
-                                                    Đơn giá nhập
-                                                </th>
-                                                <th>
-                                                    Thành tiền
-                                                </th>
-                                                <th>
-                                                    Đơn giá bán
-                                                </th>
-                                                <th>
-                                                    Đơn giá bán nợ
-                                                </th>
-                                                <th><button type="button" class="btn btn-primary feather icon-plus-square" id="addRow"></button></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @for (int j = 0; j < Model?.import_inventory?.Count; j++)
-                                            {
-                                                <tr id="rcd[@i]" name="rcd">
-                                                    <td>
-                                                        @Html.DropDownListFor(m => m.import_inventory[i].product_id, new SelectList(ViewBag.Product, "Id", "Name", Model.import_inventory[i].product_id), new { @class = "form-control", @required = "true" })
-                                                    </td>
-                                                    <td>
-                                                        @Html.EditorFor(m => m.import_inventory[i].quantity, new { htmlAttributes = new { @class = "form-control", @required = "true", @onchange = "calculate(this)" } })
-                                                    </td>
-                                                    <td>
-                                                        @Html.EditorFor(m => m.import_inventory[i].price_import, new { htmlAttributes = new { @class = "form-control", @required = "true", @onchange = "calculate(this)" } })
-                                                    </td>
-                                                    <td>
-                                                        <label id="total[@i]" name="totalEq" data-val=@((Model.import_inventory[i].price_import * Model.import_inventory[i].quantity ))>
-                                                            @((Model.import_inventory[i].price_import * Model.import_inventory[i].quantity).ToString("N0")) VNĐ
-                                                        </label>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" id='@i' class="btn bi-trash delete-row" onclick="deleteRow(this)"></button>
-                                                    </td>
-                                                </tr>
-                                                i++;
-                                            }
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <td colspan="6">
-                                                    <label class="float-end" id="totalReceipt"></label>
-                                                </td>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
+                                </div>                        </div>
                             </div>
 
                             <div class="form-group">
@@ -169,103 +124,30 @@
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     <script type="text/javascript">
-        var count = $('tr[name="rcd"]').length == 0 ? 0 : $('tr[name="rcd"]').length;
-        var total = 0;
-        function deleteRow(target) {
-            var rows = $("table tr[name='rcd']");
-            //remove existing row
-            $('#rcd\\[' + target.id + '\\]').remove();
-            count--
-            for (var i = parseInt(target.id) + 1; i < rows.length; i++) {
-                //replace tr tag id
-                $(rows[i]).attr('id', 'rcd[' + (i - 1) + ']')
-                //get all column for one row
-                var cols = $(rows[i]).find('td');
-                for (var j = 0; j < cols.length; j++) {
-                    //get first children then replace the index
-                    var childrenIn = $(cols[j]).children().first();
-                    //replace only name and id only to not affected other field
-                    childrenIn.attr('name', childrenIn.attr('name')?.replace(i, (i - 1)))
-                    childrenIn.attr('id', childrenIn.attr('id')?.replace(i, (i - 1)))
-                }
-            }
-            calTotal()
-        }
-        function calculate(target) {
-
-            //get target id before calculate
-            var idToCal = target.id;
-            //split to get the index
-            var id = idToCal.split('__')[0].split('_')[1];
-            //passing id for exact column data use to calculate
-            var quantity = $('#importInventory_' + parseInt(id) + '__quantity').val();
-            var cost = $('#importInventory_' + parseInt(id) + '__price_import').val().replace(/\,/g, '').replace(/\./g, '');;
-            //calculate data
-            var truequantity = quantity ? parseInt(quantity) : 0;
-            var trueprice_import = cost ? parseFloat(cost) : 0;
-            var cal =  truequantity * trueprice_import;
-            //set field total for equidment
-            $('label[id="total[' + id + ']"]').text(cal.toLocaleString('vn-VN') + ' VNĐ');
-            $('label[id="total[' + id + ']"]').attr('data-val', cal)
-            //calculate total
-            calTotal()
-
-        }
-        function calTotal() {
-            total = 0;
-            //get all total rows
-            var rows = $('label[name="totalEq"]');
-            for (var i = 0; i < rows.length; i++) {
-                total += parseFloat($(rows[i]).attr('data-val'));
-            }
-            $('#totalReceipt').text("Tổng hoá đơn: "+total.toLocaleString('vn-VN') + ' VNĐ')
-            $('#totalInventory').val(total.toLocaleString('vn-VN'))
-        }
-        $(document).ready(function () {
-            // Add new row when the "Add Row" button is clicked
-            calTotal()
-            $("#addRow").click(function (e) {
-                e.preventDefault();
-                var newRow = $("<tr id='rcd[" + count + "]' name='rcd'>");
-                //get data list from viewbag
-                var data = @Html.Raw(Json.Encode(new SelectList(ViewBag.Product, "Id","Name")));
-
-                //add html field
-                var cols = "";
-                cols += "<td> <select id='importInventory_" + count + "__product_id' name='importInventory[" + count + "].product_id' class='form-control'>";
-                $.each(data, function (index, item) {
-                    cols+= "<option value='"+item.Value+"'>"+item.Text+"</option>"
-                });
-                cols += '</select></td>'
-                cols += '<td>' + '<input class="form-control text-box single-line"  placeholder="Nhập số lượng" id ="importInventory_' + count + '__quantity" name ="importInventory[' + count +'].quantity" onchange ="calculate(this)" required type ="number" min="1">'+ '</td>';
-                cols += '</select></td>'
-                cols += '<td>' + ' <input class="form-control text-box single-line Price"  placeholder="Nhập đơn giá" id ="importInventory_' + count + '__price_import"  name ="priceImport[' + count +']" onchange ="calculate(this)" required type ="text">' + '</td>';
-                cols += '<td>' + '<label id="total[' + count + ']" name="totalEq" data-val=0>0 VNĐ </label>' + '</td > ';
-                cols += '<td>' + ' <input class="form-control text-box single-line Price"  placeholder="Nhập đơn giá bán" name ="saleprice[' + count + ']"  required type ="text" >' + '</td>';
-                cols += '<td>' + ' <input class="form-control text-box single-line Price"  placeholder="Nhập đơn giá bán nợ"  name ="debtPrice[' + count + ']" required type ="text" >' + '</td>';
-                cols += '<td><button type="button"  id=' + count +' class="btn btn-danger feather icon-trash-2 delete-row" onclick="deleteRow(this)"></button></td>';
-                cols += '</tr>'
-                newRow.append(cols);
-                count++
-                $("table").append(newRow);
-                $.ajax({
-                    url: '@Url.Action("ScriptContainer", "inventory_order")',
-                    data: {}
-                }).done(function (result) {
-                    $('#scriptContainer').html(result);
-                    }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                        console.log(textStatus)
-                        console.log(errorThrown)
-                        Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
-                    });
-});
-        });
     function Method1() {
         $(".debt_method").hide();
     }
     function Method2() {
         $(".debt_method").show();
-    }
+        }
+
+        $("#Supplier").change(function () {
+            var supplierId = $("#Supplier").val();
+            GetCreateDetails(supplierId)
+        });
+        function GetCreateDetails(supplierId) {
+            $.ajax({
+                url: '@Url.Action("CreateDetails", "inventory_order")',
+                data: { supplierId: supplierId}
+            }).done(function (result) {
+                $('#dataContainer').html(result);
+
+            }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(textStatus)
+                console.log(errorThrown)
+                Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
+            });
+        }
     </script>
     <script>
         $('form').validate();

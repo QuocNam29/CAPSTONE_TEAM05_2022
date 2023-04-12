@@ -23,6 +23,7 @@ namespace CAP_TEAM05_2022.Controllers
         public ActionResult Index()
         {
             ViewBag.CategoryId = new SelectList(db.categories, "Id", "Name");
+            ViewBag.SupplierId = new SelectList(db.customers.Where(x => x.type == Constants.SUPPLIER).ToList(), "Id", "Name");
             return View();
 
         }

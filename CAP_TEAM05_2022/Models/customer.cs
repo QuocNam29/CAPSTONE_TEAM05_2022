@@ -23,7 +23,9 @@ namespace CAP_TEAM05_2022.Models
             this.import_inventory = new HashSet<import_inventory>();
             this.inventory_order = new HashSet<inventory_order>();
             this.sales = new HashSet<sale>();
+            this.products = new HashSet<product>();
         }
+
         public int id { get; set; }
         public string created_by { get; set; }
         [Required(ErrorMessage = "Vui lòng nhập họ và tên !")]
@@ -59,7 +61,7 @@ namespace CAP_TEAM05_2022.Models
         public Nullable<System.DateTime> updated_at { get; set; }
         public Nullable<System.DateTime> deleted_at { get; set; }
         public string code { get; set; }
-
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cart> carts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -70,5 +72,7 @@ namespace CAP_TEAM05_2022.Models
         public virtual ICollection<inventory_order> inventory_order { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<sale> sales { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<product> products { get; set; }
     }
 }

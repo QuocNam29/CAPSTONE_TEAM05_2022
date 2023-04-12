@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="CP25Team05Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CP25Team05Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -239,6 +239,7 @@
           <Property Name="quantity_remaning" Type="int" Nullable="false" />
           <Property Name="sell_price_swap" Type="money" Nullable="false" />
           <Property Name="sell_price_debt_swap" Type="money" Nullable="false" />
+          <Property Name="supplier_id" Type="int" />
         </EntityType>
         <EntityType Name="return_details">
           <Key>
@@ -673,6 +674,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_products_customers">
+          <End Role="customers" Type="Self.customers" Multiplicity="0..1" />
+          <End Role="products" Type="Self.products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="products">
+              <PropertyRef Name="supplier_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_products_users">
           <End Role="users" Type="Self.users" Multiplicity="1" />
           <End Role="products" Type="Self.products" Multiplicity="*" />
@@ -1061,6 +1074,10 @@
             <End Role="products" EntitySet="products" />
             <End Role="price_product" EntitySet="price_product" />
           </AssociationSet>
+          <AssociationSet Name="FK_products_customers" Association="Self.FK_products_customers">
+            <End Role="customers" EntitySet="customers" />
+            <End Role="products" EntitySet="products" />
+          </AssociationSet>
           <AssociationSet Name="FK_products_users" Association="Self.FK_products_users">
             <End Role="users" EntitySet="users" />
             <End Role="products" EntitySet="products" />
@@ -1138,8 +1155,7 @@
             <End Role="sale_details" EntitySet="sale_details" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CP25Team05Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1286,6 +1302,7 @@
           <NavigationProperty Name="import_inventory" Relationship="Self.FK_import_inventory_customers" FromRole="customers" ToRole="import_inventory" />
           <NavigationProperty Name="inventory_order" Relationship="Self.FK_inventory_order_customers" FromRole="customers" ToRole="inventory_order" />
           <NavigationProperty Name="sales" Relationship="Self.FK_sales_customers" FromRole="customers" ToRole="sales" />
+          <NavigationProperty Name="products" Relationship="CP25Team05Model.FK_products_customers" FromRole="customer" ToRole="product" />
         </EntityType>
         <EntityType Name="debt">
           <Key>
@@ -1424,6 +1441,8 @@
           <NavigationProperty Name="return_details" Relationship="Self.FK_return_details_products" FromRole="products" ToRole="return_details" />
           <NavigationProperty Name="return_details1" Relationship="Self.FK_return_details_products1" FromRole="products" ToRole="return_details" />
           <NavigationProperty Name="sale_details" Relationship="Self.sale_details_ibfk_1" FromRole="products" ToRole="sale_details" />
+          <Property Name="supplier_id" Type="Int32" />
+          <NavigationProperty Name="customer" Relationship="CP25Team05Model.FK_products_customers" FromRole="product" ToRole="customer" />
         </EntityType>
         <EntityType Name="return_details">
           <Key>
@@ -2325,6 +2344,10 @@
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
+          <AssociationSet Name="FK_products_customers" Association="CP25Team05Model.FK_products_customers">
+            <End Role="customer" EntitySet="customers" />
+            <End Role="product" EntitySet="products" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -2337,6 +2360,18 @@
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
+        <Association Name="FK_products_customers">
+          <End Type="CP25Team05Model.customer" Role="customer" Multiplicity="0..1" />
+          <End Type="CP25Team05Model.product" Role="product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="product">
+              <PropertyRef Name="supplier_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2556,6 +2591,7 @@
           <EntitySetMapping Name="products">
             <EntityTypeMapping TypeName="CP25Team05Model.product">
               <MappingFragment StoreEntitySet="products">
+                <ScalarProperty Name="supplier_id" ColumnName="supplier_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="code" ColumnName="code" />
                 <ScalarProperty Name="name" ColumnName="name" />

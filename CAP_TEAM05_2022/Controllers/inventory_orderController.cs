@@ -79,6 +79,17 @@ namespace CAP_TEAM05_2022.Controllers
             ViewBag.isCreate = true;
             return View();
         }
+        public ActionResult CreateDetails(int? supplierId)
+        {
+            ViewBag.Product = db.products.Where(x=> x.supplier_id == supplierId).Select(x => new
+            {
+                Id = x.id,
+                Name = (x.category.name + " - " + x.name + " (" + x.unit + (x.unit_swap != null ? "/" + x.quantity_swap + x.unit_swap : "") + ")").ToString()
+            });
+            ViewBag.Customer = new SelectList(db.customers.Where(c => c.type == Constants.SUPPLIER), "id", "name");
+            ViewBag.isCreate = true;
+            return PartialView("CreateDetails");
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]

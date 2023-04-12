@@ -72,6 +72,7 @@
         <AssociationConnector Association="CP25Team05Model.sale_details_ibfk_2" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.FK_sales_users" ManuallyRouted="false" />
         <AssociationConnector Association="CP25Team05Model.AspNetUserRoles" ManuallyRouted="false" />
+        <AssociationConnector Association="CP25Team05Model.FK_products_customers" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
