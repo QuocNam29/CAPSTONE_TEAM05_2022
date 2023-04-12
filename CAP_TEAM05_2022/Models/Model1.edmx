@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="CP25Team05Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="CP25Team05Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -219,7 +219,7 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="code" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="group_id" Type="int" Nullable="false" />
+          <Property Name="group_id" Type="int" />
           <Property Name="category_id" Type="int" Nullable="false" />
           <Property Name="unit" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="purchase_price" Type="money" Nullable="false" />
@@ -325,6 +325,7 @@
           <Property Name="updated_at" Type="datetime2" Precision="0" />
           <Property Name="deleted_at" Type="datetime2" Precision="0" />
           <Property Name="prepayment" Type="money" />
+          <Property Name="is_debt_price" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -865,7 +866,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="products_ibfk_5">
-          <End Role="groups" Type="Self.groups" Multiplicity="1" />
+          <End Role="groups" Type="Self.groups" Multiplicity="0..1" />
           <End Role="products" Type="Self.products" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="groups">
@@ -1137,7 +1138,8 @@
             <End Role="sale_details" EntitySet="sale_details" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CP25Team05Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1214,10 +1216,10 @@
           <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="created_at" Type="DateTime" Precision="0" />
           <Property Name="updated_at" Type="DateTime" Precision="0" />
+          <Property Name="price_id" Type="Int32" />
           <NavigationProperty Name="product" Relationship="Self.carts_ibfk_1" FromRole="carts" ToRole="products" />
           <NavigationProperty Name="customer" Relationship="Self.carts_ibfk_2" FromRole="carts" ToRole="customers" />
-          <Property Name="price_id" Type="Int32" />
-          <NavigationProperty Name="price_product" Relationship="CP25Team05Model.FK_carts_price_product" FromRole="cart" ToRole="price_product" />
+          <NavigationProperty Name="price_product" Relationship="Self.FK_carts_price_product" FromRole="carts" ToRole="price_product" />
         </EntityType>
         <EntityType Name="category">
           <Key>
@@ -1370,6 +1372,22 @@
           <NavigationProperty Name="import_inventory" Relationship="Self.FK_import_inventory_inventory_order" FromRole="inventory_order" ToRole="import_inventory" />
           <NavigationProperty Name="user" Relationship="Self.FK_inventory_order_users" FromRole="inventory_order" ToRole="users" />
         </EntityType>
+        <EntityType Name="price_product">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="price_debt" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="product_id" Type="Int32" Nullable="false" />
+          <Property Name="updated_at" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="unit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="carts" Relationship="Self.FK_carts_price_product" FromRole="price_product" ToRole="carts" />
+          <NavigationProperty Name="product" Relationship="Self.FK_price_product_products" FromRole="price_product" ToRole="products" />
+          <NavigationProperty Name="return_details" Relationship="Self.FK_return_details_price_product" FromRole="price_product" ToRole="return_details" />
+          <NavigationProperty Name="return_details1" Relationship="Self.FK_return_details_price_product1" FromRole="price_product" ToRole="return_details" />
+          <NavigationProperty Name="sale_details" Relationship="Self.FK_sale_details_price_product" FromRole="price_product" ToRole="sale_details" />
+        </EntityType>
         <EntityType Name="product">
           <Key>
             <PropertyRef Name="id" />
@@ -1377,11 +1395,12 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="code" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="group_id" Type="Int32" Nullable="false" />
+          <Property Name="group_id" Type="Int32" />
           <Property Name="category_id" Type="Int32" Nullable="false" />
           <Property Name="unit" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="purchase_price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
           <Property Name="sell_price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="sell_price_debt" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
           <Property Name="quantity" Type="Int32" Nullable="false" />
           <Property Name="status" Type="Int32" Nullable="false" />
           <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -1395,17 +1414,16 @@
           <Property Name="quantity_swap" Type="Int32" Nullable="false" />
           <Property Name="quantity_remaning" Type="Int32" Nullable="false" />
           <Property Name="sell_price_swap" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="sell_price_debt_swap" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
           <NavigationProperty Name="carts" Relationship="Self.carts_ibfk_1" FromRole="products" ToRole="carts" />
           <NavigationProperty Name="category" Relationship="Self.products_ibfk_4" FromRole="products" ToRole="categories" />
           <NavigationProperty Name="group" Relationship="Self.products_ibfk_5" FromRole="products" ToRole="groups" />
           <NavigationProperty Name="import_inventory" Relationship="Self.import_inventory_ibfk_2" FromRole="products" ToRole="import_inventory" />
+          <NavigationProperty Name="price_product" Relationship="Self.FK_price_product_products" FromRole="products" ToRole="price_product" />
           <NavigationProperty Name="user" Relationship="Self.FK_products_users" FromRole="products" ToRole="users" />
           <NavigationProperty Name="return_details" Relationship="Self.FK_return_details_products" FromRole="products" ToRole="return_details" />
           <NavigationProperty Name="return_details1" Relationship="Self.FK_return_details_products1" FromRole="products" ToRole="return_details" />
           <NavigationProperty Name="sale_details" Relationship="Self.sale_details_ibfk_1" FromRole="products" ToRole="sale_details" />
-          <NavigationProperty Name="price_product" Relationship="CP25Team05Model.FK_price_product_products" FromRole="product" ToRole="price_product" />
-          <Property Name="sell_price_debt" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-          <Property Name="sell_price_debt_swap" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
         </EntityType>
         <EntityType Name="return_details">
           <Key>
@@ -1422,13 +1440,13 @@
           <Property Name="total_return" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="unit_return" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="difference" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="price_current_id" Type="Int32" />
+          <Property Name="price_return_id" Type="Int32" />
+          <NavigationProperty Name="price_product" Relationship="Self.FK_return_details_price_product" FromRole="return_details" ToRole="price_product" />
+          <NavigationProperty Name="price_product1" Relationship="Self.FK_return_details_price_product1" FromRole="return_details" ToRole="price_product" />
           <NavigationProperty Name="product" Relationship="Self.FK_return_details_products" FromRole="return_details" ToRole="products" />
           <NavigationProperty Name="product1" Relationship="Self.FK_return_details_products1" FromRole="return_details" ToRole="products" />
           <NavigationProperty Name="return_sale" Relationship="Self.FK_return_details_return" FromRole="return_details" ToRole="return_sale" />
-          <Property Name="price_current_id" Type="Int32" />
-          <Property Name="price_return_id" Type="Int32" />
-          <NavigationProperty Name="price_product" Relationship="CP25Team05Model.FK_return_details_price_product" FromRole="return_details" ToRole="price_product" />
-          <NavigationProperty Name="price_product1" Relationship="CP25Team05Model.FK_return_details_price_product1" FromRole="return_details" ToRole="price_product" />
         </EntityType>
         <EntityType Name="return_sale">
           <Key>
@@ -1488,12 +1506,12 @@
           <Property Name="updated_at" Type="DateTime" Precision="3" />
           <Property Name="deleted_at" Type="DateTime" Precision="0" />
           <Property Name="return_quantity" Type="Int32" />
+          <Property Name="price_id" Type="Int32" />
+          <NavigationProperty Name="price_product" Relationship="Self.FK_sale_details_price_product" FromRole="sale_details" ToRole="price_product" />
           <NavigationProperty Name="product" Relationship="Self.sale_details_ibfk_1" FromRole="sale_details" ToRole="products" />
           <NavigationProperty Name="return_sale" Relationship="Self.FK_return_sale_sale_details" FromRole="sale_details" ToRole="return_sale" />
           <NavigationProperty Name="revenues" Relationship="Self.FK_revenue_sale_details" FromRole="sale_details" ToRole="revenue" />
           <NavigationProperty Name="sale" Relationship="Self.sale_details_ibfk_2" FromRole="sale_details" ToRole="sales" />
-          <Property Name="price_id" Type="Int32" />
-          <NavigationProperty Name="price_product" Relationship="CP25Team05Model.FK_sale_details_price_product" FromRole="sale_details" ToRole="price_product" />
         </EntityType>
         <EntityType Name="sale">
           <Key>
@@ -1511,6 +1529,7 @@
           <Property Name="updated_at" Type="DateTime" Precision="0" />
           <Property Name="deleted_at" Type="DateTime" Precision="0" />
           <Property Name="prepayment" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="is_debt_price" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="customer_debt" Relationship="Self.FK_customer_debt_sales" FromRole="sales" ToRole="customer_debt" />
           <NavigationProperty Name="customer" Relationship="Self.FK_sales_customers" FromRole="sales" ToRole="customers" />
           <NavigationProperty Name="debts" Relationship="Self.debts_ibfk_1" FromRole="sales" ToRole="debts" />
@@ -1613,6 +1632,18 @@
             </Principal>
             <Dependent Role="carts">
               <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_carts_price_product">
+          <End Role="price_product" Type="Self.price_product" Multiplicity="0..1" />
+          <End Role="carts" Type="Self.cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="price_product">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="carts">
+              <PropertyRef Name="price_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1821,7 +1852,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="products_ibfk_5">
-          <End Role="groups" Type="Self.group" Multiplicity="1" />
+          <End Role="groups" Type="Self.group" Multiplicity="0..1" />
           <End Role="products" Type="Self.product" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="groups">
@@ -1901,6 +1932,54 @@
             </Principal>
             <Dependent Role="inventory_order">
               <PropertyRef Name="create_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_price_product_products">
+          <End Role="products" Type="Self.product" Multiplicity="1" />
+          <End Role="price_product" Type="Self.price_product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="products">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="price_product">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_return_details_price_product">
+          <End Role="price_product" Type="Self.price_product" Multiplicity="0..1" />
+          <End Role="return_details" Type="Self.return_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="price_product">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="return_details">
+              <PropertyRef Name="price_current_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_return_details_price_product1">
+          <End Role="price_product" Type="Self.price_product" Multiplicity="0..1" />
+          <End Role="return_details" Type="Self.return_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="price_product">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="return_details">
+              <PropertyRef Name="price_return_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sale_details_price_product">
+          <End Role="price_product" Type="Self.price_product" Multiplicity="0..1" />
+          <End Role="sale_details" Type="Self.sale_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="price_product">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sale_details">
+              <PropertyRef Name="price_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2030,6 +2109,7 @@
           <EntitySet Name="groups" EntityType="Self.group" />
           <EntitySet Name="import_inventory" EntityType="Self.import_inventory" />
           <EntitySet Name="inventory_order" EntityType="Self.inventory_order" />
+          <EntitySet Name="price_product" EntityType="Self.price_product" />
           <EntitySet Name="products" EntityType="Self.product" />
           <EntitySet Name="return_details" EntityType="Self.return_details" />
           <EntitySet Name="return_sale" EntityType="Self.return_sale" />
@@ -2057,6 +2137,10 @@
           </AssociationSet>
           <AssociationSet Name="carts_ibfk_2" Association="Self.carts_ibfk_2">
             <End Role="customers" EntitySet="customers" />
+            <End Role="carts" EntitySet="carts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_carts_price_product" Association="Self.FK_carts_price_product">
+            <End Role="price_product" EntitySet="price_product" />
             <End Role="carts" EntitySet="carts" />
           </AssociationSet>
           <AssociationSet Name="FK_categories_users" Association="Self.FK_categories_users">
@@ -2155,6 +2239,22 @@
             <End Role="users" EntitySet="users" />
             <End Role="inventory_order" EntitySet="inventory_order" />
           </AssociationSet>
+          <AssociationSet Name="FK_price_product_products" Association="Self.FK_price_product_products">
+            <End Role="products" EntitySet="products" />
+            <End Role="price_product" EntitySet="price_product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_return_details_price_product" Association="Self.FK_return_details_price_product">
+            <End Role="price_product" EntitySet="price_product" />
+            <End Role="return_details" EntitySet="return_details" />
+          </AssociationSet>
+          <AssociationSet Name="FK_return_details_price_product1" Association="Self.FK_return_details_price_product1">
+            <End Role="price_product" EntitySet="price_product" />
+            <End Role="return_details" EntitySet="return_details" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sale_details_price_product" Association="Self.FK_sale_details_price_product">
+            <End Role="price_product" EntitySet="price_product" />
+            <End Role="sale_details" EntitySet="sale_details" />
+          </AssociationSet>
           <AssociationSet Name="FK_products_users" Association="Self.FK_products_users">
             <End Role="users" EntitySet="users" />
             <End Role="products" EntitySet="products" />
@@ -2195,23 +2295,6 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
-          <EntitySet Name="price_product" EntityType="CP25Team05Model.price_product" />
-          <AssociationSet Name="FK_price_product_products" Association="CP25Team05Model.FK_price_product_products">
-            <End Role="product" EntitySet="products" />
-            <End Role="price_product" EntitySet="price_product" />
-          </AssociationSet>
-          <AssociationSet Name="FK_return_details_price_product" Association="CP25Team05Model.FK_return_details_price_product">
-            <End Role="price_product" EntitySet="price_product" />
-            <End Role="return_details" EntitySet="return_details" />
-          </AssociationSet>
-          <AssociationSet Name="FK_return_details_price_product1" Association="CP25Team05Model.FK_return_details_price_product1">
-            <End Role="price_product" EntitySet="price_product" />
-            <End Role="return_details" EntitySet="return_details" />
-          </AssociationSet>
-          <AssociationSet Name="FK_sale_details_price_product" Association="CP25Team05Model.FK_sale_details_price_product">
-            <End Role="price_product" EntitySet="price_product" />
-            <End Role="sale_details" EntitySet="sale_details" />
-          </AssociationSet>
           <FunctionImport Name="sp_alterdiagram">
             <Parameter Name="diagramname" Mode="In" Type="String" />
             <Parameter Name="owner_id" Mode="In" Type="Int32" />
@@ -2242,75 +2325,7 @@
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
-          <AssociationSet Name="FK_carts_price_product" Association="CP25Team05Model.FK_carts_price_product">
-            <End Role="price_product" EntitySet="price_product" />
-            <End Role="cart" EntitySet="carts" />
-          </AssociationSet>
         </EntityContainer>
-        <EntityType Name="price_product">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="price" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-          <Property Name="product_id" Type="Int32" Nullable="false" />
-          <Property Name="updated_at" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="product" Relationship="CP25Team05Model.FK_price_product_products" FromRole="price_product" ToRole="product" />
-          <NavigationProperty Name="return_details" Relationship="CP25Team05Model.FK_return_details_price_product" FromRole="price_product" ToRole="return_details" />
-          <NavigationProperty Name="return_details1" Relationship="CP25Team05Model.FK_return_details_price_product1" FromRole="price_product" ToRole="return_details" />
-          <NavigationProperty Name="sale_details" Relationship="CP25Team05Model.FK_sale_details_price_product" FromRole="price_product" ToRole="sale_details" />
-          <NavigationProperty Name="carts" Relationship="CP25Team05Model.FK_carts_price_product" FromRole="price_product" ToRole="cart" />
-          <Property Name="unit" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="price_debt" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-        </EntityType>
-        <Association Name="FK_price_product_products">
-          <End Type="CP25Team05Model.product" Role="product" Multiplicity="1" />
-          <End Type="CP25Team05Model.price_product" Role="price_product" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="product">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="price_product">
-              <PropertyRef Name="product_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_return_details_price_product">
-          <End Type="CP25Team05Model.price_product" Role="price_product" Multiplicity="0..1" />
-          <End Type="CP25Team05Model.return_details" Role="return_details" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="price_product">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="return_details">
-              <PropertyRef Name="price_current_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_return_details_price_product1">
-          <End Type="CP25Team05Model.price_product" Role="price_product" Multiplicity="0..1" />
-          <End Type="CP25Team05Model.return_details" Role="return_details" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="price_product">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="return_details">
-              <PropertyRef Name="price_return_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_sale_details_price_product">
-          <End Type="CP25Team05Model.price_product" Role="price_product" Multiplicity="0..1" />
-          <End Type="CP25Team05Model.sale_details" Role="sale_details" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="price_product">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="sale_details">
-              <PropertyRef Name="price_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -2322,18 +2337,6 @@
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
-        <Association Name="FK_carts_price_product">
-          <End Type="CP25Team05Model.price_product" Role="price_product" Multiplicity="0..1" />
-          <End Type="CP25Team05Model.cart" Role="cart" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="price_product">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="cart">
-              <PropertyRef Name="price_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2398,7 +2401,6 @@
           <EntitySetMapping Name="carts">
             <EntityTypeMapping TypeName="CP25Team05Model.cart">
               <MappingFragment StoreEntitySet="carts">
-                <ScalarProperty Name="price_id" ColumnName="price_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="product_id" ColumnName="product_id" />
                 <ScalarProperty Name="customer_id" ColumnName="customer_id" />
@@ -2408,6 +2410,7 @@
                 <ScalarProperty Name="note" ColumnName="note" />
                 <ScalarProperty Name="created_at" ColumnName="created_at" />
                 <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+                <ScalarProperty Name="price_id" ColumnName="price_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2538,11 +2541,21 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="price_product">
+            <EntityTypeMapping TypeName="CP25Team05Model.price_product">
+              <MappingFragment StoreEntitySet="price_product">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="price_debt" ColumnName="price_debt" />
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
+                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
+                <ScalarProperty Name="unit" ColumnName="unit" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="products">
             <EntityTypeMapping TypeName="CP25Team05Model.product">
               <MappingFragment StoreEntitySet="products">
-                <ScalarProperty Name="sell_price_debt_swap" ColumnName="sell_price_debt_swap" />
-                <ScalarProperty Name="sell_price_debt" ColumnName="sell_price_debt" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="code" ColumnName="code" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -2551,6 +2564,7 @@
                 <ScalarProperty Name="unit" ColumnName="unit" />
                 <ScalarProperty Name="purchase_price" ColumnName="purchase_price" />
                 <ScalarProperty Name="sell_price" ColumnName="sell_price" />
+                <ScalarProperty Name="sell_price_debt" ColumnName="sell_price_debt" />
                 <ScalarProperty Name="quantity" ColumnName="quantity" />
                 <ScalarProperty Name="status" ColumnName="status" />
                 <ScalarProperty Name="note" ColumnName="note" />
@@ -2564,14 +2578,13 @@
                 <ScalarProperty Name="quantity_swap" ColumnName="quantity_swap" />
                 <ScalarProperty Name="quantity_remaning" ColumnName="quantity_remaning" />
                 <ScalarProperty Name="sell_price_swap" ColumnName="sell_price_swap" />
+                <ScalarProperty Name="sell_price_debt_swap" ColumnName="sell_price_debt_swap" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="return_details">
             <EntityTypeMapping TypeName="CP25Team05Model.return_details">
               <MappingFragment StoreEntitySet="return_details">
-                <ScalarProperty Name="price_return_id" ColumnName="price_return_id" />
-                <ScalarProperty Name="price_current_id" ColumnName="price_current_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="return_id" ColumnName="return_id" />
                 <ScalarProperty Name="product_current_id" ColumnName="product_current_id" />
@@ -2583,6 +2596,8 @@
                 <ScalarProperty Name="total_return" ColumnName="total_return" />
                 <ScalarProperty Name="unit_return" ColumnName="unit_return" />
                 <ScalarProperty Name="difference" ColumnName="difference" />
+                <ScalarProperty Name="price_current_id" ColumnName="price_current_id" />
+                <ScalarProperty Name="price_return_id" ColumnName="price_return_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2626,7 +2641,6 @@
           <EntitySetMapping Name="sale_details">
             <EntityTypeMapping TypeName="CP25Team05Model.sale_details">
               <MappingFragment StoreEntitySet="sale_details">
-                <ScalarProperty Name="price_id" ColumnName="price_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="sale_id" ColumnName="sale_id" />
                 <ScalarProperty Name="product_id" ColumnName="product_id" />
@@ -2638,6 +2652,7 @@
                 <ScalarProperty Name="updated_at" ColumnName="updated_at" />
                 <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
                 <ScalarProperty Name="return_quantity" ColumnName="return_quantity" />
+                <ScalarProperty Name="price_id" ColumnName="price_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2656,6 +2671,7 @@
                 <ScalarProperty Name="updated_at" ColumnName="updated_at" />
                 <ScalarProperty Name="deleted_at" ColumnName="deleted_at" />
                 <ScalarProperty Name="prepayment" ColumnName="prepayment" />
+                <ScalarProperty Name="is_debt_price" ColumnName="is_debt_price" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2695,18 +2711,6 @@
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="price_product">
-            <EntityTypeMapping TypeName="CP25Team05Model.price_product">
-              <MappingFragment StoreEntitySet="price_product">
-                <ScalarProperty Name="price_debt" ColumnName="price_debt" />
-                <ScalarProperty Name="unit" ColumnName="unit" />
-                <ScalarProperty Name="updated_at" ColumnName="updated_at" />
-                <ScalarProperty Name="product_id" ColumnName="product_id" />
-                <ScalarProperty Name="price" ColumnName="price" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="CP25Team05Model.Store.sp_alterdiagram" />
           <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="CP25Team05Model.Store.sp_creatediagram" />
           <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="CP25Team05Model.Store.sp_dropdiagram" />

@@ -1,33 +1,80 @@
 ﻿@model IEnumerable<CAP_TEAM05_2022.Models.cart>
+@using Constants = CAP_TEAM05_2022.Helper.Constants
+
 @{
     Layout = null;
     int no = 0;
     float total = Model.Sum(s => s.price);
 }
-@if (Model.Count() >= 1)
+@if (Model.Any())
 {
-    <div class="row" id="myDIV">
-
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Tổng đơn hàng:</label>
-                <input type="text" id="total" disabled="disabled" class="form-control" value="@total.ToString("N0")">
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Trả trước</label>
-                <input type="text" placeholder="Thanh toán 1 phần" id="cart_Prepay" max="999999999999" class="form-control"
-                       pattern="[0-9.,]+" data-type="number" name="purchase_price" onchange="ButtonDebit()">
-            </div>
-        </div>
+    <div class="row">
         <div class="col-md-12">
-            <div class="form-group">
-                <label>Ghi chú</label>
-                <input type="text" id="cart_note" placeholder="Ghi chú" class="form-control">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Tổng đơn hàng theo tiền mặt: </label>
+                                <input type="text" id="total" disabled="disabled" class="form-control" value="@Model.Sum(x=> x.price_product.price * x.quantity).ToString("N0")">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Tổng đơn hàng theo tiền ghi nợ: </label>
+                                <input type="text" id="total" disabled="disabled" class="form-control" value="@Model.Sum(x=> x.price_product.price_debt * x.quantity).ToString("N0")">
+
+                            </div>
+                        </div>
+                        <div class="col-md-3 ">
+                            <div class="form-group">
+                                <label>Trả trước <label class="text-danger">(đối với ghi nợ)</label>: </label>
+                                <input type="text" placeholder="Thanh toán 1 phần" id="cart_Prepay" max="999999999999" class="form-control Price"
+                                       pattern="[0-9.,]+" data-type="number" name="purchase_price" onchange="ButtonDebit()">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Phương thức giá (đối với ghi nợ):</label>
+                            <div class="mt-2">
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" name="methodPrice" value="@Constants.DEBT_METHOD_PRICE" checked />
+                                    <label class="form-check-label" for="methodPrice">
+                                        Bán giá ghi nợ
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" name="methodPrice" value="@Constants.CASH_METHOD_PRICE" />
+                                    <label class="form-check-label" for="methodPrice">
+                                        Bán giá tiền mặt
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <label>Ghi chú</label>
+                                <input type="text" id="cart_note" placeholder="Ghi chú" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <button type="button" id="payment_btn" onclick="Payment_order('@Constants.PAYED_ORDER')" class="btn btn-warning btn-block">
+                                    Thanh toán
+                                </button>
+                                <button type="button" onclick="Payment_order('@Constants.DEBT_ORDER')" class="btn btn-dark btn-block" id="btn_debit">
+                                    Ghi nợ
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
 }
 
 <div class="row">
@@ -41,9 +88,11 @@
                                 <th class="text-center">STT</th>
                                 <th>Mã sản phẩm</th>
                                 <th>Tên sản phẩm</th>
+                                <th class="text-center">Giá tiền mặt</th>
+                                <th class="text-center">Giá ghi nợ</th>
                                 <th class="text-center">Số lượng</th>
-                                <th class="text-center">Giá bán</th>
-                                <th class="text-center">Thành tiền</th>
+                                <th class="text-center">Tổng tiền mặt</th>
+                                <th class="text-center">Tổng tiền ghi nợ</th>
                                 <th>Ghi chú</th>
                                 <th>
                                 </th>
@@ -53,31 +102,34 @@
                             @foreach (var item in Model)
                             {
                                 no++;
-                                <tr>
-                                    <td>@no </td>
-                                    <td>@item.product.code</td>
-                                    <td>@item.product.name</td>
-                                    <td class="text-center">
-                                        <div> @item.quantity<span class="txt-unit"> @item.unit</span></div>
-                                    </td>
-                                    <td class="text-center">@((item.price_product.price).ToString("N0")) VNĐ</td>
-                                    <td class="text-center">@((item.price_product.price * item.quantity).ToString("N0")) VNĐ</td>
-                                    <td>@item.note</td>
-                                    <td>
-                                        <button class="btn btn-success" onclick="FillProduct_cart('@item.id', '@item.product_id','@item.product.name','@item.quantity', '@item.unit')">
-                                            <i class="feather icon-edit">
-                                            </i>
-                                        </button>
-                                        <input hidden type="text" id="URLDelete" value="@Url.Action("Delete_CartProduct", "carts")">
-                                        <button class="btn btn-danger" onclick="deleteAlert('@item.id')" id="Delete">
-                                            <i class="feather icon-trash-2">
-                                            </i>
-                                        </button>
+                            <tr>
+                                <td>@no </td>
+                                <td>@item.product.code</td>
+                                <td>@item.product.name</td>
 
-                                    </td>
+                                <td class="text-center">@((item.price_product.price).ToString("N0")) VNĐ</td>
+                                <td class="text-center">@((item.price_product.price_debt).ToString("N0")) VNĐ</td>
+                                <td class="text-center">
+                                    <div> @item.quantity<span class="txt-unit"> @item.unit</span></div>
+                                </td>
+                                <td class="text-center">@((item.price_product.price * item.quantity).ToString("N0")) VNĐ</td>
+                                <td class="text-center">@((item.price_product.price_debt * item.quantity).ToString("N0")) VNĐ</td>
+                                <td>@item.note</td>
+                                <td>
+                                    <button class="btn btn-success" onclick="FillProduct_cart('@item.id', '@item.product_id','@item.product.name','@item.quantity', '@item.unit')">
+                                        <i class="feather icon-edit">
+                                        </i>
+                                    </button>
+                                    <input hidden type="text" id="URLDelete" value="@Url.Action("Delete_CartProduct", "carts")">
+                                    <button class="btn btn-danger" onclick="deleteAlert('@item.id')" id="Delete">
+                                        <i class="feather icon-trash-2">
+                                        </i>
+                                    </button>
+
+                                </td>
 
 
-                                </tr>
+                            </tr>
                             }
 
                         </tbody>
@@ -89,27 +141,27 @@
 </div>
 @section scripts {
     <script type="text/javascript">
-    $(document).ready(function () {
-        $('#example').DataTable({
-            pagingType: 'full_numbers',
+        $(document).ready(function () {
+            $('#example').DataTable({
+                pagingType: 'full_numbers',
+            });
         });
-    });
 
-    $('#cart_Prepay').keydown(function (e) {
-        setTimeout(() => {
-            let parts = $(this).val().split(".");
-            let v = parts[0].replace(/\D/g, ""),
-                dec = parts[1]
-            let calc_num = Number((dec !== undefined ? v + "." + dec : v));
-            // use this for numeric calculations
-            // console.log('number for calculations: ', calc_num);
-            let n = new Intl.NumberFormat('en-EN').format(v);
-            n = dec !== undefined ? n + "." + dec : n;
-            $(this).val(n);
+        $('#cart_Prepay').keydown(function (e) {
+            setTimeout(() => {
+                let parts = $(this).val().split(".");
+                let v = parts[0].replace(/\D/g, ""),
+                    dec = parts[1]
+                let calc_num = Number((dec !== undefined ? v + "." + dec : v));
+                // use this for numeric calculations
+                // console.log('number for calculations: ', calc_num);
+                let n = new Intl.NumberFormat('en-EN').format(v);
+                n = dec !== undefined ? n + "." + dec : n;
+                $(this).val(n);
+            })
         })
-    })
     </script>
-    }
+}
 <script>
     function deleteAlert(id) {
         Swal.fire({
@@ -138,6 +190,6 @@
                     })
             }
         })
-        
+
     }
 </script>

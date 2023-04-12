@@ -34,12 +34,12 @@ namespace CAP_TEAM05_2022.Models
         public Nullable<int> return_quantity { get; set; }
         public Nullable<int> price_id { get; set; }
     
+        public virtual price_product price_product { get; set; }
         public virtual product product { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<return_sale> return_sale { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<revenue> revenues { get; set; }
         public virtual sale sale { get; set; }
-        public virtual price_product price_product { get; set; }
     }
 }

@@ -114,7 +114,7 @@ namespace CAP_TEAM05_2022.Controllers
             return PartialView(sales.OrderByDescending(c => c.id).ToList());
         }
 
-        public JsonResult CreateSale(sale createSale)
+        public JsonResult CreateSale(sale createSale, int methodPrice)
         {
             string message = "";
             bool status = true;
@@ -124,16 +124,18 @@ namespace CAP_TEAM05_2022.Controllers
                 sale sale = new sale();
                 sale.code = "MDH" + CodeRandom.RandomCode();
                 sale.customer_id = createSale.customer_id;
-                if (createSale.method > 0)
+                sale.method = Constants.DEBT_ORDER;
+                sale.prepayment = createSale.method == Constants.DEBT_ORDER ? createSale.prepayment : 0;
+                if (sale.method == Constants.DEBT_ORDER  && methodPrice == Constants.DEBT_METHOD_PRICE)
                 {
-                    sale.method = Constants.DEBT_ORDER;
-                    sale.prepayment = createSale.method;
+                    sale.is_debt_price = true;
+                    sale.total = cart.Sum(c => c.price_product.price_debt * c.quantity);
                 }
                 else
                 {
-                    sale.method = Constants.PAYED_ORDER;
+                    sale.is_debt_price = false;
+                    sale.total = cart.Sum(c => c.price_product.price * c.quantity);
                 }
-                sale.total = cart.Sum(c=> c.price_product.price* c.quantity);
                 sale.note = createSale.note;
                 sale.status = Constants.SHOW_STATUS;
                 sale.created_by = User.Identity.GetUserId();
@@ -146,7 +148,7 @@ namespace CAP_TEAM05_2022.Controllers
                     sale_Details.sale_id = sale.id;
                     sale_Details.product_id = item.product_id;
                     sale_Details.sold = item.quantity;
-                    sale_Details.price = item.price;
+                    sale_Details.price = sale.method== Constants.DEBT_ORDER && methodPrice == Constants.DEBT_METHOD_PRICE ? item.price_product.price_debt : item.price_product.price;
                     sale_Details.price_id = item.price_id;
                     sale_Details.unit = item.unit;
                     sale_Details.created_at = DateTime.Now;
@@ -164,7 +166,7 @@ namespace CAP_TEAM05_2022.Controllers
                                 revenue revenue = new revenue();
                                 revenue.sale_details_id = sale_Details.id;
                                 revenue.inventory_id = inventory.id;
-                                revenue.Price = item.price;
+                                revenue.Price = sale.method== Constants.DEBT_ORDER && methodPrice == Constants.DEBT_METHOD_PRICE ? item.price_product.price_debt : item.price_product.price; ;
                                 revenue.quantity = temp_quatity;
                                 revenue.unit = item.unit;
                                 db.revenues.Add(revenue);
@@ -183,7 +185,7 @@ namespace CAP_TEAM05_2022.Controllers
                                     revenue revenue = new revenue();
                                     revenue.sale_details_id = sale_Details.id;
                                     revenue.inventory_id = inventory.id;
-                                    revenue.Price = item.price;
+                                    revenue.Price = sale.method== Constants.DEBT_ORDER && methodPrice == Constants.DEBT_METHOD_PRICE ? item.price_product.price_debt : item.price_product.price;
                                     revenue.quantity = temp_inventory;
                                     revenue.unit = item.unit;
                                     db.revenues.Add(revenue);
@@ -196,7 +198,7 @@ namespace CAP_TEAM05_2022.Controllers
                                     revenue revenue = new revenue();
                                     revenue.sale_details_id = sale_Details.id;
                                     revenue.inventory_id = inventory.id;
-                                    revenue.Price = item.price;
+                                    revenue.Price = sale.method== Constants.DEBT_ORDER && methodPrice == Constants.DEBT_METHOD_PRICE ? item.price_product.price_debt : item.price_product.price;
                                     revenue.quantity = temp_inventory;
                                     revenue.unit = item.unit;
                                     db.revenues.Add(revenue);
@@ -212,7 +214,7 @@ namespace CAP_TEAM05_2022.Controllers
                                 revenue revenue = new revenue();
                                 revenue.sale_details_id = sale_Details.id;
                                 revenue.inventory_id = inventory.id;
-                                revenue.Price = item.price;
+                                revenue.Price = sale.method== Constants.DEBT_ORDER && methodPrice == Constants.DEBT_METHOD_PRICE ? item.price_product.price_debt : item.price_product.price;
                                 revenue.quantity = temp_quatity;
                                 revenue.unit = item.unit;
                                 db.revenues.Add(revenue);
@@ -235,7 +237,7 @@ namespace CAP_TEAM05_2022.Controllers
                                     revenue revenue = new revenue();
                                     revenue.sale_details_id = sale_Details.id;
                                     revenue.inventory_id = inventory.id;
-                                    revenue.Price = item.price;
+                                    revenue.Price = sale.method== Constants.DEBT_ORDER && methodPrice == Constants.DEBT_METHOD_PRICE ? item.price_product.price_debt : item.price_product.price;
                                     revenue.quantity = quantity_remaining;
                                     revenue.unit = item.unit;
                                     db.revenues.Add(revenue);
@@ -249,7 +251,7 @@ namespace CAP_TEAM05_2022.Controllers
                                     revenue revenue = new revenue();
                                     revenue.sale_details_id = sale_Details.id;
                                     revenue.inventory_id = inventory.id;
-                                    revenue.Price = item.price;
+                                    revenue.Price = sale.method== Constants.DEBT_ORDER && methodPrice == Constants.DEBT_METHOD_PRICE ? item.price_product.price_debt : item.price_product.price;
                                     revenue.quantity = quantity_remaining;
                                     revenue.unit = item.unit;
                                     db.revenues.Add(revenue);
@@ -272,7 +274,7 @@ namespace CAP_TEAM05_2022.Controllers
                                             revenue revenue = new revenue();
                                             revenue.sale_details_id = sale_Details.id;
                                             revenue.inventory_id = inventory.id;
-                                            revenue.Price = item.price;
+                                            revenue.Price = sale.method== Constants.DEBT_ORDER && methodPrice == Constants.DEBT_METHOD_PRICE ? item.price_product.price_debt : item.price_product.price;
                                             revenue.quantity = temp_quatity;
                                             revenue.unit = item.unit;
                                             db.revenues.Add(revenue);
@@ -286,7 +288,7 @@ namespace CAP_TEAM05_2022.Controllers
                                             revenue revenue = new revenue();
                                             revenue.sale_details_id = sale_Details.id;
                                             revenue.inventory_id = inventory.id;
-                                            revenue.Price = item.price;
+                                            revenue.Price = sale.method== Constants.DEBT_ORDER && methodPrice == Constants.DEBT_METHOD_PRICE ? item.price_product.price_debt : item.price_product.price;
                                             revenue.quantity = temp;
                                             revenue.unit = item.unit;
                                             db.revenues.Add(revenue);
@@ -303,7 +305,7 @@ namespace CAP_TEAM05_2022.Controllers
                                             revenue revenue = new revenue();
                                             revenue.sale_details_id = sale_Details.id;
                                             revenue.inventory_id = inventory.id;
-                                            revenue.Price = item.price;
+                                            revenue.Price = sale.method== Constants.DEBT_ORDER && methodPrice == Constants.DEBT_METHOD_PRICE ? item.price_product.price_debt : item.price_product.price;
                                             revenue.quantity = temp_remaining;
                                             revenue.unit = item.unit;
                                             db.revenues.Add(revenue);
@@ -317,7 +319,7 @@ namespace CAP_TEAM05_2022.Controllers
                                             revenue revenue = new revenue();
                                             revenue.sale_details_id = sale_Details.id;
                                             revenue.inventory_id = inventory.id;
-                                            revenue.Price = item.price;
+                                            revenue.Price = sale.method== Constants.DEBT_ORDER && methodPrice == Constants.DEBT_METHOD_PRICE ? item.price_product.price_debt : item.price_product.price;
                                             revenue.quantity = temp;
                                             revenue.unit = item.unit;
                                             db.revenues.Add(revenue);
@@ -334,7 +336,7 @@ namespace CAP_TEAM05_2022.Controllers
                     db.carts.Remove(cart1);
                     db.SaveChanges();
                 }
-                if (createSale.method > 0)
+                if (createSale.method == Constants.DEBT_ORDER)
                 {
 
                     var check_debt = db.debts.Where(d => d.sale.customer_id == createSale.customer_id && d.sale_id != null).Count();
@@ -343,10 +345,10 @@ namespace CAP_TEAM05_2022.Controllers
                         var last_debt = db.debts.Where(d => d.sale.customer_id == createSale.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
                         debt debt = new debt();
                         debt.sale_id = sale.id;
-                        debt.paid = createSale.method;
+                        debt.paid = createSale.prepayment;
                         debt.created_at = DateTime.Now;
                         debt.created_by = User.Identity.GetUserId();
-                        debt.total = last_debt.total + createSale.method;
+                        debt.total = last_debt.total + createSale.prepayment;
                         debt.debt1 = sale.total;
                         debt.remaining = last_debt.remaining + (sale.total - debt.paid);
                         db.debts.Add(debt);
@@ -367,10 +369,10 @@ namespace CAP_TEAM05_2022.Controllers
                     {
                         debt debt = new debt();
                         debt.sale_id = sale.id;
-                        debt.paid = createSale.method;
+                        debt.paid = createSale.prepayment;
                         debt.created_at = DateTime.Now;
                         debt.created_by = User.Identity.GetUserId();
-                        debt.total = createSale.method;
+                        debt.total = createSale.prepayment;
                         debt.debt1 = sale.total;
                         debt.remaining = sale.total - debt.paid;
                         db.debts.Add(debt);
@@ -387,6 +389,7 @@ namespace CAP_TEAM05_2022.Controllers
                         db.SaveChanges();
                     }
                 }
+
                 message = "Bạn có muốn in hóa đơn ?";
                 return Json(new
                 {

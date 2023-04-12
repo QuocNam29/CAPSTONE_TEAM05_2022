@@ -84,16 +84,21 @@
 
                                         <div class="form-group">
                                             <div class="position-relative">
-                                                <input type="text" placeholder="Nhóm khách hàng" id="customer_type" disabled="disabled" class="form-control">
+                                                <div class="input-group">
+                                                    <div class="input-group-append">
+                                                        <span id="basic-addon2" class="input-group-text">Số lần mua hàng:</span>
+                                                    </div>
+                                                    <input type="text" placeholder="0" id="count_sale" disabled="disabled" class="form-control">
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="position-relative">
                                                 <div class="input-group">
                                                     <div class="input-group-append">
-                                                        <span id="basic-addon2" class="input-group-text">Số lần mua hàng:</span>
+                                                        <span id="basic-addon2" class="input-group-text">Tồn nợ</span>
                                                     </div>
-                                                    <input type="text" placeholder="0" id="count_sale" disabled="disabled" class="form-control">
+                                                    <input type="text" placeholder="0" id="debit_sum" disabled="disabled" class="form-control">
                                                 </div>
                                             </div>
                                         </div>
@@ -125,7 +130,7 @@
                                             <div class="position-relative">
                                                 <div class="input-group">
                                                     <div class="input-group-append">
-                                                        <span id="basic-addon2" class="input-group-text">Đơn giá bán:</span>
+                                                        <span id="basic-addon2" class="input-group-text">Giá bán (Tiền mặt):</span>
                                                     </div>
                                                     <input type="text" placeholder="Đơn giá bán" id="product_price" disabled="disabled" class="form-control">
                                                     <input type="text" placeholder="Đơn giá bán" hidden id="product_price_swap" disabled="disabled" class="form-control">
@@ -137,12 +142,15 @@
                                             <div class="position-relative">
                                                 <div class="input-group">
                                                     <div class="input-group-append">
-                                                        <span id="basic-addon2" class="input-group-text">Tồn nợ</span>
+                                                        <span id="basic-addon2" class="input-group-text">Giá bán (Ghi nợ):</span>
                                                     </div>
-                                                    <input type="text" placeholder="0" id="debit_sum" disabled="disabled" class="form-control">
+                                                    <input type="text" placeholder="Đơn giá bán" id="product_price" disabled="disabled" class="form-control">
+                                                    <input type="text" placeholder="Đơn giá bán" hidden id="product_price_swap" disabled="disabled" class="form-control">
                                                 </div>
                                             </div>
+                                            <!---->
                                         </div>
+
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
@@ -167,7 +175,17 @@
                                             <div class="position-relative">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-append">
-                                                        <span id="basic-addon2" class="input-group-text">Thành tiền:</span>
+                                                        <span id="basic-addon2" class="input-group-text">Thành tiền (Tiền mặt):</span>
+                                                    </div>
+                                                    <input type="text" id="sum_price" placeholder="Tổng" disabled="disabled" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="position-relative">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-append">
+                                                        <span id="basic-addon2" class="input-group-text">Thành tiền(Ghi nợ):</span>
                                                     </div>
                                                     <input type="text" id="sum_price" placeholder="Tổng" disabled="disabled" class="form-control">
                                                 </div>
@@ -189,14 +207,6 @@
                                         <button type="button" class="btn btn-danger btn-block" id="Cancel_Cart" style="display: none">
                                             Huỷ bỏ
                                         </button>
-
-                                        <hr>
-                                        <button type="button" id="payment_btn" style="display: none;" onclick="Payment_order()" class="btn btn-warning btn-block">
-                                            Thanh toán
-                                        </button>
-                                        <button type="button" style="display: none;" onclick="Payment_order()" class="btn btn-dark btn-block" id="btn_debit">
-                                            Ghi nợ
-                                        </button>
                                         <hr>
                                         <button type="button" id="order_btn" style="display: none;" class="btn btn-success btn-block" onclick="openWin()">
                                             Xem hoá đơn
@@ -204,8 +214,6 @@
                                         <button type="button" id="history_btn" style="display: none;" class="btn btn-danger btn-block" onclick="GetList_History()">
                                             Xem lịch sử mua hàng
                                         </button>
-
-
                                     </div>
                                 </div>
 

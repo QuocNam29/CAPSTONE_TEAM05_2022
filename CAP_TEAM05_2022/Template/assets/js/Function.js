@@ -1128,13 +1128,11 @@ function ImportFail_continuesAll() {
 
 function ButtonDebit() {
     var cart_Prepay1 = $('#cart_Prepay').val();
-    
-    if (cart_Prepay1 != undefined && cart_Prepay1 != '0') {
-        $("#btn_debit").show();
-        $("#payment_btn").hide();
-    } else {
-        $("#btn_debit").hide();
+    console.log(cart_Prepay1)
+    if (cart_Prepay1 != undefined && cart_Prepay1 == '0' || cart_Prepay1 == '') {
         $("#payment_btn").show();
+    } else {
+        $("#payment_btn").hide();
     }
 }
 
@@ -1229,7 +1227,7 @@ $('#URLCreateSale')
         URLCreateSale = $(this).val();
     })
     .keypress();
-function Payment_order() {
+function Payment_order(method) {
     Swal.fire({
         title: 'Thanh toán?',
         text: 'Bạn có chắc chắn muốn thanh toán',
@@ -1243,7 +1241,10 @@ function Payment_order() {
             sale.customer_id = $('#customer_id').val();
             sale.total = Number($('#total').val().replace(/\,/g, '').replace(/\./g, ''));
             sale.note = $('#cart_note').val();
-            sale.method = Number($('#cart_Prepay').val().replace(/\,/g, '').replace(/\./g, ''));
+            sale.method = method;
+            sale.prepayment = Number($('#cart_Prepay').val().replace(/\,/g, '').replace(/\./g, ''));
+            var methodPrice = $('input[name="methodPrice"]:checked').val();
+            sale.methodPrice = methodPrice;
             $.ajax({
                 url: URLCreateSale,
                 async: false,

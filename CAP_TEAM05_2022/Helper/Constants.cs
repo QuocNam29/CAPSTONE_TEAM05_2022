@@ -75,6 +75,10 @@ namespace CAP_TEAM05_2022.Helper
         public static int CREATE_PRODUCT = 1;
         public static int COPY_PRODUCT = 2;
 
+        ///Kiểm tra ghi nợ bằng giá bán hay tiền mặt
+        ///
+        public static int DEBT_METHOD_PRICE = 1;
+        public static int CASH_METHOD_PRICE = 2;
         /// <summary>
         /// connectionString for Import Excel Data
         /// </summary>

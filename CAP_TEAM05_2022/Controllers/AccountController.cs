@@ -84,6 +84,12 @@ namespace CAP_TEAM05_2022.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    // Update redirect base on user role
+                    var userAsp = await UserManager.FindAsync(model.Email, model.Password);
+                    var roles = await UserManager.GetRolesAsync(userAsp.Id);
+                    var user = db.users.Find(userAsp.Id);
+                    // Set user name into session
+                    Session["UserName"] = user.name != null ? user.name : User.Identity.Name;                    
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
