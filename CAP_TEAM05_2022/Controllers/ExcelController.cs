@@ -1325,6 +1325,125 @@ namespace CAP_TEAM05_2022.Controllers
 
         }
 
+        [Obsolete]
+        public void ExportExcel_DetailsRevenue(DateTime? date_Start, DateTime? date_End)
+        {
+
+            string nameFile = "Doanh_thu_chi_tiet_" + String.Format("{0:dd-MM-yyyy}", date_Start) + " đến " + String.Format("{0:dd-MM-yyyy}", date_End) + ".xlsx";
+
+            if (date_Start == null)
+            {
+                date_Start = (DateTime.Now);
+            }
+            if (date_End == null)
+            {
+                date_End = (DateTime.Now);
+            }
+            var revenues = db.revenues.Where(s => s.sale_details.sale.created_at >= date_Start && s.sale_details.sale.created_at <= date_End
+                                                    || s.sale_details.sale.created_at.Value.Day == date_Start.Value.Day
+                                                    && s.sale_details.sale.created_at.Value.Month == date_Start.Value.Month
+                                                    && s.sale_details.sale.created_at.Value.Year == date_Start.Value.Year
+                                                    || s.sale_details.sale.created_at.Value.Day == date_End.Value.Day
+                                                    && s.sale_details.sale.created_at.Value.Month == date_End.Value.Month
+                                                    && s.sale_details.sale.created_at.Value.Year == date_End.Value.Year)
+                .OrderByDescending(o => o.id);
+
+            
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            ExcelPackage ep = new ExcelPackage();
+            ExcelWorksheet Sheet = ep.Workbook.Worksheets.Add("Báo cáo chi tiết");
+            HeaderExcel(Sheet);
+            Sheet.Cells["A6:A6"].Style.Font.Bold = true;
+            Sheet.Cells["A6:A6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+            Sheet.Cells["A6"].Value = "Từ ngày: ";
+            Sheet.Cells["B6:B6"].Merge = true;
+            Sheet.Cells["B6:B6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            Sheet.Cells["B6"].Value = String.Format("{0:dd-MM-yyyy}", date_Start);
+
+            Sheet.Cells["C6:C6"].Merge = true;
+            Sheet.Cells["C6:C6"].Style.Font.Bold = true;
+            Sheet.Cells["C6:C6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+            Sheet.Cells["C6"].Value = "Đến hết ngày: ";
+            Sheet.Cells["D6:D6"].Merge = true;
+            Sheet.Cells["D6:D6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            Sheet.Cells["D6"].Value = String.Format("{0:dd-MM-yyyy}", date_End);
+
+            Sheet.Cells["E7:F7"].Merge = true;
+            Sheet.Cells["E7:F7"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+            Sheet.Cells["E7"].Value = "Tổng tiền bán được: ";
+            Sheet.Cells["G7:H7"].Merge = true;
+            Sheet.Cells["G7:H7"].Style.Font.Bold = true;
+
+            Sheet.Cells["E8:F8"].Merge = true;
+            Sheet.Cells["E8:F8"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+            Sheet.Cells["E8"].Value = "Tổng tiền nhập hàng: ";
+            Sheet.Cells["G8:H8"].Merge = true;
+            Sheet.Cells["G8:H8"].Style.Font.Bold = true;
+
+            Sheet.Cells["E9:F9"].Merge = true;
+            Sheet.Cells["E9:F9"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+            Sheet.Cells["E9"].Value = "Lợi nhuận: ";
+            Sheet.Cells["G9:H9"].Merge = true;
+            Sheet.Cells["G9:H9"].Style.Font.Bold = true;
+
+            Sheet.Cells["A11:I11"].Style.Font.Bold = true;
+            Sheet.Cells["A11:I11"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            Sheet.Cells["A11:I11"].Style.Fill.BackgroundColor.SetColor(Color.LightSkyBlue);
+            //Sheet.Cells["A11:H11"].Style.Font.Color.SetColor(Color.White);
+
+
+            Sheet.Cells["A11"].Value = "STT";
+            Sheet.Cells["B11"].Value = "Tên sản phẩm";
+            Sheet.Cells["C11"].Value = "Đơn vị";
+            Sheet.Cells["D11"].Value = "Đơn giá nhập";
+            Sheet.Cells["E11"].Value = "Số lượng bán";
+            Sheet.Cells["F11"].Value = "Đơn giá bán";
+            Sheet.Cells["G11"].Value = "Tổng giá bán";
+            Sheet.Cells["H11"].Value = "Lợi nhuận";
+            Sheet.Cells["I11"].Value = "Ngày giao dịch";
+            int no = 1;
+            int row = 12;// dòng bắt đầu ghi dữ liệu
+            decimal sumRevenue = 0;
+            decimal sumSell = 0;
+            foreach (var item in revenues)
+            {
+                sumSell += item.Price * item.quantity; 
+                Sheet.Cells[string.Format("A{0}", row)].Value = no;
+                Sheet.Cells[string.Format("B{0}", row)].Value = item.sale_details.product.name;
+                Sheet.Cells[string.Format("C{0}", row)].Value = "1"  + item.sale_details.product.unit+ " = " +item.sale_details.product.quantity_swap  + " " +item.sale_details.product.unit_swap;
+                Sheet.Cells[string.Format("D{0}", row)].Value = item.import_inventory.price_import.ToString("N0") + " VNĐ / " +item.sale_details.product.unit;
+                Sheet.Cells[string.Format("E{0}", row)].Value = item.quantity +" " + item.unit;
+                Sheet.Cells[string.Format("F{0}", row)].Value = item.Price.ToString("N0") + " VNĐ";
+                Sheet.Cells[string.Format("G{0}", row)].Value = (item.Price * item.quantity).ToString("N0");
+                if (item.unit == item.sale_details.product.unit)
+                {
+                    sumRevenue += (item.Price - item.import_inventory.price_import) * item.quantity;
+                    Sheet.Cells[string.Format("H{0}", row)].Value = ((item.Price - item.import_inventory.price_import) * item.quantity).ToString("N0");
+
+                }
+                else if (item.unit == item.sale_details.product.unit_swap)
+                {
+                    sumRevenue += (item.Price - (item.import_inventory.price_import / item.sale_details.product.quantity_swap)) * item.quantity;
+                    Sheet.Cells[string.Format("H{0}", row)].Value = ((item.Price - (item.import_inventory.price_import / item.sale_details.product.quantity_swap)) * item.quantity).ToString("N0");
+
+                }
+                Sheet.Cells[string.Format("I{0}", row)].Value = String.Format("{0:HH:mm - dd/MM/yyy}", item.sale_details.sale.created_at);
+                row++;
+                no++;
+            }
+            Sheet.Cells["G7"].Value = sumSell.ToString("N0") + " VNĐ";
+            Sheet.Cells["G8"].Value = (sumSell -sumRevenue).ToString("N0") + " VNĐ";
+            Sheet.Cells["G9"].Value = sumRevenue.ToString("N0") + " VNĐ";
+
+            Sheet.Cells["A:AZ"].AutoFitColumns();
+            Response.Clear();
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.AddHeader("content-disposition", "attachment; filename=" + nameFile);
+            Response.BinaryWrite(ep.GetAsByteArray());
+            Response.End();
+
+        }
+
     }
 }
 

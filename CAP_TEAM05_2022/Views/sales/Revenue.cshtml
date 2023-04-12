@@ -57,7 +57,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <div class="float-right">
-                                            <button type="button" class="btn btn-secondary" id="btnExportExcel_SumRevenue">Xuất Excel</button>
+                                            <button type="button" class="btn btn-secondary" id="btnExportExcel_DetailsRevenue">Xuất Excel</button>
                                         </div>
                                     </div>
                                     <div class="col-md-2">
@@ -126,5 +126,11 @@
                 Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
             });
         }
+        $('#btnExportExcel_DetailsRevenue').click(function () {
+            var date_start = $("#revenue_DateStart").val();
+            var date_end = $("#revenue_DateEnd").val();
+            var URLExportExcel_RevenueDate = "@Url.Action("ExportExcel_DetailsRevenue", "Excel")" + "?date_Start=" + date_start + "&date_End=" + date_end;
+            window.location.href = URLExportExcel_RevenueDate;
+        })
     </script>
 }
