@@ -7,145 +7,134 @@
 }
 
 <section class="pcoded-main-container">
-
     <div class="pcoded-content">
         <div class="page-header">
             <div class="page-block">
                 <div class="row align-items-center">
                     <div class="col-md-12">
-                        <div class="page-header-title"><h5 class="m-b-10">Quản lý đổi trả</h5></div>
+                        <div class="page-header-title"><h5 class="m-b-10">Lịch sử đổi trả với công ty</h5></div>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="https://dnqt.net"><i class="feather icon-home"></i></a></li>
-                            <li class="breadcrumb-item"><a href="javascript:void(0)">Quản lý đổi trả</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0)">Lịch sử đổi trả với công ty</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-        <div data-v-2711e874="">
+        <div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 data-v-2711e874="">Lịch sử Đổi - Trả</h3>
+                            <h4>Lịch sử đổi trả với công ty</h4>
                             <div class="row"></div>
                         </div>
                         <div class="card-body">
-                            <ul id="pills-tab" role="tablist" class="nav nav-pills mb-3">
-                                <li class="nav-item"><a id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false" class="nav-link active">Đổi trả đơn hàng <input type="hidden" value="1"></a></li>
-                                <li class="nav-item"><a id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true" class="nav-link">Nhà cung cấp <input type="hidden" value="1"></a></li>
-                            </ul>
-                            <div id="pills-tabContent" class="tab-content">
-                                @{ Html.RenderAction("_ReturnSupplier", "return_supplier");}
-                                <div id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" class="tab-pane fade active show">
-                                    <div class="card">
-                                        <div class="card-body table-border-style">
-                                            <div class="table-responsive">
-                                                <table id="example" class="table table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>STT</th>
-                                                            <th>Mã hoàn trả</th>
-                                                            <th>Mã đơn hàng</th>
-                                                            <th>Tên khách hàng</th>
-                                                            <th>Hình thức</th>
-                                                            <th>Tên sản phẩm</th>
-                                                            <th class="text-center">Số lượng</th>
-                                                            <th class="text-center">Ngày</th>
-                                                            <th>Chênh lệch</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach (var item in Model)
-                                                        {
-                                                            no++;
-                                                            if (item.method == 2)
-                                                            {
-                                                                var detail = item.return_details.FirstOrDefault();
-                                                        <tr>
-                                                            <td>@no</td>
-                                                            <td>@item.code</td>
-                                                            <td>@item.sale_details.sale.code</td>
-                                                            <td>@item.sale_details.sale.customer.name</td>
-                                                            <td>Trả hàng</td>
-                                                            <td>
-                                                                <div>
-                                                                    @detail.product.name
-                                                                </div>
-                                                            </td>
-                                                            <td class="text-center">
 
-                                                                <div>
-                                                                    @detail.quantity_current<span class="txt-unit"> @detail.unit_current</span>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                @String.Format("{0:HH:mm - dd/MM/yyy}", item.create_at)
-                                                            </td>
-                                                            <td>
-                                                                <p>Hoàn lại</p>
+                            <div class="card-body table-border-style">
+                                <div class="table-responsive">
+                                    <table id="example" class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>Mã hoàn trả</th>
+                                                <th>Mã đơn hàng</th>
+                                                <th>Tên khách hàng</th>
+                                                <th>Hình thức</th>
+                                                <th>Tên sản phẩm</th>
+                                                <th class="text-center">Số lượng</th>
+                                                <th class="text-center">Ngày</th>
+                                                <th>Chênh lệch</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                no++;
+                                                if (item.method == 2)
+                                                {
+                                                    var detail = item.return_details.FirstOrDefault();
+                                                    <tr>
+                                                        <td>@no</td>
+                                                        <td>@item.code</td>
+                                                        <td>@item.sale_details.sale.code</td>
+                                                        <td>@item.sale_details.sale.customer.name</td>
+                                                        <td>Trả hàng</td>
+                                                        <td>
+                                                            <div>
+                                                                @detail.product.name
+                                                            </div>
+                                                        </td>
+                                                        <td class="text-center">
+
+                                                            <div>
+                                                                @detail.quantity_current<span class="txt-unit"> @detail.unit_current</span>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            @String.Format("{0:HH:mm - dd/MM/yyy}", item.create_at)
+                                                        </td>
+                                                        <td>
+                                                            <p>Hoàn lại</p>
+                                                            <span class="text-danger">
+                                                                @String.Format("{0:0,00}", item.difference)VNĐ
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                                else
+                                                {
+                                                    var detail = item.return_details.FirstOrDefault();
+
+                                                    <tr>
+                                                        <td>@no</td>
+                                                        <td>@item.code</td>
+                                                        <td>@item.sale_details.sale.code</td>
+                                                        <td>@item.sale_details.sale.customer.name</td>
+
+                                                        <td>Đổi sản phẩm</td>
+                                                        <td>
+                                                            <div>
+                                                                <p class="text-danger">Sản phẩm cũ:</p>
+                                                                @detail.product.name
+                                                                <hr>
+                                                                <p class="text-success">Sản phẩm mới:</p>
+                                                                <p>@detail.product1.name</p>
+                                                            </div>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <div>
+                                                                <p class="text-danger">Sản phẩm cũ:</p>
+                                                                <p>@detail.quantity_current<span class="txt-unit"> @detail.unit_current</span></p>
+                                                                <hr>
+                                                                <p class="text-success">Sản phẩm mới:</p>
+                                                                <p>@detail.quantity_return<span class="txt-unit"> @detail.unit_return</span></p>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            @String.Format("{0:HH:mm - dd/MM/yyy}", item.create_at)
+                                                        </td>
+                                                        <td>
+                                                            @if (item.difference > 0)
+                                                            {
+                                                                <p>Hoàn lại:</p>
                                                                 <span class="text-danger">
                                                                     @String.Format("{0:0,00}", item.difference)VNĐ
                                                                 </span>
-                                                            </td>
-                                                        </tr>
                                                             }
                                                             else
                                                             {
-                                                                var detail = item.return_details.FirstOrDefault();
-
-                                                                <tr>
-                                                                     <td>@no</td>
-                                                                    <td>@item.code</td>
-                                                                    <td>@item.sale_details.sale.code</td>
-                                                                    <td>@item.sale_details.sale.customer.name</td>
-
-                                                                    <td>Đổi sản phẩm</td>
-                                                                    <td>
-                                                                        <div>
-                                                                            <p class="text-danger">Sản phẩm cũ:</p>
-                                                                            @detail.product.name
-                                                                            <hr>
-                                                                            <p class="text-success">Sản phẩm mới:</p>
-                                                                            <p>@detail.product1.name</p>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td class="text-center">
-                                                                        <div>
-                                                                            <p class="text-danger">Sản phẩm cũ:</p>
-                                                                            <p>@detail.quantity_current<span class="txt-unit"> @detail.unit_current</span></p>
-                                                                            <hr>
-                                                                            <p class="text-success">Sản phẩm mới:</p>
-                                                                            <p>@detail.quantity_return<span class="txt-unit"> @detail.unit_return</span></p>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        @String.Format("{0:HH:mm - dd/MM/yyy}", item.create_at)
-                                                                    </td>
-                                                                    <td>
-                                                                        @if (item.difference > 0)
-                                                                        {
-                                                                            <p>Hoàn lại:</p>
-                                                                            <span class="text-danger">
-                                                                                @String.Format("{0:0,00}", item.difference)VNĐ
-                                                                            </span>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <p>Thu thêm:</p>
-                                                                            <span class="text-success">
-                                                                                @String.Format("{0:0,00}", (-1 * item.difference))VNĐ
-                                                                            </span>
-                                                                        }
-                                                                    </td>
-                                                                </tr>
+                                                                <p>Thu thêm:</p>
+                                                                <span class="text-success">
+                                                                    @String.Format("{0:0,00}", (-1 * item.difference))VNĐ
+                                                                </span>
                                                             }
-                                                        }
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -154,21 +143,14 @@
             </div>
         </div>
     </div>
-
-
 </section>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-
-<script type="text/javascript">
-    var row;
-    $(document).ready(function () {
-        $('#example').DataTable({
-            pagingType: 'full_numbers',
+@section scripts {
+    <script type="text/javascript">
+        var row;
+        $(document).ready(function () {
+            $('#example').DataTable({
+                pagingType: 'full_numbers',
+            });
         });
-    });
-    $(document).ready(function () {
-        $('#example1').DataTable({
-            pagingType: 'full_numbers',
-        });
-    });
-</script>
+    </script>
+    }

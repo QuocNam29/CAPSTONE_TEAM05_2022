@@ -161,18 +161,23 @@ namespace CAP_TEAM05_2022.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult CreateSale([Bind(Include = "customer_id, method, created_at")] sale createSale, int? methodPrice)
+        public JsonResult CreateSale([Bind(Include = "customer_id, method, created_at")] sale createSale, int? methodPrice, string payment)
         {
             string message = "";
             bool status = true;
             try
             {
+                decimal prepayment = 0;
+                if (!String.IsNullOrEmpty(payment))
+                {
+                    prepayment = decimal.Parse(payment.Replace(",", "").Replace(".", ""));
+                }
                 var cart = db.carts.Where(c => c.customer_id == createSale.customer_id).ToList();
                 sale sale = new sale();
                 sale.code = "MDH" + CodeRandom.RandomCode();
                 sale.customer_id = createSale.customer_id;
                 sale.method = createSale.method;
-                sale.prepayment = createSale.method == Constants.DEBT_ORDER && createSale.prepayment != null ? createSale.prepayment : 0;
+                sale.prepayment = createSale.method == Constants.DEBT_ORDER  ? prepayment : 0;
                 if (sale.method == Constants.DEBT_ORDER  && methodPrice == Constants.DEBT_METHOD_PRICE)
                 {
                     sale.is_debt_price = true;

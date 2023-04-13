@@ -1,0 +1,108 @@
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.return_supplier>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
+    int no = 0;
+}
+<section class="pcoded-main-container">
+    <div class="pcoded-content">
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title"><h5 class="m-b-10">Lịch sử đổi trả đơn hàng</h5></div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="https://dnqt.net"><i class="feather icon-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0)">Lịch sử đổi trả đơn hàng</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Lịch sử đổi trả đơn hàng</h4>
+                            <div class="row"></div>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-body table-border-style">
+                                <div class="table-responsive">
+                                    <table id="example" class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>Mã hoàn trả</th>
+                                                <th>Nhà cung cấp</th>
+                                                <th>Sản phẩm</th>
+                                                <th class="text-center">Số lượng</th>
+                                                <th>Thao tác</th>
+                                                <th>Ghi chú</th>
+                                                <th class="text-center">Chênh lệch</th>
+                                                <th class="text-center">Ngày thực hiện</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                no++;
+                                                <tr>
+                                                    <td>
+                                                        <div>@no</div>
+                                                    </td>
+                                                    <td>
+                                                        <div>@item.code</div>
+                                                    </td>
+                                                    <td>
+                                                        <div>@item.import_inventory.customer.name</div>
+                                                        <div class="txt-second">@item.import_inventory.customer.phone</div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="txt-second">@item.import_inventory.product.code</div>
+                                                        <div>@item.import_inventory.product.name</div>
+                                                    </td>
+                                                    <td class="text-center">@item.quantity <span class="txt-unit">@item.import_inventory.product.unit</span></td>
+                                                    <td>
+                                                        <div>
+                                                            Trả hàng
+                                                        </div>
+                                                    </td>
+                                                    <td>@item.note</td>
+                                                    <td class="text-right">
+                                                        <div>
+                                                            Thu về:
+                                                            <span class="text-success">
+                                                                @String.Format("{0:0,00}", item.cost_difference)VNĐ
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center">@String.Format("{0:HH:mm - dd/MM/yyy}", item.created_at)</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</section>
+@section scripts {
+    <script type="text/javascript">
+        var row;
+        $(document).ready(function () {
+            $('#example').DataTable({
+                pagingType: 'full_numbers',
+            });
+        });
+    </script>
+    }
+

@@ -35,8 +35,9 @@
                             <div class="col-md-3 ">
                                 <div class="form-group">
                                     <label>Trả trước <label class="text-danger">(đối với ghi nợ)</label>: </label>
-                                    <input type="text" placeholder="Thanh toán 1 phần" id="cart_Prepay" max="999999999999" class="form-control Price"
-                                           pattern="[0-9.,]+" data-type="number" name="purchase_price" onchange="ButtonDebit()">
+                                    <input type="text" placeholder="Thanh toán 1 phần" id="cart_Prepay" maxlength="15" class="form-control Price"
+                                           data-val="true"  name="payment" onchange="ButtonDebit()">
+                                    @Html.ValidationMessage("payment", "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="col-md-3">

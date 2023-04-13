@@ -15,11 +15,12 @@ namespace CAP_TEAM05_2022.Controllers
         private CP25Team05Entities db = new CP25Team05Entities();
 
         // GET: return_supplier
-        public ActionResult _ReturnSupplier()
+        public ActionResult Index()
         {
             var return_supplier = db.return_supplier.Include(r => r.import_inventory);
             return View(return_supplier.OrderByDescending(o => o.id).ToList());
         }
+
 
         public ActionResult Create_returnSupplier(int id_inventory, int quantity, string note)
         {
