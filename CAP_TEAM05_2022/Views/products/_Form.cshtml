@@ -274,7 +274,6 @@
         if (isvalid) {
             e.preventDefault();
             var url = form.attr('action');
-            console.log(url);
             $.ajax({
                 url: url,
                 type: 'POST',
@@ -285,9 +284,9 @@
 
                     if (data.status) {
                         // Refresh table data
-                        var group_id = $("#filter_GroupProduct").val();
+                        var supplier_id = $("#filter_Supplier").val();
                         var category_id = $("#filter_Category").val();
-                        GetList(group_id, category_id);
+                        GetList(category_id, supplier_id);
                         Swal.fire('Thành công !', data.message, 'success')
 
                         form[0].reset();
@@ -301,7 +300,6 @@
     });
 
     $("#UnitBy").change(function () {
-        console.log("hihi");
         var UnitBy = $("#UnitBy").val()
         document.getElementsByClassName('UnitCurrent')[0].innerHTML = UnitBy;
     });

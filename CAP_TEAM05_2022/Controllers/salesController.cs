@@ -172,7 +172,7 @@ namespace CAP_TEAM05_2022.Controllers
                 sale.code = "MDH" + CodeRandom.RandomCode();
                 sale.customer_id = createSale.customer_id;
                 sale.method = createSale.method;
-                sale.prepayment = createSale.method == Constants.DEBT_ORDER ? createSale.prepayment : 0;
+                sale.prepayment = createSale.method == Constants.DEBT_ORDER && createSale.prepayment != null ? createSale.prepayment : 0;
                 if (sale.method == Constants.DEBT_ORDER  && methodPrice == Constants.DEBT_METHOD_PRICE)
                 {
                     sale.is_debt_price = true;
@@ -392,10 +392,10 @@ namespace CAP_TEAM05_2022.Controllers
                         var last_debt = db.debts.Where(d => d.sale.customer_id == createSale.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
                         debt debt = new debt();
                         debt.sale_id = sale.id;
-                        debt.paid = createSale.prepayment;
+                        debt.paid = sale.prepayment;
                         debt.created_at = DateTime.Now;
                         debt.created_by = User.Identity.GetUserId();
-                        debt.total = last_debt.total + createSale.prepayment;
+                        debt.total = last_debt.total + sale.prepayment;
                         debt.debt1 = sale.total;
                         debt.remaining = last_debt.remaining + (sale.total - debt.paid);
                         db.debts.Add(debt);
@@ -416,10 +416,10 @@ namespace CAP_TEAM05_2022.Controllers
                     {
                         debt debt = new debt();
                         debt.sale_id = sale.id;
-                        debt.paid = createSale.prepayment;
+                        debt.paid = sale.prepayment;
                         debt.created_at = DateTime.Now;
                         debt.created_by = User.Identity.GetUserId();
-                        debt.total = createSale.prepayment;
+                        debt.total = sale.prepayment;
                         debt.debt1 = sale.total;
                         debt.remaining = sale.total - debt.paid;
                         db.debts.Add(debt);

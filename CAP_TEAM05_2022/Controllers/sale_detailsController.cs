@@ -43,8 +43,8 @@ namespace CAP_TEAM05_2022.Controllers
             sale_details details = db.sale_details.Find(id);
             var emp = new sale();
             emp.note = details.product.code + " - " + details.product.name;
-            emp.total = details.sold;
-            emp.prepayment = details.price / details.sold;
+            emp.total = details.sold - (int)details.return_quantity;
+            emp.prepayment = details.price;
             emp.id = details.id;
             emp.method = details.product_id;
             emp.code = details.unit;

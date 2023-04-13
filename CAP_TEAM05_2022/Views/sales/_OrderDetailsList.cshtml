@@ -8,6 +8,7 @@
     var Order = (sale)ViewBag.Order;
     List<return_sale> ReturnSale = ViewBag.ReturnSale;
 }
+<input type="hidden" id="isDebtPrice"   value="@(Model.FirstOrDefault().sale.is_debt_price ? 1 :0)" />
 <div id="detailModal" tabindex="-1" aria-labelledby="detailModalTitle" class="modal fade bd-example-modal-lg" style="display: none;" aria-hidden="true">
     <div role="document" class="modal-dialog modal-lg">
 
@@ -130,7 +131,7 @@
                                                     </td>
                                                     <td class="text-center ">
                                                         <p class="text-danger">Sản phẩm cũ:</p>
-                                                        <div>@(((decimal)(item.price_product?.price)).ToString("N0")) VNĐ / <span class="txt-unit">@item.product.unit</span></div>
+                                                        <div>@(((decimal)(item.price)).ToString("N0")) VNĐ / <span class="txt-unit">@item.product.unit</span></div>
                                                         <hr>
                                                         <p class="text-success">Sản phẩm mới:</p>
                                                         <div>@(((decimal)(item1.return_details.FirstOrDefault().total_return / item1.return_details.FirstOrDefault().quantity_return)).ToString("N0") ) VNĐ / <span class="txt-unit"> @( item1.return_details.FirstOrDefault().unit_return)</span></div>
@@ -168,10 +169,10 @@
                                                         - @(item1.return_details.Any() ? item1.return_details.FirstOrDefault().quantity_current : 0) <span class="txt-unit text-danger"> @item.product.unit</span>
                                                     </td>
                                                     <td class="text-center ">
-                                                        @(((decimal)(item.price_product?.price)).ToString("N0")) VNĐ / <span class="txt-unit">@item.product.unit</span>
+                                                        @(((decimal)(item.price)).ToString("N0")) VNĐ / <span class="txt-unit">@item.product.unit</span>
                                                     </td>
                                                     <td class="text-center text-danger">
-                                                        - @(((decimal)(item.price_product?.price) * (item1.return_details.Any() ? item1.return_details.FirstOrDefault().quantity_current : 0)).ToString("N0")) VNĐ
+                                                        - @(((decimal)(item.price) * (item1.return_details.Any() ? item1.return_details.FirstOrDefault().quantity_current : 0)).ToString("N0")) VNĐ
                                                     </td>
                                                     <td class="text-center ">
                                                         Trả sản phẩm
@@ -330,10 +331,14 @@
     });
     $(".returnProduct_List").on("change", function () {
         var ProductID = $(this).val();
+        var isDebtPrice = $('#isDebtPrice').val();
+        console.log(isDebtPrice);
         $(".ProductID").val(ProductID);
         $.ajax({
-            url: "@Url.Action("FindProduct_name", "products")",
-            data: { "product_id": ProductID },
+            url: "@Url.Action("FindProduct_Select2", "products")",
+            data: {
+                product_id: ProductID,
+                isDebtPrice: isDebtPrice},
             dataType: 'json',
             type: 'post',
             success: function (data) {
@@ -342,7 +347,6 @@
                 $("#priceProduct").val(data.name_category);
                 var input_qualityProduct = $('#input_qualityProduct').val();
                 document.getElementsByClassName('price_return')[0].innerHTML = "Sản phẩm muốn đổi: " + data.name_category.toLocaleString() + " x " + input_qualityProduct + " = " + (input_qualityProduct * data.name_category).toLocaleString();
-
                 var price_PCurrent = $('#price_PCurrent').val().replace(/\,/g, '').replace(/\./g, '');
                 var quality_OD = $('#quality_OD').val();
                 var priceProduct = $('#priceProduct').val().replace(/\,/g, '').replace(/\./g, '');
@@ -356,14 +360,12 @@
                     document.getElementsByClassName('spCollect')[0].innerHTML = "Thu thêm";
                     $('#collect').val((total * (-1)).toLocaleString());
                 }
-
                 var s = ' <option value="' + data.unit + '" data-type="other" selected>' + data.unit + '</option>';
                 if (data.unit_swap != null) {
                     s += ' <option value="' + data.unit_swap + '" data-type="other">' + data.unit_swap + '</option>';
                     $('#priceProduct_swap').val(data.name_group);
                 }
                 $("#unit_swap_return").html(s);
-
             }
         });
     });
@@ -372,17 +374,23 @@
         var priceProduct_swap = $('#priceProduct_swap').val();
         $('#priceProduct').val(priceProduct_swap);
         $('#priceProduct_swap').val(priceProduct);
+        calculate()
     });
     $("#quality_OD").change(function () {
+        calculate()
+    });
+    $("#input_qualityProduct").change(function () {
+        calculate()
+    });
+
+    function calculate() {
         var price_PCurrent = $('#price_PCurrent').val().replace(/\,/g, '').replace(/\./g, '');
         var quality_OD = $('#quality_OD').val();
         var priceProduct = $('#priceProduct').val().replace(/\,/g, '').replace(/\./g, '');
         var input_qualityProduct = $('#input_qualityProduct').val();
 
         $('#collect_return').val((price_PCurrent * quality_OD).toLocaleString());
-
         var total = (price_PCurrent * quality_OD) - (priceProduct * input_qualityProduct);
-
         if (total > 0) {
             document.getElementsByClassName('spCollect')[0].innerHTML = "Hoàn lại";
             $('#collect').val(total.toLocaleString());
@@ -391,24 +399,8 @@
             document.getElementsByClassName('spCollect')[0].innerHTML = "Thu thêm";
             $('#collect').val((total * (-1)).toLocaleString());
         }
-        document.getElementsByClassName('price_current')[0].innerHTML = "Sản phẩm hiện tại: " + price_PCurrent.toLocaleString() +" x " + quality_OD + " = " + (quality_OD * price_PCurrent).toLocaleString();
-    });
-    $("#input_qualityProduct").change(function () {
-        var price_PCurrent = $('#price_PCurrent').val().replace(/\,/g, '').replace(/\./g, '');
-        var quality_OD = $('#quality_OD').val();
-        var priceProduct = $('#priceProduct').val().replace(/\,/g, '').replace(/\./g, '');
-        var input_qualityProduct = $('#input_qualityProduct').val();
-        var total = (price_PCurrent * quality_OD) - (priceProduct * input_qualityProduct);
+        document.getElementsByClassName('price_current')[0].innerHTML = "Sản phẩm hiện tại: " + price_PCurrent.toLocaleString() + " x " + quality_OD + " = " + (quality_OD * price_PCurrent).toLocaleString();
+        document.getElementsByClassName('price_return')[0].innerHTML = "Sản phẩm muốn đổi: " + priceProduct.toLocaleString() + " x " + input_qualityProduct + " = " + (input_qualityProduct * priceProduct).toLocaleString();
 
-        if (total > 0) {
-            document.getElementsByClassName('spCollect')[0].innerHTML = "Hoàn lại";
-            $('#collect').val(total.toLocaleString());
-        }
-        else {
-            document.getElementsByClassName('spCollect')[0].innerHTML = "Thu thêm";
-            $('#collect').val((total * (-1)).toLocaleString());
-        }
-        document.getElementsByClassName('price_return')[0].innerHTML = "Sản phẩm muốn đổi: " + priceProduct.toLocaleString() +" x " + input_qualityProduct + " = " + (input_qualityProduct * priceProduct).toLocaleString();
-    });
-
+    }
 </script>

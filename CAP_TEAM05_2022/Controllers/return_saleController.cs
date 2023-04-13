@@ -50,7 +50,7 @@ namespace CAP_TEAM05_2022.Controllers
                     return_sale return_Sale = new return_sale();
                     return_Sale.saleDetails_id = sale_Details.id;
                     return_Sale.method = return_option;
-                    return_Sale.code = $"MTH-{DateTime.Now:ddMMyyHHss}"; ;
+                    return_Sale.code = $"MTH-{DateTime.Now:ddMMyyHHss}";
                     return_Sale.create_at = created_at;
                     return_Sale.difference = price_PCurrent1 * quality_OD;
                     db.return_sale.Add(return_Sale);
@@ -170,11 +170,8 @@ namespace CAP_TEAM05_2022.Controllers
                         customer_Debt.return_sale_id = return_Sale.id;
                         db.customer_debt.Add(customer_Debt);
                         db.SaveChanges();
-
                     }
-
-
-                    decimal price = (sale_Details.price / sale_Details.sold) * quality_OD;
+                    decimal price = sale_Details.price * quality_OD;
                     sale_Details.return_quantity += quality_OD;
                     db.Entry(sale_Details).State = EntityState.Modified;
                     sale.total -= price;
@@ -237,17 +234,19 @@ namespace CAP_TEAM05_2022.Controllers
                     sale_Details_return.sale_id = sale.id;
                     sale_Details_return.product_id = (int)product_id;
                     sale_Details_return.sold = (int)input_qualityProduct;
+                    sale_Details_return.unit = choose_unit;
+                    var price = db.price_product.Where(x => x.product_id == sale_Details_return.product_id && x.unit == sale_Details_return.unit);
+                    sale_Details_return.price_id = price.Any() ? price.OrderByDescending(x => x.id).FirstOrDefault().id : 0;
+
                     if (product_check.unit == choose_unit)
                     {
-                        sale_Details_return.price = (decimal)(product_check.sell_price * input_qualityProduct);
-                        sale.total += (decimal)(product_check.sell_price * input_qualityProduct);
+                        sale_Details_return.price = sale.is_debt_price ? product_check.sell_price_debt : product_check.sell_price;
                     }
                     else
                     {
-                        sale_Details_return.price = (decimal)(product_check.sell_price_swap * input_qualityProduct);
-                        sale.total += (decimal)(product_check.sell_price_swap * input_qualityProduct);
+                        sale_Details_return.price = sale.is_debt_price ? product_check.sell_price_debt_swap : product_check.sell_price_swap;
                     }
-                    sale_Details_return.unit = choose_unit;
+                    sale.total += (decimal)(sale_Details_return.price * input_qualityProduct);
                     sale_Details_return.created_at = created_at;
                     sale_Details_return.return_quantity = 0;
                     db.sale_details.Add(sale_Details_return);
@@ -263,14 +262,7 @@ namespace CAP_TEAM05_2022.Controllers
                                 revenue revenue_return = new revenue();
                                 revenue_return.sale_details_id = sale_Details_return.id;
                                 revenue_return.inventory_id = inventory.id;
-                                if (product_check.unit == choose_unit)
-                                {
-                                    revenue_return.Price = product_check.sell_price;
-                                }
-                                else
-                                {
-                                    revenue_return.Price = (decimal)product_check.sell_price_swap;
-                                }
+                                revenue_return.Price = sale_Details_return.price;
                                 revenue_return.quantity = temp_quatity;
                                 revenue_return.unit = choose_unit;
                                 db.revenues.Add(revenue_return);
@@ -290,14 +282,7 @@ namespace CAP_TEAM05_2022.Controllers
                                     revenue_return.sale_details_id = sale_Details_return.id;
                                     revenue_return.inventory_id = inventory.id;
                                     revenue_return.inventory_id = inventory.id;
-                                    if (product_check.unit == choose_unit)
-                                    {
-                                        revenue_return.Price = product_check.sell_price;
-                                    }
-                                    else
-                                    {
-                                        revenue_return.Price = (decimal)product_check.sell_price_swap;
-                                    }
+                                    revenue_return.Price = sale_Details_return.price;
                                     revenue_return.quantity = temp_inventory;
                                     revenue_return.unit = choose_unit;
                                     db.revenues.Add(revenue_return);
@@ -311,14 +296,7 @@ namespace CAP_TEAM05_2022.Controllers
                                     revenue_return.sale_details_id = sale_Details_return.id;
                                     revenue_return.inventory_id = inventory.id;
                                     revenue_return.inventory_id = inventory.id;
-                                    if (product_check.unit == choose_unit)
-                                    {
-                                        revenue_return.Price = product_check.sell_price;
-                                    }
-                                    else
-                                    {
-                                        revenue_return.Price = (decimal)product_check.sell_price_swap;
-                                    }
+                                    revenue_return.Price = sale_Details_return.price;
                                     revenue_return.quantity = temp_inventory;
                                     revenue_return.unit = choose_unit;
                                     db.revenues.Add(revenue_return);
@@ -335,14 +313,7 @@ namespace CAP_TEAM05_2022.Controllers
                                 revenue_return.sale_details_id = sale_Details_return.id;
                                 revenue_return.inventory_id = inventory.id;
                                 revenue_return.inventory_id = inventory.id;
-                                if (product_check.unit == choose_unit)
-                                {
-                                    revenue_return.Price = product_check.sell_price;
-                                }
-                                else
-                                {
-                                    revenue_return.Price = (decimal)product_check.sell_price_swap;
-                                }
+                                revenue_return.Price = sale_Details_return.price;
                                 revenue_return.quantity = temp_quatity;
                                 revenue_return.unit = choose_unit;
                                 db.revenues.Add(revenue_return);
@@ -366,14 +337,7 @@ namespace CAP_TEAM05_2022.Controllers
                                     revenue_return.sale_details_id = sale_Details_return.id;
                                     revenue_return.inventory_id = inventory.id;
                                     revenue_return.inventory_id = inventory.id;
-                                    if (product_check.unit == choose_unit)
-                                    {
-                                        revenue_return.Price = product_check.sell_price;
-                                    }
-                                    else
-                                    {
-                                        revenue_return.Price = (decimal)product_check.sell_price_swap;
-                                    }
+                                    revenue_return.Price = sale_Details_return.price;
                                     revenue_return.quantity = quantity_remaining;
                                     revenue_return.unit = choose_unit;
                                     db.revenues.Add(revenue_return);
@@ -388,14 +352,7 @@ namespace CAP_TEAM05_2022.Controllers
                                     revenue_return.sale_details_id = sale_Details_return.id;
                                     revenue_return.inventory_id = inventory.id;
                                     revenue_return.inventory_id = inventory.id;
-                                    if (product_check.unit == choose_unit)
-                                    {
-                                        revenue_return.Price = product_check.sell_price;
-                                    }
-                                    else
-                                    {
-                                        revenue_return.Price = (decimal)product_check.sell_price_swap;
-                                    }
+                                    revenue_return.Price = sale_Details_return.price;
                                     revenue_return.quantity = quantity_remaining;
                                     revenue_return.unit = choose_unit;
                                     db.revenues.Add(revenue_return);
@@ -419,14 +376,7 @@ namespace CAP_TEAM05_2022.Controllers
                                             revenue_return.sale_details_id = sale_Details_return.id;
                                             revenue_return.inventory_id = inventory.id;
                                             revenue_return.inventory_id = inventory.id;
-                                            if (product_check.unit == choose_unit)
-                                            {
-                                                revenue_return.Price = product_check.sell_price;
-                                            }
-                                            else
-                                            {
-                                                revenue_return.Price = (decimal)product_check.sell_price_swap;
-                                            }
+                                            revenue_return.Price = sale_Details_return.price;
                                             revenue_return.quantity = temp_quatity;
                                             revenue_return.unit = choose_unit;
                                             db.revenues.Add(revenue_return);
@@ -441,14 +391,7 @@ namespace CAP_TEAM05_2022.Controllers
                                             revenue_return.sale_details_id = sale_Details_return.id;
                                             revenue_return.inventory_id = inventory.id;
                                             revenue_return.inventory_id = inventory.id;
-                                            if (product_check.unit == choose_unit)
-                                            {
-                                                revenue_return.Price = product_check.sell_price;
-                                            }
-                                            else
-                                            {
-                                                revenue_return.Price = (decimal)product_check.sell_price_swap;
-                                            }
+                                            revenue_return.Price = sale_Details_return.price;
                                             revenue_return.quantity = temp;
                                             revenue_return.unit = choose_unit;
                                             db.revenues.Add(revenue_return);
@@ -466,14 +409,7 @@ namespace CAP_TEAM05_2022.Controllers
                                             revenue_return.sale_details_id = sale_Details_return.id;
                                             revenue_return.inventory_id = inventory.id;
                                             revenue_return.inventory_id = inventory.id;
-                                            if (product_check.unit == choose_unit)
-                                            {
-                                                revenue_return.Price = product_check.sell_price;
-                                            }
-                                            else
-                                            {
-                                                revenue_return.Price = (decimal)product_check.sell_price_swap;
-                                            }
+                                            revenue_return.Price = sale_Details_return.price;
                                             revenue_return.quantity = temp_remaining;
                                             revenue_return.unit = choose_unit;
                                             db.revenues.Add(revenue_return);
@@ -488,14 +424,7 @@ namespace CAP_TEAM05_2022.Controllers
                                             revenue_return.sale_details_id = sale_Details_return.id;
                                             revenue_return.inventory_id = inventory.id;
                                             revenue_return.inventory_id = inventory.id;
-                                            if (product_check.unit == choose_unit)
-                                            {
-                                                revenue_return.Price = product_check.sell_price;
-                                            }
-                                            else
-                                            {
-                                                revenue_return.Price = (decimal)product_check.sell_price_swap;
-                                            }
+                                            revenue_return.Price = sale_Details_return.price;
                                             revenue_return.quantity = temp;
                                             revenue_return.unit = choose_unit;
                                             db.revenues.Add(revenue_return);
@@ -511,15 +440,7 @@ namespace CAP_TEAM05_2022.Controllers
 
                     db.SaveChanges();
                     decimal total_return = 0;
-                    if (product_check.unit == choose_unit)
-                    {
-                        total_return = (decimal)(product_check.sell_price * input_qualityProduct);
-                    }
-                    else
-                    {
-                        total_return = (decimal)(product_check.sell_price_swap * input_qualityProduct);
-                    }
-
+                    total_return = (decimal)(sale_Details_return.price * input_qualityProduct);
                     return_sale return_Sale = new return_sale();
                     return_Sale.saleDetails_id = sale_Details.id;
                     return_Sale.method = return_option;
@@ -662,10 +583,10 @@ namespace CAP_TEAM05_2022.Controllers
                         db.SaveChanges();
 
                     }
-                    decimal price = (sale_Details.price / sale_Details.sold) * quality_OD;
+                    decimal price_Total = sale_Details.price * quality_OD;
                     sale_Details.return_quantity += quality_OD;
                     db.Entry(sale_Details).State = EntityState.Modified;
-                    sale.total -= price;
+                    sale.total -= price_Total;
                     db.Entry(sale).State = EntityState.Modified;
                     db.SaveChanges();
 

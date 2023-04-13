@@ -54,12 +54,10 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-4">
-                                    <input type="text" hidden id="URLgetCategory" value="@Url.Action("getCategory", "categories")" />
                                     @Html.DropDownList("filter_Category", (SelectList)ViewBag.CategoryId, "---- Xem tất cả danh mục sản phẩm ----", new { @class = "form-control custom-select", @id = "filter_Category" })
 
                                 </div>
                                 <div class="col-md-4">
-                                    <input type="text" hidden id="URLgetCategory" value="@Url.Action("getCategory", "categories")" />
                                     @Html.DropDownList("filter_Supplier", (SelectList)ViewBag.SupplierId, "---- Xem tất cả công ty cung cấp ----", new { @class = "form-control custom-select", @id = "filter_Supplier" })
 
                                 </div>
@@ -155,7 +153,7 @@
                             </div>
 
                             <div class="table-responsive" id="dataContainer">
-                                @{ Html.RenderAction("_ProductList", "products", new { group_id = -1, category_id = -1 });}
+                                @{ Html.RenderAction("_ProductList", "products");}
 
                             </div>
                         </div>

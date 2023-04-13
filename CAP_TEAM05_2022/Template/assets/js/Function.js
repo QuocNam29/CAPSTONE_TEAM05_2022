@@ -512,14 +512,22 @@ $('#URLProductList')
 
 $("#filter_Category").change(function () {
     var category_id = $("#filter_Category").val();
-    GetList( category_id)
+    var supplier_id = $("#filter_Supplier").val();
+    GetList( category_id, supplier_id)
+});
+$("#filter_Supplier").change(function () {
+    var category_id = $("#filter_Category").val();
+    var supplier_id = $("#filter_Supplier").val();
+    GetList(category_id, supplier_id)
 });
 
-function GetList(category_id) {
+function GetList(category_id, supplier_id) {
     $.ajax({
         url: URLProductList,
+        type: 'GET',
         data: {
             category_id: category_id,
+            supplier_id: supplier_id
         }
     }).done(function (result) {
         $('#dataContainer').html(result);

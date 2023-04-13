@@ -3,7 +3,6 @@
 @using Constants = CAP_TEAM05_2022.Helper.Constants
 @{
     bool isCreate = ViewBag.isCreate;
-    List<customer> supplier = ViewBag.SupplierId;
     Layout = null;
     bool checkSale = Model.sale_details.Any();
     bool checkCart = Model.carts.Any();
@@ -46,7 +45,19 @@
                                 </div> <!---->
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>
+                                    Công ty<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    @Html.DropDownListFor(m => m.supplier_id, (SelectList)ViewBag.SupplierId, new { @class = "form-control custom-select", @aria_label = "Chọn danh mục thiết bị" })
+                                    @Html.ValidationMessageFor(model => model.supplier_id, "", new { @class = "text-danger" })
+                                </div> <!---->
+
+                            </div>
+                        </div>
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label>
                                     Danh mục sản phẩm<span class="text-danger">*</span>
@@ -237,7 +248,6 @@
                     if (isvalid) {
                         e.preventDefault();
                         var url = form.attr('action');
-                        console.log(url);
                         $.ajax({
                             url: url,
                             type: 'POST',
@@ -248,9 +258,9 @@
 
                                 if (data.status) {
                                     // Refresh table data
-                                    var group_id = $("#filter_GroupProduct").val();
+                                    var supplier_id = $("#filter_Supplier").val();
                                     var category_id = $("#filter_Category").val();
-                                    GetList(group_id, category_id);
+                                    GetList(category_id, supplier_id);
                                     Swal.fire('Thành công !', data.message, 'success')
 
                                     form[0].reset();
@@ -264,7 +274,6 @@
         });
 
     $("#UnitBy").val('@Model.unit');
-    console.log($("#UnitBy").val('@Model.unit'))
     document.getElementsByClassName('UnitCurrent')[0].innerHTML = '@Model.unit';
 
             $("#UnitBy").change(function () {

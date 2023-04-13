@@ -47,7 +47,7 @@ namespace CAP_TEAM05_2022.Controllers
             product product = db.products.Find(id);
             ViewBag.isCreate = true;
             ViewBag.CategoryId = new SelectList(db.categories, "Id", "Name");
-            ViewBag.SupplierId = db.customers.Where(x => x.type == Constants.SUPPLIER).ToList();
+            ViewBag.SupplierId = new SelectList(db.customers.Where(x => x.type == Constants.SUPPLIER).ToList(), "Id", "Name");
             return PartialView("_FormEdit", product);
         }
 
@@ -161,7 +161,7 @@ namespace CAP_TEAM05_2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,code,name,group_id,category_id,unit,purchase_price,sell_price,quantity,status,note,created_by,created_at,updated_at,deleted_at,name_group,name_category,unit_swap,quantity_swap,quantity_remaning,sell_price_swap")] product product,
+        public ActionResult Edit([Bind(Include = "id,code,name,group_id,category_id,unit,purchase_price,sell_price,quantity,status,note,created_by,created_at,updated_at,deleted_at,name_group,name_category,unit_swap,quantity_swap,quantity_remaning,sell_price_swap, supplier_id")] product product,
                                     string Editsell_price, string Editprice_swap, string Editdebt_price, string Editdebt_price_swap)
         {
             if (ModelState.IsValid)
@@ -242,17 +242,23 @@ namespace CAP_TEAM05_2022.Controllers
             return View("_Form", product);
         }
 
-        public ActionResult _ProductList( int? category_id)
+        [HttpGet]
+        public ActionResult _ProductList( int? category_id, int? supplier_id)
         {
             var links = from l in db.products
                         select l;
-            if (category_id != -1)
+            if (category_id != null)
             {
                 links = links.Where(p => p.category_id == category_id);
+            }
+            if (supplier_id != null)
+            {
+                links = links.Where(p => p.supplier_id == supplier_id);
             }
             return PartialView(links.Where(c => c.status != 3).OrderByDescending(c => c.id));
         }
 
+        [HttpGet]
         public ActionResult _PriceHistory(int id)
         {
             var priceHistory = db.price_product.Where(x => x.product_id == id);
@@ -485,6 +491,25 @@ namespace CAP_TEAM05_2022.Controllers
             emp.unit = product.unit;
             emp.unit_swap = product.unit_swap;
             emp.name_category = product.sell_price.ToString("N0");
+            emp.note = "Số lượng tồn: " + product.quantity + product.unit;
+            emp.note += "/" + product.quantity_swap + product.unit_swap;
+            emp.note += " và " + product.quantity_remaning + product.unit_swap + " lẻ";
+            return Json(emp);
+        }
+
+        [HttpPost]
+        public JsonResult FindProduct_Select2(int product_id, int? isDebtPrice)
+        {
+            product product = db.products.Find(product_id);
+            var emp = new product();
+            emp.id = product.id;
+            emp.code = product.code;
+            emp.name = product.name;
+            emp.name_group = isDebtPrice == 1 ? string.Format("{0:0,00}", product.sell_price_debt_swap) : string.Format("{0:0,00}", product.sell_price_swap);
+            emp.quantity = product.quantity;
+            emp.unit = product.unit;
+            emp.unit_swap = product.unit_swap;
+            emp.name_category = isDebtPrice == 1 ? product.sell_price_debt.ToString("N0") :  product.sell_price.ToString("N0");
             emp.note = "Số lượng tồn: " + product.quantity + product.unit;
             emp.note += "/" + product.quantity_swap + product.unit_swap;
             emp.note += " và " + product.quantity_remaning + product.unit_swap + " lẻ";
