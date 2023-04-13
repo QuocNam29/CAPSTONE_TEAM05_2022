@@ -212,7 +212,7 @@
                                                         </span>
                                                     </b>
                                                 </div>
-                                                @if (Order.prepayment >= 0)
+                                                @if (Order.method == Constants.DEBT_ORDER)
                                                 {
                                                     <div>
                                                         Đã thanh toán:

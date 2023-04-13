@@ -18,7 +18,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Quản lý khách hàng</h5>
+                            <h5 class="m-b-10">@(isCustomer ? "Quản lý khách hàng" :"Quản lý công ty cung cấp")</h5>
                         </div>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item">
@@ -28,7 +28,7 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="javascript:void(0)"> @(isCustomer ? "Quản lý khách hàng" :"Quản lý nhà cung cấp")</a>
+                                <a href="javascript:void(0)"> @(isCustomer ? "Quản lý khách hàng" :"Quản lý công ty cung cấp")</a>
                             </li>
                         </ul>
                     </div>
@@ -43,9 +43,8 @@
                             <button type="button" class="btn btn-primary float-right ml-2" onclick="createCustomer()">Tạo mới</button>
                             <div class="row">
                                 <div class="col-md-9">
-                                    <h4>@(isCustomer ? "KHÁCH HÀNG" : "NHÀ CUNG CẤP")</h4>
+                                    <h4>@(isCustomer ? "KHÁCH HÀNG" : "CÔNG TY CUNG CẤP")</h4>
                                 </div>
-                                
                             </div>
                         </div>
                         <div class="card-body table-border-style">

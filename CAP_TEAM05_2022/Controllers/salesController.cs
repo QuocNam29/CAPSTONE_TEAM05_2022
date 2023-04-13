@@ -172,6 +172,7 @@ namespace CAP_TEAM05_2022.Controllers
                 {
                     prepayment = decimal.Parse(payment.Replace(",", "").Replace(".", ""));
                 }
+
                 var cart = db.carts.Where(c => c.customer_id == createSale.customer_id).ToList();
                 sale sale = new sale();
                 sale.code = "MDH" + CodeRandom.RandomCode();
@@ -192,6 +193,12 @@ namespace CAP_TEAM05_2022.Controllers
                 sale.status = Constants.SHOW_STATUS;
                 sale.created_by = User.Identity.GetUserId();
                 sale.created_at = createSale.created_at != null ? createSale.created_at : DateTime.Now;
+                if (sale.prepayment > sale.total)
+                {
+                        status = false;
+                        message = "Số tiền trả trước vượt quá tổng đơn hàng, vui lòng kiểm tra lại !";
+                        return Json(new { status, message }, JsonRequestBehavior.AllowGet);                    
+                }
                 db.sales.Add(sale);
                 db.SaveChanges();
                 foreach (var item in cart)

@@ -94,14 +94,14 @@ namespace CAP_TEAM05_2022.Controllers
                     if (check > 0)
                     {
                         status = false;
-                        message = "Khách hàng đã tồn tại (Vui lòng kiểm tra lại số điện thoại) !";
+                        message = "Số điện thoại đã tồn tại !";
                     }
                     else
                     {
                         customer.updated_at = DateTime.Now;
                         db.Entry(customer).State = EntityState.Modified;
                         db.SaveChanges();
-                        message = "Cập nhật thông tin khách hàng thành công !";
+                        message = "Cập nhật thông tin thành công !";
                     }
                 }
 

@@ -12,7 +12,7 @@
         <form class="CusomerForm" method="post" action="@Url.Action(isCreate ? "Create" : "Edit", "customers")">
             <div class="modal-content">
                 <div class="modal-header bg-primary">
-                    <h5 id="customModalTitle" class="modal-title white">Thêm mới khách hàng</h5>
+                    <h5 id="customModalTitle" class="modal-title white">@(isCustomer ? "Thêm mới khách hàng" : "Thêm mới công ty cung cấp")</h5>
                     <button type="button" data-dismiss="modal" aria-label="Close" class="close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -34,7 +34,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>
-                                        Họ và tên<span class="text-danger">*</span>
+                                       @(isCustomer ? "Họ và tên" : "Tên công ty") <span class="text-danger">*</span>
                                     </label>
                                     <div class="position-relative">
                                         @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập họ và tên" } })
@@ -163,7 +163,7 @@
                         </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ bỏ</button>
-                    <button type="submit" class="btn btn-primary">Thêm mới</button>
+                    <button type="submit" class="btn btn-primary">@(isCreate ? "Thêm mới": "Cập nhật")</button>
                 </div>
             </div>
         </form>
