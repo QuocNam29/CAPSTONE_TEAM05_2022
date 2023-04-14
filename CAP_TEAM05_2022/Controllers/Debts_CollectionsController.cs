@@ -171,7 +171,7 @@ namespace CAP_TEAM05_2022.Controllers
             if (method == Constants.PAYED_ORDER)
             {
                 emp.total = customer.sales.Where(s => s.method == Constants.DEBT_ORDER).Sum(s => s.total);
-                emp.prepayment = customer.sales.Where(s => s.method == Constants.DEBT_ORDER).Sum(s => s.prepayment);
+                emp.prepayment = customer.sales.Where(s => s.method == Constants.DEBT_ORDER).Sum(s => s.prepayment + s.pay_debt);
             }
             else if (method == Constants.DEBT_ORDER)
             {
@@ -203,12 +203,12 @@ namespace CAP_TEAM05_2022.Controllers
                 if (method == Constants.COLLECTION_OF_CUSTOMERS)
                 {
                     //Lấy danh sách đơn nợ của khách hàng
-                    var sale = db.sales.Where(s => s.customer_id == customer_id && s.total != s.prepayment && s.method == Constants.DEBT_ORDER).ToList();
+                    var sale = db.sales.Where(s => s.customer_id == customer_id && s.total != (s.prepayment + s.pay_debt) && s.method == Constants.DEBT_ORDER).ToList();
                     while (paid_temp > 0)
                     {
                         foreach (var item in sale)
                         {
-                            if (paid_temp <= (item.total - item.prepayment))
+                            if (paid_temp <= (item.total - item.prepayment - item.pay_debt))
                             {
                                 var last_debt = db.debts.Where(d => d.sale.customer_id == item.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
 
@@ -222,7 +222,7 @@ namespace CAP_TEAM05_2022.Controllers
                                 debt.remaining = last_debt.remaining - paid_temp;
                                 db.debts.Add(debt);
 
-                                item.prepayment += paid_temp;
+                                item.pay_debt += paid_temp;
                                 db.Entry(item).State = EntityState.Modified;
                                 db.SaveChanges();
                                 paid_temp = 0;
@@ -230,7 +230,7 @@ namespace CAP_TEAM05_2022.Controllers
                             else
                             {
                                 var last_debt = db.debts.Where(d => d.sale.customer_id == item.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
-                                decimal remaining = (decimal)(item.total - item.prepayment);
+                                decimal remaining = (decimal)(item.total - item.prepayment - item.pay_debt);
                                 debt debt = new debt();
                                 debt.sale_id = item.id;
                                 debt.created_by = User.Identity.GetUserId();
@@ -241,7 +241,7 @@ namespace CAP_TEAM05_2022.Controllers
                                 debt.remaining = last_debt.remaining - remaining;
                                 db.debts.Add(debt);
 
-                                item.prepayment += remaining;
+                                item.pay_debt += remaining;
                                 db.Entry(item).State = EntityState.Modified;
                                 db.SaveChanges();
                                 paid_temp -= remaining;

@@ -326,6 +326,7 @@
           <Property Name="updated_at" Type="datetime2" Precision="0" />
           <Property Name="deleted_at" Type="datetime2" Precision="0" />
           <Property Name="prepayment" Type="money" />
+          <Property Name="pay_debt" Type="money" />
           <Property Name="is_debt_price" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="sysdiagrams">
@@ -1554,6 +1555,7 @@
           <NavigationProperty Name="debts" Relationship="Self.debts_ibfk_1" FromRole="sales" ToRole="debts" />
           <NavigationProperty Name="sale_details" Relationship="Self.sale_details_ibfk_2" FromRole="sales" ToRole="sale_details" />
           <NavigationProperty Name="user" Relationship="Self.FK_sales_users" FromRole="sales" ToRole="users" />
+          <Property Name="pay_debt" Type="Decimal" Precision="19" Scale="4" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -2695,6 +2697,7 @@
           <EntitySetMapping Name="sales">
             <EntityTypeMapping TypeName="CP25Team05Model.sale">
               <MappingFragment StoreEntitySet="sales">
+                <ScalarProperty Name="pay_debt" ColumnName="pay_debt" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="code" ColumnName="code" />
                 <ScalarProperty Name="customer_id" ColumnName="customer_id" />

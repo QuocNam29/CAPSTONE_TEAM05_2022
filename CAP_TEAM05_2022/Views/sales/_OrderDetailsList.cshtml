@@ -6,6 +6,7 @@
     int no = 0;
     int no_return = 0;
     var Order = (sale)ViewBag.Order;
+    var OldDebt = (customer_debt)ViewBag.OldDebt;
     List<return_sale> ReturnSale = ViewBag.ReturnSale;
 }
 <input type="hidden" id="isDebtPrice"   value="@(Model.FirstOrDefault().sale.is_debt_price ? 1 :0)" />
@@ -227,11 +228,56 @@
                                                         </span>
                                                     </div>
                                                 }
-
-
                                             </div>
                                         </td>
                                     </tr>
+                                    @if (Order.method == Constants.DEBT_ORDER)
+                                    {
+                                        if (OldDebt != null)
+                                        {
+                                            <tr>
+                                                <td colspan="8" class="text-center">
+                                                    Nợ cũ trước lúc @String.Format("{0:HH:mm - dd/MM/yyy}", Order.created_at) là : @(((decimal)OldDebt.remaining).ToString("N0")) VNĐ
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="8" class="text-center">
+                                                    Nợ mới lúc @String.Format("{0:HH:mm - dd/MM/yyy}", Order.created_at)  là : @(((decimal)(Order.total - Order.prepayment)).ToString("N0")) VNĐ
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="8" class="text-center">
+                                                    <b>Như vậy tính đến @String.Format("{0:HH:mm - dd/MM/yyy}", Order.created_at), Quý khách hàng đã nợ doanh nghiệp Tấn Thành là : <u>@(((decimal)(OldDebt.remaining + Order.total - Order.prepayment)).ToString("N0")) VNĐ</u></b>
+                                                </td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td colspan="8" class="text-center">
+                                                    <b>Như vậy tính đến @String.Format("{0:HH:mm - dd/MM/yyy}", Order.created_at), Quý khách hàng đã nợ doanh nghiệp Tấn Thành là : <u>@(((decimal)(Order.total - Order.prepayment)).ToString("N0")) VNĐ</u></b>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (OldDebt != null)
+                                        {
+                                            <tr>
+                                                <td colspan="8" class="text-center">
+                                                    Nợ cũ trước lúc @String.Format("{0:HH:mm - dd/MM/yyy}", Order.created_at) là : @(((decimal)OldDebt.remaining).ToString("N0")) VNĐ
+                                                </td>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td colspan="8" class="text-center">
+                                                    <b>Như vậy tính đến @String.Format("{0:HH:mm - dd/MM/yyy}", Order.created_at), Quý khách hàng đã nợ doanh nghiệp Tấn Thành là : <u>@(((decimal)(OldDebt.remaining)).ToString("N0")) VNĐ</u></b>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+
                                 </tfoot>
                             </table>
                         </div>

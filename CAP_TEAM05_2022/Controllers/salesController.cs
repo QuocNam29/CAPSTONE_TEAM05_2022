@@ -27,6 +27,8 @@ namespace CAP_TEAM05_2022.Controllers
         {
             var sale = db.sales.Find(id);
             ViewBag.Order = sale;
+            var oldDebt = db.customer_debt.Where(x => x.customer_id == sale.customer_id && x.created_at < sale.created_at).OrderByDescending(x => x.id).FirstOrDefault();
+            ViewBag.OldDebt = oldDebt;
             var OrderDetailsList = db.sale_details.Where(o => o.sale_id == id);
             return PartialView(OrderDetailsList.ToList());
         }
@@ -37,6 +39,8 @@ namespace CAP_TEAM05_2022.Controllers
             ViewBag.Order = sale;
             var returnSale = db.return_sale.Where(x => x.sale_details.sale_id == order_id).ToList();
             ViewBag.ReturnSale = returnSale;
+            var oldDebt = db.customer_debt.Where(x => x.customer_id == sale.customer_id && x.created_at < sale.created_at).OrderByDescending(x => x.id).FirstOrDefault();
+            ViewBag.OldDebt = oldDebt;
             var OrderDetailsList = db.sale_details.Where(o => o.sale_id == order_id);
             return PartialView(OrderDetailsList.ToList());
         }
@@ -168,6 +172,7 @@ namespace CAP_TEAM05_2022.Controllers
             try
             {
                 decimal prepayment = 0;
+                DateTime currentDate = DateTime.Now;
                 if (!String.IsNullOrEmpty(payment))
                 {
                     prepayment = decimal.Parse(payment.Replace(",", "").Replace(".", ""));
@@ -179,6 +184,7 @@ namespace CAP_TEAM05_2022.Controllers
                 sale.customer_id = createSale.customer_id;
                 sale.method = createSale.method;
                 sale.prepayment = createSale.method == Constants.DEBT_ORDER  ? prepayment : 0;
+                sale.pay_debt = 0;
                 if (sale.method == Constants.DEBT_ORDER  && methodPrice == Constants.DEBT_METHOD_PRICE)
                 {
                     sale.is_debt_price = true;
@@ -192,7 +198,7 @@ namespace CAP_TEAM05_2022.Controllers
                 sale.note = createSale.note;
                 sale.status = Constants.SHOW_STATUS;
                 sale.created_by = User.Identity.GetUserId();
-                sale.created_at = createSale.created_at != null ? createSale.created_at : DateTime.Now;
+                sale.created_at = createSale.created_at != null ? createSale.created_at : currentDate;
                 if (sale.prepayment > sale.total)
                 {
                         status = false;
@@ -210,7 +216,7 @@ namespace CAP_TEAM05_2022.Controllers
                     sale_Details.price = sale.method== Constants.DEBT_ORDER && methodPrice == Constants.DEBT_METHOD_PRICE ? item.price_product.price_debt : item.price_product.price;
                     sale_Details.price_id = item.price_id;
                     sale_Details.unit = item.unit;
-                    sale_Details.created_at = DateTime.Now;
+                    sale_Details.created_at = currentDate;
                     sale_Details.return_quantity = 0;
                     db.sale_details.Add(sale_Details);
                     int temp_quatity = item.quantity;
@@ -405,7 +411,7 @@ namespace CAP_TEAM05_2022.Controllers
                         debt debt = new debt();
                         debt.sale_id = sale.id;
                         debt.paid = sale.prepayment;
-                        debt.created_at = DateTime.Now;
+                        debt.created_at = currentDate;
                         debt.created_by = User.Identity.GetUserId();
                         debt.total = last_debt.total + sale.prepayment;
                         debt.debt1 = sale.total;
@@ -416,7 +422,7 @@ namespace CAP_TEAM05_2022.Controllers
 
                         customer_debt customer_Debt = new customer_debt();
                         customer_Debt.sale_id = sale.id;
-                        customer_Debt.created_at = DateTime.Now;
+                        customer_Debt.created_at = currentDate;
                         customer_Debt.created_by = User.Identity.GetUserId();
                         customer_Debt.customer_id = createSale.customer_id;
                         customer_Debt.debt = (sale.total - debt.paid);
@@ -429,7 +435,7 @@ namespace CAP_TEAM05_2022.Controllers
                         debt debt = new debt();
                         debt.sale_id = sale.id;
                         debt.paid = sale.prepayment;
-                        debt.created_at = DateTime.Now;
+                        debt.created_at = currentDate;
                         debt.created_by = User.Identity.GetUserId();
                         debt.total = sale.prepayment;
                         debt.debt1 = sale.total;
@@ -438,7 +444,7 @@ namespace CAP_TEAM05_2022.Controllers
 
                         customer_debt customer_Debt = new customer_debt();
                         customer_Debt.sale_id = sale.id;
-                        customer_Debt.created_at = DateTime.Now;
+                        customer_Debt.created_at = currentDate;
                         customer_Debt.created_by = User.Identity.GetUserId();
                         customer_Debt.customer_id = createSale.customer_id;
                         customer_Debt.debt = sale.total - debt.paid;
