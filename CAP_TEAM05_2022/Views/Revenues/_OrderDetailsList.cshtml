@@ -220,7 +220,6 @@
                                                             @(((decimal)Order.prepayment).ToString("N0")) VNĐ
                                                         </span>
                                                     </div>
-
                                                     <div>
                                                         Đã trả nợ:
                                                         <span class="text-success">
@@ -231,7 +230,7 @@
                                                     <div>
                                                         Còn nợ:
                                                         <span class="text-danger">
-                                                            @(((decimal)(Order.total - Order.prepayment)).ToString("N0")) VNĐ
+                                                            @(((decimal)(Order.total - Order.prepayment - Order.pay_debt)).ToString("N0")) VNĐ
                                                         </span>
                                                     </div>
 

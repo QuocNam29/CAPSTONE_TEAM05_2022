@@ -28,15 +28,15 @@
                 </td>
                 <td>@item.code</td>
                 <td>@item.name</td>
-                <td>@item.sales.Where(s => s.method == 2).Count()</td>
+                <td>@item.sales.Where(s => s.method == Constants.DEBT_ORDER).Count()</td>
                 <td class="text-center">
-                    @item.sales.Where(s => s.method == 2).Sum(s => s.total).ToString("N0")VNĐ
+                    @item.sales.Where(s => s.method == Constants.DEBT_ORDER).Sum(s => s.total).ToString("N0")VNĐ
                 </td>
                 <td class="text-center">
-                    @(((decimal)item.sales.Where(s => s.method == 2).Sum(s => s.prepayment)).ToString("N0")) VNĐ
+                    @(((decimal)item.sales.Where(s => s.method == Constants.DEBT_ORDER).Sum(s => s.prepayment + s.pay_debt)).ToString("N0")) VNĐ
                 </td>
                 <td class="text-center">
-                    @(((decimal)(item.sales.Where(s => s.method == 2).Sum(s => s.total) - item.sales.Where(s => s.method == 2).Sum(s => s.prepayment))).ToString("N0")) VNĐ
+                    @(((decimal)(item.sales.Where(s => s.method == Constants.DEBT_ORDER).Sum(s => s.total) - item.sales.Where(s => s.method == Constants.DEBT_ORDER).Sum(s => s.prepayment + s.pay_debt))).ToString("N0")) VNĐ
                 </td>
                 <td class="text-center">
                     <button type="button" class="btn btn-info" onclick="DebtCollection(this,'@item.id','@Constants.COLLECTION_OF_CUSTOMERS')">Chọn</button>

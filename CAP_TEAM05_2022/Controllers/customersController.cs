@@ -231,7 +231,7 @@ namespace CAP_TEAM05_2022.Controllers
             emp.note = Constants.TypeCustomer.Single(x => x.Key == customer.type).Value.Item1;
             emp.code = customer.code;
             emp.status = customer.sales.Count();
-            emp.type = (int)customer.sales.Where(s => s.method == 2).Sum(s => s.total - s.prepayment);
+            emp.type = (int)customer.sales.Where(s => s.method == 2).Sum(s => s.total - s.prepayment - s.pay_debt);
             return Json(emp);
         }
         public JsonResult UpdateCustomer(int Customer_id, string customer_name, string customer_phone,

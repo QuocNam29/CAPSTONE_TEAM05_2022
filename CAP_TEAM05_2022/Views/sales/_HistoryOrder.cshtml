@@ -38,7 +38,7 @@
                                         foreach (var itemSale in Model)
                                         {
                                             int no = 0;
-                                            int no_debt = 0;
+                                            int no_debt = 1;
                                             var details = itemSale.sale_details.ToList();
                                             var history_debt = itemSale.debts.ToList();
                                             if (details.Count() > 0)
@@ -192,20 +192,25 @@
                                                             <!---->
                                                             @foreach (var item1 in history_debt)
                                                             {
-                                                                no_debt++;
-                                                                if (item1.paid != null)
+                                                                
+                                                                if (item1.paid != null )
                                                                 {
+                                                                    if (item1.return_sale_id == null && item1.paid > 0)
+                                                                    {
+                                                                        <p>
+                                                                            Đợt @no_debt: <span>@(((decimal)item1.paid).ToString("N0")) VNĐ</span>
+                                                                        </p>
+                                                                        no_debt++;
+                                                                    }
 
-                                                                    <p>
-                                                                        Đợt @no_debt: <span>@(((decimal)item1.paid).ToString("N0")) VNĐ</span>
-                                                                    </p>
                                                                 }
-                                                                else
+                                                               @* else
                                                                 {
                                                                     <p>
                                                                         Đợt @no_debt: <span class="text-danger">- @(((decimal)item1.debt1).ToString("N0")) VNĐ</span> (ghi nợ do đổi trả sản phẩm)
                                                                     </p>
-                                                                }
+                                                                    no_debt++;
+                                                                }*@
 
                                                             }
                                                         </td>
@@ -218,16 +223,19 @@
                                                             {
                                                                 if (item1.paid != null)
                                                                 {
+                                                                    if (item1.return_sale_id == null && item1.paid > 0)
+                                                                    {
                                                                     <p>
                                                                         Ngày thu nợ: <span> @String.Format("{0:HH:mm - dd/MM/yyy}", item1.created_at)</span>
                                                                     </p>
+                                                                    }
                                                                 }
-                                                                else
+                                                                @*else
                                                                 {
                                                                     <p>
                                                                         Ngày giao dịch: <span> @String.Format("{0:HH:mm - dd/MM/yyy}", item1.created_at)</span>
                                                                     </p>
-                                                                }
+                                                                }*@
                                                             }
                                                         </td>
                                                         <td colspan="2" class="text-left">
@@ -247,9 +255,16 @@
                                                                         </span>
                                                                     </div>
                                                                     <div>
+                                                                        Đã trả nợ:
+                                                                        <span class="text-success">
+                                                                            @(((decimal)itemSale.pay_debt).ToString("N0")) VNĐ
+                                                                        </span>
+                                                                    </div>
+                                                                    <hr />
+                                                                    <div>
                                                                         Còn nợ:
                                                                         <span class="text-danger">
-                                                                            @(((decimal)(itemSale.total - itemSale.prepayment)).ToString("N0"))VNĐ
+                                                                            @(((decimal)(itemSale.total - itemSale.prepayment - itemSale.pay_debt)).ToString("N0"))VNĐ
                                                                         </span>
                                                                     </div>
                                                                 }
