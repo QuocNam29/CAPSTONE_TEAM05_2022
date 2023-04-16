@@ -35,7 +35,7 @@ namespace CAP_TEAM05_2022.Controllers
             var HistoryOrder = db.inventory_order.Where(o => o.supplier_id == order_customer);
             if (method == Constants.DEBT_ORDER)
             {
-                HistoryOrder = HistoryOrder.Where(s => s.state == Constants.DEBT_ORDER || s.state == Constants.OLD_DEBT_ORDER);
+                HistoryOrder = HistoryOrder.Where(s => s.state == Constants.DEBT_ORDER);
             }
             return PartialView(HistoryOrder.OrderByDescending(o => o.id).ToList());
         }
@@ -49,13 +49,14 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 date_End = DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day));
             }
-            var sales = db.inventory_order.Include(i => i.customer).Include(i => i.user).Where(s => s.create_at >= date_Start && s.create_at <= date_End
-                                                    || s.create_at.Value.Day == date_Start.Value.Day
-                                                    && s.create_at.Value.Month == date_Start.Value.Month
-                                                    && s.create_at.Value.Year == date_Start.Value.Year
-                                                    || s.create_at.Value.Day == date_End.Value.Day
-                                                    && s.create_at.Value.Month == date_End.Value.Month
-                                                    && s.create_at.Value.Year == date_End.Value.Year);
+            var sales = db.inventory_order.Include(i => i.customer).Include(i => i.user).Where(s => s.is_old_debt == false 
+                                                    && s.create_at >= date_Start && s.create_at <= date_End
+                                                    || s.create_at.Day == date_Start.Value.Day
+                                                    && s.create_at.Month == date_Start.Value.Month
+                                                    && s.create_at.Year == date_Start.Value.Year
+                                                    || s.create_at.Day == date_End.Value.Day
+                                                    && s.create_at.Month == date_End.Value.Month
+                                                    && s.create_at.Year == date_End.Value.Year);
 
             return PartialView(sales.OrderByDescending(c => c.id).ToList());
         }
@@ -138,7 +139,6 @@ namespace CAP_TEAM05_2022.Controllers
                         price_Product.unit = product.unit;
                         db.price_product.Add(price_Product);
                     }
-
                     if (priceSwap != product.sell_price_swap || debtPriceSwap != product.sell_price_debt_swap)
                     {
                         price_product price_Product_swap = new price_product();
@@ -163,6 +163,7 @@ namespace CAP_TEAM05_2022.Controllers
                 inventory_order.create_by = User.Identity.GetUserId();
                 inventory_order.Total = total;
                 inventory_order.state = method;
+                inventory_order.is_old_debt = false;
                 if (method == Constants.DEBT_ORDER)
                 {
                     decimal payment = decimal.Parse(Repayment.Replace(",", "").Replace(".", ""));

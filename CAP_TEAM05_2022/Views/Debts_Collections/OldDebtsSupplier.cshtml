@@ -1,0 +1,131 @@
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.inventory_order>
+@using Constants = CAP_TEAM05_2022.Helper.Constants
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
+}
+
+<section class="pcoded-main-container">
+    <div class="pcoded-content">
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">Quản lý công nợ</h5>
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="https://dnqt.net">
+                                    <i class="feather icon-home">
+                                    </i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="javascript:void(0)">Quản lý công nơ</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" class="tab-pane fade active show">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h4>Nợ cũ với công ty</h4>
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-primary float-right mb-3" onclick="createOldDebt()">Tạo nợ cũ </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body table-border-style">
+                            <div class="table-responsive" id="dataContainer3">
+                                @{ Html.RenderAction("_OldDebtsSupplierList", "Debts_Collections");}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+            </div>
+        </div>
+    </div>
+</section>
+<div id="dataContainer2">
+</div>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                pagingType: 'full_numbers',
+            });
+        });
+       
+        function GetList_OldDebtsSupplier() {
+            $.ajax({
+                url: '@Url.Action("_OldDebtsSupplierList", "Debts_Collections")',
+                data: {}
+            }).done(function (result) {
+                $('#dataContainer3').html(result);
+                $('#example').DataTable()
+            }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(textStatus)
+                console.log(errorThrown)
+                alert("Something Went Wrong, Try Later");
+            });
+        }
+        function GetList_InventoryDetails(id, method) {
+            $.ajax({
+                url: '@Url.Action("_InventoryDetails", "inventory_order")',
+                data: {
+                    inventor_id: id,
+
+                }
+            }).done(function (result) {
+                $('#dataContainer2').html(result);
+                if (method ==1 ) {
+                    $('#detailModal.close').css('display', 'none');
+                    $('#detailModal').modal('show');
+                }
+                else if (method == 2) {
+                    $('#productSelectModal.close').css('display', 'none');
+                    $('#productSelectModal').modal('show');
+                }
+
+
+            }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(textStatus)
+                console.log(errorThrown)
+                alert("Something Went Wrong, Try Later");
+            });
+        }
+
+                function createOldDebt() {
+           if ($('#isCreate').val() != undefined && $('#isCreate').val() == @Constants.CREATE_FORM) {
+                $('#OldDebtCollectionModal').modal('show');
+
+            } else {
+            $.ajax({
+                url: '@Url.Action("_FormOldDebt", "Debts_Collections")',
+                type: 'GET',
+                data: {},
+                success: function (response) {
+                    // Add response in Modal body
+                    $('#dataContainer2').html(response);
+                    // Display Modal
+                    $('#OldDebtCollectionModal').modal('show');
+                }
+            });
+
+            }
+        }
+
+    </script>
+}

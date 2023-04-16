@@ -338,8 +338,6 @@ function deleteAlert(id, code) {
         text: "Bạn không thể hoàn nguyên nếu có sai xót!",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
         confirmButtonText: 'Xác nhận'
     }).then((result) => {
         if (result.isConfirmed) {
@@ -1051,8 +1049,8 @@ function ImportFail_continues(id, code) {
         text: "Bạn chắc chắn muốn thêm dữ liệu!",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
+        
+        
         confirmButtonText: 'Xác nhận'
     }).then((result) => {
         if (result.isConfirmed) {
@@ -1097,8 +1095,8 @@ function ImportFail_continuesAll() {
         text: "Bạn chắc chắn muốn thêm tất cả dữ liệu!",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
+        
+        
         confirmButtonText: 'Xác nhận'
     }).then((result) => {
         if (result.isConfirmed) {
@@ -1705,68 +1703,8 @@ $('#URLSupplierDebtsList')
         URLSupplierDebtsList = $(this).val();
     })
     .keypress();
-$('.DebtsForm').submit(function (e) {
-    var form = $(this);
-    // Check if form is valid then submit ajax
-    if (form[0].checkValidity()) {
-        e.preventDefault();
-        var url = form.attr('action');
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data: form.serialize(),
-            success: function (data) {
-                // Hide bootstrap modal to prevent conflict
-                $('.modal').modal('hide');
 
-                if (data.status) {
-                    // Refresh table data
-                    var date_start = $("#debt_DateStart").val();
-                    var date_end = $("#debt_DateEnd").val();
-                    GetList_Debt(date_start, date_end);
-                    GetList_Debt2(date_start, date_end);
-                    Swal.fire('Thành công !', data.message, 'success');
-                    form[0].reset();
-                    form.removeClass('was-validated');
-                } else {
-                    Swal.fire('Lỗi !', data.message, 'error');
-                }
-            }
-        });
-    }
-});
-function GetList_Debt(date_start, date_end) {
-    $.ajax({
-        url: URLCustomerDebtsList,
-        data: {
-            date_Start: date_start,
-            date_End: date_end,
-        }
-    }).done(function (result) {
-        $('#dataContainer').html(result);
-        $('#example').DataTable();        
-    }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
-        console.log(textStatus)
-        console.log(errorThrown)
-        Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
-    });
-}
-function GetList_Debt2(date_start, date_end) {
-    $.ajax({
-        url: URLSupplierDebtsList,
-        data: {
-            date_Start: date_start,
-            date_End: date_end,
-        }
-    }).done(function (result) {       
-        $('#dataContainer1').html(result);
-        $('#example1').DataTable();
-    }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
-        console.log(textStatus)
-        console.log(errorThrown)
-        Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
-    });
-}
+
 $('#URLFindDebt')
     .keypress(function () {
         URLFindDebt = $(this).val();

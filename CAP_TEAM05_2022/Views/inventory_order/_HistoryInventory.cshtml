@@ -38,7 +38,7 @@
                                             int no_debt = 0;
                                             var details = item.import_inventory.ToList();
                                             var history_debt = item.debts.ToList();
-                                            if (details.Count() > 0)
+                                            if (!item.is_old_debt)
                                             {
                                                 <tbody>
                                                     @foreach (var item_details in details)
@@ -164,6 +164,7 @@
                                         <td colspan="6" class="text-center">
                                             <b>ĐƠN NỢ CŨ</b>
                                             </td>
+                                        </tr>
                                 </tbody>
                                 <tbody>
                                     <tr>
@@ -236,8 +237,7 @@
                                     {
                                         <tbody>
                                             <tr>
-                                                <td colspan="7">
-
+                                                <td colspan="6">
                                                     <div class="alert alert-warning">
                                                         <p class="text-center">Không tìm thấy dữ liệu</p>
                                                     </div>

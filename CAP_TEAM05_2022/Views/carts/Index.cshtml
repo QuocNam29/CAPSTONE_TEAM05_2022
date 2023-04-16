@@ -311,7 +311,6 @@
             $('#example').DataTable({
                 pagingType: 'full_numbers',
             });
-
         });
 
         $('#cart_Prepay').keydown(function (e) {
@@ -338,8 +337,8 @@
             text: "Bạn không thể hoàn nguyên nếu có sai xót!",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            
+            
             confirmButtonText: 'Xác nhận'
         }).then((result) => {
             if (result.isConfirmed) {

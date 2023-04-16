@@ -15,15 +15,32 @@ namespace CAP_TEAM05_2022.Controllers
         public Debts_CollectionsController()
         {
             ViewBag.isCreate = false;
+            ViewBag.isDebtsCustomer = false;
         }
         private CP25Team05Entities db = new CP25Team05Entities();
 
         // GET: Debts_Collections
         public ActionResult Index()
         {
-
+            ViewBag.isDebtsCustomer = true;
             return View();
         }
+        public ActionResult DebtsSupplier()
+        {
+            return View("Index");
+        }
+
+        public ActionResult OldDebtsSupplier()
+        {
+            return View();
+        }
+
+        public ActionResult _OldDebtsSupplierList()
+        {
+            var sales = db.inventory_order.Include(i => i.customer).Include(i => i.user).Where(s => s.is_old_debt);
+            return PartialView(sales.OrderByDescending(c => c.id).ToList());
+        }
+
         [HttpGet]
         public PartialViewResult _FormOldDebt()
         {
@@ -50,13 +67,14 @@ namespace CAP_TEAM05_2022.Controllers
                     inventory_order.update_at = currentDate;
                     inventory_order.create_by = User.Identity.GetUserId();
                     inventory_order.Total = total;
-                    inventory_order.state = Constants.OLD_DEBT_ORDER;
+                    inventory_order.state = Constants.DEBT_ORDER;
                     inventory_order.payment = payment;
                     inventory_order.debt = inventory_order.Total - inventory_order.payment;
+                    inventory_order.is_old_debt = true;
 
                     db.inventory_order.Add(inventory_order);
-                    var check_debt = db.debts.Where(d => d.inventory_order.supplier_id == inventory_order.supplier_id && d.inventory_id != null).Count();
-                    if (check_debt > 0)
+                    var check_debt = db.debts.Where(d => d.inventory_order.supplier_id == inventory_order.supplier_id && d.inventory_id != null).Any();
+                    if (check_debt)
                     {
                         var last_debt = db.debts.Where(d => d.inventory_order.supplier_id == inventory_order.supplier_id && d.inventory_id != null).OrderByDescending(o => o.id).FirstOrDefault();
                         debt debt = new debt();
@@ -154,7 +172,7 @@ namespace CAP_TEAM05_2022.Controllers
                                                      || s.created_at.Value.Day == date_End.Value.Day
                                                      && s.created_at.Value.Month == date_End.Value.Month
                                                      && s.created_at.Value.Year == date_End.Value.Year);
-            var customer = db.customers.Where(c => c.inventory_order.Where(s => s.state == Constants.DEBT_ORDER || s.state == Constants.OLD_DEBT_ORDER).Count() > 0).ToList();
+            var customer = db.customers.Where(c => c.inventory_order.Where(s => s.state == Constants.DEBT_ORDER).Count() > 0).ToList();
             return PartialView(customer.OrderByDescending(c => c.id).ToList());
         }
         public ActionResult _DebtsDetailsList(int customer_id)
@@ -175,8 +193,8 @@ namespace CAP_TEAM05_2022.Controllers
             }
             else if (method == Constants.DEBT_ORDER)
             {
-                emp.total = (decimal)customer.inventory_order.Where(s => s.state == Constants.DEBT_ORDER || s.state == Constants.OLD_DEBT_ORDER).Sum(s => s.Total);
-                emp.prepayment = customer.inventory_order.Where(s => s.state == Constants.DEBT_ORDER || s.state == Constants.OLD_DEBT_ORDER).Sum(s => s.payment);
+                emp.total = (decimal)customer.inventory_order.Where(s => s.state == Constants.DEBT_ORDER).Sum(s => s.Total);
+                emp.prepayment = customer.inventory_order.Where(s => s.state == Constants.DEBT_ORDER).Sum(s => s.payment);
             }
             emp.code = customer.code;
             emp.note = customer.name;
@@ -184,6 +202,7 @@ namespace CAP_TEAM05_2022.Controllers
 
             return Json(emp);
         }
+        [HttpPost]
         public ActionResult Create_Debts(int customer_id, string paid, string note, int method)
         {
             string message = "";
@@ -320,6 +339,43 @@ namespace CAP_TEAM05_2022.Controllers
                 message = e.Message;
             }
             return Json(new { status, message }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult Delete_OldDebtSupplier(inventory_order order)
+        {
+            bool status = true;
+            string mess = "";
+            try
+            {
+                inventory_order inventory_Order = db.inventory_order.Find(order.id);
+
+                debt debt = db.debts.Where(x => x.inventory_id == inventory_Order.id).FirstOrDefault();
+                customer_debt customer_Debt = db.customer_debt.Where(x => x.inventory_id == inventory_Order.id).FirstOrDefault();
+
+                bool checkAfterDebt = db.debts.Where(x => x.inventory_id == inventory_Order.id && x.created_at > debt.created_at && x.id != debt.id).Any();
+                bool checkAftercustomer_Debt = db.customer_debt.Where(x => x.customer_id == inventory_Order.supplier_id && x.created_at > customer_Debt.created_at && x.id != customer_Debt.id).Any();
+                if (checkAfterDebt || checkAftercustomer_Debt)
+                {
+                    status = false;
+                    mess = "Xóa thất bại ! Nợ đã được ghi nhận và đang trong quá trình trả nợ.";
+                    return Json(new { status = status, message = mess }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    db.debts.Remove(debt);
+                    db.customer_debt.Remove(customer_Debt);
+                    db.inventory_order.Remove(inventory_Order);
+                }
+                db.SaveChanges();
+                mess = "Xóa danh mục thành công";
+            }
+            catch(Exception e)
+            {
+                status = false;
+                mess = e.Message;
+            }
+            return Json(new { status = status, message = mess }, JsonRequestBehavior.AllowGet);
         }
     }
 }

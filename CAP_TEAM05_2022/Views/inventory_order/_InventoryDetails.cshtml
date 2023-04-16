@@ -49,111 +49,127 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var item in Model)
+                                    @if (!Inventory.is_old_debt)
                                     {
-                                        no++;
-                                        <tr>
-                                            <td class="text-center">
-                                                @no
-                                            </td>
-                                            <td class="text-center">
-                                                @item.product.code
-                                            </td>
-                                            <td class="text-center">
-                                                @item.product.name
-                                            </td>
-                                            <td class="text-center">
-                                                @item.quantity<span class="txt-unit"> @item.product.unit</span>
-                                                @if (item.product.unit_swap != null)
-                                                {
-                                                    <div>
-                                                        <span>
-                                                            1<span class="txt-unit">@item.product.unit</span> = @item.product.quantity_swap<span class="txt-unit">@item.product.unit_swap</span>
-                                                        </span>
-                                                    </div>
-                                                }
-                                            </td>
-                                            <td class="text-center">
-                                                @(((decimal)item.price_import).ToString("N0")) VNĐ / <span class="txt-unit">@item.product.unit</span>
-                                            </td>
-                                            <td class="text-center">
-                                                @(((decimal)(item.price_import * item.quantity)).ToString("N0")) VNĐ
-                                            </td>
-                                        </tr>
-                                        foreach (var item1 in item.return_supplier)
+                                        foreach (var item in Model)
                                         {
                                             no++;
                                             <tr>
-                                                <td class="text-center text-danger">
+                                                <td class="text-center">
                                                     @no
                                                 </td>
-                                                <td class="text-center text-danger">
+                                                <td class="text-center">
                                                     @item.product.code
                                                 </td>
-                                                <td class="text-center text-danger">
+                                                <td class="text-center">
                                                     @item.product.name
                                                 </td>
-                                                <td class="text-center text-danger">
-                                                    - @item1.quantity <span class="txt-unit text-danger"> @item.product.unit</span>
-                                                    
+                                                <td class="text-center">
+                                                    @item.quantity<span class="txt-unit"> @item.product.unit</span>
+                                                    @if (item.product.unit_swap != null)
+                                                    {
+                                                        <div>
+                                                            <span>
+                                                                1<span class="txt-unit">@item.product.unit</span> = @item.product.quantity_swap<span class="txt-unit">@item.product.unit_swap</span>
+                                                            </span>
+                                                        </div>
+                                                    }
                                                 </td>
-                                                <td class="text-center text-danger">
-                                                    @(((decimal)item.price_import).ToString("N0")) VNĐ / <span class="txt-unit text-danger">@item.product.unit</span>
+                                                <td class="text-center">
+                                                    @(((decimal)item.price_import).ToString("N0")) VNĐ / <span class="txt-unit">@item.product.unit</span>
                                                 </td>
-                                                <td class="text-center text-danger">
-                                                    - @(((decimal)(item.price_import * item1.quantity)).ToString("N0")) VNĐ
+                                                <td class="text-center">
+                                                    @(((decimal)(item.price_import * item.quantity)).ToString("N0")) VNĐ
                                                 </td>
                                             </tr>
-                                        }
-                                    }
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="4" class="text-right">
-                                        </td>
-                                        <td colspan="2" class="text-left">
-                                            <div>
-                                                Hình thức:
-                                                <span class="text-@(Inventory.Total == Inventory.payment ? "info" : Inventory.state == 1 ? "success" : "danger")">
-                                                    @(Inventory.state == 1 ? "Đã thanh toán" : "Ghi nợ") @((Inventory.Total == Inventory.payment ? "(Đã thanh toán xong)" : ""))
-                                                </span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="4" class="text-right">
-                                        </td>
+                                            foreach (var item1 in item.return_supplier)
+                                            {
+                                                no++;
+                                                <tr>
+                                                    <td class="text-center text-danger">
+                                                        @no
+                                                    </td>
+                                                    <td class="text-center text-danger">
+                                                        @item.product.code
+                                                    </td>
+                                                    <td class="text-center text-danger">
+                                                        @item.product.name
+                                                    </td>
+                                                    <td class="text-center text-danger">
+                                                        - @item1.quantity <span class="txt-unit text-danger"> @item.product.unit</span>
 
-                                        <td colspan="2" class="text-left">
-                                            <div class="total-div">
+                                                    </td>
+                                                    <td class="text-center text-danger">
+                                                        @(((decimal)item.price_import).ToString("N0")) VNĐ / <span class="txt-unit text-danger">@item.product.unit</span>
+                                                    </td>
+                                                    <td class="text-center text-danger">
+                                                        - @(((decimal)(item.price_import * item1.quantity)).ToString("N0")) VNĐ
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="6" class="text-center">
+                                                <b>ĐƠN NỢ CŨ</b>
+                                            </td>
+                                            </tr>
+                                }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="4" class="text-right">
+                                            </td>
+                                            <td colspan="2" class="text-left">
                                                 <div>
-                                                    Thành tiền:
-                                                    <b>
-                                                        <span class="text">
-                                                            @(((decimal)Inventory.Total).ToString("N0")) VNĐ
-                                                        </span>
-                                                    </b>
+                                                    Hình thức:
+                                                    <span class="text-@(Inventory.Total == Inventory.payment ? "info" : Inventory.state == 1 ? "success" : "danger")">
+                                                        @(Inventory.state == 1 ? "Đã thanh toán" : "Ghi nợ") @((Inventory.Total == Inventory.payment ? "(Đã thanh toán xong)" : ""))
+                                                    </span>
                                                 </div>
-                                                @if (Inventory.payment >= 0)
-                                                {
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4" class="text-right">
+                                            </td>
+
+                                            <td colspan="2" class="text-left">
+                                                <div class="total-div">
                                                     <div>
-                                                        Đã thanh toán:
-                                                        <span class="text-success">
-                                                            @(((decimal)Inventory.payment).ToString("N0")) VNĐ
-                                                        </span>
+                                                        Thành tiền:
+                                                        <b>
+                                                            <span class="text">
+                                                                @(((decimal)Inventory.Total).ToString("N0")) VNĐ
+                                                            </span>
+                                                        </b>
                                                     </div>
-                                                    <div>
-                                                        Còn nợ:
-                                                        <span class="text-danger">
-                                                            @(((decimal)(Inventory.Total - Inventory.payment)).ToString("N0")) VNĐ
-                                                        </span>
-                                                    </div>
-                                                }
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tfoot>
-                            </table>
+                                                    @if (Inventory.payment >= 0)
+                                                    {
+                                                        <div>
+                                                            Đã thanh toán:
+                                                            <span class="text-success">
+                                                                @(((decimal)Inventory.payment).ToString("N0")) VNĐ
+                                                            </span>
+                                                        </div>
+                                                        <div>
+                                                            Còn nợ:
+                                                            <span class="text-danger">
+                                                                @(((decimal)(Inventory.Total - Inventory.payment)).ToString("N0")) VNĐ
+                                                            </span>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+
+                                                    }
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
                         </div>
                     </div>
                 </div>

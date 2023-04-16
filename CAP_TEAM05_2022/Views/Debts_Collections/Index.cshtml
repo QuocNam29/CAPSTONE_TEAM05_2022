@@ -1,8 +1,9 @@
 ﻿@using Constants = CAP_TEAM05_2022.Helper.Constants
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Quản lý công nợ";
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
+    bool isDebtsCustomer = ViewBag.isDebtsCustomer;
 }
 @section style {
     <link href="~/Content/css/custom-css.css" rel="stylesheet" />
@@ -38,7 +39,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Thu - Chi</h5>
+                            <h5 class="m-b-10">Quản lý công nợ</h5>
                         </div>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item">
@@ -48,104 +49,73 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="javascript:void(0)">Thu - Chi</a>
+                                <a href="javascript:void(0)">Quản lý công nợ</a>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-        <div data-select2-id="73">
+        <div>
             <div class="row">
                 <div class="col-md-12">
+                    @if (!isDebtsCustomer)
+                    {
                     <div class="card">
-                        <div class="card-body">
-                            <div class="card-body">
-                                <ul id="pills-tab" role="tablist" class="nav nav-pills mb-3">
-                                    <li class="nav-item">
-                                        <a id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="true" class="nav-link active">
-                                            Công nợ với khách hàng <input type="hidden" value="0">
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="false" class="nav-link">
-                                            Chi trả với nhà cung cấp <input type="hidden" value="0">
-                                        </a>
-                                    </li>
-                                </ul>
-                                <div id="pills-tabContent" class="tab-content">
-                                    <div id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" class="tab-pane fade">
-                                        <div class="card">
-                                            <div class="card-body table-border-style">
-                                                <div class="row mb-3">
-                                                    <div class="col-md-4">
-                                                        <div class="mx-datepicker">
-                                                            <div class="mx-input-wrapper">
-                                                                <input id="debt_DateStart" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}", DateTime.Now.AddDays((-DateTime.Now.Day) + 1))">
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="mx-datepicker">
-                                                            <div class="mx-input-wrapper">
-                                                                <input id="debt_DateEnd" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}",DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day)))">
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <button class="btn btn-primary float-right mb-3" onclick="createOldDebt()">Tạo mới</button>
-                                                    </div>
-                                                </div>
-                                                <div class="table-responsive" id="dataContainer1">
-                                                    @{ Html.RenderAction("_SupplierDebtsList", "Debts_Collections");}
-
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" class="tab-pane fade active show">
-                                        <div>
-                                            <div class="card">
-                                                <div class="card-body table-border-style">
-                                                    <div class="row mb-3">
-                                                        <div class="col-md-4">
-                                                            <div class="mx-datepicker">
-                                                                <div class="mx-input-wrapper">
-                                                                    <input id="debt_DateStart" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}", DateTime.Now.AddDays((-DateTime.Now.Day) + 1))">
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <div class="mx-datepicker">
-                                                                <div class="mx-input-wrapper">
-                                                                    <input id="debt_DateEnd" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}",DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day)))">
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                    <div class="table-responsive" id="dataContainer">
-                                                        @{ Html.RenderAction("_CustomerDebtsList", "Debts_Collections");}
-
-                                                    </div>
-                                                </div>
-                                            </div>
+                        <div class="card-header">
+                            <h4>Công nợ với công ty</h4>
+                            <div class="row"></div>
+                        </div>
+                        <div class="card-body table-border-style">
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <div class="mx-datepicker">
+                                        <div class="mx-input-wrapper">
+                                            <input id="debt_DateStart" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}", DateTime.Now.AddDays((-DateTime.Now.Day) + 1))">
 
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-md-4">
+                                    <div class="mx-datepicker">
+                                        <div class="mx-input-wrapper">
+                                            <input id="debt_DateEnd" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}", DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day)))">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-primary float-right mb-3" onclick="createOldDebt()">Tạo mới</button>
+                                </div>
+                            </div>
+                            <div class="table-responsive" id="dataContainer">
+                                @{ Html.RenderAction("_SupplierDebtsList", "Debts_Collections");}
+
                             </div>
                         </div>
+
                     </div>
+                    }
+                    else
+                    {
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Công nợ với khách hàng</h4>
+                        <div class="row"></div>
+                    </div>
+                    <div class="card-body table-border-style">
+                        <div class="table-responsive" id="dataContainer">
+                            @{ Html.RenderAction("_CustomerDebtsList", "Debts_Collections");}
+
+                        </div>
+                    </div>
+                </div>
+                    }
                 </div>
             </div>
         </div>
     </div>
+
 </section>
 <div id="dataContainer2">
 </div>
@@ -262,11 +232,6 @@
             pagingType: 'full_numbers',
         });
     });
-    $(document).ready(function () {
-        $('#example1').DataTable({
-            pagingType: 'full_numbers',
-        });
-    });
      function GetList_orderDetails(id, method) {
             $.ajax({
                 url: '@Url.Action("_DebtsDetailsList", "Debts_Collections")',
@@ -334,6 +299,62 @@
                 }
             });
 
+            }
+        }
+
+        $('.DebtsForm').submit(function (e) {
+            var form = $(this);
+            // Check if form is valid then submit ajax
+            if (form[0].checkValidity()) {
+                e.preventDefault();
+                var url = form.attr('action');
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: form.serialize(),
+                    success: function (data) {
+                        // Hide bootstrap modal to prevent conflict
+                        $('.modal').modal('hide');
+
+                        if (data.status) {
+                            // Refresh table data
+                            GetList_Debt()
+                            Swal.fire('Thành công !', data.message, 'success');
+                            form[0].reset();
+                            form.removeClass('was-validated');
+                        } else {
+                            Swal.fire('Lỗi !', data.message, 'error');
+                        }
+                    }
+                });
+            }
+        });
+        function GetList_Debt() {
+            if (@isDebtsCustomer) {
+                $.ajax({
+                    url: '@Url.Action("_CustomerDebtsList", "Debts_Collections")',
+                    data: {
+                    }
+                }).done(function (result) {
+                    $('#dataContainer').html(result);
+                    $('#example').DataTable();
+                }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(textStatus)
+                    console.log(errorThrown)
+                    Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
+                });
+            } else {
+                $.ajax({
+                    url: '@Url.Action("_SupplierDebtsList", "Debts_Collections")',
+                    data: {}
+                }).done(function (result) {
+                    $('#dataContainer').html(result);
+                    $('#example').DataTable();
+                }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(textStatus)
+                    console.log(errorThrown)
+                    Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
+                });
             }
         }
     </script>

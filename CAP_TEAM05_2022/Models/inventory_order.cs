@@ -23,14 +23,16 @@ namespace CAP_TEAM05_2022.Models
     
         public int id { get; set; }
         public string code { get; set; }
-        public Nullable<int> supplier_id { get; set; }
-        public Nullable<System.DateTime> create_at { get; set; }
-        public Nullable<System.DateTime> update_at { get; set; }
+        public int supplier_id { get; set; }
+        public System.DateTime create_at { get; set; }
+        public System.DateTime update_at { get; set; }
         public string create_by { get; set; }
-        public Nullable<int> state { get; set; }
-        public Nullable<decimal> Total { get; set; }
+        public int state { get; set; }
+        public decimal Total { get; set; }
         public Nullable<decimal> payment { get; set; }
         public Nullable<decimal> debt { get; set; }
+        public Nullable<decimal> pay_debt { get; set; }
+        public bool is_old_debt { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<customer_debt> customer_debt { get; set; }

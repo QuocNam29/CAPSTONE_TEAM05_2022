@@ -34,8 +34,8 @@ namespace CAP_TEAM05_2022.Models
         public Nullable<System.DateTime> updated_at { get; set; }
         public Nullable<System.DateTime> deleted_at { get; set; }
         public Nullable<decimal> prepayment { get; set; }
-        public bool is_debt_price { get; set; }
         public Nullable<decimal> pay_debt { get; set; }
+        public bool is_debt_price { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<customer_debt> customer_debt { get; set; }

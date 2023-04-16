@@ -113,6 +113,7 @@ namespace CAP_TEAM05_2022.Controllers
             var categories = db.categories.Include(c => c.user).OrderByDescending(c => c.id);
             return PartialView(categories.ToList());
         }
+        [HttpPost]
         public ActionResult Delete_Category(category categorys)
         {
             bool status = true;
@@ -131,6 +132,7 @@ namespace CAP_TEAM05_2022.Controllers
             }
             return Json(new { status = status, message = mess }, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult EditStatus_Category(category categorys)
         {
             category categories = db.categories.Find(categorys.id);
