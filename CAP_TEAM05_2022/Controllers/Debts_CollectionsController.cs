@@ -2,6 +2,7 @@
 using CAP_TEAM05_2022.Models;
 using Microsoft.AspNet.Identity;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
@@ -40,7 +41,15 @@ namespace CAP_TEAM05_2022.Controllers
             var sales = db.inventory_order.Include(i => i.customer).Include(i => i.user).Where(s => s.is_old_debt);
             return PartialView(sales.OrderByDescending(c => c.id).ToList());
         }
-
+        public ActionResult OldDebtsCustomer()
+        {
+            return View();
+        }
+        public ActionResult _OldDebtsCustomerList()
+        {
+            var sales = db.sales.Include(i => i.customer).Include(i => i.user).Where(s => s.is_old_debt);
+            return PartialView(sales.OrderByDescending(c => c.id).ToList());
+        }
         [HttpGet]
         public PartialViewResult _FormOldDebt()
         {
@@ -377,5 +386,158 @@ namespace CAP_TEAM05_2022.Controllers
             }
             return Json(new { status = status, message = mess }, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult ScriptContainer()
+        {
+            return PartialView();
+        }
+        // GET: inventory_order/Create
+        public ActionResult CreateOldDebtCustomer()
+        {
+            ViewBag.Product = db.products.Select(x => new
+            {
+                Id = x.id,
+                Name = (x.category.name + " - " + x.name + " (" + x.unit + (x.unit_swap != null ? "/" + x.quantity_swap + x.unit_swap : "") + ")").ToString()
+            });
+            ViewBag.Customer = new SelectList(db.customers.Where(c => c.type == Constants.CUSTOMER), "id", "name");
+            ViewBag.isCreate = true;
+            return View();
+        }
+        public ActionResult CreateOldDebtCustomerDetails()
+        {
+            ViewBag.Product = db.products.Select(x => new
+            {
+                Id = x.id,
+                Name = (x.category.name + " - " + x.name + " (" + x.unit + (x.unit_swap != null ? "/" + x.quantity_swap + x.unit_swap : "") + ")").ToString()
+            });
+            ViewBag.Customer = new SelectList(db.customers.Where(c => c.type == Constants.CUSTOMER), "id", "name");
+            ViewBag.isCreate = true;
+            return PartialView("CreateOldDebtCustomerDetails");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateOldDebtCustomer([Bind(Include = "customer_id, created_at, note")] sale createSale,
+            List<sale_details> saleDetails,  string Repayment, string[] priceSale)
+        {
+            if (saleDetails == null || saleDetails.Count == 0)
+            {
+                ModelState.AddModelError("saleDetailsError", "Vui lòng nhập chi tiết các sản phẩm của đơn nợ cũ");
+            }
+            if (ModelState.IsValid)
+            {
+                decimal prepayment = 0;
+                DateTime currentDate = DateTime.Now;
+                if (!String.IsNullOrEmpty(Repayment))
+                {
+                    prepayment = decimal.Parse(Repayment.Replace(",", "").Replace(".", ""));
+                }
+                sale sale = new sale();
+                sale.code = "DHC" + CodeRandom.RandomCode();
+                sale.customer_id = createSale.customer_id;
+                sale.method = Constants.DEBT_ORDER;
+                sale.prepayment = prepayment;
+                sale.pay_debt = 0;
+                sale.is_debt_price = true;
+                foreach (var item in priceSale)
+                {
+                    decimal price = decimal.Parse(item.Replace(",", "").Replace(".", ""));
+                    sale.total += price;
+                }               
+                sale.note = createSale.note;
+                sale.status = Constants.SHOW_STATUS;
+                sale.created_by = User.Identity.GetUserId();
+                sale.created_at = createSale.created_at;
+                sale.updated_at = currentDate;
+                sale.is_old_debt = true;
+                if (sale.prepayment > sale.total)
+                {
+                    ModelState.AddModelError("saleDetailsError", "Vui lòng nhập chi tiết các sản phẩm của đơn nợ cũ");
+                    ViewBag.Uniform = db.products.Select(x => new
+                    {
+                        Id = x.id,
+                        Name = (x.category.name + " - " + x.name + " (" + x.unit + (x.unit_swap != null ? "/" + x.quantity_swap + x.unit_swap : "") + ")").ToString()
+                    });
+                    ViewBag.Customer = new SelectList(db.customers.Where(c => c.type == Constants.SUPPLIER), "id", "name");
+                    ViewBag.isCreate = true;
+                    return View(saleDetails);
+                }
+                db.sales.Add(sale);
+                int i = 0;
+                foreach (var item in saleDetails)
+                {
+                    product product = db.products.Find(item.product_id);
+                    item.sale_id = sale.id;
+                    decimal price = decimal.Parse(priceSale[i].Replace(",", "").Replace(".", ""));
+                    item.price = price;
+                    item.unit = product.unit;
+                    item.created_at = currentDate;
+                    item.updated_at = currentDate;
+                    item.return_quantity = 0;
+                    db.sale_details.Add(item);
+                    i++;
+                }
+                db.SaveChanges();
+                var check_debt = db.debts.Where(d => d.sale.customer_id == createSale.customer_id && d.sale_id != null).Count();
+                if (check_debt > 0)
+                {
+                    var last_debt = db.debts.Where(d => d.sale.customer_id == createSale.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
+                    debt debt = new debt();
+                    debt.sale_id = sale.id;
+                    debt.paid = sale.prepayment;
+                    debt.created_at = currentDate;
+                    debt.created_by = User.Identity.GetUserId();
+                    debt.total = last_debt.total + sale.prepayment;
+                    debt.debt1 = sale.total;
+                    debt.remaining = last_debt.remaining + (sale.total - debt.paid);
+                    db.debts.Add(debt);
+
+                    var last_customer_Debt = db.customer_debt.Where(d => d.customer_id == createSale.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
+
+                    customer_debt customer_Debt = new customer_debt();
+                    customer_Debt.sale_id = sale.id;
+                    customer_Debt.created_at = currentDate;
+                    customer_Debt.created_by = User.Identity.GetUserId();
+                    customer_Debt.customer_id = createSale.customer_id;
+                    customer_Debt.debt = (sale.total - debt.paid);
+                    customer_Debt.remaining = last_debt.remaining + (sale.total - debt.paid);
+                    db.customer_debt.Add(customer_Debt);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    debt debt = new debt();
+                    debt.sale_id = sale.id;
+                    debt.paid = sale.prepayment;
+                    debt.created_at = currentDate;
+                    debt.created_by = User.Identity.GetUserId();
+                    debt.total = sale.prepayment;
+                    debt.debt1 = sale.total;
+                    debt.remaining = sale.total - debt.paid;
+                    db.debts.Add(debt);
+
+                    customer_debt customer_Debt = new customer_debt();
+                    customer_Debt.sale_id = sale.id;
+                    customer_Debt.created_at = currentDate;
+                    customer_Debt.created_by = User.Identity.GetUserId();
+                    customer_Debt.customer_id = createSale.customer_id;
+                    customer_Debt.debt = sale.total - debt.paid;
+                    customer_Debt.remaining = sale.total - debt.paid;
+                    db.customer_debt.Add(customer_Debt);
+
+                    db.SaveChanges();
+                }
+                return RedirectToAction("Index");
+            }
+            ViewBag.Uniform = db.products.Select(x => new
+            {
+                Id = x.id,
+                Name = (x.category.name + " - " + x.name + " (" + x.unit + (x.unit_swap != null ? "/" + x.quantity_swap + x.unit_swap : "") + ")").ToString()
+            });
+            ViewBag.Customer = new SelectList(db.customers.Where(c => c.type == Constants.SUPPLIER), "id", "name");
+            ViewBag.isCreate = true;
+            return View(saleDetails);
+        }
+
     }
 }

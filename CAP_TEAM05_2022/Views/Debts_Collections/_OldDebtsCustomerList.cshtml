@@ -9,11 +9,11 @@
     <thead>
         <tr>
             <th>STT</th>
-            <th>Mã đơn nợ cũ</th>
+            <th>Mã đơn hàng</th>
             <th>Mã khách hàng</th>
             <th>Tên khách hàng</th>
             <th>Số điện thoại</th>
-            <th class="text-center">Tổng đơn nợ</th>
+            <th class="text-center">Tổng đơn hàng</th>
             <th class="text-center">Phương thức</th>
             <th class="text-center">Ghi chú</th>
             <th class="text-center">Ngày giao dịch</th>
@@ -54,19 +54,6 @@
                     <button title="Xem chi tiết" class="btn btn-info" onclick="GetList_orderDetails('@item.id', '@Constants.VIEW_DETAILS')">
                         <span class="pcoded-micon">
                             <i class="fas fa-info">
-                            </i>
-                        </span>
-                    </button>
-                    <button title="Đổi trả" class="btn btn-success" onclick="GetList_orderDetails('@item.id', '@Constants.MODAL_RETURN')">
-                        <span class="pcoded-micon">
-                            <i class="fas fa-retweet">
-                            </i>
-                        </span>
-                    </button>
-
-                    <button title="In hoá đơn" class="btn btn-secondary" onclick="PrintOrder('@item.id')">
-                        <span class="pcoded-micon">
-                            <i class="fas fa-print">
                             </i>
                         </span>
                     </button>

@@ -1,0 +1,98 @@
+﻿@model IEnumerable<CAP_TEAM05_2022.Models.sale>
+@using Constants = CAP_TEAM05_2022.Helper.Constants
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
+}
+
+<section class="pcoded-main-container">
+    <div class="pcoded-content">
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">Quản lý công nợ</h5>
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="https://dnqt.net">
+                                    <i class="feather icon-home">
+                                    </i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="javascript:void(0)">Quản lý công nơ</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" class="tab-pane fade active show">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h4>Nợ cũ với khách hàng</h4>
+                                </div>
+                                <div class="col-md-4">
+                                    <a class="btn btn-primary float-right mb-3" href="@Url.Action("CreateOldDebtCustomer","Debts_Collections")">Tạo nợ cũ </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body table-border-style">
+                            <div class="table-responsive" id="dataContainer3">
+                                @{ Html.RenderAction("_OldDebtsCustomerList", "Debts_Collections");}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+            </div>
+        </div>
+    </div>
+</section>
+<div id="dataContainer2">
+</div>
+@section scripts {
+    <script src="~/Scripts/select2.min.js"></script>
+    <script type="text/javascript">
+    var row;
+    $(document).ready(function () {
+        $('#example').DataTable({
+            pagingType: 'full_numbers',
+        });
+    });
+     function GetList_orderDetails(id, method) {
+            $.ajax({
+                url: '@Url.Action("_OrderDetailsList", "sales")',
+                data: {
+                    order_id: id,
+                }
+            }).done(function (result) {
+                $('#dataContainer2').html(result);
+                if (method == @Constants.VIEW_DETAILS ) {
+                    $('#detailModal.close').css('display', 'none');
+                    $('#detailModal').modal('show');
+                }
+                else if (method == @Constants.MODAL_RETURN) {
+                    $('#productSelectModal.close').css('display', 'none');
+                    $('#productSelectModal').modal('show');
+                }
+
+
+            }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(textStatus)
+                console.log(errorThrown)
+                alert("Something Went Wrong, Try Later");
+            });
+    }
+ 
+    </script>
+}

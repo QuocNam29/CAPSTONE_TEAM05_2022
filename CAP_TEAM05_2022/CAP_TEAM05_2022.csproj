@@ -296,6 +296,12 @@
     <Compile Include="Models\sale_details.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_helpdiagrams_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -727,6 +733,10 @@
     <Content Include="Views\sale_details\CreateOldOrder.cshtml" />
     <Content Include="Views\Debts_Collections\OldDebtsSupplier.cshtml" />
     <Content Include="Views\Debts_Collections\_OldDebtsSupplierList.cshtml" />
+    <Content Include="Views\Debts_Collections\CreateOldDebtCustomer.cshtml" />
+    <Content Include="Views\Debts_Collections\ScriptContainer.cshtml" />
+    <Content Include="Views\Debts_Collections\OldDebtsCustomer.cshtml" />
+    <Content Include="Views\Debts_Collections\_OldDebtsCustomerList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
