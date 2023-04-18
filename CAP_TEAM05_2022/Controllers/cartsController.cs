@@ -37,8 +37,13 @@ namespace CAP_TEAM05_2022.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult CreateCart([Bind(Include = "product_id, unit, quantity, customer_id, note ")] cart cart_create)
+        public JsonResult CreateCart([Bind(Include = "product_id, unit, customer_id, note ")] cart cart_create, string quantity)
         {
+            double quantity_test = double.Parse(quantity.Replace(".", ","));
+            int temp_quantity = (int)(quantity_test);
+            double temp_check = (quantity_test - temp_quantity);
+
+            cart_create.quantity = temp_quantity;
             product product = db.products.Find(cart_create.product_id);
             if (cart_create.unit == product.unit)
             {
@@ -47,7 +52,7 @@ namespace CAP_TEAM05_2022.Controllers
                     string message1 = product.quantity.ToString() + " " + product.unit;
                     if (product.unit_swap != null)
                     {
-                        message1 += " và " + (product.quantity * product.quantity_swap + product.quantity_remaning) + " " + product.unit_swap;
+                        message1 += " và " + (product.quantity * product.quantity_swap + product.quantity_remaning) + " " + product.unit_swap + temp_check;
                     }
                     bool status1 = false;
                     return Json(new { status = status1, message = message1 }, JsonRequestBehavior.AllowGet);
@@ -60,7 +65,7 @@ namespace CAP_TEAM05_2022.Controllers
                     string message1 = product.quantity.ToString() + " " + product.unit;
                     if (product.unit_swap != null)
                     {
-                        message1 += " và " + (product.quantity * product.quantity_swap + product.quantity_remaning) + " " + product.unit_swap;
+                        message1 += " và " + (product.quantity * product.quantity_swap + product.quantity_remaning) + " " + product.unit_swap + temp_check;
                     }
                     bool status1 = false;
                     return Json(new { status = status1, message = message1 }, JsonRequestBehavior.AllowGet);
@@ -74,8 +79,8 @@ namespace CAP_TEAM05_2022.Controllers
                 cart.product_id = cart_create.product_id;
                 cart.customer_id = cart_create.customer_id;
                 cart.quantity = cart_create.quantity;
-                cart.price = price.Any() ? (int)price.OrderByDescending(x=>x.id).FirstOrDefault().price : 0;
-                cart.price_id = price.Any() ? price.OrderByDescending(x=>x.id).FirstOrDefault().id : 0;
+                cart.price = price.Any() ? (int)price.OrderByDescending(x => x.id).FirstOrDefault().price : 0;
+                cart.price_id = price.Any() ? price.OrderByDescending(x => x.id).FirstOrDefault().id : 0;
                 cart.note = cart_create.note;
                 cart.unit = cart_create.unit;
                 db.carts.Add(cart);
@@ -129,6 +134,68 @@ namespace CAP_TEAM05_2022.Controllers
                 }
 
             }
+
+            if (temp_check > 0)
+            {
+                int temp_finish = (int)(product.quantity_swap * (temp_check));
+                var price_swap = db.price_product.Where(x => x.product_id == cart_create.product_id && x.unit != cart_create.unit);
+                cart cart_check_swap = db.carts.Where(c => c.customer_id == cart_create.customer_id && c.product_id == cart_create.product_id && c.unit != cart_create.unit).FirstOrDefault();
+                if (cart_check_swap == null)
+                {
+                    cart cart = new cart();
+                    cart.product_id = cart_create.product_id;
+                    cart.customer_id = cart_create.customer_id;
+                    cart.quantity = temp_finish;
+                    cart.price = price_swap.Any() ? (int)price_swap.OrderByDescending(x => x.id).FirstOrDefault().price : 0;
+                    cart.price_id = price_swap.Any() ? price_swap.OrderByDescending(x => x.id).FirstOrDefault().id : 0;
+                    cart.note = cart_create.note;
+                    cart.unit = product.unit_swap;
+                    db.carts.Add(cart);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    cart_check_swap.quantity += temp_finish;
+                    db.Entry(cart_check_swap).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+
+                int check_quantity = temp_finish;
+                while (check_quantity > 0)
+                {
+                    if (check_quantity <= product.quantity_remaning)
+                    {
+                        product.quantity_remaning -= check_quantity;
+                        check_quantity = 0;
+                    }
+                    else
+                    {
+                        if (product.quantity_remaning > 0)
+                        {
+                            check_quantity -= product.quantity_remaning;
+                            product.quantity_remaning = 0;
+                        }
+                        else
+                        {
+                            int temp_1 = (int)(check_quantity / product.quantity_swap);
+                            double temp_2 = (double)((check_quantity * 1.0000000) / product.quantity_swap) - temp_1;
+                            if (temp_2 > 0)
+                            {
+                                product.quantity -= (temp_1 + 1);
+                                int temp = (int)(product.quantity_swap * (1 - temp_2));
+                                product.quantity_remaning += temp;
+                            }
+                            else
+                            {
+                                product.quantity -= temp_1;
+                            }
+                            check_quantity = 0;
+                        }
+                    }
+                }
+
+            }
+
             db.Entry(product).State = EntityState.Modified;
             db.SaveChanges();
             string message = "Record Saved Successfully";
@@ -178,7 +245,7 @@ namespace CAP_TEAM05_2022.Controllers
                     cart.quantity = cart_create.quantity;
                     cart.unit = cart_create.unit;
                     cart.price = price.Any() ? (int)price.OrderByDescending(x => x.id).FirstOrDefault().price : 0;
-                    cart.price_id = price.Any() ? price.OrderByDescending(x => x.id).FirstOrDefault().id : 0; 
+                    cart.price_id = price.Any() ? price.OrderByDescending(x => x.id).FirstOrDefault().id : 0;
                     cart.note = cart_create.note;
                     db.Entry(cart).State = EntityState.Modified;
                     db.SaveChanges();
@@ -207,7 +274,7 @@ namespace CAP_TEAM05_2022.Controllers
                     cart.quantity = cart_create.quantity;
                     cart.unit = cart_create.unit;
                     cart.price = price.Any() ? (int)price.OrderByDescending(x => x.id).FirstOrDefault().price : 0;
-                    cart.price_id = price.Any() ? price.OrderByDescending(x => x.id).FirstOrDefault().id : 0; 
+                    cart.price_id = price.Any() ? price.OrderByDescending(x => x.id).FirstOrDefault().id : 0;
                     cart.note = cart_create.note;
                     db.Entry(cart).State = EntityState.Modified;
                     db.SaveChanges();
