@@ -78,6 +78,12 @@ namespace CAP_TEAM05_2022.Helper
         ///
         public static int DEBT_METHOD_PRICE = 1;
         public static int CASH_METHOD_PRICE = 2;
+
+        ///Action của bán hàng
+        ///
+        public static int ADD_PRODUCT_TO_CART = 1;
+        public static int UPDATE_PRODUCT_TO_CART = 2;
+
         /// <summary>
         /// connectionString for Import Excel Data
         /// </summary>

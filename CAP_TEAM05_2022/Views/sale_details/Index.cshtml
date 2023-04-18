@@ -5,8 +5,9 @@
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
     bool isNewCreate = ViewBag.isNewCreate;
 }
-
-<input type="text" hidden id="URLCreateCart" value="@Url.Action("CreateCart", "carts")" />
+@section style {
+    <link href="~/Content/css/custom-css.css" rel="stylesheet" />
+}
 <input type="text" hidden id="URLCartList" value="@Url.Action("Index", "carts")" />
 <input type="text" hidden id="URLGetSearchValue" value="@Url.Action("GetSearchValue","customers")" />
 <input type="text" hidden id="URLGetSearch_phoneValue" value="@Url.Action("GetSearch_phoneValue","customers")" />
@@ -56,25 +57,21 @@
                             <h4>Tạo mới đơn hàng</h4>
                         </div>
                         <div class="card-body">
-                            <form class="needs-validation" method="post" @*action="@Url.Action("CreateCart", "carts")"*@ novalidate>
+                            <form class="SaleForm" method="post" action="@Url.Action("CreateCart", "carts")" novalidate>
                                 <div class="row">
-
+                                    @Html.AntiForgeryToken()
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <input type="hidden" id="customer_id" class="form-control">
+                                            <input type="hidden" id="customer_id" name="customer_id" class="form-control">
                                             <div class="position-relative">
-                                                <input type="text" placeholder="Chọn khách hàng" id="customer_name" aria-autocomplete="list" class="form-control" onchange="UserCustomer()" required>
-                                                <div class="invalid-feedback">
-                                                    Vui lòng nhập nhập tên khách hàng !
-                                                </div>
+                                                <input type="text" placeholder="Chọn khách hàng" id="customer_name" name="customer_name" data-val="true" data-val-required="Vui lòng chọn khách hàng !" aria-autocomplete="list" class="form-control" onchange="UserCustomer()" required>
+                                                @Html.ValidationMessage("customer_name", "", new { @class = "text-danger" })
+
                                             </div> <!---->
                                         </div>
                                         <div class="form-group">
                                             <div class="position-relative">
                                                 <input type="text" placeholder="Số điện thoại khách hàng" id="customer_phone" aria-autocomplete="list" onchange="UserCustomer_phone()" class="form-control" required>
-                                                <div class="invalid-feedback">
-                                                    Vui lòng nhập số điện thoại !
-                                                </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -106,14 +103,13 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <input type="hidden" id="cart_id" class="form-control">
+                                            <input type="hidden" id="cart_id" name="id" class="form-control">
 
-                                            <input type="hidden" id="product_id" class="form-control">
+                                            <input type="hidden" id="product_id" name="product_id" class="form-control">
                                             <div class="position-relative">
-                                                <input type="text" placeholder="Chọn sản phẩm" id="product_name" aria-autocomplete="list" onchange="CheckProduct()" class="form-control" required>
-                                                <div class="invalid-feedback">
-                                                    Vui lòng nhập tên sản phẩm !
-                                                </div>
+                                                <input type="text" placeholder="Chọn sản phẩm" data-val="true" data-val-required="Vui lòng chọn sản phẩm !" id="product_name" name="product_name" aria-autocomplete="list" onchange="CheckProduct()" class="form-control" required>
+                                                @Html.ValidationMessage("product_name", "", new { @class = "text-danger" })
+
                                             </div> <!---->
                                         </div>
 
@@ -124,7 +120,7 @@
                                         </div>
                                         <div class="form-group">
                                             <div class="position-relative">
-                                                <input type="text" placeholder="Số lượng tồn" id="product_unit" disabled="disabled" class="form-control">
+                                                <input type="text" placeholder="Số lượng tồn"  id="product_unit" disabled="disabled" class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -145,8 +141,8 @@
                                                     <div class="input-group-append">
                                                         <span id="basic-addon2" class="input-group-text">Giá bán (Ghi nợ):</span>
                                                     </div>
-                                                    <input type="text" placeholder="Đơn giá bán" id="product_price" disabled="disabled" class="form-control">
-                                                    <input type="text" placeholder="Đơn giá bán" hidden id="product_price_swap" disabled="disabled" class="form-control">
+                                                    <input type="text" placeholder="Đơn giá bán" id="product_price_debt" disabled="disabled" class="form-control">
+                                                    <input type="text" placeholder="Đơn giá bán" hidden id="product_price_swap_debt" disabled="disabled" class="form-control">
                                                 </div>
                                             </div>
                                             <!---->
@@ -157,17 +153,15 @@
                                         <div class="form-group">
                                             <div class="position-relative">
                                                 <div class="input-group mb-3">
-                                                    <input type="number" id="product_quantity" aria-label="Recipient's username" aria-describedby="basic-addon2" min="1" class="form-control" value="1" required>
+                                                    <input type="number" id="product_quantity" name="quantity" data-val="true" data-val-required="Vui lòng nhập số lượng !" onchange="SalesCalculation()" min="0" class="form-control" value="1" step="0.25" required>
                                                     <div class="input-group-append">
-                                                        <select name="choose-quantity" id="unit_product_swap" class="input-group-text unit_product_swap">
+                                                        <select name="unit" id="unit_product_swap" class="input-group-text unit_product_swap">
                                                             <option disabled="disabled" selected value="">Đơn vị</option>
-
                                                         </select>
                                                     </div>
-                                                    <div class="invalid-feedback">
-                                                        Số lượng sản phẩm phải lớn hơn 0!
-                                                    </div>
                                                 </div>
+                                                @Html.ValidationMessage("quantity", "", new { @class = "text-danger" })
+
                                             </div>
                                             <!---->
                                         </div>
@@ -178,7 +172,7 @@
                                                     <div class="input-group-append">
                                                         <span id="basic-addon2" class="input-group-text">Thành tiền (Tiền mặt):</span>
                                                     </div>
-                                                    <input type="text" id="sum_price" placeholder="Tổng" disabled="disabled" class="form-control">
+                                                    <input type="text" id="sum_price" placeholder="Tổng" disabled class="form-control Price">
                                                 </div>
                                             </div>
                                         </div>
@@ -188,23 +182,26 @@
                                                     <div class="input-group-append">
                                                         <span id="basic-addon2" class="input-group-text">Thành tiền(Ghi nợ):</span>
                                                     </div>
-                                                    <input type="text" id="sum_price" placeholder="Tổng" disabled="disabled" class="form-control">
+                                                    <input type="text" id="sum_price_debt" placeholder="Tổng" disabled="disabled" class="form-control">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="position-relative">
-                                                <input id="cart_note" placeholder="Ghi chú" class="form-control">
+                                                <input id="cart_note" name="note" placeholder="Ghi chú" class="form-control">
                                             </div>
                                             <!---->
                                         </div>
                                     </div>
                                     <div class="col-md-3">
-                                        <button type="button" class="btn btn-primary btn-block" id="submit_addCart">Thêm</button>
+                                        <input type="hidden" id="actionCart" value="1" />
+
+                                        <button type="button" class="btn btn-primary btn-block" id="submit_addCart" onclick="ActionCart('@Constants.ADD_PRODUCT_TO_CART')">Thêm</button>
+                                        <button type="submit" hidden class="btn btn-primary btn-block" id="submit_Cart">Thêm</button>
                                         <button type="button" class="btn btn-info btn-block" id="refresh_cart">
                                             Làm mới
                                         </button>
-                                        <button type="button" class="btn btn-primary btn-block" id="submit_updateCart" style="display: none;">Cập nhật</button>
+                                        <button type="button" class="btn btn-primary btn-block" id="submit_updateCart" onclick="ActionCart('@Constants.UPDATE_PRODUCT_TO_CART')" style="display: none;">Cập nhật</button>
                                         <button type="button" class="btn btn-danger btn-block" id="Cancel_Cart" style="display: none">
                                             Huỷ bỏ
                                         </button>
@@ -581,7 +578,58 @@
 <div id="dataContainer2">
 </div>
 @section scripts {
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     <script>
+        function ActionCart(action) {
+            $('#actionCart').val(action)
+            document.getElementById('submit_Cart').click();
+        }
+        $('.SaleForm').submit(function (e) {
+            var form = $(this);
+            var _this = $(this);
+            var _form = _this.closest("form");
+            var isvalid = _form.valid()
+            // Check if form is valid then submit ajax
+            if (isvalid) {
+                e.preventDefault();
+                var url = form.attr('action');
+                if ($('#actionCart').val() == @Constants.UPDATE_PRODUCT_TO_CART) {
+                    url = '@Url.Action("UpdateCart", "carts")';
+                } else {
+                     url = '@Url.Action("CreateCart", "carts")';
+                }
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: form.serialize(),
+                    success: function (response) {
+                        if (response.message == "Record Saved Successfully") {
+                            GetList_Cart($('#customer_id').val());
+                            $("#payment_btn").show();
+                            LoadDataProduct($('#product_id').val());
+                            Swal.fire('Thành công !', 'Thêm giỏ hàng thành công !', 'success');
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi',
+                                text: "Số lượng sản phẩm chỉ còn: " + response.message + " !",
+                            })
+                        }
+                    }, error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        if (textStatus == 'error') {
+                            Swal.fire('Lỗi !', 'Vui lòng kiểm tra lại thông tin !', 'error');
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi',
+                                text: "Trạng thái: " + textStatus + ", Lỗi: " + errorThrown + " !",
+                            })
+                        }
+                    }
+                });               }
+        });
     function GetList_History() {
         var id = $('#customer_id').val();
             $.ajax({
@@ -623,8 +671,6 @@
                                 text: "Khách hàng không có trong hệ thống, bạn có muốn thêm mới ?",
                                 icon: 'question',
                                 showCancelButton: true,
-                                
-                                
                                 confirmButtonText: 'Xác nhận'
                             }).then((result) => {
                                 if (result.isConfirmed) {
@@ -635,7 +681,8 @@
                             })
                         }
 
-                    });
+                    }
+                );
             }
         }
 
@@ -660,22 +707,19 @@
                                 text: "Khách hàng không có trong hệ thống, bạn có muốn thêm mới ?",
                                 icon: 'question',
                                 showCancelButton: true,
-                                
-                                
                                 confirmButtonText: 'Xác nhận'
                             }).then((result) => {
                                 if (result.isConfirmed) {
                                     $('#AddCustomer .close').css('display', 'none');
                                     $('#AddCustomer').modal('show');
                                     $('#sale_customer_phone').val(customer_phone);
-
                                 }
                             })
                         }
-                    });
+                    }
+                );
             }
         }
-
         function CheckProduct() {
             var name = $("#product_name").val();
             if (name != "" && name != undefined) {
@@ -696,8 +740,6 @@
                                 text: "Sản phẩm không có trong hệ thống, bạn có muốn thêm mới ?",
                                 icon: 'question',
                                 showCancelButton: true,
-                                
-                                
                                 confirmButtonText: 'Xác nhận',
                             }).then((result) => {
                                 if (result.isConfirmed) {
@@ -707,7 +749,8 @@
                                 }
                             })
                         }
-                    });
+                    }
+                );
             }
         }
         document.getElementById('swap').onclick = function (e) {
@@ -727,15 +770,32 @@
             document.getElementsByClassName('unit_current')[0].innerHTML = unit_buy;
         });
 
-        $("#add_quantity").change(function () {
-            var add_quantity = $("#add_quantity").val()
-            var purchase_price = $("#purchase_price").val().replace(/\,/g, '').replace(/\./g, '');
-            $("#Sum_purchase").val((add_quantity * purchase_price).toLocaleString());
+        $("#sum_price").change(function () {
+            var product_price = Number($('#product_price').val().replace(/\,/g, '').replace(/\./g, ''));
+            var sum_price = Number($('#sum_price').val().replace(/\,/g, '').replace(/\./g, ''));
+            var product_quantity = sum_price / product_price;
+            $('#product_quantity').val(product_quantity.toFixed(3));
+            SalesCalculation();
         });
-        $("#purchase_price").change(function () {
-            var add_quantity = $("#add_quantity").val()
-            var purchase_price = $("#purchase_price").val().replace(/\,/g, '').replace(/\./g, '');
-            $("#Sum_purchase").val((add_quantity * purchase_price).toLocaleString());
+
+        $("#sum_price_debt").change(function () {
+            var product_price = Number($('#product_price').val().replace(/\,/g, '').replace(/\./g, ''));
+            var sum_price_debt = Number($('#sum_price_debt').val().replace(/\,/g, '').replace(/\./g, ''));
+            var product_quantity = sum_price_debt / product_price;
+            $('#product_quantity').val(product_quantity.toFixed(3));
+            SalesCalculation();
         });
+
+        function SalesCalculation() {
+            var product_price = Number($('#product_price').val().replace(/\,/g, '').replace(/\./g, ''));
+            var product_price_debt = Number($('#product_price_debt').val().replace(/\,/g, '').replace(/\./g, ''));
+            var product_quantity = Number($('#product_quantity').val());
+
+            var sum_price = product_price * product_quantity;
+            $('#sum_price').val(sum_price.toLocaleString());
+
+            var sum_price_debt = product_price_debt * product_quantity;
+            $('#sum_price_debt').val(sum_price_debt.toLocaleString());
+        }
     </script>
 }

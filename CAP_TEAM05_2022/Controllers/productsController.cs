@@ -96,7 +96,7 @@ namespace CAP_TEAM05_2022.Controllers
                             product.purchase_price = purchasePrice;
                             product.created_at = currentDate;
                             product.code = "SP" + CodeRandom.RandomCode();
-                            product.sell_price_swap = priceSwap;
+                            product.supplier_id = SupplierDropdown;
                             db.products.Add(product);
 
                             price_product price_Product = new price_product();
@@ -486,11 +486,12 @@ namespace CAP_TEAM05_2022.Controllers
             emp.id = product.id;
             emp.code = product.code;
             emp.name = product.name;
-            emp.name_group = string.Format("{0:0,00}", product.sell_price_swap);
+            emp.sell_price_swap = (int)product.sell_price_swap;
             emp.quantity = product.quantity;
             emp.unit = product.unit;
             emp.unit_swap = product.unit_swap;
-            emp.name_category = product.sell_price.ToString("N0");
+            emp.sell_price = (int)product.sell_price;
+            emp.sell_price_debt = (int)product.sell_price_debt;
             emp.note = "Số lượng tồn: " + product.quantity + product.unit;
             emp.note += "/" + product.quantity_swap + product.unit_swap;
             emp.note += " và " + product.quantity_remaning + product.unit_swap + " lẻ";

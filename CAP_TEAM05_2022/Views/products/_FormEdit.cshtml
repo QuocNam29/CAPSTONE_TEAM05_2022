@@ -280,17 +280,6 @@
             var UnitBy = $("#UnitBy").val()
             document.getElementsByClassName('UnitCurrent')[0].innerHTML = UnitBy;
         });
-
-        $("#add_quantity").change(function () {
-            var add_quantity = $("#add_quantity").val()
-            var purchase_price = $("#purchase_price").val().replace(/\,/g, '').replace(/\./g, '');
-            $("#Sum_purchase").val((add_quantity * purchase_price).toLocaleString());
-        });
-        $("#purchase_price").change(function () {
-            var add_quantity = $("#add_quantity").val()
-            var purchase_price = $("#purchase_price").val().replace(/\,/g, '').replace(/\./g, '');
-            $("#Sum_purchase").val((add_quantity * purchase_price).toLocaleString());
-        });
             $('.Price').keydown(function (e) {
                 setTimeout(() => {
                     let parts = $(this).val().split(".");

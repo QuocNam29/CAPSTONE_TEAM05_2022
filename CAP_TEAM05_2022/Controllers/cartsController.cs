@@ -35,8 +35,9 @@ namespace CAP_TEAM05_2022.Controllers
                 cartNote = x.note,
             }).ToList(), JsonRequestBehavior.AllowGet);
         }
-
-        public JsonResult CreateCart(cart cart_create)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult CreateCart([Bind(Include = "product_id, unit, quantity, customer_id, note ")] cart cart_create)
         {
             product product = db.products.Find(cart_create.product_id);
             if (cart_create.unit == product.unit)
@@ -134,7 +135,7 @@ namespace CAP_TEAM05_2022.Controllers
             bool status = true;
             return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult UpdateCart(cart cart_create)
+        public JsonResult UpdateCart([Bind(Include = "id, product_id, unit, quantity, customer_id, note ")] cart cart_create)
         {
             string message = "";
             bool status = true;

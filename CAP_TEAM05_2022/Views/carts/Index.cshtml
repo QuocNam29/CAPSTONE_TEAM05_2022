@@ -85,13 +85,13 @@
                                 <div class="form-group">
                                     <input type="hidden" id="methodOrder" name="method" value="0" />
                                     <input type="hidden" id="formCustomer_id" name="customer_id" value="0" />
-                                    <button type="button" id="payment_btn" onclick="hihi('@Constants.PAYED_ORDER')" class="btn btn-warning btn-block">
+                                    <button type="button" id="payment_btn" onclick="MethodSubmit('@Constants.PAYED_ORDER')" class="btn btn-warning btn-block">
                                         Thanh toán
                                     </button>
-                                    <button type="submit" hidden id="payment_btn_hihi" class="btn btn-warning btn-block">
+                                    <button type="submit" hidden id="payment_btn_submit" class="btn btn-warning btn-block">
                                         Thanh toán
                                     </button>
-                                    <button type="button" onclick="hihi('@Constants.DEBT_ORDER')" class="btn btn-dark btn-block" id="btn_debit">
+                                    <button type="button" onclick="MethodSubmit('@Constants.DEBT_ORDER')" class="btn btn-dark btn-block" id="btn_debit">
                                         Ghi nợ
                                     </button>
                                 </div>
@@ -106,9 +106,9 @@
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     <script>
-        function hihi(method) {
+        function MethodSubmit(method) {
             $('#methodOrder').val(method);
-            document.getElementById('payment_btn_hihi').click();
+            document.getElementById('payment_btn_submit').click();
         }
         $('.CreateOderForm').submit(function (e) {
             var form = $(this);

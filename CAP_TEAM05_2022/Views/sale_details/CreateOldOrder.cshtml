@@ -724,16 +724,5 @@
             var unit_buy = $("#unit_buy").val()
             document.getElementsByClassName('unit_current')[0].innerHTML = unit_buy;
         });
-
-        $("#add_quantity").change(function () {
-            var add_quantity = $("#add_quantity").val()
-            var purchase_price = $("#purchase_price").val().replace(/\,/g, '').replace(/\./g, '');
-            $("#Sum_purchase").val((add_quantity * purchase_price).toLocaleString());
-        });
-        $("#purchase_price").change(function () {
-            var add_quantity = $("#add_quantity").val()
-            var purchase_price = $("#purchase_price").val().replace(/\,/g, '').replace(/\./g, '');
-            $("#Sum_purchase").val((add_quantity * purchase_price).toLocaleString());
-        });
     </script>
 }

@@ -49,7 +49,7 @@ $(document).ready(function () {
     var forms = document.getElementsByClassName('needs-validation');
     var validation = Array.prototype.filter.call(forms, function (form) {     
                
-        $('#submit_addCart').on('click', function () {
+       /* $('#submit_addCart').on('click', function () {
             if (form.checkValidity() === false) {
                 
                 event.preventDefault();
@@ -61,8 +61,8 @@ $(document).ready(function () {
                 form.classList.remove('was-validated');
             }
            
-        })
-        $('#submit_updateCart').on('click', function () {
+        })*/
+       /* $('#submit_updateCart').on('click', function () {
             if (form.checkValidity() === false) {
 
                 event.preventDefault();
@@ -74,7 +74,7 @@ $(document).ready(function () {
                 form.classList.remove('was-validated');
             }
 
-        })
+        })*/
        
 //-------------------------Làm mới cart--------------------------------
         $('#refresh_cart').on('click', function () {
@@ -977,7 +977,6 @@ function Create_Cart() {
     cart_create.quantity = $('#product_quantity').val();
     cart_create.note = $('#cart_note').val();   
     cart_create.unit = $('#unit_product_swap').val();   
-    console.log(cart_create);
         $.ajax({
             url: URLCreateCart,
             type: "Post",
@@ -1029,10 +1028,7 @@ function GetList_Cart(customer_id) {
         Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
     });
 }
-$("#product_quantity").change(function () {
-    var sum_price = Number($('#product_price').val().replace(/\,/g, '').replace(/\./g, '')) * Number($('#product_quantity').val());
-    $('#sum_price').val(sum_price.toLocaleString());
-});
+
 
 
 //-------------------------Import data fail one-----------------------
@@ -1201,15 +1197,19 @@ function LoadDataProduct(id) {
             $('#product_name').val(response.name);
             $('#product_code').val(response.code);
             $('#product_unit').val(response.note);
-            $('#product_price').val(response.name_category);
+            $('#product_price').val(response.sell_price.toLocaleString());
             var sum_price = Number($('#product_price').val().replace(/\,/g, '').replace(/\./g, '')) * Number($('#product_quantity').val()) ;
             $('#sum_price').val(sum_price.toLocaleString());
-            
+
+            $('#product_price_debt').val(response.sell_price_debt.toLocaleString());
+            var sum_price_debt = Number($('#product_price_debt').val().replace(/\,/g, '').replace(/\./g, '')) * Number($('#product_quantity').val());
+            $('#sum_price_debt').val(sum_price_debt.toLocaleString());
+
+            document.querySelector("#sum_price").disabled = false;
+            document.querySelector("#sum_price_debt").disabled = false;
             var s = ' <option value="' + response.unit + '" data-type="other" selected>' + response.unit + '</option>';
-            if (response.unit_swap != null) {          
                 s += ' <option value="' + response.unit_swap + '" data-type="other">' + response.unit_swap + '</option>';
-                $('#product_price_swap').val(response.name_group);
-            }
+            $('#product_price_swap').val(response.sell_price_swap.toLocaleString());
             $("#unit_product_swap").html(s);
         }
     })
@@ -1398,25 +1398,21 @@ function LoadDataProduct_editCart(id,unit) {
             if (unit == response.unit) {
                 $('#product_code').val(response.code);
                 $('#product_unit').val(response.note);
-                $('#product_price').val(response.name_category);
+                $('#product_price').val(response.sell_price.toLocaleString());
                 var sum_price = Number($('#product_price').val().replace(/\,/g, '').replace(/\./g, '')) * Number($('#product_quantity').val());
                 $('#sum_price').val(sum_price.toLocaleString());
                 var s = ' <option value="' + response.unit + '" data-type="other" selected>' + response.unit + '</option>';
-                if (response.unit_swap != null) {
-                    s += ' <option value="' + response.unit_swap + '" data-type="other">' + response.unit_swap + '</option>';
-                    $('#product_price_swap').val(response.name_group);
-                }
+                s += ' <option value="' + response.unit_swap + '" data-type="other">' + response.unit_swap + '</option>';
+                    $('#product_price_swap').val(response.sell_price_swap.toLocaleString);
             } else {
                 $('#product_code').val(response.code);
                 $('#product_unit').val(response.note);
-                $('#product_price').val(response.name_group);
+                $('#product_price').val(response.sell_price_swap.toLocaleString);
                 var sum_price = Number($('#product_price').val().replace(/\,/g, '').replace(/\./g, '')) * Number($('#product_quantity').val());
                 $('#sum_price').val(sum_price.toLocaleString());
                 var s = ' <option value="' + response.unit + '" data-type="other" >' + response.unit + '</option>';
-                if (response.unit_swap != null) {
                     s += ' <option value="' + response.unit_swap + '" data-type="other" selected>' + response.unit_swap + '</option>';
-                    $('#product_price_swap').val(response.name_category);
-                }
+                $('#product_price_swap').val(response.sell_price.toLocaleString());
             }
             $("#unit_product_swap").html(s);
         }
