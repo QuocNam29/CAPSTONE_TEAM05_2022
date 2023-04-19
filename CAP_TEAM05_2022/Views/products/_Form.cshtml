@@ -94,7 +94,9 @@
                                                 <option data-name="xô" value="Xô">
                                                     xô
                                                 </option>
-
+                                                <option data-name="lít" value="lít">
+                                                    lít
+                                                </option>
                                             </select>
 
                                         </div>
@@ -223,22 +225,18 @@
                         <div class="col-md-3 swap">
                             <div class="form-group">
                                 <label>
-                                    Đơn giá bán <span class="text-danger">(đơn vị quy đổi)*</span>
+                                    Đơn giá bán <span class="text-danger">(đơn vị quy đổi)</span>
                                 </label>
-                                <input type="text" name="price_swap" placeholder="Nhập giá tiền" id="product-price-swap"
-                                       required data-val="true" data-val-required="Vui lòng nhập đơn giá quy đổi !" class="form-control Price">
+                                <input type="text" name="price_swap" placeholder="Nhập giá tiền" id="product-price-swap" class="form-control Price">
                             </div>
-                            @Html.ValidationMessage("price_swap", "", new { @class = "text-danger" })
                         </div>
                         <div class="col-md-3 swap">
                             <div class="form-group">
                                 <label>
-                                    Đơn giá bán ghi nợ <span class="text-danger">(đơn vị quy đổi)*</span>
+                                    Đơn giá bán ghi nợ <span class="text-danger">(đơn vị quy đổi)</span>
                                 </label>
-                                <input type="text" name="debt_price_swap" placeholder="Nhập giá tiền" id="product-price-swap"
-                                       required data-val="true" data-val-required="Vui lòng nhập đơn giá ghi nợ khi quy đổi !" class="form-control Price">
+                                <input type="text" name="debt_price_swap" placeholder="Nhập giá tiền" id="product-price-swap" class="form-control Price">
                             </div>
-                            @Html.ValidationMessage("debt_price_swap", "", new { @class = "text-danger" })
                         </div>
 
                     </div>

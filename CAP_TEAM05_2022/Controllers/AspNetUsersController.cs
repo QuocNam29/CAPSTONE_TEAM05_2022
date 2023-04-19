@@ -80,8 +80,6 @@ namespace CAP_TEAM05_2022.Controllers
             }
             return View(aspNetUser);
         }
-
-
         public async Task<ActionResult> Create_User(string email, string role_id, string fullName, string password, string phone, string address)
         {
             try

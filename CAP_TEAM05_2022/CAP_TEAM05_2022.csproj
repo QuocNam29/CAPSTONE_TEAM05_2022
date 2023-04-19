@@ -205,7 +205,6 @@
     <Compile Include="Controllers\RevenuesController.cs" />
     <Compile Include="Controllers\salesController.cs" />
     <Compile Include="Controllers\sale_detailsController.cs" />
-    <Compile Include="Controllers\SweetController.cs" />
     <Compile Include="Controllers\usersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -657,7 +656,6 @@
     <Content Include="Views\users\Details.cshtml" />
     <Content Include="Views\users\Index.cshtml" />
     <Content Include="Views\users\Index2.cshtml" />
-    <Content Include="Views\Sweet\Alert.cshtml" />
     <Content Include="Views\groups\Index.cshtml" />
     <Content Include="Views\products\Index.cshtml" />
     <Content Include="Views\products\_ProductList.cshtml" />

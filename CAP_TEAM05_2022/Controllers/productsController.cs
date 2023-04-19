@@ -54,7 +54,7 @@ namespace CAP_TEAM05_2022.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "name,group_id,category_id,unit,quantity,unit_swap,quantity_swap")] product product,
-                                   string purchase_price, string sell_price, string price_swap, string debt_price, string debt_price_swap, int SupplierDropdown)
+                                   string purchase_price, string sell_price, string debt_price, string price_swap, string debt_price_swap, int SupplierDropdown)
         {
             if (ModelState.IsValid)
             {
@@ -81,11 +81,27 @@ namespace CAP_TEAM05_2022.Controllers
                         }
                         else
                         {
-                            decimal sellPrice = decimal.Parse(sell_price.Replace(",", "").Replace(".", ""));
-                            decimal purchasePrice = decimal.Parse(purchase_price.Replace(",", "").Replace(".", ""));
-                            decimal priceSwap = decimal.Parse(price_swap.Replace(",", "").Replace(".", ""));
-                            decimal debtPrice = decimal.Parse(debt_price.Replace(",", "").Replace(".", ""));
-                            decimal debtPriceSwap = decimal.Parse(debt_price_swap.Replace(",", "").Replace(".", ""));
+                            decimal purchasePrice = decimal.Parse(purchase_price.Replace(",", "").Replace(".", ","));
+                            decimal sellPrice = decimal.Parse(sell_price.Replace(",", "").Replace(".", ","));
+                            decimal debtPrice = decimal.Parse(debt_price.Replace(",", "").Replace(".", ","));
+                            decimal debtPriceSwap = 0;
+                            decimal priceSwap = 0;
+                            if (!String.IsNullOrEmpty(debt_price_swap))
+                            {
+                                 debtPriceSwap = decimal.Parse(debt_price_swap.Replace(",", "").Replace(".", ","));
+                            }
+                            else
+                            {
+                                 debtPriceSwap = debtPrice / product.quantity_swap;
+                            }
+                            if (!String.IsNullOrEmpty(price_swap))
+                            {
+                                priceSwap = decimal.Parse(price_swap.Replace(",", "").Replace(".", ","));
+                            }
+                            else
+                            {
+                                priceSwap = debtPrice / product.quantity_swap;
+                            }
 
                             product.status = Constants.SHOW_STATUS;
                             product.created_by = User.Identity.GetUserId();
@@ -190,10 +206,26 @@ namespace CAP_TEAM05_2022.Controllers
                         }
                         else
                         {
-                            decimal sellPrice = decimal.Parse(Editsell_price.Replace(",", "").Replace(".", ""));
-                            decimal priceSwap = decimal.Parse(Editprice_swap.Replace(",", "").Replace(".", ""));
-                            decimal debtPrice = decimal.Parse(Editdebt_price.Replace(",", "").Replace(".", ""));
-                            decimal debtPriceSwap = decimal.Parse(Editdebt_price_swap.Replace(",", "").Replace(".", ""));
+                            decimal sellPrice = decimal.Parse(Editsell_price.Replace(",", "").Replace(".", ","));
+                            decimal debtPrice = decimal.Parse(Editdebt_price.Replace(",", "").Replace(".", ","));
+                            decimal debtPriceSwap = 0;
+                            decimal priceSwap = 0;
+                            if (!String.IsNullOrEmpty(Editdebt_price_swap))
+                            {
+                                debtPriceSwap = decimal.Parse(Editdebt_price_swap.Replace(",", "").Replace(".", ","));
+                            }
+                            else
+                            {
+                                debtPriceSwap = debtPrice / product.quantity_swap;
+                            }
+                            if (!String.IsNullOrEmpty(Editprice_swap))
+                            {
+                                priceSwap = decimal.Parse(Editprice_swap.Replace(",", "").Replace(".", ","));
+                            }
+                            else
+                            {
+                                priceSwap = debtPrice / product.quantity_swap;
+                            }
 
                             if (sellPrice != product.sell_price || debtPrice != product.sell_price_debt)
                             {

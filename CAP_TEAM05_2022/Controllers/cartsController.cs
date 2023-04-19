@@ -39,7 +39,10 @@ namespace CAP_TEAM05_2022.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult CreateCart([Bind(Include = "product_id, unit, customer_id, note ")] cart cart_create, string quantity)
         {
-            double quantity_test = double.Parse(quantity.Replace(".", ","));
+            //Server
+            double quantity_test = double.Parse(quantity.Replace(",", "."));
+            //local
+            //double quantity_test = double.Parse(quantity.Replace(".", ","));
             int temp_quantity = (int)(quantity_test);
             double temp_check = (quantity_test - temp_quantity);
 
@@ -71,27 +74,31 @@ namespace CAP_TEAM05_2022.Controllers
                     return Json(new { status = status1, message = message1 }, JsonRequestBehavior.AllowGet);
                 }
             }
-            var price = db.price_product.Where(x => x.product_id == cart_create.product_id && x.unit == cart_create.unit);
-            cart cart_check = db.carts.Where(c => c.customer_id == cart_create.customer_id && c.product_id == cart_create.product_id && c.unit == cart_create.unit).FirstOrDefault();
-            if (cart_check == null)
+            if (temp_quantity > 0)
             {
-                cart cart = new cart();
-                cart.product_id = cart_create.product_id;
-                cart.customer_id = cart_create.customer_id;
-                cart.quantity = cart_create.quantity;
-                cart.price = price.Any() ? (int)price.OrderByDescending(x => x.id).FirstOrDefault().price : 0;
-                cart.price_id = price.Any() ? price.OrderByDescending(x => x.id).FirstOrDefault().id : 0;
-                cart.note = cart_create.note;
-                cart.unit = cart_create.unit;
-                db.carts.Add(cart);
-                db.SaveChanges();
+                var price = db.price_product.Where(x => x.product_id == cart_create.product_id && x.unit == cart_create.unit);
+                cart cart_check = db.carts.Where(c => c.customer_id == cart_create.customer_id && c.product_id == cart_create.product_id && c.unit == cart_create.unit).FirstOrDefault();
+                if (cart_check == null)
+                {
+                    cart cart = new cart();
+                    cart.product_id = cart_create.product_id;
+                    cart.customer_id = cart_create.customer_id;
+                    cart.quantity = cart_create.quantity;
+                    cart.price = price.Any() ? (int)price.OrderByDescending(x => x.id).FirstOrDefault().price : 0;
+                    cart.price_id = price.Any() ? price.OrderByDescending(x => x.id).FirstOrDefault().id : 0;
+                    cart.note = cart_create.note;
+                    cart.unit = cart_create.unit;
+                    db.carts.Add(cart);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    cart_check.quantity += cart_create.quantity;
+                    db.Entry(cart_check).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
             }
-            else
-            {
-                cart_check.quantity += cart_create.quantity;
-                db.Entry(cart_check).State = EntityState.Modified;
-                db.SaveChanges();
-            }
+           
 
             if (cart_create.unit == product.unit)
             {

@@ -5,6 +5,9 @@ namespace CAP_TEAM05_2022.Helper
 {
     public class Constants
     {
+        public static readonly string ADMIN_ROLE = "Quản trị viên";
+        public static readonly string STAFF_ROLE = "Nhân viên";
+
         /// <summary>
         /// Type Customer
         ///  </summary>
