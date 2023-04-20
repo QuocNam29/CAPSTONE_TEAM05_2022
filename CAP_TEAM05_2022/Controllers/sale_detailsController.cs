@@ -15,9 +15,9 @@ namespace CAP_TEAM05_2022.Controllers
             ViewBag.isNewCreate = false;
         }
         // GET: sale_details
-        public ActionResult Index()
+        public  ActionResult Index()
         {
-            ViewBag.isNewCreate = true;
+            ViewBag.isNewCreate = true;          
             return View();
         }
 
@@ -25,18 +25,7 @@ namespace CAP_TEAM05_2022.Controllers
         {
             return View("Index");
         }
-        public ActionResult getCartProduct(int id)
-        {
-            return Json(db.sale_details.Include(s => s.product).Include(s => s.sale).Where(c => c.sale_id == id).OrderByDescending(c => c.id).Select(x => new
-            {
-                cartCode = x.product.code,
-                cartName = x.product.name,
-                cartUnit = x.unit,
-                cartQuantity = x.sold,
-                cartPrice = x.price / x.sold,
-                cartTotal = x.price,
-            }).ToList(), JsonRequestBehavior.AllowGet);
-        }
+        
         [HttpPost]
         public JsonResult FindSaleDetails(int id)
         {

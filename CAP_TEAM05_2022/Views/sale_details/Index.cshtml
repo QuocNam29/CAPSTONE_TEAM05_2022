@@ -17,7 +17,6 @@
 <input type="text" hidden id="URLCreateSale" value="@Url.Action("CreateSale", "sales")" />
 <input type="text" hidden id="URLUpdateCart" value="@Url.Action("UpdateCart", "carts")" />
 <input type="text" hidden id="URLTemplateInvoicePreview" value="@Url.Action("_TemplateInvoicePreview", "sale_details")" />
-<input type="text" hidden id="URLgetOrderProduct" value="@Url.Action("getCartProduct", "sale_details")" />
 <input type="text" hidden id="URLgetGroupProduct" value="@Url.Action("getGroupProduct", "groups")" />
 <input type="text" hidden id="URLgetCategory" value="@Url.Action("getCategory", "categories")" />
 <input type="text" hidden id="URLgetSupplier" value="@Url.Action("getSupplier", "customers")" />
@@ -84,7 +83,7 @@
                                             <div class="position-relative">
                                                 <div class="input-group">
                                                     <div class="input-group-append">
-                                                        <span id="basic-addon2" class="input-group-text">Số lần mua hàng:</span>
+                                                        <span id="count_sale_lable" class="input-group-text">Số lần mua hàng:</span>
                                                     </div>
                                                     <input type="text" placeholder="0" id="count_sale" disabled="disabled" class="form-control">
                                                 </div>
@@ -94,7 +93,7 @@
                                             <div class="position-relative">
                                                 <div class="input-group">
                                                     <div class="input-group-append">
-                                                        <span id="basic-addon2" class="input-group-text">Tồn nợ</span>
+                                                        <span id="debit_sum_lable" class="input-group-text">Tồn nợ</span>
                                                     </div>
                                                     <input type="text" placeholder="0" id="debit_sum" disabled="disabled" class="form-control">
                                                 </div>
@@ -120,7 +119,7 @@
                                         </div>
                                         <div class="form-group">
                                             <div class="position-relative">
-                                                <input type="text" placeholder="Số lượng tồn"  id="product_unit" disabled="disabled" class="form-control">
+                                                <input type="text" placeholder="Số lượng tồn" id="product_unit" disabled="disabled" class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -608,7 +607,18 @@
                             GetList_Cart($('#customer_id').val());
                             $("#payment_btn").show();
                             LoadDataProduct($('#product_id').val());
-                            Swal.fire('Thành công !', 'Thêm giỏ hàng thành công !', 'success');
+                            if ($('#actionCart').val() == @Constants.UPDATE_PRODUCT_TO_CART) {
+                                Swal.fire('Thành công !', 'Cập nhật giỏ hàng thành công !', 'success');
+                                $('#product_code').val('');
+                                $('#product_unit').val('');
+                                $('#product_price').val('');
+                                $('#product_price_debt').val('');
+                                $('#product_name').val('');
+                                SalesCalculation();
+                            } else {
+                                Swal.fire('Thành công !', 'Thêm giỏ hàng thành công !', 'success');
+                            }
+
                         } else {
                             Swal.fire({
                                 icon: 'error',
