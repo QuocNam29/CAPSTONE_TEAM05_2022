@@ -57,6 +57,7 @@ namespace CAP_TEAM05_2022.Controllers
             ViewBag.SupplierId = new SelectList(db.customers.Where(x => x.type == Constants.SUPPLIER).ToList(), "id", "name");
             return PartialView("_FormOldDebt", new inventory_order());
         }
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult OldDebt([Bind(Include = "id,code,supplier_id,create_at")] inventory_order inventory_order,
                                     string debtPrice, string paymentPrice)
@@ -212,6 +213,7 @@ namespace CAP_TEAM05_2022.Controllers
             return Json(emp);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create_Debts(int customer_id, string paid, string note, int method)
         {
             string message = "";
@@ -282,12 +284,12 @@ namespace CAP_TEAM05_2022.Controllers
                 else if (method == Constants.PAYING_SUPPLIER)
                 {
                     // lấy danh sách đơn nợ của nhà cung cấp
-                    var inventory = db.inventory_order.Where(s => s.supplier_id == customer_id && s.Total != s.payment && s.state == Constants.DEBT_ORDER).ToList();
+                    var inventory = db.inventory_order.Where(s => s.supplier_id == customer_id && s.Total != (s.payment - s.pay_debt) && s.state == Constants.DEBT_ORDER).ToList();
                     while (paid_temp > 0)
                     {
                         foreach (var item in inventory)
                         {
-                            if (paid_temp <= (item.Total - item.payment))
+                            if (paid_temp <= (item.Total - item.payment - item.pay_debt))
                             {
                                 var last_debt = db.debts.Where(d => d.inventory_order.supplier_id == item.supplier_id).OrderByDescending(o => o.id).FirstOrDefault();
 
@@ -301,7 +303,7 @@ namespace CAP_TEAM05_2022.Controllers
                                 debt.remaining = last_debt.remaining - paid_temp;
                                 db.debts.Add(debt);
 
-                                item.payment += paid_temp;
+                                item.pay_debt += paid_temp;
                                 db.Entry(item).State = EntityState.Modified;
                                 db.SaveChanges();
                                 paid_temp = 0;
@@ -309,7 +311,7 @@ namespace CAP_TEAM05_2022.Controllers
                             else
                             {
                                 var last_debt = db.debts.Where(d => d.inventory_order.supplier_id == item.supplier_id).OrderByDescending(o => o.id).FirstOrDefault();
-                                decimal remaining = (decimal)(item.Total - item.payment);
+                                decimal remaining = (decimal)(item.Total - item.payment - item.pay_debt);
                                 debt debt = new debt();
                                 debt.inventory_id = item.id;
                                 debt.created_by = User.Identity.GetUserId();
@@ -319,7 +321,7 @@ namespace CAP_TEAM05_2022.Controllers
                                 debt.note = note;
                                 debt.remaining = last_debt.remaining - remaining;
                                 db.debts.Add(debt);
-                                item.payment += remaining;
+                                item.pay_debt += remaining;
                                 db.Entry(item).State = EntityState.Modified;
                                 db.SaveChanges();
                                 paid_temp -= remaining;
@@ -377,9 +379,50 @@ namespace CAP_TEAM05_2022.Controllers
                     db.inventory_order.Remove(inventory_Order);
                 }
                 db.SaveChanges();
-                mess = "Xóa danh mục thành công";
+                mess = "Xóa đơn nợ cũ thành công";
             }
             catch(Exception e)
+            {
+                status = false;
+                mess = e.Message;
+            }
+            return Json(new { status = status, message = mess }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult Delete_OldDebtCustomer(sale order)
+        {
+            bool status = true;
+            string mess = "";
+            try
+            {
+                sale sale = db.sales.Find(order.id);
+                var sale_Details = db.sale_details.Where(x => x.sale_id == sale.id).ToList();
+                debt debt = db.debts.Where(x => x.sale_id == sale.id).FirstOrDefault();
+                customer_debt customer_Debt = db.customer_debt.Where(x => x.sale_id == sale.id).FirstOrDefault();
+
+                bool checkAfterDebt = db.debts.Where(x => x.sale_id == sale.id && x.created_at > debt.created_at && x.id != debt.id).Any();
+                bool checkAftercustomer_Debt = db.customer_debt.Where(x => x.customer_id == sale.customer_id && x.created_at > customer_Debt.created_at && x.id != customer_Debt.id).Any();
+                if (checkAfterDebt || checkAftercustomer_Debt)
+                {
+                    status = false;
+                    mess = "Xóa thất bại ! Nợ đã được ghi nhận và đang trong quá trình trả nợ.";
+                    return Json(new { status = status, message = mess }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    db.debts.Remove(debt);
+                    db.customer_debt.Remove(customer_Debt);
+                    foreach (var item in sale_Details)
+                    {
+                        db.sale_details.Remove(item);
+                    }
+                    db.sales.Remove(sale);
+                }
+                db.SaveChanges();
+                mess = "Xóa đơn nợ cũ thành công thành công";
+            }
+            catch (Exception e)
             {
                 status = false;
                 mess = e.Message;
@@ -439,10 +482,10 @@ namespace CAP_TEAM05_2022.Controllers
                 sale.prepayment = prepayment;
                 sale.pay_debt = 0;
                 sale.is_debt_price = true;
-                foreach (var item in priceSale)
+                for (int j = 0; j < priceSale.Length; j++)
                 {
-                    decimal price = decimal.Parse(item.Replace(",", "").Replace(".", ""));
-                    sale.total += price;
+                    decimal price = decimal.Parse(priceSale[j].Replace(",", "").Replace(".", ""));
+                    sale.total += price * saleDetails[j].sold;
                 }               
                 sale.note = createSale.note;
                 sale.status = Constants.SHOW_STATUS;
@@ -527,7 +570,7 @@ namespace CAP_TEAM05_2022.Controllers
 
                     db.SaveChanges();
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("OldDebtsCustomer");
             }
             ViewBag.Uniform = db.products.Select(x => new
             {

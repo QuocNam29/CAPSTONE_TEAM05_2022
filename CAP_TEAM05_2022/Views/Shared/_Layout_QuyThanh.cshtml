@@ -103,6 +103,11 @@
                             <span class="pcoded-micon"><i class="feather icon-target"></i></span> <span class="pcoded-mtext">Bán hàng</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Index","sales")" class="nav-link">
+                            <span class="pcoded-micon"><i class="feather icon-inbox"></i></span> <span class="pcoded-mtext">Đơn hàng</span>
+                        </a>
+                    </li>
                     <li class="nav-item pcoded-hasmenu">
                         <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-box"></i></span><span class="pcoded-mtext">Quản lý hàng hóa</span></a>
                         <ul class="pcoded-submenu">
@@ -118,33 +123,8 @@
                                     <span class="pcoded-mtext">Nhập hàng</span>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="@Url.Action("Index","sales")" class="nav-link">
-                                    <span class="pcoded-micon"><i class="feather icon-inbox"></i></span> <span class="pcoded-mtext">Đơn hàng</span>
-                                </a>
-                            </li>
-
                         </ul>
                     </li>
-                    @*<li class="nav-item">
-                            <a href="@Url.Action("Revenue","sales")" class="nav-link">
-                                <span class="pcoded-micon"><i class="feather icon-clipboard"></i></span>
-                                <span class="pcoded-mtext">Doanh thu</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("Index","import_inventory")" class="nav-link">
-                                <span class="pcoded-micon"><i class="feather icon-package"></i></span>
-                                <span class="pcoded-mtext">Tồn kho</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("Index","inventory_order")" class="nav-link">
-                                <span class="pcoded-micon"><i class="feather icon-package"></i></span>
-                                <span class="pcoded-mtext">Nhập hàng</span>
-                            </a>
-                        </li>*@
-
                     <li class="nav-item pcoded-hasmenu">
                         <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-box"></i></span><span class="pcoded-mtext">Báo cáo doanh thu</span></a>
                         <ul class="pcoded-submenu">
@@ -169,17 +149,17 @@
                         </ul>
                     </li>
                     @*<li class="nav-item">
-                            <a href="@Url.Action("Index","Revenues")" class="nav-link">
-                                <span class="pcoded-micon"><i class="feather icon-clipboard"></i></span>
-                                <span class="pcoded-mtext">Báo cáo</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("SumRevenue","Revenues")" class="nav-link">
-                                <span class="pcoded-micon"><i class="feather icon-clipboard"></i></span>
-                                <span class="pcoded-mtext">Báo cáo tổng hợp</span>
-                            </a>
-                        </li>*@
+            <a href="@Url.Action("Index","Revenues")" class="nav-link">
+                <span class="pcoded-micon"><i class="feather icon-clipboard"></i></span>
+                <span class="pcoded-mtext">Báo cáo</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="@Url.Action("SumRevenue","Revenues")" class="nav-link">
+                <span class="pcoded-micon"><i class="feather icon-clipboard"></i></span>
+                <span class="pcoded-mtext">Báo cáo tổng hợp</span>
+            </a>
+        </li>*@
                     <li class="nav-item pcoded-menu-caption"><label>Tín năng</label></li>
                     <li class="nav-item pcoded-hasmenu">
                         <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-box"></i></span><span class="pcoded-mtext">Quản lý đổi trả</span></a>

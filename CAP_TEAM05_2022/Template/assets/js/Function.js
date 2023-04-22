@@ -14,10 +14,7 @@
                     form.classList.add('was-validated');
                 } else {
                     form.classList.remove('was-validated');
-
-                }
-               
-               
+                }               
             }, false);
         });
 
@@ -171,7 +168,7 @@ $(function () {
                 url: URLFindCustomer_name,
                 data: { "customer_id": i.item.val },
                 success: function (response) {
-                    
+                    $('#customer_phone').val(response.phone);
                     $('#customer_code').val(response.code);
                     $('#customer_type').val(response.note);
                     $('#count_sale').val(response.status);

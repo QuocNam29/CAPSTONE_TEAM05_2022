@@ -20,7 +20,7 @@
         {
             no++;
             <tr>
-                <td>@no</td>
+                <td>@no<input hidden type="text" name="record" value="@item.code"></td>
                 <td>@item.code</td>
                 <td>@(item.customer?.name)</td>
                 <td class="text-center">
@@ -68,11 +68,11 @@
             confirmButtonText: 'Xác nhận'
         }).then((result) => {
             if (result.isConfirmed) {
-                var categorys = {};
-                categorys.id = id;
+                var order = {};
+                order.id = id;
                 $.ajax({
                     url: '@Url.Action("Delete_OldDebtSupplier", "Debts_Collections")',
-                    data: JSON.stringify(categorys),
+                    data: JSON.stringify(order),
                     type: "POST",
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json'

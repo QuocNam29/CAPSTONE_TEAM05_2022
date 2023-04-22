@@ -81,14 +81,14 @@ namespace CAP_TEAM05_2022.Controllers
                         }
                         else
                         {
-                            decimal purchasePrice = decimal.Parse(purchase_price.Replace(",", "").Replace(".", ","));
-                            decimal sellPrice = decimal.Parse(sell_price.Replace(",", "").Replace(".", ","));
-                            decimal debtPrice = decimal.Parse(debt_price.Replace(",", "").Replace(".", ","));
+                            decimal purchasePrice = decimal.Parse(purchase_price.Replace(",", "")); //.Replace(".", ","));
+                            decimal sellPrice = decimal.Parse(sell_price.Replace(",", "")); //.Replace(".", ","));
+                            decimal debtPrice = decimal.Parse(debt_price.Replace(",", "")); //.Replace(".", ","));
                             decimal debtPriceSwap = 0;
                             decimal priceSwap = 0;
                             if (!String.IsNullOrEmpty(debt_price_swap))
                             {
-                                 debtPriceSwap = decimal.Parse(debt_price_swap.Replace(",", "").Replace(".", ","));
+                                 debtPriceSwap = decimal.Parse(debt_price_swap.Replace(",", "")); //.Replace(".", ","));
                             }
                             else
                             {
@@ -96,7 +96,7 @@ namespace CAP_TEAM05_2022.Controllers
                             }
                             if (!String.IsNullOrEmpty(price_swap))
                             {
-                                priceSwap = decimal.Parse(price_swap.Replace(",", "").Replace(".", ","));
+                                priceSwap = decimal.Parse(price_swap.Replace(",", "")); //.Replace(".", ","));
                             }
                             else
                             {
@@ -206,13 +206,13 @@ namespace CAP_TEAM05_2022.Controllers
                         }
                         else
                         {
-                            decimal sellPrice = decimal.Parse(Editsell_price.Replace(",", "").Replace(".", ","));
-                            decimal debtPrice = decimal.Parse(Editdebt_price.Replace(",", "").Replace(".", ","));
+                            decimal sellPrice = decimal.Parse(Editsell_price.Replace(",", "")); //.Replace(".", ","));
+                            decimal debtPrice = decimal.Parse(Editdebt_price.Replace(",", "")); //.Replace(".", ","));
                             decimal debtPriceSwap = 0;
                             decimal priceSwap = 0;
                             if (!String.IsNullOrEmpty(Editdebt_price_swap))
                             {
-                                debtPriceSwap = decimal.Parse(Editdebt_price_swap.Replace(",", "").Replace(".", ","));
+                                debtPriceSwap = decimal.Parse(Editdebt_price_swap.Replace(",", "")); //.Replace(".", ","));
                             }
                             else
                             {
@@ -220,7 +220,7 @@ namespace CAP_TEAM05_2022.Controllers
                             }
                             if (!String.IsNullOrEmpty(Editprice_swap))
                             {
-                                priceSwap = decimal.Parse(Editprice_swap.Replace(",", "").Replace(".", ","));
+                                priceSwap = decimal.Parse(Editprice_swap.Replace(",", "")); //.Replace(".", ","));
                             }
                             else
                             {

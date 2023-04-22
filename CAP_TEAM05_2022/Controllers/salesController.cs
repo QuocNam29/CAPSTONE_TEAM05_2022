@@ -179,7 +179,7 @@ namespace CAP_TEAM05_2022.Controllers
                     prepayment = decimal.Parse(payment.Replace(",", "").Replace(".", ""));
                 }
 
-                var cart = db.carts.Where(c => c.customer_id == createSale.customer_id && (createSale.customer_id != 0 || c.user_id == userID)).ToList();
+                var cart = db.carts.Where(c => c.customer_id == createSale.customer_id && c.user_id == userID).ToList();
                 sale sale = new sale();
                 sale.code = "MDH" + CodeRandom.RandomCode();
                 sale.customer_id = createSale.customer_id;

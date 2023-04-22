@@ -122,10 +122,11 @@
 
 <div id="DebtCollectionModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="DebtCollectionModalLabel" aria-hidden="true">
     <div role="document" class="modal-dialog modal-lg">
-        <form class="needs-validation DebtsForm" method="post" action="@Url.Action("Create_Debts", "Debts_Collections")" novalidate>
+        <form class="DebtsForm" method="post" action="@Url.Action("Create_Debts", "Debts_Collections")" novalidate>
+            @Html.AntiForgeryToken()
             <div class="modal-content">
                 <div class="modal-header bg-primary">
-                    <h5 id="DebtCollectionTitle" class="modal-title white">Thu nợ đơn hàng </h5>
+                    <h5 id="DebtCollectionTitle" class="modal-title white">Thu nợ</h5>
                     <button type="button" data-dismiss="modal" aria-label="Close" class="close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -197,10 +198,8 @@
                                     Nhập số tiền thu <span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input type="text" name="paid" value="0" class="form-control Price" required>
-                                    <div class="invalid-feedback">
-                                        Số tiền thu phải lớn hơn 0 và không quá số tiền còn nợ !
-                                    </div>
+                                    <input type="text" name="paid" class="form-control Price" data-val="true" data-val-required="Vui lòng nhập số tiền thu !" required>
+                                    @Html.ValidationMessage("paid", "", new { @class = "text-danger" })
                                 </div>
                                 <!---->
                             </div>
@@ -303,6 +302,7 @@
         }
 
         $('.DebtsForm').submit(function (e) {
+           
             var form = $(this);
             // Check if form is valid then submit ajax
             if (form[0].checkValidity()) {
