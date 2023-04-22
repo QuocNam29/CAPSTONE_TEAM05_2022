@@ -11,6 +11,7 @@
             <th class="sticky-col first-col">Tên sản phẩm</th>
             <th class="text-center">Danh mục sản phẩm</th>
             <th class="text-center">Công ty</th>
+            <th class="text-center">Đơn vị</th>
             <th class="text-center">Số lượng tồn</th>
             <th class="text-center">Giá bán tiền mặt</th>
             <th class="text-center">Giá bán ghi nợ</th>
@@ -38,6 +39,9 @@
             </td>
             <td class="text-center">@(item.category?.name)</td>
             <td class="text-center">@(item.customer?.name)</td>
+            <td class="text-center">
+              1 @item.unit = @item.quantity_swap @item.unit_swap
+            </td>
             <td class="text-center">
                 @item.quantity.ToString("N0")<span class="txt-unit">@item.unit</span>
                 <div>@item.quantity_remaning<span class="txt-unit">@item.unit_swap</span></div>

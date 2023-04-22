@@ -149,15 +149,14 @@ namespace CAP_TEAM05_2022.Controllers
             FormatExcel(Sheet, 3);
             Sheet.Cells["A1"].Value = "Tên sản phẩm";
             Sheet.Cells["B1"].Value = "Nhà cung cấp";
-            Sheet.Cells["C1"].Value = "Nhóm hàng";
-            Sheet.Cells["D1"].Value = "Danh mục";
-            Sheet.Cells["E1"].Value = "Số lượng tồn";
-            Sheet.Cells["F1"].Value = "Đơn vị";
-            Sheet.Cells["G1"].Value = "Số lượng quy đổi";
-            Sheet.Cells["H1"].Value = "Đơn vị quy đổi";
-            Sheet.Cells["I1"].Value = "Đơn giá nhập";
-            Sheet.Cells["J1"].Value = "Đơn giá bán";
-            Sheet.Cells["K1"].Value = "Đơn giá bán nợ";
+            Sheet.Cells["C1"].Value = "Danh mục";
+            Sheet.Cells["D1"].Value = "Số lượng tồn";
+            Sheet.Cells["E1"].Value = "Đơn vị";
+            Sheet.Cells["F1"].Value = "Số lượng quy đổi";
+            Sheet.Cells["G1"].Value = "Đơn vị quy đổi";
+            Sheet.Cells["H1"].Value = "Đơn giá nhập";
+            Sheet.Cells["I1"].Value = "Đơn giá bán";
+            Sheet.Cells["J1"].Value = "Đơn giá bán nợ";
 
             var validation_supplier = Sheet.Cells["B2:B999999"].DataValidation.AddListDataValidation();
             validation_supplier.ShowErrorMessage = true;
@@ -169,17 +168,7 @@ namespace CAP_TEAM05_2022.Controllers
                 validation_supplier.Formula.Values.Add(item.name);
             }
 
-            var validation_group = Sheet.Cells["C2:C999999"].DataValidation.AddListDataValidation();
-            validation_group.ShowErrorMessage = true;
-            validation_group.ErrorStyle = ExcelDataValidationWarningStyle.information;
-            validation_group.ErrorTitle = "Lỗi nhập nhóm hàng";
-            validation_group.Error = "Nhóm hàng này không có trong hệ thống, vui lòng chọn lại !";
-            foreach (var item in list_group)
-            {
-                validation_group.Formula.Values.Add(item.name);
-            }
-
-            var validation_category = Sheet.Cells["D2:D999999"].DataValidation.AddListDataValidation();
+            var validation_category = Sheet.Cells["C2:D999999"].DataValidation.AddListDataValidation();
             validation_category.ShowErrorMessage = true;
             validation_category.ErrorStyle = ExcelDataValidationWarningStyle.information;
             validation_category.ErrorTitle = "Lỗi nhập danh mục";
@@ -188,9 +177,6 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 validation_category.Formula.Values.Add(item.name);
             }
-
-            
-
             Sheet.Cells["A:AZ"].AutoFitColumns();
             Response.Clear();
             Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
@@ -388,7 +374,6 @@ namespace CAP_TEAM05_2022.Controllers
                             row_excel++;
                             if (!String.IsNullOrEmpty(row["Tên sản phẩm"].ToString().Trim())
                                && !String.IsNullOrEmpty(row["Nhà cung cấp"].ToString().Trim())
-                               && !String.IsNullOrEmpty(row["Nhóm hàng"].ToString().Trim())
                            && !String.IsNullOrEmpty(row["Danh mục"].ToString().Trim())
                            && !String.IsNullOrEmpty(row["Số lượng tồn"].ToString().Trim())
                             && !String.IsNullOrEmpty(row["Đơn vị"].ToString().Trim())
@@ -400,7 +385,6 @@ namespace CAP_TEAM05_2022.Controllers
                             {
                                 Session["name_product"] = row["Tên sản phẩm"].ToString().Trim();
                                 Session["supplier_product"] = row["Nhà cung cấp"].ToString().Trim();
-                                Session["group_product"] = row["Nhóm hàng"].ToString().Trim();
                                 Session["category_product"] = row["Danh mục"].ToString().Trim();
                                 Session["quantity_product"] = row["Số lượng tồn"].ToString().Trim();
                                 Session["unit_product"] = row["Đơn vị"].ToString().Trim();
@@ -436,10 +420,8 @@ namespace CAP_TEAM05_2022.Controllers
                                 if (Session["unit_product"] != null)
                                 {
                                     string name_supplier = Session["supplier_product"].ToString();
-                                    string name_group = Session["group_product"].ToString();
                                     string name_category = Session["category_product"].ToString();
                                     var check_supplier = db.customers.Where(g => g.name == name_supplier && g.type == Constants.SUPPLIER).FirstOrDefault();
-                                    var check_group = db.groups.Where(g => g.name == name_group).FirstOrDefault();
                                     var check_category = db.categories.Where(g => g.name == name_category).FirstOrDefault();
 
                                     string unit_product = Session["unit_product"].ToString().Trim();
@@ -451,24 +433,21 @@ namespace CAP_TEAM05_2022.Controllers
                                     decimal sell_debt_product = decimal.Parse(Session["sell_debt_product"].ToString().Trim());
 
                                     // kiểm tra nhóm hàng, danh mục, nhà cung cấp đã tồn tại chưa
-                                    if (check_group != null && check_category != null && check_supplier != null)
+                                    if (check_category != null && check_supplier != null)
                                     {
                                         //thực hiện nhập sản phẩm
-                                        int group_id = check_group.id;
                                         int category_id = check_category.id;
                                         int supplier_id = check_supplier.id;
 
-                                        var check_product = db.products.Where(c => c.name == name_product && c.group_id == group_id
-                                        && c.category_id == category_id).FirstOrDefault();
+                                        var check_product = db.products.Where(c => c.name == name_product && c.category_id == category_id).FirstOrDefault();
+                                        //Nếu không có sản phẩm nào tồn tại thì nhập sản phẩm
                                         if (check_product == null)
                                         {
-
                                             product product = new product();
                                             product.name = name_product;
                                             product.status = Constants.SHOW_STATUS;
                                             product.unit = unit_product;
                                             product.category_id = category_id;
-                                            product.group_id = group_id;
                                             product.created_by = User.Identity.GetUserId();
                                             product.sell_price = sell_price_product;
                                             product.sell_price_debt = sell_debt_product;
@@ -480,7 +459,6 @@ namespace CAP_TEAM05_2022.Controllers
                                             product.sell_price_debt_swap = (decimal)(sell_debt_product / quantity_product);
                                             product.created_at = curentDate;
                                             product.code = "SP" + CodeRandom.RandomCode();
-                                            product.name_group = Session["group_product"].ToString();
                                             product.name_category = Session["category_product"].ToString();
 
                                             db.products.Add(product);
@@ -527,39 +505,28 @@ namespace CAP_TEAM05_2022.Controllers
                                             db.SaveChanges();
 
                                             addRow++;
+                                            product.status = 4;
                                             Product_list.Add(product);
                                         }
+                                        //nếu sản phẩm đã tồn tại rồi thì lưu vào session
                                         else
                                         {
                                             int quantity_current = check_product.quantity;
-                                            check_product.sell_price = sell_price_product;
-                                            check_product.purchase_price = purchase_price_product;
-                                            check_product.quantity += quantity_product;
-                                            check_product.updated_at = curentDate;
-                                            db.Entry(check_product).State = EntityState.Modified;
-                                            import_inventory inventory = new import_inventory();
-                                            inventory.product_id = check_product.id;
-                                            inventory.quantity = quantity_product;
-                                            inventory.price_import = purchase_price_product;
-                                            inventory.sold = 0;
-                                            inventory.created_by = User.Identity.GetUserId();
-                                            inventory.created_at = curentDate;
-                                            db.import_inventory.Add(inventory);
-                                            db.SaveChanges();
                                             rowExist++;
                                             Product_list.Add(new product
                                             {
                                                 id = row_excel,
                                                 name = name_product,
-                                                status = 7,
-                                                name_group = Session["group_product"].ToString(),
-                                                name_category = Session["category_product"].ToString(),
-                                                unit = unit_product,
+                                                status = 7, // đã tồn tại
+                                                name_category = name_category,
+                                                name_group = name_supplier,
+                                                unit = unit_product + " = " + quantity_swap_product +" " + unit_swap_product,
                                                 purchase_price = purchase_price_product,
                                                 sell_price = sell_price_product,
-                                                quantity = check_product.quantity,
-                                                note = quantity_current.ToString()
-                                            });
+                                                sell_price_debt = sell_debt_product,
+                                                quantity = quantity_product,
+                                                quantity_swap = quantity_swap_product
+                                            }) ;
                                         }
                                     }
                                     else
@@ -569,13 +536,17 @@ namespace CAP_TEAM05_2022.Controllers
                                         {
                                             id = row_excel,
                                             name = name_product,
-                                            status = 5,
-                                            name_group = Session["group_product"].ToString(),
-                                            name_category = Session["category_product"].ToString(),
+                                            status = 5, // sai định dạng
+                                            name_category = name_category,
+                                            name_group = name_supplier,
                                             unit = unit_product,
+                                            unit_swap = unit_swap_product,
                                             purchase_price = purchase_price_product,
                                             sell_price = sell_price_product,
+                                            sell_price_debt = sell_debt_product,
                                             quantity = quantity_product,
+                                            quantity_swap = quantity_swap_product
+
                                         });
                                     }
                                 }
@@ -586,7 +557,7 @@ namespace CAP_TEAM05_2022.Controllers
                                     {
                                         id = row_excel,
                                         name = name_product,
-                                        status = 6
+                                        status = 6, // miss dữ liệu
                                     });
                                 }
 
@@ -622,7 +593,6 @@ namespace CAP_TEAM05_2022.Controllers
                         }
                     }
                     Session["name_product"] = null;
-                    Session["group_product"] = null;
                     Session["category_product"] = null;
                     Session["unit_product"] = null;
                     Session["sell_price_product"] = null;
@@ -800,159 +770,218 @@ namespace CAP_TEAM05_2022.Controllers
 
         public ActionResult ImportFail_continues(int id)
         {
-            var import = Product_list.Where(x => x.id == id).FirstOrDefault();
-
-            var check_group = db.groups.Where(g => g.name == import.name_group && g.status != 3).FirstOrDefault();
-            group GroupProduct = new group();
-            if (check_group == null)
+            string message = "";
+            bool status = true;
+            DateTime currentDate = DateTime.Now;
+            try
             {
-
-                GroupProduct.name = import.name_group;
-                GroupProduct.created_by = User.Identity.GetUserId();
-                GroupProduct.status = 1;
-                GroupProduct.created_at = DateTime.Now;
-                GroupProduct.slug = import.name_group;
-                GroupProduct.code = "NH" + CodeRandom.RandomCode();
-                db.groups.Add(GroupProduct);
-                db.SaveChanges();
-            }
-            var check_category = db.categories.Where(g => g.name == import.name_category && g.status != 3).FirstOrDefault();
-            category category = new category();
-            if (check_category == null)
-            {
-
-                category.name = import.name_category;
-                category.status = 1;
-                category.created_by = User.Identity.GetUserId();
-                category.created_at = DateTime.Now;
-                category.slug = import.name_category;
-                category.code = "DM" + CodeRandom.RandomCode();
-                db.categories.Add(category);
-                db.SaveChanges();
-            }
-
-            product product = new product();
-            product.name = import.name;
-            product.status = 1;
-            product.unit = import.unit;
-            if (check_group == null)
-            {
-                product.group_id = GroupProduct.id;
-            }
-            else
-            {
-                product.group_id = check_group.id;
-            }
-            if (check_category == null)
-            {
-                product.category_id = category.id;
-            }
-            else
-            {
-                product.category_id = check_category.id;
-            }
-
-            product.created_by = User.Identity.GetUserId();
-            product.sell_price = import.sell_price;
-            product.purchase_price = import.purchase_price;
-            product.quantity = import.quantity;
-            product.created_at = DateTime.Now;
-            product.code = "SP" + CodeRandom.RandomCode();
-            db.products.Add(product);
-            import_inventory inventory = new import_inventory();
-            inventory.product_id = product.id;
-            inventory.quantity = import.quantity;
-            inventory.price_import = import.purchase_price;
-            inventory.sold = 0;
-            inventory.created_by = User.Identity.GetUserId();
-            inventory.created_at = DateTime.Now;
-            db.import_inventory.Add(inventory);
-            db.SaveChanges();
-            Product_list.RemoveAll(p => p.id == id);
-            return Json("ImportFail_continues", JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult ImportFail_continues_ALL()
-        {
-            var product_list = Product_list.Where(p => p.status == 5).ToList();
-            foreach (var item in product_list)
-            {
-                var import = Product_list.Where(x => x.id == item.id).FirstOrDefault();
-
-                var check_group = db.groups.Where(g => g.name == import.name_group && g.status != 3).FirstOrDefault();
-                group GroupProduct = new group();
-                if (check_group == null)
-                {
-
-                    GroupProduct.name = import.name_group;
-                    GroupProduct.created_by = User.Identity.GetUserId();
-                    GroupProduct.status = 1;
-                    GroupProduct.created_at = DateTime.Now;
-                    GroupProduct.slug = import.name_group;
-                    GroupProduct.code = "NH" + CodeRandom.RandomCode();
-                    db.groups.Add(GroupProduct);
-                    db.SaveChanges();
-                }
+                var import = Product_list.Where(x => x.id == id).FirstOrDefault();
+                var check_supplier = db.customers.Where(s => s.name == import.name_group && s.type == Constants.SUPPLIER).FirstOrDefault();
                 var check_category = db.categories.Where(g => g.name == import.name_category && g.status != 3).FirstOrDefault();
                 category category = new category();
                 if (check_category == null)
                 {
-
                     category.name = import.name_category;
                     category.status = 1;
                     category.created_by = User.Identity.GetUserId();
-                    category.created_at = DateTime.Now;
+                    category.created_at = currentDate;
                     category.slug = import.name_category;
                     category.code = "DM" + CodeRandom.RandomCode();
                     db.categories.Add(category);
-                    db.SaveChanges();
+                }
+
+                customer supplier = new customer();
+                if (check_supplier == null)
+                {
+                    supplier.type = Constants.SUPPLIER;
+                    supplier.name = import.name_group;
+                    supplier.phone = "0000000000";
+                    supplier.address  =  "-";
+                    supplier.status =  Constants.SHOW_STATUS;
+                    supplier.created_by = User.Identity.GetUserId();
+                    supplier.created_at = currentDate;
+                    supplier.code = "MKH" + CodeRandom.RandomCode();
+                    supplier.note = "Tạo do nhập file excel";
+                    db.customers.Add(supplier);
                 }
 
                 product product = new product();
                 product.name = import.name;
-                product.status = 1;
+                product.status = Constants.SHOW_STATUS;
                 product.unit = import.unit;
-                if (check_group == null)
-                {
-                    product.group_id = GroupProduct.id;
-                }
-                else
-                {
-                    product.group_id = check_group.id;
-                }
-                if (check_category == null)
-                {
-                    product.category_id = category.id;
-                }
-                else
-                {
-                    product.category_id = check_category.id;
-                }
-
+                product.unit_swap = import.unit_swap;
+                product.category_id = check_category == null ? category.id : check_category.id;
+                product.supplier_id = check_supplier == null ? supplier.id : check_category.id;
                 product.created_by = User.Identity.GetUserId();
                 product.sell_price = import.sell_price;
+                product.sell_price_debt = import.sell_price_debt;
                 product.purchase_price = import.purchase_price;
                 product.quantity = import.quantity;
-                product.created_at = DateTime.Now;
+                product.quantity_swap = import.quantity_swap;
+                product.created_at = currentDate;
                 product.code = "SP" + CodeRandom.RandomCode();
+                product.sell_price_swap = product.sell_price / product.quantity_swap;
+                product.sell_price_debt_swap = product.sell_price_debt / product.quantity_swap;
                 db.products.Add(product);
+
+                price_product price_Product = new price_product();
+                price_Product.product_id = product.id;
+                price_Product.price = product.sell_price;
+                price_Product.price_debt = product.sell_price_debt;
+                price_Product.updated_at = currentDate;
+                price_Product.unit = product.unit;
+                db.price_product.Add(price_Product);
+
+                price_product price_Product_swap = new price_product();
+                price_Product_swap.product_id = product.id;
+                price_Product_swap.price = product.sell_price_swap;
+                price_Product_swap.price_debt = product.sell_price_debt_swap;
+                price_Product_swap.updated_at = currentDate;
+                price_Product_swap.unit = product.unit_swap;
+                db.price_product.Add(price_Product_swap);
+
+                inventory_order inventory_Order = new inventory_order();
+                inventory_Order.code = "MPN" + CodeRandom.RandomCode();
+                inventory_Order.create_at = currentDate;
+                inventory_Order.update_at = currentDate;
+                inventory_Order.create_by = User.Identity.GetUserId();
+                inventory_Order.Total = product.purchase_price * product.quantity;
+                inventory_Order.state = Constants.PAYED_ORDER;
+                inventory_Order.supplier_id = check_supplier == null ? supplier.id : check_category.id;
+                db.inventory_order.Add(inventory_Order);
+
                 import_inventory inventory = new import_inventory();
+                inventory.inventory_id = inventory_Order.id;
                 inventory.product_id = product.id;
-                inventory.quantity = import.quantity;
-                inventory.price_import = import.purchase_price;
+                inventory.quantity = product.quantity;
+                inventory.price_import = product.purchase_price;
                 inventory.sold = 0;
+                inventory.sold_swap = 0;
+                inventory.return_quantity = 0;
+                inventory.quantity_remaining = 0;
                 inventory.created_by = User.Identity.GetUserId();
-                inventory.created_at = DateTime.Now;
+                inventory.created_at = currentDate;
+                inventory.supplier_id = check_supplier == null ? supplier.id : check_category.id;
                 db.import_inventory.Add(inventory);
                 db.SaveChanges();
-
+                Product_list.RemoveAll(p => p.id == id);
+                message = "Đã nhập thành công sản phẩm.";
             }
-            foreach (var item in product_list)
+            catch (Exception e)
             {
-                Product_list.RemoveAll(p => p.id == item.id);
+                status = false;
+                message = e.Message;
             }
+            return Json(new { status, message }, JsonRequestBehavior.AllowGet);
+        }
 
-            return Json("ImportFail_continues_ALL", JsonRequestBehavior.AllowGet);
+        public ActionResult ImportFail_continues_ALL()
+        {
+            string message = "";
+            bool status = true;
+            DateTime currentDate = DateTime.Now;
+            try
+            {
+                var product_list = Product_list.Where(p => p.status == 5).ToList();
+                foreach (var item in product_list)
+                {
+                    var check_supplier = db.customers.Where(s => s.name == item.name_group && s.type == Constants.SUPPLIER && s.status == Constants.SHOW_STATUS).FirstOrDefault();
+                    var check_category = db.categories.Where(g => g.name == item.name_category && g.status != 3).FirstOrDefault();
+                    category category = new category();
+                    if (check_category == null)
+                    {
+
+                        category.name = item.name_category;
+                        category.status = 1;
+                        category.created_by = User.Identity.GetUserId();
+                        category.created_at = currentDate;
+                        category.slug = item.name_category;
+                        category.code = "DM" + CodeRandom.RandomCode();
+                        db.categories.Add(category);
+                    }
+                    customer supplier = new customer();
+                    if (check_supplier == null)
+                    {
+                        supplier.type = Constants.SUPPLIER;
+                        supplier.name = item.name_group;
+                        supplier.phone = "0000000000";
+                        supplier.address = "-";
+                        supplier.status = Constants.SHOW_STATUS;
+                        supplier.created_by = User.Identity.GetUserId();
+                        supplier.created_at = currentDate;
+                        supplier.code = "MKH" + CodeRandom.RandomCode();
+                        supplier.note = "Tạo do nhập file excel";
+                        db.customers.Add(supplier);
+                    }
+                    product product = new product();
+                    product.name = item.name;
+                    product.status = Constants.SHOW_STATUS;
+                    product.unit = item.unit;
+                    product.unit_swap = item.unit_swap;
+                    product.category_id = check_category == null ? category.id : check_category.id;
+                    product.supplier_id = check_supplier == null ? supplier.id : check_supplier.id;   
+                    product.created_by = User.Identity.GetUserId();
+                    product.sell_price = item.sell_price;
+                    product.sell_price_debt = item.sell_price_debt;
+                    product.purchase_price = item.purchase_price;
+                    product.quantity = item.quantity;
+                    product.quantity_swap = item.quantity_swap;
+                    product.created_at = currentDate;
+                    product.code = "SP" + CodeRandom.RandomCode();
+                    product.sell_price_swap = product.sell_price / product.quantity_swap;
+                    product.sell_price_debt_swap = product.sell_price_debt / product.quantity_swap;
+                    db.products.Add(product);
+
+                    price_product price_Product = new price_product();
+                    price_Product.product_id = product.id;
+                    price_Product.price = product.sell_price;
+                    price_Product.price_debt = product.sell_price_debt;
+                    price_Product.updated_at = currentDate;
+                    price_Product.unit = product.unit;
+                    db.price_product.Add(price_Product);
+
+                    price_product price_Product_swap = new price_product();
+                    price_Product_swap.product_id = product.id;
+                    price_Product_swap.price = product.sell_price_swap;
+                    price_Product_swap.price_debt = product.sell_price_debt_swap;
+                    price_Product_swap.updated_at = currentDate;
+                    price_Product_swap.unit = product.unit_swap;
+                    db.price_product.Add(price_Product_swap);
+
+                    inventory_order inventory_Order = new inventory_order();
+                    inventory_Order.code = "MPN" + CodeRandom.RandomCode();
+                    inventory_Order.create_at = currentDate;
+                    inventory_Order.update_at = currentDate;
+                    inventory_Order.create_by = User.Identity.GetUserId();
+                    inventory_Order.Total = product.purchase_price * product.quantity;
+                    inventory_Order.state = Constants.PAYED_ORDER;
+                    inventory_Order.supplier_id = check_supplier == null ? supplier.id : check_category.id;
+                    db.inventory_order.Add(inventory_Order);
+
+                    import_inventory inventory = new import_inventory();
+                    inventory.inventory_id = inventory_Order.id;
+                    inventory.product_id = product.id;
+                    inventory.quantity = product.quantity;
+                    inventory.price_import = product.purchase_price;
+                    inventory.sold = 0;
+                    inventory.sold_swap = 0;
+                    inventory.return_quantity = 0;
+                    inventory.quantity_remaining = 0;
+                    inventory.created_by = User.Identity.GetUserId();
+                    inventory.created_at = currentDate;
+                    inventory.supplier_id = check_supplier == null ? supplier.id : check_category.id;
+                    db.import_inventory.Add(inventory);
+                    db.SaveChanges();
+                    Product_list.RemoveAll(p => p.id == item.id);
+
+                }
+            }
+            catch (Exception e)
+            {
+                status = false;
+                message = e.Message;
+            }
+            return Json(new { status, message }, JsonRequestBehavior.AllowGet);
         }
 
         public void ExportExcel_RevenueDate(DateTime? date_Start, DateTime? date_End)
