@@ -43,7 +43,7 @@ namespace CAP_TEAM05_2022.Controllers
         {
             return View();
         }
-        
+
         public void HeaderExcel(ExcelWorksheet Sheet)
         {
             Sheet.DefaultColWidth = 20;
@@ -63,7 +63,7 @@ namespace CAP_TEAM05_2022.Controllers
             Sheet.Cells["A4"].Value = "Điện thoại: 0854858818";
             Sheet.Cells["A1:H4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
         }
-        public void ExportExcel( int? category_id)
+        public void ExportExcel(int? category_id)
         {
             string nameFile = "SP_" + DateTime.Now + ".xlsx";
             var list = from l in db.products
@@ -99,7 +99,7 @@ namespace CAP_TEAM05_2022.Controllers
                 string quantity_swap = "";
                 if (item.unit_swap != null)
                 {
-                    quantity_swap = item.quantity_remaning + " " + item.unit_swap; 
+                    quantity_swap = item.quantity_remaning + " " + item.unit_swap;
                     int temp1 = (item.import_inventory.Sum(i => i.sold_swap) / item.quantity_swap);
                     int temp2 = (item.import_inventory.Sum(i => i.sold_swap) % item.quantity_swap);
                     if (temp2 > 0)
@@ -112,7 +112,7 @@ namespace CAP_TEAM05_2022.Controllers
                     else
                     {
                         sold += item.import_inventory.Sum(i => i.sold) + " " + item.unit;
-                     }
+                    }
                 }
                 Sheet.Cells[string.Format("A{0}", row)].Value = item.code;
                 Sheet.Cells[string.Format("B{0}", row)].Value = item.name;
@@ -439,7 +439,9 @@ namespace CAP_TEAM05_2022.Controllers
                                         int category_id = check_category.id;
                                         int supplier_id = check_supplier.id;
 
-                                        var check_product = db.products.Where(c => c.name == name_product && c.category_id == category_id).FirstOrDefault();
+                                        var check_product = db.products.Where(c => c.name == name_product && c.category_id == category_id 
+                                                                                && c.supplier_id == supplier_id && c.unit == unit_product
+                                                                                && c.unit_swap == unit_swap_product && c.quantity_swap == quantity_swap_product).FirstOrDefault();
                                         //Nếu không có sản phẩm nào tồn tại thì nhập sản phẩm
                                         if (check_product == null)
                                         {
@@ -448,6 +450,7 @@ namespace CAP_TEAM05_2022.Controllers
                                             product.status = Constants.SHOW_STATUS;
                                             product.unit = unit_product;
                                             product.category_id = category_id;
+                                            product.supplier_id = supplier_id;
                                             product.created_by = User.Identity.GetUserId();
                                             product.sell_price = sell_price_product;
                                             product.sell_price_debt = sell_debt_product;
@@ -459,7 +462,8 @@ namespace CAP_TEAM05_2022.Controllers
                                             product.sell_price_debt_swap = (decimal)(sell_debt_product / quantity_product);
                                             product.created_at = curentDate;
                                             product.code = "SP" + CodeRandom.RandomCode();
-                                            product.name_category = Session["category_product"].ToString();
+                                            product.name_category = name_category;
+                                            product.name_group = name_supplier;
 
                                             db.products.Add(product);
 
@@ -520,13 +524,14 @@ namespace CAP_TEAM05_2022.Controllers
                                                 status = 7, // đã tồn tại
                                                 name_category = name_category,
                                                 name_group = name_supplier,
-                                                unit = unit_product + " = " + quantity_swap_product +" " + unit_swap_product,
+                                                unit = unit_product,
+                                                unit_swap = unit_swap_product,
                                                 purchase_price = purchase_price_product,
                                                 sell_price = sell_price_product,
                                                 sell_price_debt = sell_debt_product,
                                                 quantity = quantity_product,
                                                 quantity_swap = quantity_swap_product
-                                            }) ;
+                                            });
                                         }
                                     }
                                     else
@@ -665,7 +670,7 @@ namespace CAP_TEAM05_2022.Controllers
                     {
                         quantityReturn += inventory.Where(i => i.price_import == item1.Key).Sum(i => i.return_quantity) + " " + item.unit;
                     }
-                        Sheet.Cells[string.Format("A{0}", row)].Value = item.code;
+                    Sheet.Cells[string.Format("A{0}", row)].Value = item.code;
                     Sheet.Cells[string.Format("B{0}", row)].Value = item.name;
                     Sheet.Cells[string.Format("C{0}", row)].Value = inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity) + " " + item.unit + "(" + item.quantity_swap + item.unit_swap + ")";
                     Sheet.Cells[string.Format("D{0}", row)].Value = item1.Key.ToString("N0") + "/" + item.unit;
@@ -694,7 +699,7 @@ namespace CAP_TEAM05_2022.Controllers
                     {
                         total_temp2 = (decimal)((item1.Key / (item.quantity_swap)) * (inventory.Where(i => i.price_import == item1.Key).Sum(i => i.quantity_remaining)));
                     }
-                        Sheet.Cells[string.Format("J{0}", row)].Value = total_temp1 + total_temp2;                    
+                    Sheet.Cells[string.Format("J{0}", row)].Value = total_temp1 + total_temp2;
                     row++;
                 }
             }
@@ -715,7 +720,7 @@ namespace CAP_TEAM05_2022.Controllers
             int row_sell = 2;// dòng bắt đầu ghi dữ liệu
             foreach (var item in import_inventory.Where(s => s.sold > 0))
             {
-                var revenues = item.revenues.OrderByDescending(x=> x.sale_details.created_at).ToList();
+                var revenues = item.revenues.OrderByDescending(x => x.sale_details.created_at).ToList();
                 foreach (var item1 in revenues)
                 {
                     Sheet_sell.Cells[string.Format("A{0}", row_sell)].Value = item1.sale_details.product.code;
@@ -750,7 +755,7 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 Sheet_import.Cells[string.Format("A{0}", row_import)].Value = item.product.code;
                 Sheet_import.Cells[string.Format("B{0}", row_import)].Value = item.product.name;
-                Sheet_import.Cells[string.Format("C{0}", row_import)].Value = item.quantity + " " + item.product.unit +  "(" + item.product.quantity_swap + item.product.unit_swap + ")";
+                Sheet_import.Cells[string.Format("C{0}", row_import)].Value = item.quantity + " " + item.product.unit + "(" + item.product.quantity_swap + item.product.unit_swap + ")";
                 Sheet_import.Cells[string.Format("D{0}", row_import)].Value = item.return_quantity + " " + item.product.unit;
                 Sheet_import.Cells[string.Format("E{0}", row_import)].Value = item.price_import.ToString("N0") + "/" + item.product.unit;
                 Sheet_import.Cells[string.Format("F{0}", row_import)].Value = item.price_import * (item.quantity - item.return_quantity);
@@ -768,6 +773,7 @@ namespace CAP_TEAM05_2022.Controllers
 
         }
 
+        [HttpPost]
         public ActionResult ImportFail_continues(int id)
         {
             string message = "";
@@ -796,8 +802,8 @@ namespace CAP_TEAM05_2022.Controllers
                     supplier.type = Constants.SUPPLIER;
                     supplier.name = import.name_group;
                     supplier.phone = "0000000000";
-                    supplier.address  =  "-";
-                    supplier.status =  Constants.SHOW_STATUS;
+                    supplier.address = "-";
+                    supplier.status = Constants.SHOW_STATUS;
                     supplier.created_by = User.Identity.GetUserId();
                     supplier.created_at = currentDate;
                     supplier.code = "MKH" + CodeRandom.RandomCode();
@@ -847,7 +853,7 @@ namespace CAP_TEAM05_2022.Controllers
                 inventory_Order.create_by = User.Identity.GetUserId();
                 inventory_Order.Total = product.purchase_price * product.quantity;
                 inventory_Order.state = Constants.PAYED_ORDER;
-                inventory_Order.supplier_id = check_supplier == null ? supplier.id : check_category.id;
+                inventory_Order.supplier_id = check_supplier == null ? supplier.id : check_supplier.id;
                 db.inventory_order.Add(inventory_Order);
 
                 import_inventory inventory = new import_inventory();
@@ -861,7 +867,7 @@ namespace CAP_TEAM05_2022.Controllers
                 inventory.quantity_remaining = 0;
                 inventory.created_by = User.Identity.GetUserId();
                 inventory.created_at = currentDate;
-                inventory.supplier_id = check_supplier == null ? supplier.id : check_category.id;
+                inventory.supplier_id = check_supplier == null ? supplier.id : check_supplier.id;
                 db.import_inventory.Add(inventory);
                 db.SaveChanges();
                 Product_list.RemoveAll(p => p.id == id);
@@ -875,6 +881,89 @@ namespace CAP_TEAM05_2022.Controllers
             return Json(new { status, message }, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public ActionResult ExitData_continues(int id)
+        {
+            string message = "";
+            bool status = true;
+            DateTime currentDate = DateTime.Now;
+            try
+            {
+                var import = Product_list.Find(x => x.id == id);
+                var check_supplier = db.customers.FirstOrDefault(s => s.name == import.name_group && s.type == Constants.SUPPLIER);
+                var check_category = db.categories.FirstOrDefault(g => g.name == import.name_category);
+
+                var product = db.products.FirstOrDefault(c => c.name == import.name && c.category_id == check_category.id
+                                                              && c.supplier_id == check_supplier.id && c.unit == import.unit
+                                                              && c.unit_swap == import.unit_swap && c.quantity_swap == import.quantity_swap);
+
+                if (import.sell_price != product.sell_price || import.sell_price_debt != product.sell_price_debt)
+                {
+                    price_product price_Product = new price_product();
+                    price_Product.product_id = product.id;
+                    price_Product.price = import.sell_price;
+                    price_Product.price_debt = import.sell_price_debt;
+                    price_Product.updated_at = currentDate;
+                    price_Product.unit = product.unit;
+                    db.price_product.Add(price_Product);
+                }
+                import.sell_price_swap = import.sell_price / import.quantity_swap;
+                import.sell_price_debt_swap = import.sell_price_debt / import.quantity_swap;
+                if (import.sell_price_swap != product.sell_price_swap || import.sell_price_debt_swap != product.sell_price_debt_swap)
+                {
+                    price_product price_Product_swap = new price_product();
+                    price_Product_swap.product_id = product.id;
+                    price_Product_swap.price = import.sell_price_swap;
+                    price_Product_swap.price_debt = import.sell_price_debt_swap;
+                    price_Product_swap.updated_at = currentDate;
+                    price_Product_swap.unit = product.unit_swap;
+                    db.price_product.Add(price_Product_swap);
+                }
+                product.sell_price = import.sell_price;
+                product.sell_price_debt = import.sell_price_debt;
+                product.purchase_price = import.purchase_price;
+                product.quantity += import.quantity;
+                product.updated_at = currentDate;
+                product.sell_price_swap = import.sell_price_swap;
+                product.sell_price_debt_swap = import.sell_price_debt_swap;
+                db.Entry(product).State = EntityState.Modified;
+
+                inventory_order inventory_Order = new inventory_order();
+                inventory_Order.code = "MPN" + CodeRandom.RandomCode();
+                inventory_Order.create_at = currentDate;
+                inventory_Order.update_at = currentDate;
+                inventory_Order.create_by = User.Identity.GetUserId();
+                inventory_Order.Total = import.purchase_price * import.quantity;
+                inventory_Order.state = Constants.PAYED_ORDER;
+                inventory_Order.supplier_id = check_supplier.id;
+                db.inventory_order.Add(inventory_Order);
+
+                import_inventory inventory = new import_inventory();
+                inventory.inventory_id = inventory_Order.id;
+                inventory.product_id = product.id;
+                inventory.quantity =import.quantity;
+                inventory.price_import = import.purchase_price;
+                inventory.sold = 0;
+                inventory.sold_swap = 0;
+                inventory.return_quantity = 0;
+                inventory.quantity_remaining = 0;
+                inventory.created_by = User.Identity.GetUserId();
+                inventory.created_at = currentDate;
+                inventory.supplier_id = check_supplier.id;
+                db.import_inventory.Add(inventory);
+                db.SaveChanges();
+                Product_list.RemoveAll(p => p.id == id);
+                message = "Đã nhập thành công sản phẩm.";
+            }
+            catch (Exception e)
+            {
+                status = false;
+                message = e.Message;
+            }
+            return Json(new { status, message }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
         public ActionResult ImportFail_continues_ALL()
         {
             string message = "";
@@ -919,7 +1008,7 @@ namespace CAP_TEAM05_2022.Controllers
                     product.unit = item.unit;
                     product.unit_swap = item.unit_swap;
                     product.category_id = check_category == null ? category.id : check_category.id;
-                    product.supplier_id = check_supplier == null ? supplier.id : check_supplier.id;   
+                    product.supplier_id = check_supplier == null ? supplier.id : check_supplier.id;
                     product.created_by = User.Identity.GetUserId();
                     product.sell_price = item.sell_price;
                     product.sell_price_debt = item.sell_price_debt;
@@ -973,7 +1062,93 @@ namespace CAP_TEAM05_2022.Controllers
                     db.import_inventory.Add(inventory);
                     db.SaveChanges();
                     Product_list.RemoveAll(p => p.id == item.id);
+                    message = "Đã nhập thành công tất cả sản phẩm.";
 
+                }
+            }
+            catch (Exception e)
+            {
+                status = false;
+                message = e.Message;
+            }
+            return Json(new { status, message }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult ExitData_continues_ALL()
+        {
+            string message = "";
+            bool status = true;
+            DateTime currentDate = DateTime.Now;
+            try
+            {
+                var product_list = Product_list.Where(p => p.status == 7).ToList();
+                foreach (var item in product_list)
+                {
+                    var check_supplier = db.customers.FirstOrDefault(s => s.name == item.name_group && s.type == Constants.SUPPLIER);
+                    var check_category = db.categories.FirstOrDefault(g => g.name == item.name_category);
+
+                    var product = db.products.FirstOrDefault(c => c.name == item.name && c.category_id == check_category.id
+                                                                  && c.supplier_id == check_supplier.id && c.unit == item.unit
+                                                                  && c.unit_swap == item.unit_swap && c.quantity_swap == item.quantity_swap);
+
+                    if (item.sell_price != product.sell_price || item.sell_price_debt != product.sell_price_debt)
+                    {
+                        price_product price_Product = new price_product();
+                        price_Product.product_id = product.id;
+                        price_Product.price = item.sell_price;
+                        price_Product.price_debt = item.sell_price_debt;
+                        price_Product.updated_at = currentDate;
+                        price_Product.unit = product.unit;
+                        db.price_product.Add(price_Product);
+                    }
+                    item.sell_price_swap = item.sell_price / item.quantity_swap;
+                    item.sell_price_debt_swap = item.sell_price_debt / item.quantity_swap;
+                    if (item.sell_price_swap != product.sell_price_swap || item.sell_price_debt_swap != product.sell_price_debt_swap)
+                    {
+                        price_product price_Product_swap = new price_product();
+                        price_Product_swap.product_id = product.id;
+                        price_Product_swap.price = item.sell_price_swap;
+                        price_Product_swap.price_debt = item.sell_price_debt_swap;
+                        price_Product_swap.updated_at = currentDate;
+                        price_Product_swap.unit = product.unit_swap;
+                        db.price_product.Add(price_Product_swap);
+                    }
+                    product.sell_price = item.sell_price;
+                    product.sell_price_debt = item.sell_price_debt;
+                    product.purchase_price = item.purchase_price;
+                    product.quantity += item.quantity;
+                    product.updated_at = currentDate;
+                    product.sell_price_swap = item.sell_price_swap;
+                    product.sell_price_debt_swap = item.sell_price_debt_swap;
+                    db.Entry(product).State = EntityState.Modified;
+
+                    inventory_order inventory_Order = new inventory_order();
+                    inventory_Order.code = "MPN" + CodeRandom.RandomCode();
+                    inventory_Order.create_at = currentDate;
+                    inventory_Order.update_at = currentDate;
+                    inventory_Order.create_by = User.Identity.GetUserId();
+                    inventory_Order.Total = item.purchase_price * item.quantity;
+                    inventory_Order.state = Constants.PAYED_ORDER;
+                    inventory_Order.supplier_id = check_supplier.id;
+                    db.inventory_order.Add(inventory_Order);
+
+                    import_inventory inventory = new import_inventory();
+                    inventory.inventory_id = inventory_Order.id;
+                    inventory.product_id = product.id;
+                    inventory.quantity = item.quantity;
+                    inventory.price_import = item.purchase_price;
+                    inventory.sold = 0;
+                    inventory.sold_swap = 0;
+                    inventory.return_quantity = 0;
+                    inventory.quantity_remaining = 0;
+                    inventory.created_by = User.Identity.GetUserId();
+                    inventory.created_at = currentDate;
+                    inventory.supplier_id = check_supplier.id;
+                    db.import_inventory.Add(inventory);
+                    db.SaveChanges();
+                    Product_list.RemoveAll(p => p.id == item.id);
+                    message = "Đã nhập thành công tất cả sản phẩm.";
                 }
             }
             catch (Exception e)
@@ -1031,7 +1206,7 @@ namespace CAP_TEAM05_2022.Controllers
             Sheet.Cells["G8:H8"].Merge = true;
             Sheet.Cells["G8:H8"].Style.Font.Bold = true;
             Sheet.Cells["G8"].Value = tongNhap.ToString("N0") + " VNĐ";
-            
+
             Sheet.Cells["E9:F9"].Merge = true;
             Sheet.Cells["E9:F9"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
             Sheet.Cells["E9"].Value = "Lợi nhuận: ";
@@ -1111,7 +1286,7 @@ namespace CAP_TEAM05_2022.Controllers
                                                     || s.created_at.Value.Month == date_End.Value.Month && s.created_at.Value.Year == date_End.Value.Year)
                 .OrderByDescending(o => o.id);
             decimal tongNhap = 0;
-          
+
 
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ExcelPackage ep = new ExcelPackage();
@@ -1317,7 +1492,7 @@ namespace CAP_TEAM05_2022.Controllers
             Sheet.Cells["C8"].Value = "Tổng tiền nhập hàng: ";
             Sheet.Cells["D8"].Style.Font.Bold = true;
             Sheet.Cells["D8"].Value = tongNhap.ToString("N0") + " VNĐ";
-            
+
             Sheet.Cells["C9"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
             Sheet.Cells["C9"].Value = "Lợi nhuận: ";
             Sheet.Cells["D9"].Style.Font.Bold = true;
@@ -1377,7 +1552,7 @@ namespace CAP_TEAM05_2022.Controllers
                                                     && s.sale_details.sale.created_at.Value.Year == date_End.Value.Year)
                 .OrderByDescending(o => o.id);
 
-            
+
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ExcelPackage ep = new ExcelPackage();
             ExcelWorksheet Sheet = ep.Workbook.Worksheets.Add("Báo cáo chi tiết");
@@ -1436,12 +1611,12 @@ namespace CAP_TEAM05_2022.Controllers
             decimal sumSell = 0;
             foreach (var item in revenues)
             {
-                sumSell += item.Price * item.quantity; 
+                sumSell += item.Price * item.quantity;
                 Sheet.Cells[string.Format("A{0}", row)].Value = no;
                 Sheet.Cells[string.Format("B{0}", row)].Value = item.sale_details.product.name;
-                Sheet.Cells[string.Format("C{0}", row)].Value = "1"  + item.sale_details.product.unit+ " = " +item.sale_details.product.quantity_swap  + " " +item.sale_details.product.unit_swap;
-                Sheet.Cells[string.Format("D{0}", row)].Value = item.import_inventory.price_import.ToString("N0") + " VNĐ / " +item.sale_details.product.unit;
-                Sheet.Cells[string.Format("E{0}", row)].Value = item.quantity +" " + item.unit;
+                Sheet.Cells[string.Format("C{0}", row)].Value = "1" + item.sale_details.product.unit + " = " + item.sale_details.product.quantity_swap + " " + item.sale_details.product.unit_swap;
+                Sheet.Cells[string.Format("D{0}", row)].Value = item.import_inventory.price_import.ToString("N0") + " VNĐ / " + item.sale_details.product.unit;
+                Sheet.Cells[string.Format("E{0}", row)].Value = item.quantity + " " + item.unit;
                 Sheet.Cells[string.Format("F{0}", row)].Value = item.Price.ToString("N0") + " VNĐ";
                 Sheet.Cells[string.Format("G{0}", row)].Value = (item.Price * item.quantity).ToString("N0");
                 if (item.unit == item.sale_details.product.unit)
@@ -1461,7 +1636,7 @@ namespace CAP_TEAM05_2022.Controllers
                 no++;
             }
             Sheet.Cells["G7"].Value = sumSell.ToString("N0") + " VNĐ";
-            Sheet.Cells["G8"].Value = (sumSell -sumRevenue).ToString("N0") + " VNĐ";
+            Sheet.Cells["G8"].Value = (sumSell - sumRevenue).ToString("N0") + " VNĐ";
             Sheet.Cells["G9"].Value = sumRevenue.ToString("N0") + " VNĐ";
 
             Sheet.Cells["A:AZ"].AutoFitColumns();

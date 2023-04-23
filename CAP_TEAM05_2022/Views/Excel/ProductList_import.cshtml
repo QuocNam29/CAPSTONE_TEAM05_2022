@@ -1,9 +1,10 @@
 ﻿@model IEnumerable<CAP_TEAM05_2022.Models.product>
 
+
 <input type="text" hidden id="URLUpdateProduct" value="@Url.Action("UpdateProduct", "products")" />
 <input type="text" hidden id="URLImportFail_continues" value="@Url.Action("ImportFail_continues", "Excel")">
 
-<div id="MissData" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="MissDataLabel" aria-hidden="true">
+<div id="MissData" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="MissDataLabel" aria-hidden="true" style="overflow-y: auto;">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-primary">
@@ -52,7 +53,7 @@
         </div>
     </div>
 </div>
-<div id="FailFormat" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="FailFormatLabel" aria-hidden="true">
+<div id="FailFormat" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="FailFormatLabel" aria-hidden="true" style="overflow-y: auto;">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-primary">
@@ -111,12 +112,6 @@
                                             @item.quantity
                                         </td>
                                         <td class="text-center">
-                                            @*<a title="Cập nhật" class="btn btn-success" href="@Url.Action("ImportFail_continues","Excel", new {id = item.id })">
-
-                <i class="feather icon-download">
-                </i>
-
-            </a>*@
                                             <button class="btn btn-success" onclick="ImportFail_continues('@item.id', 'FailFormat-@item.id')">
                                                 <i class="feather icon-download">
                                                 </i>
@@ -148,7 +143,7 @@
         </div>
     </div>
 </div>
-<div id="SuccessData" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="SuccessDataLabel" aria-hidden="true">
+<div id="SuccessData" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="SuccessDataLabel" aria-hidden="true" style="overflow-y: auto;">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-primary">
@@ -223,98 +218,98 @@
         </div>
     </div>
 </div>
-<div id="ExitData" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ExitDataLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-primary">
-                <h5 class="modal-title" id="ExitDataLabel">Dữ liệu đã tồn tại và cập nhật lại</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
 
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center">Dòng excel</th>
-                                        <th class="text-center">Tên sản phẩm</th>
-                                        <th class="text-center">Tên công ty</th>
-                                        <th class="text-center">Tên danh mục</th>
-                                        <th class="text-center">Đơn vị</th>
-                                        <th class="text-center">Giá nhập</th>
-                                        <th class="text-center">Giá bán</th>
-                                        <th class="text-center">Giá bán ghi nợ</th>
-                                        <th class="text-center">Số lượng nhập</th>
-                                        <th></th>
+<div id="ExitData" tabindex="-1" role="dialog" aria-labelledby="ExitData" class="modal fade bd-example-modal-lg" style="overflow-y: auto;">
+    <div role="document" class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title" id="ExitDataLabel">Dữ liệu đã tồn tại và cập nhật lại</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
 
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in Model.Where(s => s.status == 7))
-                                    {
-                                    <tr>
-                                        <td class="text-center">
-                                            @item.id <input hidden type="text" name="record" value="FailFormat-@item.id">
-                                        </td>
-                                        <td class="text-center">
-                                            @item.name
-                                        </td>
-                                        <td class="text-center">
-                                            @item.name_group
-                                        </td>
-                                        <td class="text-center">
-                                            @item.name_category
-                                        </td>
-                                        <td class="text-center">
-                                            @item.unit
-                                        </td>
-                                        <td class="text-center">
-                                            @item.purchase_price
-                                        </td>
-                                        <td class="text-center">
-                                            @item.sell_price
-                                        </td>
-                                        <td class="text-center">
-                                            @item.sell_price_debt
-                                        </td>
-                                        <td class="text-center">
-                                            @item.quantity
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-success" onclick="ImportFail_continues('@item.id', 'FailFormat-@item.id')">
-                                                <i class="feather icon-download">
-                                                </i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    }
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">Dòng excel</th>
+                                            <th class="text-center">Tên sản phẩm</th>
+                                            <th class="text-center">Tên công ty</th>
+                                            <th class="text-center">Tên danh mục</th>
+                                            <th class="text-center">Đơn vị</th>
+                                            <th class="text-center">Giá nhập</th>
+                                            <th class="text-center">Giá bán</th>
+                                            <th class="text-center">Giá bán ghi nợ</th>
+                                            <th class="text-center">Số lượng nhập</th>
+                                            <th></th>
 
-                                </tbody>
-                            </table>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table_body_ExitData">
+                                        @foreach (var item in Model.Where(s => s.status == 7))
+                                        {
+                                            <tr>
+                                                <td class="text-center">
+                                                    @item.id <input hidden type="text" name="record" value="ExitData-@item.id">
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.name
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.name_group
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.name_category
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.unit
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.purchase_price
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.sell_price
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.sell_price_debt
+                                                </td>
+                                                <td class="text-center">
+                                                    @item.quantity
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-success" onclick="ImportExitData_continues('@item.id', 'ExitData-@item.id')">
+                                                        <i class="feather icon-download">
+                                                        </i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                @if (Model.Where(s => s.status == 7).Count() > 0)
-                {
+                <div class="modal-footer">
+                    @if (Model.Where(s => s.status == 7).Count() > 0)
+                    {
 
-                    <button type="button" class="btn btn-info" id="btn_ImportFail_continues_ALL" onclick="ImportFail_continuesAll()">
-                        <i class="feather icon-download">
-                        </i> Cập nhật tất cả
-                    </button>
-                }
+                        <button type="button" class="btn btn-info" id="btn_ExitData_continues_ALL" onclick="ImportExitData_continuesAll()">
+                            <i class="feather icon-download">
+                            </i> Cập nhật tất cả
+                        </button>
+                    }
 
-                <button type="button" class="btn btn-primary confirmButton" data-dismiss="modal">Xác nhận</button>
+                    <button type="button" class="btn btn-primary confirmButton" data-dismiss="modal">Xác nhận</button>
+                </div>
             </div>
-        </div>
     </div>
 </div>
-
 <script>
-    
+
     //-------------------------Import data fail one-----------------------
     function ImportFail_continues(id, code) {
         $('#FailFormat.close').css('display', 'none');
@@ -328,6 +323,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
+                    method: 'POST',
                     url: '@Url.Action("ImportFail_continues", "Excel")',
                     data: { id: id },
                 })
@@ -381,8 +377,8 @@
             }
         })
     }
-    //-------------------------Import data fail all-----------------------
 
+    //-------------------------Import data fail all-----------------------
     function ImportFail_continuesAll() {
         $('#FailFormat.close').css('display', 'none');
         $('#FailFormat').modal('hide');
@@ -395,6 +391,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
+                    method: 'POST',
                     url: '@Url.Action("ImportFail_continues_ALL", "Excel")',
                     data: {},
 
@@ -447,5 +444,138 @@
         })
     }
 
+     //-------------------------Import data E one-----------------------
+    function ImportExitData_continues(id, code) {
+        $('#ExitData.close').css('display', 'none');
+        $('#ExitData').modal('hide');
+        Swal.fire({
+            title: "Cảnh báo !",
+            text: "Bạn chắc chắn muốn cập nhật thêm dữ liệu!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Xác nhận'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    method: 'POST',
+                    url: '@Url.Action("ExitData_continues", "Excel")',
+                    data: { id: id },
+                })
+                    .done(function (data) {
+                        alert("hihi")
+                        if (data.status) {
+                            // Refresh table data
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Thành công !',
+                                text: data.message,
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    $('#ExitData.close').css('display', 'none');
+                                    $('#ExitData').modal('show');
+                                    $("table tbody").find('input[name="record"]').each(function () {
+                                        if (Contains($(this).val(), code)) {
+                                            $(this).parents("tr").remove();
+                                        }
+                                    });
+                                    GetList();
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi !',
+                                text: data.message,
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    $('#ExitData.close').css('display', 'none');
+                                    $('#ExitData').modal('show');
+                                }
+                            });
+                        }
+                    })
+                   .error(function (data) {
+                       Swal.fire({
+                           icon: 'error',
+                           title: 'Lỗi !',
+                           text: 'Chúng tôi không thể kết nối đến server!',
+                       }).then((result) => {
+                           if (result.isConfirmed) {
+                               $('#ExitData.close').css('display', 'none');
+                               $('#ExitData').modal('show');
+                           }
+                       });
+               })
+            } else {
+                $('#ExitData.close').css('display', 'none');
+                $('#ExitData').modal('show');
+            }
+        })
+    }
 
+        //-------------------------Import data fail all-----------------------
+    function ImportExitData_continuesAll() {
+        $('#ExitData.close').css('display', 'none');
+        $('#ExitData').modal('hide');
+        Swal.fire({
+            title: "Cảnh báo !",
+            text: "Bạn chắc chắn muốn thêm tất cả dữ liệu!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Xác nhận'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    method: 'POST',
+                    url: '@Url.Action("ExitData_continues_ALL", "Excel")',
+                    data: {},
+
+                })
+                    .done(function (data) {
+                        if (data.status) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Thành công !',
+                                text: 'Đã thêm thành công!',
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    $('#ExitData.close').css('display', 'none');
+                                    $('#ExitData').modal('show');
+                                    /*  $("#ExitData_table tr").remove(); */
+                                    $('#table_body_ExitData').empty()
+                                    $("#btn_ExitData_continues_ALL").prop("disabled", true);
+                                    GetList();
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi !',
+                                text: data.message,
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    $('#ExitData.close').css('display', 'none');
+                                    $('#ExitData').modal('show');
+                                }
+                            });
+                        }
+                    })
+                    .error(function (data) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi !',
+                            text: 'Chúng tôi không thể kết nối đến server!',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $('#ExitData.close').css('display', 'none');
+                                $('#ExitData').modal('show');
+                            }
+                        });
+                    })
+            } else {
+                $('#ExitData.close').css('display', 'none');
+                $('#ExitData').modal('show');
+            }
+        })
+    }
 </script>

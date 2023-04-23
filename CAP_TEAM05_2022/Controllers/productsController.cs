@@ -63,11 +63,13 @@ namespace CAP_TEAM05_2022.Controllers
                 DateTime currentDate = DateTime.Now;
                 try
                 {
-                    int check = db.products.Where(p => p.name == product.name
-                                            && p.group_id == product.group_id
+                    bool check = db.products.Where(p => p.name == product.name
                                             && p.category_id == product.category_id
-                                            && p.unit == product.unit).Count();
-                    if (check > 0)
+                                            && p.supplier_id == product.supplier_id
+                                            && p.unit == product.unit
+                                            && p.unit_swap == product.unit_swap
+                                            && p.quantity_swap == product.quantity_swap).Any();
+                    if (check)
                     {
                         status = false;
                         message = "Sản phẩm đã tồn tại trong hệ thống !";
@@ -188,9 +190,11 @@ namespace CAP_TEAM05_2022.Controllers
                 try
                 {
                     bool check = db.products.Where(p => p.name == product.name
-                                            && p.group_id == product.group_id
                                             && p.category_id == product.category_id
+                                            && p.supplier_id == product.supplier_id
                                             && p.unit == product.unit
+                                            && p.unit_swap == product.unit_swap
+                                            && p.quantity_swap == product.quantity_swap
                                             && p.id != product.id).Any();
                     if (check)
                     {
