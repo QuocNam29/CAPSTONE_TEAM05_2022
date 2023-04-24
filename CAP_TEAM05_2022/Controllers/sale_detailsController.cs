@@ -10,22 +10,12 @@ namespace CAP_TEAM05_2022.Controllers
     public class sale_detailsController : Controller
     {
         private CP25Team05Entities db = new CP25Team05Entities();
-        public sale_detailsController()
-        {
-            ViewBag.isNewCreate = false;
-        }
         // GET: sale_details
         public  ActionResult Index()
         {
-            ViewBag.isNewCreate = true;          
             return View();
         }
-
-        public ActionResult CreateOldOrder()
-        {
-            return View("Index");
-        }
-        
+       
         [HttpPost]
         public JsonResult FindSaleDetails(int id)
         {

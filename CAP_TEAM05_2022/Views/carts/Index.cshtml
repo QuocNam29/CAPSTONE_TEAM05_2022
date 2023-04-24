@@ -34,34 +34,30 @@
                             </div>
                             <div class="col-md-3 ">
                                 <div class="form-group">
-                                    <label>Trả trước <label class="text-danger">(đối với ghi nợ)</label>: </label>
+                                    <label>Trả trước (đối với ghi nợ) : </label>
                                     <input type="text" placeholder="Thanh toán 1 phần" id="cart_Prepay" maxlength="15" class="form-control Price"
-                                           data-val="true" name="payment" onchange="ButtonDebit()">
+                                           data-val="true" name="payment">
                                     @Html.ValidationMessage("payment", "", new { @class = "text-danger" })
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <label class="form-label">Phương thức giá <label class="text-danger">(đối với ghi nợ)</label>:</label>
+                            <div class="col-md-3 debt-order" style="display: none;">
+                                <label class="form-label">Phương thức giá (đối với ghi nợ) :</label>
                                 <div class="mt-2">
                                     <div class="form-check form-check-inline">
-                                        <input type="radio" name="methodPrice" value="@Constants.DEBT_METHOD_PRICE" checked />
+                                        <input type="radio" class="form-check-input" name="methodPrice" value="@Constants.DEBT_METHOD_PRICE" required data-val="true" data-val-required="Vui lòng nhập ngày tạo hóa đơn !" />
                                         <label class="form-check-label" for="methodPrice">
                                             Bán giá ghi nợ
                                         </label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input type="radio" name="methodPrice" value="@Constants.CASH_METHOD_PRICE" />
+                                        <input type="radio" class="form-check-input" name="methodPrice" value="@Constants.CASH_METHOD_PRICE" required data-val="true" data-val-required="Vui lòng nhập ngày tạo hóa đơn !" />
                                         <label class="form-check-label" for="methodPrice">
                                             Bán giá tiền mặt
                                         </label>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-9 newOrder">
-                                <div class="form-group">
-                                    <label>Ghi chú</label>
-                                    <input type="text" id="cart_note" placeholder="Ghi chú" class="form-control">
-                                </div>
+                                @Html.ValidationMessage("methodPrice", "", new { @class = "text-danger" })
+
                             </div>
                             <div class="col-md-6 oldOrder">
                                 <div class="form-group">
@@ -75,7 +71,7 @@
                                         Ngày tạo đơn hàng<span class="text-danger">*</span>
                                     </label>
                                     <div class="position-relative">
-                                        <input type="datetime-local" id="cart_datime" name="created_at" class="form-control" required data-val="true" data-val-required="Vui lòng nhập ngày tạo hóa đơn !">
+                                        <input type="datetime-local" id="cart_datime" name="created_at" class="form-control" required data-val="true" data-val-required="Vui lòng nhập ngày tạo hóa đơn !" value="@String.Format("{0:yyyy-MM-ddTHH:mm:ss}",DateTime.Now)">
                                         @Html.ValidationMessage("created_at", "", new { @class = "text-danger" })
                                     </div>
                                     <!---->
@@ -83,6 +79,9 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
+                                    <label for="product-price-import">
+                                        Phương thức thanh toán
+                                    </label>
                                     <input type="hidden" id="methodOrder" name="method" value="0" />
                                     <input type="hidden" id="formCustomer_id" name="customer_id" value="0" />
                                     <button type="button" id="payment_btn" onclick="MethodSubmit('@Constants.PAYED_ORDER')" class="btn btn-warning btn-block">
@@ -91,7 +90,7 @@
                                     <button type="submit" hidden id="payment_btn_submit" class="btn btn-warning btn-block">
                                         Thanh toán
                                     </button>
-                                    <button type="button" onclick="MethodSubmit('@Constants.DEBT_ORDER')" class="btn btn-dark btn-block" id="btn_debit">
+                                    <button type="button" onclick="MethodSubmit('@Constants.DEBT_ORDER')" class="btn btn-dark btn-block" id="btn_debit" style="display: none;">
                                         Ghi nợ
                                     </button>
                                 </div>
@@ -233,14 +232,6 @@
             }
         });
         $('#formCustomer_id').val($('#customer_id').val());
-        var isNewCreate = $('#isNewCreate').val();
-        if (isNewCreate == 1) {
-            $('.newOrder').show();
-            $('.oldOrder').hide();
-        } else {
-            $('.newOrder').hide();
-            $('.oldOrder').show();
-        }
     </script>
 }
 
@@ -323,9 +314,21 @@
             let calc_num = Number((dec !== undefined ? v + "." + dec : v));
             // use this for numeric calculations
             // console.log('number for calculations: ', calc_num);
-            let n = new Intl.NumberFormat('en-EN').format(v);
+                let n = new Intl.NumberFormat('en-EN').format(v);
             n = dec !== undefined ? n + "." + dec : n;
-            $(this).val(n);
+            if (v != "") {
+                $(this).val(n);
+                $('#btn_debit').show();
+                $('.debt-order').show();
+                $("#payment_btn").hide();
+
+            } else {
+                $(this).val('');
+                $('#btn_debit').hide();
+                $('.debt-order').hide();
+                $("#payment_btn").show();
+            }
+
         })
     })
 </script>
