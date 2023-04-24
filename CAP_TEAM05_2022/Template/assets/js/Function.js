@@ -1374,48 +1374,6 @@ function GetList_UserList() {
         Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
     });
 }
-//----------------------Add  DebtForm------------------------------------------------
-$('#URLCustomerDebtsList')
-    .keypress(function () {
-        URLCustomerDebtsList = $(this).val();
-    })
-    .keypress();
-$('#URLSupplierDebtsList')
-    .keypress(function () {
-        URLSupplierDebtsList = $(this).val();
-    })
-    .keypress();
-
-
-$('#URLFindDebt')
-    .keypress(function () {
-        URLFindDebt = $(this).val();
-    })
-    .keypress();
-function DebtCollection(ele, id, method) {
-    row = $(ele).closest('tr');
-    $.ajax({
-        type: 'POST',
-        url: URLFindDebt,
-        data: {
-            id: id,
-            method: method
-        },
-        success: function (response) {
-            $('#customer_id').val(response.id);
-            $('#order_total').val(response.total.toLocaleString());
-            $('#debts_total').val(response.prepayment.toLocaleString());
-            $('#Debt_conlai').val((response.total - response.prepayment).toLocaleString());
-            $('#MKH').val(response.code);
-            $('#Name_KH').val(response.note);
-            $('#phone_KH').val(response.created_by);
-            $('#method').val(method);
-          
-            $('#DebtCollectionModal .close').css('display', 'none');
-            $('#DebtCollectionModal').modal('show');
-        }
-    })
-}
 //----------------------------Filter Debt----------------------------------
 $("#debt_DateStart").change(function () {
     var date_start = $("#debt_DateStart").val();

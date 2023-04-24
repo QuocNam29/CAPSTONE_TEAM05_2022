@@ -196,15 +196,15 @@ namespace CAP_TEAM05_2022.Controllers
             customer customer = db.customers.Find(id);
             var emp = new sale();
             emp.id = id;
-            if (method == Constants.PAYED_ORDER)
+            if (method == Constants.COLLECTION_OF_CUSTOMERS)
             {
                 emp.total = customer.sales.Where(s => s.method == Constants.DEBT_ORDER).Sum(s => s.total);
                 emp.prepayment = customer.sales.Where(s => s.method == Constants.DEBT_ORDER).Sum(s => s.prepayment + s.pay_debt);
             }
-            else if (method == Constants.DEBT_ORDER)
+            else if (method == Constants.PAYING_SUPPLIER)
             {
                 emp.total = (decimal)customer.inventory_order.Where(s => s.state == Constants.DEBT_ORDER).Sum(s => s.Total);
-                emp.prepayment = customer.inventory_order.Where(s => s.state == Constants.DEBT_ORDER).Sum(s => s.payment);
+                emp.prepayment = customer.inventory_order.Where(s => s.state == Constants.DEBT_ORDER).Sum(s => s.payment + s.pay_debt);
             }
             emp.code = customer.code;
             emp.note = customer.name;

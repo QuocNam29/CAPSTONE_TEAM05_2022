@@ -28,8 +28,6 @@
         font-weight: bold;
     }
 </style>
-<input type="text" hidden id="URLCustomerDebtsList" value="@Url.Action("_CustomerDebtsList", "Debts_Collections")" />
-<input type="text" hidden id="URLSupplierDebtsList" value="@Url.Action("_SupplierDebtsList", "Debts_Collections")" />
 <input type="text" hidden id="URLFindDebt" value="@Url.Action("FindDebt", "Debts_Collections")/" />
 
 <section class="pcoded-main-container">
@@ -302,7 +300,7 @@
         }
 
         $('.DebtsForm').submit(function (e) {
-           
+
             var form = $(this);
             // Check if form is valid then submit ajax
             if (form[0].checkValidity()) {
@@ -330,7 +328,8 @@
             }
         });
         function GetList_Debt() {
-            if (@isDebtsCustomer) {
+            var check = @isDebtsCustomer.ToString().ToLower();
+            if (check) {
                 $.ajax({
                     url: '@Url.Action("_CustomerDebtsList", "Debts_Collections")',
                     data: {
@@ -356,6 +355,31 @@
                     Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
                 });
             }
+        }
+
+        function DebtCollection(ele, id, method) {
+            row = $(ele).closest('tr');
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("FindDebt", "Debts_Collections")/',
+                data: {
+                    id: id,
+                    method: method
+                },
+                success: function (response) {
+                    $('#customer_id').val(response.id);
+                    $('#order_total').val(response.total.toLocaleString());
+                    $('#debts_total').val(response.prepayment.toLocaleString());
+                    $('#Debt_conlai').val((response.total - response.prepayment).toLocaleString());
+                    $('#MKH').val(response.code);
+                    $('#Name_KH').val(response.note);
+                    $('#phone_KH').val(response.created_by);
+                    $('#method').val(method);
+
+                    $('#DebtCollectionModal .close').css('display', 'none');
+                    $('#DebtCollectionModal').modal('show');
+                }
+            })
         }
     </script>
 }
