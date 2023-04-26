@@ -729,6 +729,7 @@
     <Content Include="Views\Debts_Collections\ScriptContainer.cshtml" />
     <Content Include="Views\Debts_Collections\OldDebtsCustomer.cshtml" />
     <Content Include="Views\Debts_Collections\_OldDebtsCustomerList.cshtml" />
+    <Content Include="Views\AspNetUsers\_Form.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

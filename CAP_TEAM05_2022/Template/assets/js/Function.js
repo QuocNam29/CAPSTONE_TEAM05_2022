@@ -1327,53 +1327,7 @@ function openWin() {
 flatpickr(".flatpickr", {});
 
 //---------------------------User form---------------
-$('#URL_UserList')
-    .keypress(function () {
-        URL_UserList = $(this).val();
-    })
-    .keypress();
-$('.UserForm').submit(function (e) {
-    var form = $(this);
 
-    // Check if form is valid then submit ajax
-    if (form[0].checkValidity()) {
-        e.preventDefault();
-        var url = form.attr('action');
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data: form.serialize(),
-            success: function (data) {
-                // Hide bootstrap modal to prevent conflict
-                $('.modal').modal('hide');
-
-                if (data.status) {
-                    // Refresh table data
-                    GetList_UserList()
-                    Swal.fire('Thành công !', data.message, 'success')     
-                    form[0].reset();
-                    form.removeClass('was-validated');
-                } else {
-                    Swal.fire('Lỗi !', data.message, 'error');
-                }
-            }
-        });
-    }
-});
-function GetList_UserList() {
-    $.ajax({
-        url: URL_UserList,
-        data: {         
-        }
-    }).done(function (result) {
-        $('#dataContainer').html(result);
-        $('#example').DataTable();
-    }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
-        console.log(textStatus)
-        console.log(errorThrown)
-        Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
-    });
-}
 //----------------------------Filter Debt----------------------------------
 $("#debt_DateStart").change(function () {
     var date_start = $("#debt_DateStart").val();

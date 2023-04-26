@@ -1,12 +1,14 @@
-﻿@{
+﻿@using Constants = CAP_TEAM05_2022.Helper.Constants;
+
+@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
 }
-<input type="text" hidden id="URL_UserList" value="@Url.Action("_UserList", "AspNetUsers")" />
+@section style {
+    <link href="~/Content/css/custom-css.css" rel="stylesheet" />
+}
 <input type="text" hidden id="URLFindUser" value="@Url.Action("FindUser", "AspNetUsers")/" />
 <input hidden type="text" id="URDEditStatus" value="@Url.Action("EditStatus_User", "AspNetUsers")">
-
-
 <section class="pcoded-main-container">
     <div class="pcoded-content">
         <div class="page-header">
@@ -36,7 +38,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <button type="button" class="btn btn-primary float-right ml-2" data-toggle="modal" data-target="#AddUser">Tạo mới</button>
+                            <button type="button" class="btn btn-primary float-right ml-2" onclick="createUser()">Tạo mới</button>
                             <div class="row">
                                 <div class="col-md-9">
                                     <h4>NHÂN VIÊN</h4>
@@ -58,130 +60,9 @@
         </div>
     </div>
 </section>
-
-<div id="AddUser" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="AddGroupProductLabel" aria-hidden="true">
-    <div class="modal-dialog  modal-lg" role="document">
-        <form class="needs-validation UserForm" method="post" oninput='confirmPassword.setCustomValidity(confirmPassword.value != password.value ? "Passwords do not match." : "")' action="@Url.Action("Create_User", "AspNetUsers")" novalidate>
-
-            <div class="modal-content">
-                <div class="modal-header bg-primary">
-                    <h5 id="customModalTitle" class="modal-title white">Thêm mới </h5>
-                    <button type="button" data-dismiss="modal" aria-label="Close" class="close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label for="email-user">
-                                    Địa chỉ Email<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    <input type="email" placeholder="Nhập địa chỉ Email" id="email_user" name="email" class="form-control" pattern="^\w+([-+.']\w+)*@('@')\w+([-.]\w+)*\.\w+([-.]\w+)*$" required>
-                                    <div class="invalid-feedback">
-                                        Email không được bỏ trống hoặc sai định dạng!
-                                    </div>
-                                </div>
-                                <!---->
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label for="role-user">
-                                    Chức vụ<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    <select name="role_id" id="role-user" class="form-control" required>
-                                        <option value="" selected="selected" disabled="disabled">Chọn chức vụ</option>
-                                        <option value="1">Quản trị viên</option>
-                                        <option value="2">Nhân viên</option>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        Vui lòng chọn chức vụ !
-                                    </div>
-                                </div>
-                                <!---->
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label for="password-user">
-                                    Mật khẩu<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    <input type="password" placeholder="********" id="password" name="password" class="form-control" required>
-                                    <div class="invalid-feedback">
-                                        Mật khẩu không được bỏ trống !
-                                    </div>
-                                </div>
-                                <!---->
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label for="password-user">
-                                    Nhập Lại Mật khẩu<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    <input type="password" placeholder="********" id="confirmPassword" name="confirmPassword" class="form-control" required>
-                                    <div class="invalid-feedback">
-                                        Mật khẩu không trùng khớp !
-                                    </div>
-                                </div>
-                                <!---->
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label for="name-user">
-                                    Họ và tên<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    <input type="text" placeholder="Nhập tên nhân viên" id="name-user" name="fullName" class="form-control" required>
-                                    <div class="invalid-feedback">
-                                        Vui lòng nhập họ và tên !
-                                    </div>
-                                </div>
-                                <!---->
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label for="phone-user">
-                                    Số điện thoại<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    <input type="tel" placeholder="Nhập số điện thoại" id="phone" name="phone" class="form-control" required>
-                                    <div class="invalid-feedback">
-                                        Vui lòng nhập số điện thoại
-                                    </div>
-                                </div>
-                                <!---->
-                            </div>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label for="first-name-icon"> Địa chỉ </label>
-                                <div class="position-relative">
-                                    <textarea placeholder="Nhập địa chỉ" id="first-name-icon" class="form-control" name="address"></textarea>
-                                </div>
-                                <!---->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ bỏ</button>
-                    <button type="submit" class="btn btn-primary">Thêm mới</button>
-                </div>
-            </div>
-        </form>
-
-    </div>
+<div class="table-responsive" id="dataContainer2">
 </div>
+
 <div id="EditUser" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="EditUserProductLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <form class="needs-validation UserForm" method="post" action="@Url.Action("UpdateUser", "AspNetUsers")" novalidate>
@@ -282,5 +163,54 @@
                 pagingType: 'full_numbers',
             });
         });
+        function GetList_UserList() {
+            $.ajax({
+                url: '@Url.Action("_UserList", "AspNetUsers")',
+                data: {
+                }
+            }).done(function (result) {
+                $('#dataContainer').html(result);
+                $('#example').DataTable();
+            }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(textStatus)
+                console.log(errorThrown)
+                Swal.fire('Lỗi !', 'Đã xảy ra lỗi, hãy thử lại sau !', 'error');
+            });
+        }
+
+        function editUser(id) {
+            $.ajax({
+                url: '@Url.Action("_Form", "AspNetUsers")',
+                type: 'GET',
+                data: { id },
+                success: function (response) {
+                    // Add response in Modal body
+                    $('#dataContainer2').html(response);
+                    // Display Modal
+                    $('#UserForm').modal('show');
+                }
+            });
+        }
+
+        function createUser() {
+            if ($('#isCreate').val() != undefined && $('#isCreate').val() == @Constants.CREATE_FORM) {
+                $('#UserForm').modal('show');
+
+            } else {
+            $.ajax({
+                url: '@Url.Action("_Form", "AspNetUsers")',
+                type: 'GET',
+                data: {},
+                success: function (response) {
+                    // Add response in Modal body
+                    $('#dataContainer2').html(response);
+                    // Display Modal
+                    $('#UserForm').modal('show');
+                }
+            });
+
+            }
+
+        }
     </script>
 }

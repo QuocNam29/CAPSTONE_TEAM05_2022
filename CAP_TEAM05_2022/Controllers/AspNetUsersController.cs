@@ -21,6 +21,7 @@ namespace CAP_TEAM05_2022.Controllers
         private CP25Team05Entities db = new CP25Team05Entities();
         public AspNetUsersController()
         {
+            ViewBag.isCreate = false;
         }
         public AspNetUsersController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
@@ -80,60 +81,85 @@ namespace CAP_TEAM05_2022.Controllers
             }
             return View(aspNetUser);
         }
-        public async Task<ActionResult> Create_User(string email, string role_id, string fullName, string password, string phone, string address)
+
+        [HttpGet]
+        public PartialViewResult _Form(int? id)
         {
-            try
+            if (id != null)
             {
-                var query_email = UserManager.FindByEmail(email);
-                var role = db.AspNetRoles.Find(role_id);
-                if (query_email == null)
+                ViewBag.isCreate = false;
+                var aspNetUser = db.AspNetUsers.Find(id);
+                return PartialView("_Form", aspNetUser);
+            }
+            ViewBag.isCreate = true;
+            return PartialView("_Form");
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create_User([Bind(Include = "Email, RoleID, PhoneNumber, Address, Name")] RegisterViewModel aspNetUser)
+        {
+            string message = "";
+            bool status = true;
+            try
+            {  
+                if (ModelState.IsValid)
                 {
-                    var user = new ApplicationUser
-                    {
-                        Email = email,
-                        UserName = email,
-                        PhoneNumber = phone,
-                        PhoneNumberConfirmed = true,
-                    };
-                    var result = await UserManager.CreateAsync(user, password);
+                    var query_email = UserManager.FindByEmail(aspNetUser.Email);
+                    var role = db.AspNetRoles.Find(aspNetUser.RoleID);
 
-                    if (result.Succeeded)
+                    if (query_email == null)
                     {
-                        UserManager.AddToRole(user.Id, role.Name);
-                        user users = new user
+                        var user = new ApplicationUser
                         {
-                            id = user.Id,
-                            email = email,
-                            remember_token = user.SecurityStamp,
-                            created_at = DateTime.Now,
-                            phone = phone,
-                            address = address,
-                            name = fullName,
-                            asp_id = user.Id
+                            Email = aspNetUser.Email,
+                            UserName = aspNetUser.Email,
+                            PhoneNumber = aspNetUser.PhoneNumber,
+                            PhoneNumberConfirmed = true,
                         };
-                        db.users.Add(users);
-                        db.SaveChanges();
+                        var result = await UserManager.CreateAsync(user, aspNetUser.Password);
+                        if (result.Succeeded)
+                        {
+                            UserManager.AddToRole(user.Id, role.Name);
+                            user users = new user
+                            {
+                                id = user.Id,
+                                email = aspNetUser.Email,
+                                remember_token = user.SecurityStamp,
+                                created_at = DateTime.Now,
+                                phone = aspNetUser.PhoneNumber,
+                                address = aspNetUser.Address,
+                                name = aspNetUser.Name,
+                                asp_id = user.Id
+                            };
+                            db.users.Add(users);
+                            db.SaveChanges();
 
-                        // Send confirmation email
-                        string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                        var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code }, protocol: Request.Url.Scheme);
-                        await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                        return Json(new { status = true, message = "Thêm thành công!" }, JsonRequestBehavior.AllowGet);
+                            // Send confirmation email
+                            string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                            var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code }, protocol: Request.Url.Scheme);
+                            await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                            message = "Thêm nhân viên thành công";
+                        }
+                        else
+                        {
+                            return Json(new { status = false, message = result.Errors }, JsonRequestBehavior.AllowGet);
+                        }
                     }
                     else
                     {
-                        return Json(new { status = false, message = result.Errors }, JsonRequestBehavior.AllowGet);
+                        return Json(new { status = false, message = "Email đã tồn tại!" }, JsonRequestBehavior.AllowGet);
                     }
                 }
-                else
-                {
-                    return Json(new { status = false, message = "Email đã tồn tại!" }, JsonRequestBehavior.AllowGet);
-                }
+                
             }
             catch (Exception e)
             {
-                return Json(new { status = false, message = e.Message }, JsonRequestBehavior.AllowGet);
+                status = false;
+                message = e.Message;
+
             }
+            return Json(new { status, message }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult EditStatus_User(AspNetUser user)
         {

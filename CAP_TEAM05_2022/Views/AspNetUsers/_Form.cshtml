@@ -1,0 +1,153 @@
+﻿@model CAP_TEAM05_2022.Models.RegisterViewModel
+@using Constants = CAP_TEAM05_2022.Helper.Constants;
+@{
+    bool isCreate = ViewBag.isCreate;
+
+}
+<input type="number" id="isCreate" value="@(isCreate ? Constants.CREATE_FORM : Constants.NOT_CREATE_FORM)" />
+<div id="UserForm" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="AddGroupProductLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <form class="UserForm" method="post" action="@Url.Action("Create_User", "AspNetUsers")" novalidate>
+            @Html.AntiForgeryToken()
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 id="customModalTitle" class="modal-title white">Thêm mới </h5>
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="email-user">
+                                    Địa chỉ Email<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập địa chỉ email" } })
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                </div>
+                                <!---->
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="role-user">
+                                    Chức vụ<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    @Html.DropDownListFor(model => model.RoleID, new SelectList(Constants.RoleUser, "Key", "Value"), new { @class = "form-control form-select" })
+                                    @Html.ValidationMessageFor(model => model.RoleID, "", new { @class = "text-danger" })
+                                </div>
+                                <!---->
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="password-user">
+                                    Mật khẩu<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    @Html.PasswordFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập mật khẩu" } })
+                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+
+                                </div>
+                                <!---->
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="password-user">
+                                    Nhập Lại Mật khẩu<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    @Html.PasswordFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập lại mật khẩu" } })
+                                    @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+
+                                </div>
+                                <!---->
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="name-user">
+                                    Họ và tên<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập họ và tên" } })
+                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+
+                                </div>
+                                <!---->
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="phone-user">
+                                    Số điện thoại<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập số điện thoại" } })
+                                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                                </div>
+                                <!---->
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="first-name-icon"> Địa chỉ <span class="text-danger">*</span></label>
+                                <div class="position-relative">
+                                    <textarea placeholder="Nhập địa chỉ" id="first-name-icon" class="form-control" name="Address"
+                                              required data-val="true" data-val-required="Vui lòng nhập địa chỉ nhân viên !"></textarea>
+                                    @Html.ValidationMessage("Address", "", new { @class = "text-danger" })
+                                </div>
+                                <!---->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ bỏ</button>
+                    <button type="submit" class="btn btn-primary">Thêm mới</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+<!--Validation-->
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    $('.UserForm').submit(function (e) {
+        var form = $(this);
+
+        // Check if form is valid then submit ajax
+        if (form[0].checkValidity()) {
+            e.preventDefault();
+            var url = form.attr('action');
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: form.serialize(),
+                success: function (data) {
+                    // Hide bootstrap modal to prevent conflict
+                    $('.modal').modal('hide');
+
+                    if (data.status) {
+                        // Refresh table data
+                        GetList_UserList()
+                        Swal.fire('Thành công !', data.message, 'success')
+                        form[0].reset();
+                        form.removeClass('was-validated');
+                    } else {
+                        Swal.fire('Lỗi !', data.message, 'error');
+                    }
+                }
+            });
+        }
+    });
+</script>
+

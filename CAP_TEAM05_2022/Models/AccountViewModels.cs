@@ -64,21 +64,34 @@ namespace CAP_TEAM05_2022.Models
 
     public class RegisterViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Email không được bỏ trống !")]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [Required(ErrorMessage = "Vui lòng nhập mật khẩu !")]
+        [StringLength(100, ErrorMessage = "Mật khẩu phải chứa ít nhất 6 ký tự.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Compare("Password", ErrorMessage = "Mật khẩu và mật khẩu xác nhận không khớp.")]
         public string ConfirmPassword { get; set; }
+        [Required(ErrorMessage = "Vui lòng nhập số điện thoại !")]
+        [Display(Name = "Phone Number")]
+        [DataType(DataType.PhoneNumber)]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Số điện thoạn không hợp lệ")]
+        public string PhoneNumber { get; set; }
+
+        [Required(ErrorMessage = "Vui lòng nhập họ và tên !")]
+        [Display(Name = "Name")]
+        public string Name { get; set; }
+
+        [Required(ErrorMessage = "Vui lòng chọn chức vụ !")]
+        public int RoleID { get; set; }
+        public string Address { get; set; }
     }
 
     public class ResetPasswordViewModel

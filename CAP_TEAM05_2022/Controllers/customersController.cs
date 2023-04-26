@@ -30,6 +30,7 @@ namespace CAP_TEAM05_2022.Controllers
         {
             return View("Index");
         }
+
         public PartialViewResult _Form(int? id, int role)
         {
             if (role == Constants.CUSTOMER)
@@ -46,6 +47,7 @@ namespace CAP_TEAM05_2022.Controllers
             ViewBag.isCreate = true;
             return PartialView("_Form", new customer());
         }
+
         [ValidateAntiForgeryToken]
         public ActionResult Create(customer customer)
         {

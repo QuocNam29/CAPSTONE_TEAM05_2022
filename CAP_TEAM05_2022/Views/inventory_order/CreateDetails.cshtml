@@ -3,68 +3,70 @@
 
 @{
     int i = 0;
-
+    var check = new SelectList(ViewBag.Product, "Id", "Name");
 }
-<div class="ovf-table col-sm-12">
-    <table class="min-w-600 table table-group-divider">
-        <thead>
-            <tr>
-                <th>
-                    Tên sản phẩm
-                </th>
-                <th>
-                    Số lượng
-                </th>
-                <th>
-                    Đơn giá nhập
-                </th>
-                <th>
-                    Thành tiền
-                </th>
-                <th>
-                    Đơn giá bán
-                </th>
-                <th>
-                    Đơn giá bán nợ
-                </th>
-                <th><button type="button" class="btn btn-primary feather icon-plus-square" id="addRow"></button></th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (int j = 0; j < Model?.import_inventory?.Count; j++)
-            {
-                <tr id="rcd[@i]" name="rcd">
-                    <td>
-                        @Html.DropDownListFor(m => m.import_inventory[i].product_id, new SelectList(ViewBag.Product, "Id", "Name", Model.import_inventory[i].product_id), new { @class = "form-control", @required = "true" })
-                    </td>
-                    <td>
-                        @Html.EditorFor(m => m.import_inventory[i].quantity, new { htmlAttributes = new { @class = "form-control", @required = "true", @onchange = "calculate(this)" } })
-                    </td>
-                    <td>
-                        @Html.EditorFor(m => m.import_inventory[i].price_import, new { htmlAttributes = new { @class = "form-control", @required = "true", @onchange = "calculate(this)" } })
-                    </td>
-                    <td>
-                        <label id="total[@i]" name="totalEq" data-val=@((Model.import_inventory[i].price_import * Model.import_inventory[i].quantity ))>
-                            @((Model.import_inventory[i].price_import * Model.import_inventory[i].quantity).ToString("N0")) VNĐ
-                        </label>
-                    </td>
-                    <td>
-                        <button type="button" id='@i' class="btn bi-trash delete-row" onclick="deleteRow(this)"></button>
+@if (check.Any())
+{
+    <div class="ovf-table col-sm-12">
+        <table class="min-w-600 table table-group-divider">
+            <thead>
+                <tr>
+                    <th>
+                        Tên sản phẩm
+                    </th>
+                    <th>
+                        Số lượng
+                    </th>
+                    <th>
+                        Đơn giá nhập
+                    </th>
+                    <th>
+                        Thành tiền
+                    </th>
+                    <th>
+                        Đơn giá bán
+                    </th>
+                    <th>
+                        Đơn giá bán nợ
+                    </th>
+                    <th><button type="button" class="btn btn-primary feather icon-plus-square" id="addRow"></button></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int j = 0; j < Model?.import_inventory?.Count; j++)
+                {
+                    <tr id="rcd[@i]" name="rcd">
+                        <td>
+                            @Html.DropDownListFor(m => m.import_inventory[i].product_id, new SelectList(ViewBag.Product, "Id", "Name", Model.import_inventory[i].product_id), new { @class = "form-control", @required = "true" })
+                        </td>
+                        <td>
+                            @Html.EditorFor(m => m.import_inventory[i].quantity, new { htmlAttributes = new { @class = "form-control", @required = "true", @onchange = "calculate(this)" } })
+                        </td>
+                        <td>
+                            @Html.EditorFor(m => m.import_inventory[i].price_import, new { htmlAttributes = new { @class = "form-control", @required = "true", @onchange = "calculate(this)" } })
+                        </td>
+                        <td>
+                            <label id="total[@i]" name="totalEq" data-val=@((Model.import_inventory[i].price_import * Model.import_inventory[i].quantity ))>
+                                @((Model.import_inventory[i].price_import * Model.import_inventory[i].quantity).ToString("N0")) VNĐ
+                            </label>
+                        </td>
+                        <td>
+                            <button type="button" id='@i' class="btn bi-trash delete-row" onclick="deleteRow(this)"></button>
+                        </td>
+                    </tr>
+                    i++;
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="6">
+                        <label class="float-end" id="totalReceipt"></label>
                     </td>
                 </tr>
-                i++;
-            }
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="6">
-                    <label class="float-end" id="totalReceipt"></label>
-                </td>
-            </tr>
-        </tfoot>
-    </table>
-</div>
-<script>
+            </tfoot>
+        </table>
+    </div>
+    <script>
     var count = $('tr[name="rcd"]').length == 0 ? 0 : $('tr[name="rcd"]').length;
         var total = 0;
         function deleteRow(target) {
@@ -156,4 +158,18 @@
                     });
 });
         });
-</script>
+    </script>
+}
+else
+{
+    <div class="card-body table-border-style">
+        <div class="table-responsive">
+            <div>
+                <div class="alert alert-warning text-center">
+                    <p>Chưa có sản phẩm thuộc nhà cung cấp này</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

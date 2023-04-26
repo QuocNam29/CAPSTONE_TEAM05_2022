@@ -79,6 +79,7 @@ namespace CAP_TEAM05_2022.Controllers
                     inventory_order.Total = total;
                     inventory_order.state = Constants.DEBT_ORDER;
                     inventory_order.payment = payment;
+                    inventory_order.pay_debt = 0;
                     inventory_order.debt = inventory_order.Total - inventory_order.payment;
                     inventory_order.is_old_debt = true;
 

@@ -43,67 +43,67 @@
                         <h5>Tạo đơn nhập hàng</h5>
                     </div>
                     <div class="card-body">
-                        @Html.ValidationSummary()
-                        @using (Html.BeginForm("Create", "inventory_order", FormMethod.Post, new { @novalidate = "novalidate" }))
+                        @using (Html.BeginForm("Create", "inventory_order", FormMethod.Post, new { @novalidate = "novalidate", @class= "InventoryOrderForm" }))
                         {
+                            //@Html.ValidationSummary()
                             @Html.AntiForgeryToken()
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Nhà cung cấp</label>
+                                        @if ((bool)ViewBag.isCreate)
+                                        {
+                                            @Html.DropDownListFor(model => model.supplier_id, (SelectList)ViewBag.Customer, "---- Chọn công ty ----", new { @class = "form-control", @id = "Supplier", @aria_label = "Chọn danh mục thiết bị", @required = "required" })
+                                        }
+                                        @Html.ValidationMessageFor(model => model.supplier_id, "", new { @class = "text-danger" })
 
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="form-label">Nhà cung cấp</label>
-                                    @if ((bool)ViewBag.isCreate)
-                                    {
-                                        @Html.DropDownListFor(model => model.supplier_id, (SelectList)ViewBag.Customer, "---- Chọn công ty ----", new { @class = "form-control",@id="Supplier", @aria_label = "Chọn danh mục thiết bị", @required = "required" })
-                                    }
-                                    @Html.ValidationMessageFor(model => model.supplier_id, "", new { @class = "text-danger" })
-
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="floating-label" for="Text">Phương thức thanh toán</label>
-                                    <div>
-                                        <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-control-lg" name="method" value="@Constants.PAYED_ORDER" onclick="Method1();" checked>
-                                            <label class="form-check-label" for="Subject">Đã thanh toán</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-control-lg" name="method" value="@Constants.DEBT_ORDER" onclick="Method2();">
-                                            <label class="form-check-label" for="Subject">Ghi nợ</label>
-                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-6 debt_method">
-                                <div class="form-group">
-                                    <label class="form-label">Tổng hóa đơn: </label>
-                                    <input type="text" class="form-control" disabled id="totalInventory" value="0">
-                                </div>
-                            </div>
-                            <div class="col-sm-6 debt_method" style="display: none">
-                                <div class="form-group">
-                                    <label class="form-label">Thanh toán trước: </label>
-                                    <input class="form-control Price text-box single-line" data-val="true"
-                                           data-val-length="Vui lòng nhập một giá trị nhỏ hơn hoặc bằng 999,999,999,999"
-                                           data-val-length-max="15" data-val-number="Vui lòng nhập số vào giá tiền."
-                                           data-val-required="Vui lòng nhập số tiền thanh toán trước !"
-                                           id="Repayment" name="Repayment" pattern="[0-9.,]+" placeholder="Nhập số tiền thanh toán trước..." type="text" value="">
-                                    @Html.ValidationMessage("Repayment", "", new { @class = "text-danger" })
-
-
-                                </div>
-                            </div>
-                            <div class="table-responsive" id="dataContainer">
-                                <div class="card-body table-border-style">
-                                    <div class="table-responsive">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="floating-label" for="Text">Phương thức thanh toán</label>
                                         <div>
-                                            <div class="alert alert-warning text-center">
-                                                <p>Vui lòng chọn công ty cung cấp để có thể thực hiện chức năng</p>
+                                            <div class="form-check form-check-inline">
+                                                <input type="radio" class="form-control-lg" name="method" value="@Constants.PAYED_ORDER" onclick="Method1();" checked>
+                                                <label class="form-check-label" for="Subject">Đã thanh toán</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input type="radio" class="form-control-lg" name="method" value="@Constants.DEBT_ORDER" onclick="Method2();">
+                                                <label class="form-check-label" for="Subject">Ghi nợ</label>
                                             </div>
                                         </div>
                                     </div>
-                                </div>                        </div>
+                                </div>
+                                <div class="col-sm-6 debt_method">
+                                    <div class="form-group">
+                                        <label class="form-label">Tổng hóa đơn: </label>
+                                        <input type="text" class="form-control" disabled id="totalInventory" value="0">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 debt_method" style="display: none">
+                                    <div class="form-group">
+                                        <label class="form-label">Thanh toán trước: </label>
+                                        <input class="form-control Price text-box single-line" data-val="true"
+                                               data-val-length="Vui lòng nhập một giá trị nhỏ hơn hoặc bằng 999,999,999,999"
+                                               data-val-length-max="15" data-val-number="Vui lòng nhập số vào giá tiền."
+                                               data-val-required="Vui lòng nhập số tiền thanh toán trước !"
+                                               id="Repayment" name="Repayment" pattern="[0-9.,]+" placeholder="Nhập số tiền thanh toán trước..." type="text" value="">
+                                        @Html.ValidationMessage("Repayment", "", new { @class = "text-danger" })
+
+
+                                    </div>
+                                </div>
+                                <div class="table-responsive" id="dataContainer">
+                                    <div class="card-body table-border-style">
+                                        <div class="table-responsive">
+                                            <div>
+                                                <div class="alert alert-danger text-center">
+                                                    <p>Vui lòng chọn công ty cung cấp để có thể thực hiện chức năng</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="form-group">
@@ -124,6 +124,45 @@
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     <script type="text/javascript">
+        $('.InventoryOrderForm').submit(function (e) {
+            var form = $(this);
+            var _this = $(this);
+            var _form = _this.closest("form");
+            var isvalid = _form.valid()
+            // Check if form is valid then submit ajax
+            if (isvalid) {
+                e.preventDefault();
+                var url = form.attr('action');
+                $('.modal').modal('hide');
+                Swal.fire({
+                    title: 'Bạn chắc chắn đãn kiểm tra đúng dữ liệu ?',
+                    text: "Bạn không thể hoàn nguyên nếu có sai sót trong quá trình nhập hàng !",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Xác nhận'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: url,
+                            type: 'POST',
+                            data: form.serialize(),
+                            success: function (data) {                            
+                                if (data.status) {
+                                    // Refresh table data
+                                    Swal.fire('Thành công !', data.message, 'success')
+                                    form[0].reset();
+                                    GetCreateDetails(-1);
+                                    form.removeClass('was-validated');
+                                } else {
+                                    Swal.fire('Lỗi !', data.message, 'error')
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
     function Method1() {
         $(".debt_method").hide();
     }

@@ -8,6 +8,14 @@ namespace CAP_TEAM05_2022.Helper
         public static readonly string ADMIN_ROLE = "Quản trị viên";
         public static readonly string STAFF_ROLE = "Nhân viên";
 
+
+        public static readonly int ADMIN_ACCOUNT = 1;
+        public static readonly int STAFF_ACCOUNT = 2;
+        public static readonly Dictionary<int, string> RoleUser = new Dictionary<int, string> {
+            {ADMIN_ACCOUNT, "Quản trị viên"},
+            {STAFF_ACCOUNT, "Nhân viên" }
+        };
+
         /// <summary>
         /// Type Customer
         ///  </summary>

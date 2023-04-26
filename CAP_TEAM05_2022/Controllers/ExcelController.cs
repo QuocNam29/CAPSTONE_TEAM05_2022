@@ -168,7 +168,7 @@ namespace CAP_TEAM05_2022.Controllers
                 validation_supplier.Formula.Values.Add(item.name);
             }
 
-            var validation_category = Sheet.Cells["C2:D999999"].DataValidation.AddListDataValidation();
+            var validation_category = Sheet.Cells["C2:C999999"].DataValidation.AddListDataValidation();
             validation_category.ShowErrorMessage = true;
             validation_category.ErrorStyle = ExcelDataValidationWarningStyle.information;
             validation_category.ErrorTitle = "Lỗi nhập danh mục";
@@ -439,9 +439,9 @@ namespace CAP_TEAM05_2022.Controllers
                                         int category_id = check_category.id;
                                         int supplier_id = check_supplier.id;
 
-                                        var check_product = db.products.Where(c => c.name == name_product && c.category_id == category_id 
+                                        var check_product = db.products.FirstOrDefault(c => c.name == name_product && c.category_id == category_id 
                                                                                 && c.supplier_id == supplier_id && c.unit == unit_product
-                                                                                && c.unit_swap == unit_swap_product && c.quantity_swap == quantity_swap_product).FirstOrDefault();
+                                                                                && c.unit_swap == unit_swap_product && c.quantity_swap == quantity_swap_product);
                                         //Nếu không có sản phẩm nào tồn tại thì nhập sản phẩm
                                         if (check_product == null)
                                         {
@@ -464,7 +464,6 @@ namespace CAP_TEAM05_2022.Controllers
                                             product.code = "SP" + CodeRandom.RandomCode();
                                             product.name_category = name_category;
                                             product.name_group = name_supplier;
-
                                             db.products.Add(product);
 
                                             price_product price_Product = new price_product();

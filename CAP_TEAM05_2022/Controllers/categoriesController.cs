@@ -27,6 +27,7 @@ namespace CAP_TEAM05_2022.Controllers
             var categories = db.categories.OrderByDescending(c => c.id).ToList();
             return View(categories);
         }
+
         [HttpGet]
         public PartialViewResult _Form(int? id)
         {
@@ -39,6 +40,7 @@ namespace CAP_TEAM05_2022.Controllers
             ViewBag.isCreate = true;
             return PartialView("_Form", new category());
         }
+
         [ValidateAntiForgeryToken]
         public ActionResult Create(category category)
         {
