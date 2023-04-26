@@ -83,13 +83,13 @@ namespace CAP_TEAM05_2022.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult _Form(int? id)
+        public PartialViewResult _Form(string id)
         {
             if (id != null)
             {
                 ViewBag.isCreate = false;
-                var aspNetUser = db.AspNetUsers.Find(id);
-                return PartialView("_Form", aspNetUser);
+                ViewBag.aspNetUser = db.AspNetUsers.Find(id);
+                return PartialView("_Form");
             }
             ViewBag.isCreate = true;
             return PartialView("_Form");
@@ -161,6 +161,77 @@ namespace CAP_TEAM05_2022.Controllers
             }
             return Json(new { status, message }, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit_User([Bind(Include = "Email, RoleID, PhoneNumber, Address, Name")] RegisterViewModel EditUser)
+        {
+            string message = "";
+            bool status = true;
+            try
+            {
+                user user = db.users.FirstOrDefault(x=> x.email == EditUser.Email);
+                var aspNetUser = UserManager.FindById(user.id);
+                string oldRole = UserManager.GetRoles(user.id).FirstOrDefault();
+                AspNetRole role = db.AspNetRoles.Find(EditUser.RoleID.ToString());
+                if (user.phone == EditUser.PhoneNumber)
+                {
+                    user.name = EditUser.Name;
+                    user.phone = EditUser.PhoneNumber;
+                    user.address = EditUser.Address;
+                    user.updated_at = DateTime.Now;
+                    db.Entry(user).State = EntityState.Modified;
+                    aspNetUser.PhoneNumber = EditUser.PhoneNumber;
+                    aspNetUser.AccessFailedCount = EditUser.RoleID;
+                    db.SaveChanges();
+                    message = "Cập nhật thông tin nhân viên thành công !";
+                }
+                else
+                {
+                    int check = db.users.Where(c => c.phone == EditUser.PhoneNumber).Count();
+                    if (check > 0)
+                    {
+                        status = false;
+                        message = "Số điện thoại đã được sử dụng !";
+                    }
+                    else
+                    {
+
+                        user.name = EditUser.Name;
+                        user.phone = EditUser.PhoneNumber;
+                        user.address = EditUser.Address;
+                        user.updated_at = DateTime.Now;
+                        db.Entry(user).State = EntityState.Modified;
+                        aspNetUser.PhoneNumber = EditUser.PhoneNumber;
+                        aspNetUser.AccessFailedCount = EditUser.RoleID;
+                        db.SaveChanges();
+                        message = "Cập nhật thông tin nhân viên thành công !";
+                    }
+
+                }
+                if (oldRole != null)
+                {
+                    // Update user role
+                    UserManager.RemoveFromRole(user.id, oldRole);
+                    UserManager.AddToRole(user.id, role.Name);
+                }
+                else
+                {
+                    // Add user to role
+                    UserManager.AddToRole(user.id, role.Name);
+                }
+
+            }
+            catch (Exception e)
+            {
+
+                status = false;
+                message = e.Message;
+            }
+
+            return Json(new { status, message }, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult EditStatus_User(AspNetUser user)
         {
             AspNetUser asp_user = db.AspNetUsers.Find(user.Id);
@@ -191,7 +262,7 @@ namespace CAP_TEAM05_2022.Controllers
             emp.remember_token = user1.AspNetRoles.FirstOrDefault().Id;
             return Json(emp);
         }
-        public JsonResult UpdateUser(string user_id, string role_id, string fullName, string phone, string address)
+/*        public JsonResult UpdateUser(string user_id, string role_id, string fullName, string phone, string address)
         {
             string message = "";
             bool status = true;
@@ -258,7 +329,7 @@ namespace CAP_TEAM05_2022.Controllers
 
             return Json(new { status, message }, JsonRequestBehavior.AllowGet);
         }
-        // GET: AspNetUsers/Edit/5
+*/        // GET: AspNetUsers/Edit/5
         public ActionResult Edit()
         {
             string id = User.Identity.GetUserId();

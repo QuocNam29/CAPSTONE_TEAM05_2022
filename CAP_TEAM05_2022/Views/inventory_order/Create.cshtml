@@ -50,7 +50,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label class="form-label">Nhà cung cấp</label>
+                                        <label class="form-label">Công ty cung cấp<span class="text-danger">*</span></label>
                                         @if ((bool)ViewBag.isCreate)
                                         {
                                             @Html.DropDownListFor(model => model.supplier_id, (SelectList)ViewBag.Customer, "---- Chọn công ty ----", new { @class = "form-control", @id = "Supplier", @aria_label = "Chọn danh mục thiết bị", @required = "required" })
@@ -61,7 +61,7 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label class="floating-label" for="Text">Phương thức thanh toán</label>
+                                        <label class="floating-label" for="Text">Phương thức thanh toán <span class="text-danger">*</span></label>
                                         <div>
                                             <div class="form-check form-check-inline">
                                                 <input type="radio" class="form-control-lg" name="method" value="@Constants.PAYED_ORDER" onclick="Method1();" checked>
@@ -82,7 +82,7 @@
                                 </div>
                                 <div class="col-sm-6 debt_method" style="display: none">
                                     <div class="form-group">
-                                        <label class="form-label">Thanh toán trước: </label>
+                                        <label class="form-label">Thanh toán trước<span class="text-danger">*</span>: </label>
                                         <input class="form-control Price text-box single-line" data-val="true"
                                                data-val-length="Vui lòng nhập một giá trị nhỏ hơn hoặc bằng 999,999,999,999"
                                                data-val-length-max="15" data-val-number="Vui lòng nhập số vào giá tiền."
@@ -135,7 +135,7 @@
                 var url = form.attr('action');
                 $('.modal').modal('hide');
                 Swal.fire({
-                    title: 'Bạn chắc chắn đãn kiểm tra đúng dữ liệu ?',
+                    title: 'Bạn chắc chắn đã kiểm tra đúng dữ liệu ?',
                     text: "Bạn không thể hoàn nguyên nếu có sai sót trong quá trình nhập hàng !",
                     icon: 'warning',
                     showCancelButton: true,

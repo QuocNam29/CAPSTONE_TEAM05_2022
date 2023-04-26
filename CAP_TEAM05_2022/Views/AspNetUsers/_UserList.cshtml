@@ -58,7 +58,7 @@
                 <td>
                     @if (item.Email != User.Identity.Name)
                     {
-                        <button class="btn btn-success" onclick="GetUser(this, '@item.Id')">
+                        <button class="btn btn-success" onclick="editUser('@item.Id')">
                             <i class="feather icon-edit">
                             </i>
                         </button>

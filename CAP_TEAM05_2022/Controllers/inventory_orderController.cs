@@ -178,7 +178,7 @@ namespace CAP_TEAM05_2022.Controllers
                         inventory_order.debt = inventory_order.Total - inventory_order.payment;
                         if (payment > total)
                         {
-                            message = "Số tiền trả nợ đang lớn hơn tổng đơn nhập hàng !";
+                            message = "Số tiền trả trước đang lớn hơn tổng giá trị đơn nhập hàng !";
                             status = false;
                             return Json(new { status, message }, JsonRequestBehavior.AllowGet);
                         }

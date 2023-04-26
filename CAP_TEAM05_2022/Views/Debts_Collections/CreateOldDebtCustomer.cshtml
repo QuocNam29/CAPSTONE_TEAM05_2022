@@ -45,14 +45,14 @@
                     </div>
                     <div class="card-body">
                         @Html.ValidationSummary()
-                        @using (Html.BeginForm("CreateOldDebtCustomer", "Debts_Collections", FormMethod.Post, new { @novalidate = "novalidate" }))
+                        @using (Html.BeginForm("CreateOldDebtCustomer", "Debts_Collections", FormMethod.Post, new { @novalidate = "novalidate", @class = "OldDebtOrderForm" }))
                         {
                             @Html.AntiForgeryToken()
 
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="form-label">Khách hàng</label>
+                                    <label class="form-label">Khách hàng<span class="text-danger">*</span></label>
                                     @if ((bool)ViewBag.isCreate)
                                     {
                                         @Html.DropDownListFor(model => model.customer_id, (SelectList)ViewBag.Customer, "---- Chọn khách hàng nợ ----", new { @class = "form-control", @id = "Supplier", @aria_label = "Chọn danh mục thiết bị", @required = "required" })
@@ -80,7 +80,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="form-label">Đã thanh toán: </label>
+                                    <label class="form-label">Đã thanh toán<span class="text-danger">*</span>:</label>
                                     <input class="form-control Price text-box single-line" data-val="true"
                                            data-val-length="Vui lòng nhập một giá trị nhỏ hơn hoặc bằng 999,999,999,999"
                                            data-val-length-max="15" data-val-number="Vui lòng nhập số vào giá tiền."
@@ -94,7 +94,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label class="form-label">Ghi chú: </label>
-                                    <textarea name="note" class="form-control"></textarea>
+                                    <textarea name="note" class="form-control" placeholder="Ghi chú..."></textarea>
 
 
                                 </div>
@@ -180,6 +180,43 @@
         $('form').validate();
         $.extend($.validator.messages, {
             required: "Không để trống",
+        });
+        $('.OldDebtOrderForm').submit(function (e) {
+            var form = $(this);
+            var _this = $(this);
+            var _form = _this.closest("form");
+            var isvalid = _form.valid()
+            // Check if form is valid then submit ajax
+            if (isvalid) {
+                e.preventDefault();
+                var url = form.attr('action');
+                $('.modal').modal('hide');
+                Swal.fire({
+                    title: 'Bạn chắc chắn đã kiểm tra đúng dữ liệu ?',
+                    text: "Bạn không thể hoàn nguyên nếu có sai sót trong quá trình trả nợ !",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Xác nhận'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: url,
+                            type: 'POST',
+                            data: form.serialize(),
+                            success: function (data) {
+                                if (data.status) {
+                                    // Refresh table data
+                                    Swal.fire('Thành công !', data.message, 'success')
+                                    form[0].reset();
+                                    form.removeClass('was-validated');
+                                } else {
+                                    Swal.fire('Lỗi !', data.message, 'error')
+                                }
+                            }
+                        });
+                    }
+                });
+            }
         });
     </script>
     <script>
