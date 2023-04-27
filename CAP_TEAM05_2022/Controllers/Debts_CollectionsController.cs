@@ -82,7 +82,12 @@ namespace CAP_TEAM05_2022.Controllers
                     inventory_order.pay_debt = 0;
                     inventory_order.debt = inventory_order.Total - inventory_order.payment;
                     inventory_order.is_old_debt = true;
-
+                    if (inventory_order.payment > inventory_order.Total)
+                    {
+                        message = "Số tiền trả trước đang lớn hơn tổng giá trị đơn nợ cũ !";
+                        status = false;
+                        return Json(new { status, message }, JsonRequestBehavior.AllowGet);
+                    }
                     db.inventory_order.Add(inventory_order);
                     var check_debt = db.debts.Where(d => d.inventory_order.supplier_id == inventory_order.supplier_id && d.inventory_id != null).Any();
                     if (check_debt)

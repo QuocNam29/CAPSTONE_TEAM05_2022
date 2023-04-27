@@ -11,7 +11,6 @@ using Constants = CAP_TEAM05_2022.Helper.Constants;
 
 namespace CAP_TEAM05_2022.Controllers
 {
-    [CustomAuthorize(Roles = "Quản trị viên, Nhân viên")]
 
     public class salesController : Controller
     {

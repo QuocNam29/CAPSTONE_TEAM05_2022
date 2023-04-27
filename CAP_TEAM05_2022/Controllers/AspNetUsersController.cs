@@ -97,7 +97,7 @@ namespace CAP_TEAM05_2022.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create_User([Bind(Include = "Email, RoleID, PhoneNumber, Address, Name")] RegisterViewModel aspNetUser)
+        public async Task<ActionResult> Create_User([Bind(Include = "Email, RoleID, PhoneNumber, Address, Name, Password, ConfirmPassword")] RegisterViewModel aspNetUser)
         {
             string message = "";
             bool status = true;
@@ -106,7 +106,7 @@ namespace CAP_TEAM05_2022.Controllers
                 if (ModelState.IsValid)
                 {
                     var query_email = UserManager.FindByEmail(aspNetUser.Email);
-                    var role = db.AspNetRoles.Find(aspNetUser.RoleID);
+                    var role = db.AspNetRoles.Find(aspNetUser.RoleID.ToString());
 
                     if (query_email == null)
                     {

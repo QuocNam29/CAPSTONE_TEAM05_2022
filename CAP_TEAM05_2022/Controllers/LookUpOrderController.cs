@@ -14,6 +14,7 @@ namespace CAP_TEAM05_2022.Controllers
             ViewBag.CodeCustomer = false;
             return View();
         }
+
         public ActionResult LookUpOrder(string code_customer)
         {
             if (!String.IsNullOrEmpty(code_customer))
@@ -22,7 +23,7 @@ namespace CAP_TEAM05_2022.Controllers
                 if (customer.Any())
                 {
                     var sales = db.sales.Where(s => s.customer.code == code_customer);
-                    return View(sales.OrderByDescending(c => c.id).ToList());
+                    return View(sales.OrderByDescending(c => c.created_at).ToList());
                 }
             }
             ViewBag.CodeCustomer = true;
