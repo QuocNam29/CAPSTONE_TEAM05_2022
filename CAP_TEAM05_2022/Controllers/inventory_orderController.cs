@@ -254,6 +254,73 @@ namespace CAP_TEAM05_2022.Controllers
             return Json(new { status, message }, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public ActionResult Delete_InventoryOrder(inventory_order order)
+        {
+            bool status = true;
+            string mess = "";
+            try
+            {
+                inventory_order inventory_Order = db.inventory_order.Find(order.id);
+                foreach (var item in inventory_Order.import_inventory.ToList())
+                {
+                    if (item.sold > 0 || item.quantity_remaining > 0)
+                    {
+                        status = false;
+                        mess = "Xóa thất bại ! Sản phẩm trong đơn nhập hàng đã được bán";
+                        return Json(new { status = status, message = mess }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+
+                if (inventory_Order.state == Constants.DEBT_ORDER)
+                {
+                    debt debt = db.debts.Where(x => x.inventory_id == inventory_Order.id).FirstOrDefault();
+                    customer_debt customer_Debt = db.customer_debt.Where(x => x.inventory_id == inventory_Order.id).FirstOrDefault();
+
+                    bool checkAfterDebt = db.debts.Where(x => x.inventory_id == inventory_Order.id && x.created_at > debt.created_at && x.id != debt.id).Any();
+                    bool checkAftercustomer_Debt = db.customer_debt.Where(x => x.customer_id == inventory_Order.supplier_id && x.created_at > customer_Debt.created_at && x.id != customer_Debt.id).Any();
+                    if (checkAfterDebt || checkAftercustomer_Debt)
+                    {
+                        status = false;
+                        mess = "Xóa thất bại ! Đơn nhập hàng đã được ghi nhận và đang trong quá trình trả nợ.";
+                        return Json(new { status = status, message = mess }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        db.debts.Remove(debt);
+                        db.customer_debt.Remove(customer_Debt);
+                        foreach (var item in inventory_Order.import_inventory.ToList())
+                        {
+                            product product = db.products.Find(item.product_id);
+                            product.quantity -= item.quantity;
+                            db.Entry(product).State = EntityState.Modified;
+                            db.import_inventory.Remove(item);
+                        }
+                        db.inventory_order.Remove(inventory_Order);
+                    }
+                }
+                else
+                {
+                    foreach (var item in inventory_Order.import_inventory.ToList())
+                    {
+                        product product = db.products.Find(item.product_id);
+                        product.quantity -= item.quantity;
+                        db.Entry(product).State = EntityState.Modified;
+                        db.import_inventory.Remove(item);
+                    }
+                    db.inventory_order.Remove(inventory_Order);
+                }
+
+                db.SaveChanges();
+                mess = "Xóa đơn nhập hàng thành công";
+            }
+            catch (Exception e)
+            {
+                status = false;
+                mess = e.Message;
+            }
+            return Json(new { status = status, message = mess }, JsonRequestBehavior.AllowGet);
+        }
 
         protected override void Dispose(bool disposing)
         {

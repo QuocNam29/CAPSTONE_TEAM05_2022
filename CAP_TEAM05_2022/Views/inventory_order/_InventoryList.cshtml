@@ -20,7 +20,7 @@
         {
             no++;
             <tr>
-                <td>@no</td>
+                <td>@no <input hidden type="text" name="record" value="@item.code"></td>
                 <td>@item.code</td>
                 <td>@(item.customer?.name)</td>
                 <td class="text-center">
@@ -58,8 +58,60 @@
                             </i>
                         </span>
                     </button>
+                    <button class="btn btn-danger" onclick="deleteInventoryOrder('@item.id', '@item.code')" id="Delete">
+                        <i class="feather icon-trash-2">
+                        </i>
+                    </button>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+<script>
+    function deleteInventoryOrder(id, code) {
+        Swal.fire({
+            title: 'Bạn có chắc chắn muốn xóa đơn nhập hàng ?',
+            text: "Bạn không thể hoàn nguyên nếu có sai xót !",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Xác nhận'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var order = {};
+                order.id = id;
+                $.ajax({
+                    url: '@Url.Action("Delete_InventoryOrder", "inventory_order")',
+                    data: JSON.stringify(order),
+                    type: "POST",
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json'
+                })
+                    .done(function (data) {
+                        if (data.status) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Thành công',
+                                text: data.message,
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    $("table tbody").find('input[name="record"]').each(function () {
+                                        if (Contains($(this).val(), code)) {
+                                            $(this).parents("tr").remove();
+                                        }
+                                    });
+                                }
+                            })
+
+                        }
+                        else {
+                            Swal.fire('Thất bại !', data.message, 'error');
+                        }
+                    })
+                  .error(function (data) {
+                   swal("OOps", "Chúng tôi không thể kết nối đến server!", "error");
+               })
+            }
+        })
+    }
+
+</script>
