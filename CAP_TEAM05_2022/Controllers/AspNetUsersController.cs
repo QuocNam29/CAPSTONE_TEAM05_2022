@@ -143,7 +143,12 @@ namespace CAP_TEAM05_2022.Controllers
                         }
                         else
                         {
-                            return Json(new { status = false, message = result.Errors }, JsonRequestBehavior.AllowGet);
+                            status = false;
+                            foreach (var item in result.Errors)
+                            {
+                                message += item.ToString();
+                            }
+                            return Json(new { status, message }, JsonRequestBehavior.AllowGet);
                         }
                     }
                     else

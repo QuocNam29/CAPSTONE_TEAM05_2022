@@ -71,6 +71,7 @@ namespace CAP_TEAM05_2022.Models
 
         [Required(ErrorMessage = "Vui lòng nhập mật khẩu !")]
         [StringLength(100, ErrorMessage = "Mật khẩu phải chứa ít nhất 6 ký tự.", MinimumLength = 6)]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$", ErrorMessage = "Mật khẩu phải bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt")]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
