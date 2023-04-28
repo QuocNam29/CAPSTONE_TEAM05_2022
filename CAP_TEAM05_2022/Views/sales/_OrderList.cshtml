@@ -9,11 +9,11 @@
     <thead>
         <tr>
             <th>STT</th>
-            <th>Mã đơn nợ cũ</th>
+            <th>Mã đơn hàng</th>
             <th>Mã khách hàng</th>
             <th>Tên khách hàng</th>
             <th>Số điện thoại</th>
-            <th class="text-center">Tổng đơn nợ</th>
+            <th class="text-center">Tổng giá trị</th>
             <th class="text-center">Phương thức</th>
             <th class="text-center">Ghi chú</th>
             <th class="text-center">Ngày giao dịch</th>
@@ -34,16 +34,11 @@
                 <td class="text-center">
                     @String.Format("{0:0,00}", item.total)
                 </td>
-
-
                 <td class="text-center">
-                    <span class="text-@(item.total == item.prepayment ? "info" : item.method == 1 ? "success" : "danger")">
-                        @(item.method == 1 ? "Đã thanh toán" : "Ghi nợ") @((item.total == item.prepayment ? "(Đã thanh toán xong)" : ""))
+                    <span class="text-@(item.total == (item.prepayment + item.pay_debt) ? "info" : item.method == Constants.PAYED_ORDER  ? "success" : "danger")">
+                        @(item.method == Constants.PAYED_ORDER ? "Đã thanh toán" : "Ghi nợ") @((item.total == (item.prepayment + item.pay_debt) ? "(Đã thanh toán xong)" : ""))
                     </span>
                 </td>
-
-
-
                 <td class="text-center">
                     @item.note
                 </td>

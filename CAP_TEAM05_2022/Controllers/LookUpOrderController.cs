@@ -19,9 +19,11 @@ namespace CAP_TEAM05_2022.Controllers
         {
             if (!String.IsNullOrEmpty(code_customer))
             {
-                var customer = db.customers.Where(c => c.code == code_customer);
-                if (customer.Any())
+                var customer = db.customers.FirstOrDefault(c => c.code == code_customer);
+                if (customer != null)
                 {
+                    TempData["customerCode"] = customer.code;
+                    TempData["customerName"] = customer.name;
                     var sales = db.sales.Where(s => s.customer.code == code_customer);
                     return View(sales.OrderByDescending(c => c.created_at).ToList());
                 }

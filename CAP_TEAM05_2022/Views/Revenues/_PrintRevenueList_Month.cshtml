@@ -1,8 +1,12 @@
 ﻿@model IEnumerable<CAP_TEAM05_2022.Models.sale>
+@using Constants = CAP_TEAM05_2022.Helper.Constants;
+
 @{
     int no1 = 0;
     var first_item = Model.FirstOrDefault();
     decimal tongNhap = 0;
+    decimal sumDebt = 0;
+
 }
 <style>
     table {
@@ -39,33 +43,36 @@
                     @foreach (var item in Model)
                     {
                         no1++;
-                    <tr class="click-hover" >
-                        <td class="text-center">
-                            @no1
-                        </td>
-                        <td class="text-center">
-                            @item.customer.name
-                        </td>
-                        <td class="text-center">@item.code</td>
-                        <td class="text-center">
-                            @String.Format("{0:HH:mm - dd/MM/yyy}", item.created_at)
-                        </td>
-                        <td class="text-center">
-                            @item.total.ToString("N0") VNĐ
-                        </td>
-                        <td class="text-center">
-                            @(item.prepayment!=null ? (((decimal)(item.prepayment + item.pay_debt)).ToString("N0") + " VNĐ") : "")
-                        </td>
-                        <td class="text-center">
-                            @(item.prepayment!=null ? (((decimal)(item.total - (item.prepayment + item.pay_debt))).ToString("N0") + " VNĐ") : "")
-                        </td>
-                        <td class="text-center">
-                            <span class="text-@(item.total == item.prepayment ? "info" : item.method == 1 ? "success" : "danger")">@(item.method == 1 ? "Đã thanh toán" : "Ghi nợ") @((item.total == item.prepayment ? "(Đã thanh toán xong)" : ""))</span>
-                        </td>
-                        <td class="text-center">
-                            @item.user.name
-                        </td>
-                    </tr>
+                        <tr class="click-hover">
+                            <td class="text-center">
+                                @no1
+                            </td>
+                            <td class="text-center">
+                                @item.customer.name
+                            </td>
+                            <td class="text-center">@item.code</td>
+                            <td class="text-center">
+                                @String.Format("{0:HH:mm - dd/MM/yyy}", item.created_at)
+                            </td>
+                            <td class="text-center">
+                                @item.total.ToString("N0") VNĐ
+                            </td>
+                            <td class="text-center">
+                                @(item.prepayment!=null && item.method == Constants.DEBT_ORDER ? (((decimal)(item.prepayment + item.pay_debt)).ToString("N0") + " VNĐ") : "")
+                            </td>
+                            <td class="text-center">
+                                @(item.prepayment!=null && item.method == Constants.DEBT_ORDER ? (((decimal)(item.total - (item.prepayment + item.pay_debt))).ToString("N0") + " VNĐ") : "")
+                                @{
+                                    sumDebt += item.prepayment != null && item.method == Constants.DEBT_ORDER ? ((decimal)(item.total - (item.prepayment + item.pay_debt))) : 0;
+                                }
+                            </td>
+                            <td class="text-center">
+                                <span class="text-@(item.total == item.prepayment ? "info" : item.method == 1 ? "success" : "danger")">@(item.method == 1 ? "Đã thanh toán" : "Ghi nợ") @((item.total == item.prepayment ? "(Đã thanh toán xong)" : ""))</span>
+                            </td>
+                            <td class="text-center">
+                                @item.user.name
+                            </td>
+                        </tr>
                         foreach (var item1 in item.sale_details)
                         {
                             foreach (var item2 in item1.revenues)
@@ -76,7 +83,7 @@
                                 }
                                 else
                                 {
-                                    tongNhap += item2.quantity * (decimal)(item2.import_inventory.price_import/ item2.import_inventory.product.quantity_swap);
+                                    tongNhap += item2.quantity * (decimal)(item2.import_inventory.price_import / item2.import_inventory.product.quantity_swap);
 
                                 }
                             }
@@ -100,13 +107,16 @@
                 </div>
                 <div class="form-group">
                     <p class="mb-0">
-                        
                         Tổng tiền nhập hàng: <span><b>@tongNhap.ToString("N0")VNĐ</b></span>
                     </p>
                 </div>
                 <div class="form-group">
                     <p class="mb-0">
-                        
+                        Còn nợ: <span class="text-danger"><b>@sumDebt.ToString("N0") VNĐ</b></span>
+                    </p>
+                </div>
+                <div class="form-group">
+                    <p class="mb-0">
                         Lợi nhuận: <span class="text-@((Model.Sum(x => x.total) - tongNhap) >= 0 ? "success" : "danger")"><b>@((Model.Sum(x => x.total) - tongNhap).ToString("N0"))VNĐ</b></span>
                     </p>
                 </div>

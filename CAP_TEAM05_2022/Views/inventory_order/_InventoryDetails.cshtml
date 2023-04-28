@@ -155,9 +155,16 @@
                                                             </span>
                                                         </div>
                                                         <div>
+                                                            Đã trả nợ:
+                                                            <span class="text-success">
+                                                                @(((decimal)Inventory.pay_debt).ToString("N0")) VNĐ
+                                                            </span>
+                                                        </div>
+                                                        <hr />
+                                                        <div>
                                                             Còn nợ:
                                                             <span class="text-danger">
-                                                                @(((decimal)(Inventory.Total - Inventory.payment)).ToString("N0")) VNĐ
+                                                                @(((decimal)(Inventory.Total - Inventory.payment - Inventory.pay_debt)).ToString("N0")) VNĐ
                                                             </span>
                                                         </div>
                                                     }

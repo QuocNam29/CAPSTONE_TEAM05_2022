@@ -1236,8 +1236,8 @@ namespace CAP_TEAM05_2022.Controllers
                 Sheet.Cells[string.Format("B{0}", row)].Value = item.code;
                 Sheet.Cells[string.Format("C{0}", row)].Value = String.Format("{0:HH:mm - dd/MM/yyy}", item.created_at);
                 Sheet.Cells[string.Format("D{0}", row)].Value = item.total;
-                Sheet.Cells[string.Format("E{0}", row)].Value = item.prepayment != null ? (int)(item.prepayment + item.pay_debt) : 0;
-                Sheet.Cells[string.Format("F{0}", row)].Value = item.prepayment != null ? (int)(item.total - (item.prepayment + item.pay_debt)) : 0;
+                Sheet.Cells[string.Format("E{0}", row)].Value = item.prepayment != null && item.method == Constants.DEBT_ORDER ? (int)(item.prepayment + item.pay_debt) : 0;
+                Sheet.Cells[string.Format("F{0}", row)].Value = item.prepayment != null && item.method == Constants.DEBT_ORDER ? (int)(item.total - (item.prepayment + item.pay_debt)) : 0;
                 Sheet.Cells[string.Format("G{0}", row)].Value = (item.method == 1 ? "Đã thanh toán" : "Ghi nợ") + (item.total == item.prepayment ? "(Đã thanh toán xong)" : "");
                 Sheet.Cells[string.Format("H{0}", row)].Value = item.user?.name;
                 row++;
@@ -1350,8 +1350,8 @@ namespace CAP_TEAM05_2022.Controllers
                 Sheet.Cells[string.Format("B{0}", row)].Value = item.code;
                 Sheet.Cells[string.Format("C{0}", row)].Value = String.Format("{0:HH:mm - dd/MM/yyy}", item.created_at);
                 Sheet.Cells[string.Format("D{0}", row)].Value = item.total;
-                Sheet.Cells[string.Format("E{0}", row)].Value = item.prepayment != null ? (int)(item.prepayment + item.pay_debt) : 0;
-                Sheet.Cells[string.Format("F{0}", row)].Value = item.prepayment != null ? (int)(item.total - (item.prepayment + item.pay_debt)) : 0;
+                Sheet.Cells[string.Format("E{0}", row)].Value = item.prepayment != null && item.method == Constants.DEBT_ORDER ? (int)(item.prepayment + item.pay_debt) : 0;
+                Sheet.Cells[string.Format("F{0}", row)].Value = item.prepayment != null && item.method == Constants.DEBT_ORDER ? (int)(item.total - (item.prepayment + item.pay_debt)) : 0;
                 Sheet.Cells[string.Format("G{0}", row)].Value = (item.method == 1 ? "Đã thanh toán" : "Ghi nợ") + (item.total == item.prepayment ? "(Đã thanh toán xong)" : "");
                 Sheet.Cells[string.Format("H{0}", row)].Value = item.user?.name;
                 row++;

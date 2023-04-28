@@ -1,4 +1,6 @@
 ﻿@model IEnumerable<CAP_TEAM05_2022.Models.inventory_order>
+@using Constants = CAP_TEAM05_2022.Helper.Constants;
+
 @{
     int no = 0;
 }
@@ -19,51 +21,40 @@
         @foreach (var item in Model)
         {
             no++;
-            <tr>
-                <td>@no <input hidden type="text" name="record" value="@item.code"></td>
-                <td>@item.code</td>
-                <td>@(item.customer?.name)</td>
-                <td class="text-center">
-                    @(((decimal)item.Total).ToString("N0")) VNĐ
-                </td>
-
-                @if (item.state == 1)
-                {
-                    <td class="text-center">
-                        Đã thanh toán
-                    </td>
-                }
-                else
-                {
-                    <td class="text-center">
-                        Ghi nợ
-                    </td>
-                }
-
-
-
-                <td class="text-center">
-                    @String.Format("{0:HH:mm - dd/MM/yyy}", item.create_at)
-                </td>
-                <td>
-                    <button title="Xem chi tiết" class="btn btn-info" onclick="GetList_InventoryDetails('@item.id', 1)">
-                        <span class="pcoded-micon">
-                            <i class="fas fa-info">
-                            </i>
-                        </span>
-                    </button>
-                    <button title="Đổi trả" class="btn btn-success" onclick="GetList_InventoryDetails('@item.id', 2)">
-                        <span class="pcoded-micon">
-                            <i class="fas fa-retweet">
-                            </i>
-                        </span>
-                    </button>
-                    <button class="btn btn-danger" onclick="deleteInventoryOrder('@item.id', '@item.code')" id="Delete">
-                        <i class="feather icon-trash-2">
+        <tr>
+            <td>@no <input hidden type="text" name="record" value="@item.code"></td>
+            <td>@item.code</td>
+            <td>@(item.customer?.name)</td>
+            <td class="text-center">
+                @(((decimal)item.Total).ToString("N0")) VNĐ
+            </td>
+            <td class="text-center">
+                <span class="text-@(item.Total <= (item.payment + item.pay_debt) ? "info" : item.state == Constants.PAYED_ORDER ? "success" : "danger")">
+                    @(item.state == Constants.PAYED_ORDER ? "Đã thanh toán" : "Ghi nợ") @((item.Total <= (item.payment + item.pay_debt) ? "(Đã thanh toán xong)" : ""))
+                </span>
+            </td>
+            <td class="text-center">
+                @String.Format("{0:HH:mm - dd/MM/yyy}", item.create_at)
+            </td>
+            <td>
+                <button title="Xem chi tiết" class="btn btn-info" onclick="GetList_InventoryDetails('@item.id', 1)">
+                    <span class="pcoded-micon">
+                        <i class="fas fa-info">
                         </i>
-                    </button>
-                </td>
-            </tr>
+                    </span>
+                </button>
+                <button title="Đổi trả" class="btn btn-success" onclick="GetList_InventoryDetails('@item.id', 2)">
+                    <span class="pcoded-micon">
+                        <i class="fas fa-retweet">
+                        </i>
+                    </span>
+                </button>
+                <button class="btn btn-danger" onclick="deleteInventoryOrder('@item.id', '@item.code')" id="Delete">
+                    <i class="feather icon-trash-2">
+                    </i>
+                </button>
+            </td>
+        </tr>
         }
     </tbody>
 </table>
