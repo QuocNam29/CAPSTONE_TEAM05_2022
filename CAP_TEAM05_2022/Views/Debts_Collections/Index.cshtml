@@ -65,27 +65,6 @@
                             <div class="row"></div>
                         </div>
                         <div class="card-body table-border-style">
-                            <div class="row mb-3">
-                                <div class="col-md-4">
-                                    <div class="mx-datepicker">
-                                        <div class="mx-input-wrapper">
-                                            <input id="debt_DateStart" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}", DateTime.Now.AddDays((-DateTime.Now.Day) + 1))">
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="mx-datepicker">
-                                        <div class="mx-input-wrapper">
-                                            <input id="debt_DateEnd" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}", DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day)))">
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <button class="btn btn-primary float-right mb-3" onclick="createOldDebt()">Tạo mới</button>
-                                </div>
-                            </div>
                             <div class="table-responsive" id="dataContainer">
                                 @{ Html.RenderAction("_SupplierDebtsList", "Debts_Collections");}
 

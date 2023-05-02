@@ -10,7 +10,7 @@
             <th class="text-center">STT</th>
             <th>Mã nhà cung cấp</th>
             <th>Tên nhà cung cấp</th>
-            <th>Số đơn nợ</th>
+            <th class="text-center">Số đơn nợ</th>
             <th class="text-center">Tổng tiền</th>
             <th class="text-center">Đã thu</th>
             <th class="text-center">Còn nợ</th>
@@ -28,7 +28,7 @@
                 </td>
                 <td>@item.code</td>
                 <td>@item.name</td>
-                <td>@item.inventory_order.Where(s => s.state == Constants.DEBT_ORDER).Count()</td>
+                <td  class="text-center">@item.inventory_order.Where(s => s.state == Constants.DEBT_ORDER).Count()</td>
                 <td class="text-center">
                     @(((decimal)item.inventory_order.Where(s => s.state == Constants.DEBT_ORDER).Sum(s => s.Total)).ToString("N0")) VNĐ
                 </td>

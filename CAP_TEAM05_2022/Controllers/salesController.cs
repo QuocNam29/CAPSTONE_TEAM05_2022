@@ -219,6 +219,7 @@ namespace CAP_TEAM05_2022.Controllers
                     sale_Details.created_at = currentDate;
                     sale_Details.return_quantity = 0;
                     db.sale_details.Add(sale_Details);
+
                     product product = db.products.Find(item.product_id);
                     if (item.unit == product.unit)
                     {
@@ -282,8 +283,8 @@ namespace CAP_TEAM05_2022.Controllers
                                 }
                             }
                         }
-
                     }
+                    db.Entry(product).State = EntityState.Modified;
 
                     int temp_quatity = item.quantity;
                     while (temp_quatity > 0)

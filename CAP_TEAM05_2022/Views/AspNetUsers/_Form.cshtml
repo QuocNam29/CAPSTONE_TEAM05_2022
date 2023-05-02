@@ -13,7 +13,7 @@
             @Html.AntiForgeryToken()
             <div class="modal-content">
                 <div class="modal-header bg-primary">
-                    <h5 id="customModalTitle" class="modal-title white">Thêm mới </h5>
+                    <h5 id="customModalTitle" class="modal-title white">@(isCreate ? "Thêm mới" : "Cập nhật thông tin") </h5>
                     <button type="button" data-dismiss="modal" aria-label="Close" class="close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -149,7 +149,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ bỏ</button>
-                    <button type="submit" class="btn btn-primary">Thêm mới</button>
+                    <button type="submit" class="btn btn-primary">@(isCreate ? "Thêm mới" : "Cập nhật")</button>
                 </div>
             </div>
         </form>

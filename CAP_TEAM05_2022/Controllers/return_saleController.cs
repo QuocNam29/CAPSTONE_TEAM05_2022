@@ -178,6 +178,7 @@ namespace CAP_TEAM05_2022.Controllers
                     db.Entry(sale).State = EntityState.Modified;
                     db.SaveChanges();
 
+                    //công thêm sản phẩm nếu trả hàng
                     if (unit == product.unit)
                     {
                         product.quantity += quality_OD;
@@ -202,6 +203,7 @@ namespace CAP_TEAM05_2022.Controllers
                         bool status1 = false;
                         return Json(new { status = status1, message = message1 }, JsonRequestBehavior.AllowGet);
                     }
+
                     product product_check = db.products.Find(product_id);
                     if (choose_unit == product_check.unit)
                     {
@@ -462,6 +464,7 @@ namespace CAP_TEAM05_2022.Controllers
                     return_Details.difference = (decimal)(return_Details.total_current - return_Details.total_return);
                     db.return_details.Add(return_Details);
                     db.SaveChanges();
+                    // xử lý đổi trả trong kho
                     foreach (var item in revenue)
                     {
                         while (quality_OD_revenue > 0)
@@ -590,6 +593,8 @@ namespace CAP_TEAM05_2022.Controllers
                     db.Entry(sale).State = EntityState.Modified;
                     db.SaveChanges();
 
+                    //hoàn trả số lượng sản pẩm
+                    //cộng số lượng sp đã trả lại
                     if (unit == product.unit)
                     {
                         product.quantity += quality_OD;
@@ -601,16 +606,49 @@ namespace CAP_TEAM05_2022.Controllers
                         product.quantity_remaning += quality_OD;
                         db.Entry(product).State = EntityState.Modified;
                     }
+                    // Trừ số lượng sp đã đổi mới
+
                     if (choose_unit == product_check.unit)
                     {
                         product_check.quantity -= (int)input_qualityProduct;
-                        db.Entry(product_check).State = EntityState.Modified;
                     }
                     else if (choose_unit == product_check.unit_swap)
                     {
-                        product_check.quantity_remaning += quality_OD;
-                        db.Entry(product_check).State = EntityState.Modified;
+                        int check_quantity = (int)input_qualityProduct;
+                        while (check_quantity > 0)
+                        {
+                            if (check_quantity <= product_check.quantity_remaning)
+                            {
+                                product_check.quantity_remaning -= check_quantity;
+                                check_quantity = 0;
+                            }
+                            else
+                            {
+                                if (product_check.quantity_remaning > 0)
+                                {
+                                    check_quantity -= product_check.quantity_remaning;
+                                    product_check.quantity_remaning = 0;
+                                }
+                                else
+                                {
+                                    int temp_1 = (int)(check_quantity / product_check.quantity_swap);
+                                    double temp_2 = (double)((check_quantity * 1.0000000) / product_check.quantity_swap) - temp_1;
+                                    if (temp_2 > 0)
+                                    {
+                                        product_check.quantity -= (temp_1 + 1);
+                                        int temp = (int)(product_check.quantity_swap * (1 - temp_2));
+                                        product_check.quantity_remaning += temp;
+                                    }
+                                    else
+                                    {
+                                        product_check.quantity -= temp_1;
+                                    }
+                                    check_quantity = 0;
+                                }
+                            }
+                        }                       
                     }
+                    db.Entry(product_check).State = EntityState.Modified;
 
                     db.SaveChanges();
 

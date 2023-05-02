@@ -10,7 +10,7 @@
             <th class="text-center">STT</th>
             <th>Mã kháchh hàng</th>
             <th>Tên khách hàng</th>
-            <th>Số đơn nợ</th>
+            <th class="text-center">Số đơn nợ</th>
             <th class="text-center">Tổng tiền</th>
             <th class="text-center">Đã thu</th>
             <th class="text-center">Còn nợ</th>
@@ -28,7 +28,7 @@
                 </td>
                 <td>@item.code</td>
                 <td>@item.name</td>
-                <td>@item.sales.Where(s => s.method == Constants.DEBT_ORDER).Count()</td>
+                <td  class="text-center">@item.sales.Where(s => s.method == Constants.DEBT_ORDER).Count()</td>
                 <td class="text-center">
                     @item.sales.Where(s => s.method == Constants.DEBT_ORDER).Sum(s => s.total).ToString("N0")VNĐ
                 </td>
