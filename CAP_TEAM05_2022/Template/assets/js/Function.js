@@ -80,13 +80,16 @@ $(document).ready(function () {
             $('#customer_phone').val('');
             $('#customer_type').val('');
             $('#count_sale').val('');
+            $('#product_quantity').val('1');
             $('#debit_sum').val('');
             $('#customer_name').val('');
             $('#product_code').val('');
             $('#product_unit').val('');
             $('#product_price').val('');
+            $('#product_price_debt').val('');
             $('#product_name').val('');
             $('#sum_price').val('');
+            $('#sum_price_debt').val('');
             $('#cart_note').val('');
             $('#history_btn').hide();
 

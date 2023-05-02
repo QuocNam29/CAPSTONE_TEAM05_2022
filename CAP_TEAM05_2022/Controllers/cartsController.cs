@@ -20,10 +20,10 @@ namespace CAP_TEAM05_2022.Controllers
         public ActionResult Index(int customer_id)
         {
             string userID = User.Identity.GetUserId();
-            var carts = db.carts.Include(c => c.product).Include(c => c.customer).Where(c => c.customer_id == customer_id &&  c.user_id == userID);
+            var carts = db.carts.Include(c => c.product).Include(c => c.customer).Where(c => c.customer_id == customer_id && c.user_id == userID);
             return PartialView(carts.ToList().OrderByDescending(c => c.id));
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public JsonResult CreateCart([Bind(Include = "product_id, unit, customer_id, note ")] cart cart_create, string quantity)
@@ -34,6 +34,7 @@ namespace CAP_TEAM05_2022.Controllers
             double quantity_test = double.Parse(quantity.Replace(",", "."));
             //local
             //double quantity_test = double.Parse(quantity.Replace(".", ","));
+
             int temp_quantity = (int)(quantity_test);
             double temp_check = (quantity_test - temp_quantity);
 
@@ -97,7 +98,7 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 int temp_finish = (int)(product.quantity_swap * (temp_check));
                 var price_swap = db.price_product.Where(x => x.product_id == cart_create.product_id && x.unit != cart_create.unit);
-                cart cart_check_swap = db.carts.Where(c => c.customer_id == cart_create.customer_id && c.user_id == userID &&  c.product_id == cart_create.product_id && c.unit != cart_create.unit).FirstOrDefault();
+                cart cart_check_swap = db.carts.Where(c => c.customer_id == cart_create.customer_id && c.user_id == userID && c.product_id == cart_create.product_id && c.unit != cart_create.unit).FirstOrDefault();
                 if (cart_check_swap == null)
                 {
                     cart cart = new cart();
@@ -108,6 +109,7 @@ namespace CAP_TEAM05_2022.Controllers
                     cart.price_id = price_swap.Any() ? price_swap.OrderByDescending(x => x.id).FirstOrDefault().id : 0;
                     cart.note = cart_create.note;
                     cart.unit = product.unit_swap;
+                    cart.user_id = userID;
                     db.carts.Add(cart);
                     db.SaveChanges();
                 }

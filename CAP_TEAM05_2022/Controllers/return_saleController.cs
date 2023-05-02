@@ -17,7 +17,7 @@ namespace CAP_TEAM05_2022.Controllers
         // GET: return_sale
         public ActionResult Index()
         {
-            var return_sale = db.return_sale.Include(r => r.sale_details.sale);
+            var return_sale = db.return_sale.Include(r => r.sale_details.sale).OrderByDescending(x=> x.id);
             return View(return_sale.ToList());
         }
         public ActionResult Create_Return(int sale_details_id, int product_Current_id, int quality_OD,
