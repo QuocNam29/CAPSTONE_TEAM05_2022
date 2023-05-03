@@ -33,17 +33,18 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 date_End = (DateTime.Now);
             }
-            var sales = db.sales.Include(s => s.customer).Include(s => s.user).Where(s => s.created_at >= date_Start && s.created_at <= date_End
+            var sales = db.sales.Include(s => s.customer).Include(s => s.user).Where(s => (s.created_at >= date_Start && s.created_at <= date_End
                                                     || s.created_at.Value.Day == date_Start.Value.Day
                                                     && s.created_at.Value.Month == date_Start.Value.Month
                                                     && s.created_at.Value.Year == date_Start.Value.Year
                                                     || s.created_at.Value.Day == date_End.Value.Day
                                                     && s.created_at.Value.Month == date_End.Value.Month
-                                                    && s.created_at.Value.Year == date_End.Value.Year);
+                                                    && s.created_at.Value.Year == date_End.Value.Year)
+                                                    && s.is_old_debt != true);
 
             return PartialView(sales.OrderByDescending(c => c.id).ToList());
         }
-        public ActionResult _TemplatePrintRevenues(DateTime? date_Start, DateTime? date_End, string method )
+        public ActionResult _TemplatePrintRevenues(DateTime? date_Start, DateTime? date_End, string method)
         {
             ViewBag.DateStart = date_Start;
             ViewBag.DateEnd = date_End;
@@ -63,13 +64,14 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 date_End = (DateTime.Now);
             }
-            var sales = db.sales.Include(s => s.customer).Include(s => s.user).Where(s => s.created_at >= date_Start && s.created_at <= date_End
+            var sales = db.sales.Include(s => s.customer).Include(s => s.user).Where(s => (s.created_at >= date_Start && s.created_at <= date_End
                                                     || s.created_at.Value.Day == date_Start.Value.Day
                                                     && s.created_at.Value.Month == date_Start.Value.Month
                                                     && s.created_at.Value.Year == date_Start.Value.Year
                                                     || s.created_at.Value.Day == date_End.Value.Day
                                                     && s.created_at.Value.Month == date_End.Value.Month
-                                                    && s.created_at.Value.Year == date_End.Value.Year);
+                                                    && s.created_at.Value.Year == date_End.Value.Year)
+                                                    && s.is_old_debt != true);
             return View(sales.OrderByDescending(c => c.id).ToList());
         }
         public ActionResult _PrintRevenueList_Date(DateTime? date_Start, DateTime? date_End)
@@ -82,13 +84,14 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 date_End = (DateTime.Now);
             }
-            var sales = db.sales.Include(s => s.customer).Include(s => s.user).Where(s => s.created_at >= date_Start && s.created_at <= date_End
+            var sales = db.sales.Include(s => s.customer).Include(s => s.user).Where(s => (s.created_at >= date_Start && s.created_at <= date_End
                                                     || s.created_at.Value.Day == date_Start.Value.Day
                                                     && s.created_at.Value.Month == date_Start.Value.Month
                                                     && s.created_at.Value.Year == date_Start.Value.Year
                                                     || s.created_at.Value.Day == date_End.Value.Day
                                                     && s.created_at.Value.Month == date_End.Value.Month
-                                                    && s.created_at.Value.Year == date_End.Value.Year);
+                                                    && s.created_at.Value.Year == date_End.Value.Year)
+                                                    && s.is_old_debt != true);
 
             return PartialView(sales.OrderByDescending(c => c.id).ToList());
         }
@@ -105,9 +108,10 @@ namespace CAP_TEAM05_2022.Controllers
             }
             var sales = db.sales.Include(s => s.customer).Include(s => s.user);
 
-            sales = sales.Where(s => s.created_at >= date_Start && s.created_at <= date_End
+            sales = sales.Where(s => (s.created_at >= date_Start && s.created_at <= date_End
                                                 || s.created_at.Value.Month == date_Start.Value.Month && s.created_at.Value.Year == date_Start.Value.Year
-                                                || s.created_at.Value.Month == date_End.Value.Month && s.created_at.Value.Year == date_End.Value.Year);
+                                                || s.created_at.Value.Month == date_End.Value.Month && s.created_at.Value.Year == date_End.Value.Year)
+                                                && s.is_old_debt != true);
 
             return PartialView(sales.OrderByDescending(c => c.id).ToList());
         }
@@ -122,13 +126,14 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 date_End = (DateTime.Now);
             }
-            var sales = db.sales.Include(s => s.customer).Include(s => s.user).Where(s => s.created_at >= date_Start && s.created_at <= date_End
+            var sales = db.sales.Include(s => s.customer).Include(s => s.user).Where(s => (s.created_at >= date_Start && s.created_at <= date_End
                                                     || s.created_at.Value.Day == date_Start.Value.Day
                                                     && s.created_at.Value.Month == date_Start.Value.Month
                                                     && s.created_at.Value.Year == date_Start.Value.Year
                                                     || s.created_at.Value.Day == date_End.Value.Day
                                                     && s.created_at.Value.Month == date_End.Value.Month
-                                                    && s.created_at.Value.Year == date_End.Value.Year);
+                                                    && s.created_at.Value.Year == date_End.Value.Year)
+                                                    && s.is_old_debt != true);
 
             return PartialView(sales.OrderByDescending(c => c.id).ToList());
         }
@@ -145,9 +150,10 @@ namespace CAP_TEAM05_2022.Controllers
             }
             var sales = db.sales.Include(s => s.customer).Include(s => s.user);
 
-            sales = sales.Where(s => s.created_at >= date_Start && s.created_at <= date_End
+            sales = sales.Where(s => (s.created_at >= date_Start && s.created_at <= date_End
                                                 || s.created_at.Value.Month == date_Start.Value.Month && s.created_at.Value.Year == date_Start.Value.Year
-                                                || s.created_at.Value.Month == date_End.Value.Month && s.created_at.Value.Year == date_End.Value.Year);
+                                                || s.created_at.Value.Month == date_End.Value.Month && s.created_at.Value.Year == date_End.Value.Year)
+                                                && s.is_old_debt != true);
 
             return PartialView(sales.OrderByDescending(c => c.id).ToList());
         }

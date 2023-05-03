@@ -4,9 +4,21 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
 }
+
 @section style {
     <link href="~/Content/css/custom-css.css" rel="stylesheet" />
+    <style>
+        .ui-autocomplete {
+            max-height: 200px;
+            overflow-y: auto;
+            /* prevent horizontal scrollbar */
+            overflow-x: hidden;
+            /* add padding to account for vertical scrollbar */
+            padding-right: 20px;
+        }
+    </style>
 }
+
 <input type="text" hidden id="URLCartList" value="@Url.Action("Index", "carts")" />
 <input type="text" hidden id="URLGetSearchValue" value="@Url.Action("GetSearchValue","customers")" />
 <input type="text" hidden id="URLGetSearch_phoneValue" value="@Url.Action("GetSearch_phoneValue","customers")" />
