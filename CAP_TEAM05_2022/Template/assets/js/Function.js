@@ -166,40 +166,7 @@ $(function () {
         select: function (e, i) {
             $('#customer_id').val(i.item.val);
             GetList_Cart(i.item.val);
-            $.ajax({
-                type: 'POST',
-                url: URLFindCustomer_name,
-                data: { "customer_id": i.item.val },
-                success: function (response) {
-                    $('#customer_phone').val(response.phone);
-                    $('#customer_code').val(response.code);
-                    $('#customer_type').val(response.note);
-                    $('#count_sale').val(response.status);
-                    $('#debit_sum').val(response.type.toLocaleString());
-                    $("#history_btn").show();
-                    if (response.id == 0) {
-                        $('#customer_phone').hide();
-                        $('#count_sale_lable').hide();
-                        $('#count_sale').hide();
-                        $('#debit_sum_lable').hide();
-                        $('#debit_sum').hide();
-                    } else {
-                        $('#customer_phone').show();
-                        $('#count_sale_lable').show();
-                        $('#count_sale').show();
-                        $('#debit_sum_lable').show();
-                        $('#debit_sum').show();
-                    }
-                    if ($("#total").val() != undefined) {
-                        $("#payment_btn").show();
-                        $("#order_btn").show();
-                    } else {
-                        $("#payment_btn").hide();
-                        $("#order_btn").hide();
-                    }
-                    
-                }
-            })
+            LoadDataCustomer(i.item.val);
         },
         minLength: 0
     }).focus(function () {
@@ -209,6 +176,7 @@ $(function () {
         $(this).data("autocomplete").search($(this).val());
     });
 });
+
 $(function () {
     $("#customer_phone").autocomplete({
         source: function (request, response) {
@@ -236,26 +204,7 @@ $(function () {
         select: function (e, i) {
             $('#customer_id').val(i.item.val);
             GetList_Cart(i.item.val);
-            $.ajax({
-                type: 'POST',
-                url: URLFindCustomer_name,
-                data: { "customer_id": i.item.val },
-                success: function (response) {
-                    $('#customer_name').val(response.name);
-                    $('#customer_code').val(response.code);
-                    $('#customer_phone').val(response.phone);
-                    $('#customer_type').val(response.note);
-                    $('#count_sale').val(response.status);
-                    $('#debit_sum').val(response.type.toLocaleString());
-                    if ($("#total").val() != undefined) {
-                        $("#payment_btn").show();
-                        $("#order_btn").show();
-                    } else {
-                        $("#payment_btn").hide();
-                        $("#order_btn").hide();
-                    }
-                }
-            })
+            LoadDataCustomer(i.item.val);
         },
         minLength: 0
     })/*.focus(function () {
@@ -265,6 +214,29 @@ $(function () {
         $(this).data("autocomplete").search($(this).val());
     });*/
 });
+
+function LoadDataCustomer(id) {
+    $.ajax({
+        type: 'POST',
+        url: URLFindCustomer_name,
+        data: { "customer_id": id },
+        success: function (response) {
+            $('#customer_name').val(response.name);
+            $('#customer_code').val(response.code);
+            $('#customer_phone').val(response.phone);
+            $('#customer_type').val(response.note);
+            $('#count_sale').val(response.status);
+            $('#debit_sum').val(response.type.toLocaleString());
+            if ($("#total").val() != undefined) {
+                $("#payment_btn").show();
+                $("#order_btn").show();
+            } else {
+                $("#payment_btn").hide();
+                $("#order_btn").hide();
+            }
+        }
+    })
+}
 //--------------------------Add, Update Product----------------------------------
 $('.ProductForm').submit(function (e) {
     var form = $(this);

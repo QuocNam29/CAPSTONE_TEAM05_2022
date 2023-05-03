@@ -1,8 +1,11 @@
-﻿using CAP_TEAM05_2022.Models;
+﻿using CAP_TEAM05_2022.Helper;
+using CAP_TEAM05_2022.Models;
 using Microsoft.AspNet.Identity;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using Constants = CAP_TEAM05_2022.Helper.Constants;
 
 namespace CAP_TEAM05_2022.Controllers
 {
@@ -38,6 +41,22 @@ namespace CAP_TEAM05_2022.Controllers
             return PartialView(customer);
         }
 
+        [HttpGet]
+        public PartialViewResult _FormProduct()
+        {
+            ViewBag.CategoryId = new SelectList(db.categories, "Id", "Name");
+            ViewBag.SupplierId = db.customers.Where(x => x.type == Constants.SUPPLIER).ToList();
+            return PartialView("_FormProduct", new product());
+        }
+
+       
+        [HttpGet]
+        public PartialViewResult _FormCustomer()
+        {
+            return PartialView("_FormCustomer", new customer());
+        }
+
+      
         protected override void Dispose(bool disposing)
         {
             if (disposing)

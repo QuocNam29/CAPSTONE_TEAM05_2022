@@ -27,6 +27,7 @@ namespace CAP_TEAM05_2022.Controllers
             return View();
 
         }
+        
         [HttpGet]
         public PartialViewResult _Form(int? id)
         {

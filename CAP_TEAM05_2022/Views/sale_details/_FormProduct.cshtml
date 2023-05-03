@@ -1,0 +1,305 @@
+﻿@model CAP_TEAM05_2022.Models.product
+@using CAP_TEAM05_2022.Models
+@using Constants = CAP_TEAM05_2022.Helper.Constants
+@{
+    List<customer> supplier = ViewBag.SupplierId;
+    Layout = null;
+}
+<div id="ProductForm" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <form class="ProductForm" method="post" action="@Url.Action("Create", "products")" novalidate>
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title" id="AddProductLabel">Thêm mới sản phẩm</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+
+                <div class="modal-body ">
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Tên sản phẩm<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập tên sản phẩm" } })
+                                    @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+                                </div> <!---->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Danh mục sản phẩm<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    @Html.DropDownListFor(m => m.category_id, (SelectList)ViewBag.CategoryId, "---- Chọn danh mục sản phẩm ----", new { @class = "form-control custom-select", @aria_label = "Chọn danh mục thiết bị" })
+                                    @Html.ValidationMessageFor(model => model.category_id, "", new { @class = "text-danger" })
+                                </div> <!---->
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Nhà cung cấp<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <select class="form-control" required data-val="true" data-val-required="Vui lòng chọn nhà cung cấp !" id="SupplierDropdown" name="SupplierDropdown">
+                                        <option value="">---Chọn nhà cung cấp---</option>
+                                        @foreach (var item in supplier)
+                                        {
+                                            <option value="@item.id">@item.name</option>
+                                        }
+
+                                    </select>
+
+                                    @Html.ValidationMessage("SupplierDropdown", "", new { @class = "text-danger" })
+
+                                </div> <!---->
+
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>
+                                    Số lượng nhập (hoặc tồn kho)<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <div class="input-group mb-3">
+                                        @Html.EditorFor(model => model.quantity, new { htmlAttributes = new { @class = "form-control" } })
+                                        <div class="input-group-append">
+                                            <select id="UnitBy" class="input-group-text select-unit" name="unit" required data-val="true" data-val-required="Vui lòng đơn vị !">
+                                                <option disabled="disabled" value="" selected>Đơn vị</option>
+                                                <option data-name="bao" value="Bao">
+                                                    bao
+                                                </option>
+                                                <option data-name="chai" value="Chai">
+                                                    chai
+                                                </option>
+                                                <option data-name="can" value="Can">
+                                                    can
+                                                </option>
+                                                <option data-name="gói" value="Gói">
+                                                    gói
+                                                </option>
+                                                <option data-name="hộp" value="Hộp">
+                                                    hộp
+                                                </option>
+                                                <option data-name="xô" value="Xô">
+                                                    xô
+                                                </option>
+                                                <option data-name="lít" value="lít">
+                                                    lít
+                                                </option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+                                    @Html.ValidationMessageFor(model => model.quantity, "", new { @class = "text-danger" })
+                                    @Html.ValidationMessage("unit", "", new { @class = "text-danger" })
+                                </div> <!---->
+
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="product-price-import">
+                                    Đơn giá nhập<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <input type="text" placeholder="Nhập giá tiền" id="purchase_price" class="form-control Price"
+                                           data-val="true" data-val-required="Vui lòng nhập đơn giá nhập !" pattern="[0-9.,]+" data-type="number" name="purchase_price" required>
+                                    @Html.ValidationMessage("sell_price", "", new { @class = "text-danger" })
+
+                                </div>
+                                <!---->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Đơn giá bán<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <input type="text" placeholder="Nhập giá tiền" id="product-price-sold" class="form-control Price"
+                                           data-val="true" data-val-required="Vui lòng nhập đơn giá bán !" pattern="[0-9.,]+" data-type="number" name="sell_price" required>
+                                    @Html.ValidationMessage("sell_price", "", new { @class = "text-danger" })
+
+                                </div> <!---->
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Đơn giá bán ghi nợ <span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <input type="text" placeholder="Nhập giá tiền" id="product-price-debt" class="form-control Price"
+                                           data-val="true" data-val-required="Vui lòng nhập đơn giá bán ghi nợ !" pattern="[0-9.,]+" data-type="number" name="debt_price" required>
+                                    @Html.ValidationMessage("debt_price", "", new { @class = "text-danger" })
+                                </div> <!---->
+
+                            </div>
+                        </div>
+                        <div class="col-md-12 mt-2">
+                            <div class="form-group">
+                                <label for="swap">Quy đổi sang đơn vị khác</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2 swap">
+                            <div class="form-group">
+                                <label>
+                                    Quy đổi <span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <div class="input-group mb-3">
+                                        <input type="number" value="1" disabled data-model="unit_current_quantity" id="unit-quantity-current" aria-describedby="basic-addon2" class="form-control"
+                                               required="required">
+                                        <div class="input-group-append">
+                                            <span id="UnitCurrent" class="input-group-text UnitCurrent"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1 col-icon swap">
+                            <div class="form-group text-center">
+                                <i aria-hidden="true" class="feather icon-arrow-right icon-swap">
+                                </i>
+                            </div>
+                        </div>
+                        <div class="col-md-3 swap">
+                            <div class="form-group">
+                                <label>
+                                    Số lượng quy đổi <span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <div class="input-group mb-3">
+                                        @Html.EditorFor(model => model.quantity_swap, new { htmlAttributes = new { @class = "form-control" } })
+                                        <div class="input-group-append">
+                                            <select id="unit_swap" name="unit_swap" class="input-group-text select-unit" required data-val="true" data-val-required="Vui lòng đơn vị quy đổi !">
+                                                <option disabled="disabled" value="" selected>Đơn vị</option>
+                                                <optgroup label="Thể tích">
+                                                    <option data-name="lít" value="Lít">
+                                                        lít
+                                                    </option>
+                                                    <option data-name="ml" value="ml">
+                                                        ml
+                                                    </option>
+                                                </optgroup>
+                                                <optgroup label="Khối lượng">
+                                                    <option data-name="kg" value="Kg">
+                                                        Kg
+                                                    </option>
+                                                    <option data-name="gam" value="gam">
+                                                        Gam
+                                                    </option>
+                                                </optgroup>
+                                                <optgroup label="Khác">
+                                                    <option data-name="gói" value="Gói">
+                                                        Gói
+                                                    </option>
+                                                    <option data-name="viên" value="Viên">
+                                                        Viên
+                                                    </option>
+                                                </optgroup>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    @Html.ValidationMessage("quantity_swap", "", new { @class = "text-danger" })
+                                    @Html.ValidationMessage("unit_swap", "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 swap">
+                            <div class="form-group">
+                                <label>
+                                    Đơn giá bán <span class="text-danger">(đơn vị quy đổi)</span>
+                                </label>
+                                <input type="text" name="price_swap" placeholder="Nhập giá tiền" id="product-price-swap" class="form-control Price">
+                            </div>
+                        </div>
+                        <div class="col-md-3 swap">
+                            <div class="form-group">
+                                <label>
+                                    Đơn giá bán ghi nợ <span class="text-danger">(đơn vị quy đổi)</span>
+                                </label>
+                                <input type="text" name="debt_price_swap" placeholder="Nhập giá tiền" id="product-price-swap" class="form-control Price">
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Thêm mới</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--Validation-->
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    $('.ProductForm').submit(function (e) {
+        var form = $(this);
+        var _this = $(this);
+        var _form = _this.closest("form");
+        var isvalid = _form.valid()
+        // Check if form is valid then submit ajax
+        if (isvalid) {
+            e.preventDefault();
+            var url = form.attr('action');
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: form.serialize(),
+                success: function (data) {
+                    // Hide bootstrap modal to prevent conflict
+                    $('.modal').modal('hide');
+
+                    if (data.status) {
+                        // Refresh table data
+                        Swal.fire('Thành công !', data.message, 'success')
+                        $('#product_id').val(data.id);
+                        LoadDataProduct(data.id);
+                        form[0].reset();
+                        form.removeClass('was-validated');
+                    } else {
+                        Swal.fire('Lỗi !', data.message, 'error')
+                    }
+                }
+            });
+        }
+    });
+
+    $("#UnitBy").change(function () {
+        var UnitBy = $("#UnitBy").val()
+        document.getElementsByClassName('UnitCurrent')[0].innerHTML = UnitBy;
+    });
+
+    $('.Price').keydown(function (e) {
+        setTimeout(() => {
+            let parts = $(this).val().split(".");
+            let v = parts[0].replace(/\D/g, ""),
+                dec = parts[1]
+            let calc_num = Number((dec !== undefined ? v + "." + dec : v));
+            // use this for numeric calculations
+            // console.log('number for calculations: ', calc_num);
+            let n = new Intl.NumberFormat('en-EN').format(v);
+            n = dec !== undefined ? n + "." + dec : n;
+            $(this).val(n);
+        })
+    })
+</script>
+

@@ -347,242 +347,6 @@
 
     </div>
 </div>
-<div id="AddProduct" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="AddProductLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <form class="needs-validation ProductSaleForm " method="post" action="@Url.Action("Create_Product", "products")" novalidate>
-            <div class="modal-content">
-                <div class="modal-header bg-primary">
-                    <h5 class="modal-title" id="AddProductLabel">Thêm mới sản phẩm</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                </div>
-
-                <div class="modal-body ">
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>
-                                    Tên sản phẩm<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    <input type="text" placeholder="Nhập tên sản phẩm" id="add_name" class="form-control" name="name_product" pattern="\S+.*" required>
-                                    <div class="invalid-feedback">
-                                        Vui lòng nhập tên sản phẩm !
-                                    </div>
-                                </div> <!---->
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>
-                                    Nhóm hàng<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    <select class="custom-select" id="GroupProductDropdown" name="GroupProductDropdown" required>
-                                    </select>
-                                    <div class="invalid-feedback">Vui lòng chọn nhóm hàng</div>
-                                </div> <!---->
-
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>
-                                    Danh mục sản phẩm<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    <select class="custom-select" id="CategoryDropdown" name="CategoryDropdown" required>
-                                    </select>
-                                    <div class="invalid-feedback">Vui lòng chọn danh mục</div>
-                                </div> <!---->
-
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>
-                                    Nhà cung cấp<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    <select class="custom-select SupplierDropdown" name="SupplierDropdown" required>
-                                    </select>
-                                    <div class="invalid-feedback">Vui lòng chọn nhà cung cấp</div>
-                                </div> <!---->
-
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>
-                                    Tồn kho<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    <div class="input-group mb-3">
-                                        <input type="number" data-model="quantity" placeholder="Nhập số lượng" id="add_quantity" name="quantity" max="999999999999" aria-describedby="quantity-buy" class="form-control" required>
-                                        <div class="input-group-append">
-                                            <select id="unit_buy" class="input-group-text select-unit" name="unit">
-                                                <option disabled="disabled" value="" selected>Đơn vị</option>
-                                                <optgroup label="Khác">
-                                                    <option data-name="bao" value="Bao">
-                                                        bao
-                                                    </option>
-                                                    <option data-name="chai" value="Chai">
-                                                        chai
-                                                    </option>
-                                                    <option data-name="gói" value="Gói">
-                                                        Gói
-                                                    </option>
-                                                </optgroup>
-                                                <optgroup label="Khối lượng">
-
-                                                    <option data-name="tạ" value="Tạ">
-                                                        tạ
-                                                    </option>
-
-                                                    <option data-name="kg" value="Kg">
-                                                        kg
-                                                    </option>
-                                                    <option data-name="gam" value="Gam">
-                                                        gam
-                                                    </option>
-                                                </optgroup>
-                                                <optgroup label="Thể tích">
-                                                    <option data-name="lít" value="Lít">
-                                                        lít
-                                                    </option>
-                                                    <option data-name="ml" value="ml">
-                                                        ml
-                                                    </option>
-                                                </optgroup>
-
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        Vui lòng nhập số lượng sản phẩm và lớn hơn 0 !
-                                    </div>
-                                </div> <!---->
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>
-                                    Đơn giá bán<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    <input type="text" placeholder="Nhập giá tiền" id="product-price-sold" max="999999999999" class="form-control Price"
-                                           pattern="[0-9.,]+" data-type="number" name="sell_price" required>
-                                    <div class="invalid-feedback">
-                                        Giá tiền bán không được để trống !
-                                    </div>
-                                </div> <!---->
-
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="product-price-import">
-                                    Đơn giá nhập<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    <input type="text" placeholder="Nhập giá tiền" id="purchase_price" max="999999999999" class="form-control Price"
-                                           pattern="[0-9.,]+" data-type="number" name="purchase_price" required>
-                                    <div class="invalid-feedback">
-                                        Giá tiền nhập không được để trống !
-                                    </div>
-                                </div>
-                                <!---->
-                            </div>
-                        </div>
-
-                        <div class="col-md-12 mt-2">
-                            <div class="form-group">
-                                <input type="checkbox" id="swap" name="swap">
-                                <input type="number" id="check_swap" name="check_swap" hidden value="0" />
-                                <label for="swap">Quy đổi sang đơn vị khác</label>
-                            </div>
-                        </div>
-                        <div class="col-md-3 swap" style="display: none;">
-                            <div class="form-group">
-                                <div class="position-relative">
-                                    <div class="input-group mb-3">
-                                        <input type="number" value="1" disabled data-model="unit_current_quantity" id="unit-quantity-current" aria-describedby="basic-addon2" class="form-control" required="required">
-                                        <div class="input-group-append">
-                                            <span id="unit_current" class="input-group-text unit_current"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-1 col-icon swap" style="display: none;">
-                            <div class="form-group">
-                                <i aria-hidden="true" class="feather icon-arrow-right icon-swap">
-                                </i>
-                            </div>
-                        </div>
-                        <div class="col-md-4 swap" style="display: none;">
-                            <div class="form-group">
-                                <div class="position-relative">
-                                    <div class="input-group mb-3">
-                                        <input type="number" name="quantity_swap" data-model="unit_swap_quantity" placeholder="Nhập số lượng" id="unit-quantity-input" max="999999999999" aria-describedby="unit-quantity" class="form-control">
-                                        <div class="input-group-append">
-                                            <select id="unit_swap" name="unit_swap" class="input-group-text select-unit">
-                                                <option disabled="disabled" value="" selected>Đơn vị</option>
-                                                <optgroup label="Khác">
-                                                    <option data-name="bao" value="Bao">
-                                                        bao
-                                                    </option>
-                                                    <option data-name="chai" value="Chai">
-                                                        chai
-                                                    </option>
-                                                </optgroup>
-                                                <optgroup label="Khối lượng">
-
-                                                    <option data-name="tạ" value="Tạ">
-                                                        tạ
-                                                    </option>
-
-                                                    <option data-name="kg" value="Kg">
-                                                        kg
-                                                    </option>
-                                                    <option data-name="gam" value="Gam">
-                                                        gam
-                                                    </option>
-                                                </optgroup>
-                                                <optgroup label="Thể tích">
-                                                    <option data-name="lít" value="Lít">
-                                                        lít
-                                                    </option>
-                                                    <option data-name="ml" value="ml">
-                                                        ml
-                                                    </option>
-                                                </optgroup>
-
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 swap" style="display: none;">
-                            <div class="form-group">
-                                <input type="text" name="price_swap" placeholder="Nhập giá tiền" id="product-price-swap" max="999999999999" data-model="unit_price" class="form-control Price">
-                            </div>
-                        </div>
-
-                    </div>
-
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
-                    <button type="submit" class="btn btn-primary">Thêm mới</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
 <div id="dataContainer2">
 </div>
 @section scripts {
@@ -593,6 +357,7 @@
             $('#actionCart').val(action)
             document.getElementById('submit_Cart').click();
         }
+
         $('.SaleForm').submit(function (e) {
             var form = $(this);
             var _this = $(this);
@@ -649,6 +414,7 @@
                     }
                 });               }
         });
+        // Hiển thị lịch sử mua hàng của khách hàng
     function GetList_History() {
         var id = $('#customer_id').val();
             $.ajax({
@@ -667,7 +433,9 @@
                 console.log(errorThrown)
                 alert("Something Went Wrong, Try Later");
             });
-    }
+        }
+
+        //Khiểm tra tiên khách hàng đã có trong hệ thống hay không
         function UserCustomer() {
             var customer_name = $("#customer_name").val();
             if (customer_name != "" && customer_name != undefined) {
@@ -693,8 +461,7 @@
                                 confirmButtonText: 'Xác nhận'
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    $('#AddCustomer .close').css('display', 'none');
-                                    $('#AddCustomer').modal('show');
+                                    createCustomer();
                                     $('#create_customer_name').val($('#customer_name').val());
                                 }
                             })
@@ -705,6 +472,7 @@
             }
         }
 
+        //Kiểm tra số điện thoại người dùng có trong hệ thống hay không
         function UserCustomer_phone() {
             var customer_phone = $("#customer_phone").val();
             if (customer_phone != "" && customer_phone != undefined) {
@@ -729,8 +497,7 @@
                                 confirmButtonText: 'Xác nhận'
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    $('#AddCustomer .close').css('display', 'none');
-                                    $('#AddCustomer').modal('show');
+                                    createCustomer();
                                     $('#sale_customer_phone').val(customer_phone);
                                 }
                             })
@@ -739,6 +506,8 @@
                 );
             }
         }
+
+        // Kiểm tra sản phẩm có trong hệ thống hay không
         function CheckProduct() {
             var name = $("#product_name").val();
             if (name != "" && name != undefined) {
@@ -762,8 +531,7 @@
                                 confirmButtonText: 'Xác nhận',
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    $('#AddProduct .close').css('display', 'none');
-                                    $('#AddProduct').modal('show');
+                                    createProduct();
                                     $('#add_name').val(name);
                                 }
                             })
@@ -772,18 +540,7 @@
                 );
             }
         }
-        document.getElementById('swap').onclick = function (e) {
-            if (this.checked) {
-                $(".swap").show();
-                $("#check_swap").val(@Constants.UNIT_CONVERT)
-                var unit_buy = $("#unit_buy").val()
-                document.getElementsByClassName('unit_current')[0].innerHTML = unit_buy;
-            }
-            else {
-                $(".swap").hide();
-                $("#check_swap").val(@Constants.NO_UNIT_CONVERT)
-            }
-        };
+
         $("#unit_buy").change(function () {
             var unit_buy = $("#unit_buy").val()
             document.getElementsByClassName('unit_current')[0].innerHTML = unit_buy;
@@ -816,5 +573,36 @@
             var sum_price_debt = product_price_debt * product_quantity;
             $('#sum_price_debt').val(sum_price_debt.toLocaleString());
         }
+
+        //Load form tạo sản phẩm
+        function createProduct() {
+              $.ajax({
+                url: '@Url.Action("_FormProduct", "sale_details")',
+                type: 'GET',
+                data: {},
+                success: function (response) {
+                    // Add response in Modal body
+                    $('#dataContainer2').html(response);
+                    // Display Modal
+                    $('#ProductForm').modal('show');
+                }
+            });
+        }
+
+        //Load form tạo khách hàng
+         function createCustomer() {
+             $.ajax({
+                url: '@Url.Action("_FormCustomer", "sale_details")',
+                type: 'GET',
+                 data: {},
+                success: function (response) {
+                    // Add response in Modal body
+                    $('#dataContainer2').html(response);
+                    // Display Modal
+                    $('#Customer').modal('show');
+                }
+            });
+
+            }
     </script>
 }

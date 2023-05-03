@@ -72,6 +72,7 @@ namespace CAP_TEAM05_2022.Controllers
                         db.customers.Add(customer);
                         db.SaveChanges();
                         message = "Thêm thành công !";
+                        return Json(new { status, message, customer.id }, JsonRequestBehavior.AllowGet);
                     }
                 }
             }

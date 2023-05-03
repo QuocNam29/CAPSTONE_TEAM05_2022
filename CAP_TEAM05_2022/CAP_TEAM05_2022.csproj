@@ -722,7 +722,6 @@
     <Content Include="Views\inventory_order\CreateDetails.cshtml" />
     <Content Include="Views\sales\_RevenueList.cshtml" />
     <Content Include="Views\sales\_TemplatePrintRevenueList.cshtml" />
-    <Content Include="Views\sale_details\CreateOldOrder.cshtml" />
     <Content Include="Views\Debts_Collections\OldDebtsSupplier.cshtml" />
     <Content Include="Views\Debts_Collections\_OldDebtsSupplierList.cshtml" />
     <Content Include="Views\Debts_Collections\CreateOldDebtCustomer.cshtml" />
@@ -730,6 +729,8 @@
     <Content Include="Views\Debts_Collections\OldDebtsCustomer.cshtml" />
     <Content Include="Views\Debts_Collections\_OldDebtsCustomerList.cshtml" />
     <Content Include="Views\AspNetUsers\_Form.cshtml" />
+    <Content Include="Views\sale_details\_FormProduct.cshtml" />
+    <Content Include="Views\sale_details\_FormCustomer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
