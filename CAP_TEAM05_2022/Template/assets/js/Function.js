@@ -234,6 +234,17 @@ function LoadDataCustomer(id) {
                 $("#payment_btn").hide();
                 $("#order_btn").hide();
             }
+            if (response.status > 0) {
+                $('#history_btn').show();
+            } else {
+                $('#history_btn').hide();
+            }
+            if (id <= 0) {
+                $('.KHVangLai').hide();
+            } else {
+                $('.KHVangLai').show();
+
+            }
         }
     })
 }
@@ -394,14 +405,17 @@ function EditStatus(id) {
 $('.Price').keydown(function (e) {
     setTimeout(() => {
         let parts = $(this).val().split(".");
-        let v = parts[0].replace(/\D/g, ""),
+        let v = parts[0].replace(/(?!-)[^0-9.]/g, ""),
             dec = parts[1]
-        let calc_num = Number((dec !== undefined ? v + "." + dec : v));
-        // use this for numeric calculations
-        // console.log('number for calculations: ', calc_num);
-        let n = new Intl.NumberFormat('en-EN').format(v);
-        n = dec !== undefined ? n + "." + dec : n;
-        $(this).val(n);
+        if (v != '-') {
+            let calc_num = Number((dec !== undefined ? v + "." + dec : v));
+            console.log(calc_num)
+            // use this for numeric calculations
+            // console.log('number for calculations: ', calc_num);
+            let n = new Intl.NumberFormat('en-EN').format(v);
+            n = dec !== undefined ? n + "." + dec : n;
+            $(this).val(n);
+        }       
     })
 })
 

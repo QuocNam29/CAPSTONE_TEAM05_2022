@@ -238,53 +238,107 @@ namespace CAP_TEAM05_2022.Controllers
                 // Đối với thu nợ từ khách hàng
                 if (method == Constants.COLLECTION_OF_CUSTOMERS)
                 {
-                    //Lấy danh sách đơn nợ của khách hàng
-                    var sale = db.sales.Where(s => s.customer_id == customer_id && s.total != (s.prepayment + s.pay_debt) && s.method == Constants.DEBT_ORDER).ToList();
-                    while (paid_temp > 0)
+                    if (paid_temp > 0)
                     {
-                        foreach (var item in sale)
+                        //Lấy danh sách đơn nợ của khách hàng
+                        var sale = db.sales.Where(s => s.customer_id == customer_id && s.total != (s.prepayment + s.pay_debt) && s.method == Constants.DEBT_ORDER).ToList();                  
+                        while (paid_temp > 0)
                         {
-                            if (paid_temp <= (item.total - item.prepayment - item.pay_debt))
+                            foreach (var item in sale)
                             {
-                                var last_debt = db.debts.Where(d => d.sale.customer_id == item.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
+                                if (paid_temp <= (item.total - item.prepayment - item.pay_debt))
+                                {
+                                    var last_debt = db.debts.Where(d => d.sale.customer_id == item.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
 
-                                debt debt = new debt();
-                                debt.sale_id = item.id;
-                                debt.created_by = User.Identity.GetUserId();
-                                debt.created_at = create_at;
-                                debt.paid = paid_temp;
-                                debt.total = (decimal)(last_debt.total + paid_temp);
-                                debt.note = note;
-                                debt.remaining = last_debt.remaining - paid_temp;
-                                db.debts.Add(debt);
+                                    debt debt = new debt();
+                                    debt.sale_id = item.id;
+                                    debt.created_by = User.Identity.GetUserId();
+                                    debt.created_at = create_at;
+                                    debt.paid = paid_temp;
+                                    debt.total = (decimal)(last_debt.total + paid_temp);
+                                    debt.note = note;
+                                    debt.remaining = last_debt.remaining - paid_temp;
+                                    db.debts.Add(debt);
 
-                                item.pay_debt += paid_temp;
-                                db.Entry(item).State = EntityState.Modified;
-                                db.SaveChanges();
-                                paid_temp = 0;
+                                    item.pay_debt += paid_temp;
+                                    db.Entry(item).State = EntityState.Modified;
+                                    db.SaveChanges();
+                                    paid_temp = 0;
+                                }
+                                else
+                                {
+                                    var last_debt = db.debts.Where(d => d.sale.customer_id == item.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
+                                    decimal remaining = (decimal)(item.total - item.prepayment - item.pay_debt);
+                                    debt debt = new debt();
+                                    debt.sale_id = item.id;
+                                    debt.created_by = User.Identity.GetUserId();
+                                    debt.created_at = create_at;
+                                    debt.paid = remaining;
+                                    debt.total = (decimal)(last_debt.total + remaining);
+                                    debt.note = note;
+                                    debt.remaining = last_debt.remaining - remaining;
+                                    db.debts.Add(debt);
+
+                                    item.pay_debt += remaining;
+                                    db.Entry(item).State = EntityState.Modified;
+                                    db.SaveChanges();
+                                    paid_temp -= remaining;
+                                }
                             }
-                            else
-                            {
-                                var last_debt = db.debts.Where(d => d.sale.customer_id == item.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
-                                decimal remaining = (decimal)(item.total - item.prepayment - item.pay_debt);
-                                debt debt = new debt();
-                                debt.sale_id = item.id;
-                                debt.created_by = User.Identity.GetUserId();
-                                debt.created_at = create_at;
-                                debt.paid = remaining;
-                                debt.total = (decimal)(last_debt.total + remaining);
-                                debt.note = note;
-                                debt.remaining = last_debt.remaining - remaining;
-                                db.debts.Add(debt);
 
-                                item.pay_debt += remaining;
-                                db.Entry(item).State = EntityState.Modified;
-                                db.SaveChanges();
-                                paid_temp -= remaining;
-                            }
                         }
-
                     }
+                    else
+                    {
+                        //Lấy danh sách đơn nợ của khách hàng
+                        var sale = db.sales.Where(s => s.customer_id == customer_id && s.total != (s.prepayment + s.pay_debt) && s.method == Constants.DEBT_ORDER).ToList();
+                        while (paid_temp < 0)
+                        {
+                            foreach (var item in sale)
+                            {
+                                if (paid_temp >= (item.total - item.prepayment - item.pay_debt))
+                                {
+                                    var last_debt = db.debts.Where(d => d.sale.customer_id == item.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
+
+                                    debt debt = new debt();
+                                    debt.sale_id = item.id;
+                                    debt.created_by = User.Identity.GetUserId();
+                                    debt.created_at = create_at;
+                                    debt.paid = paid_temp;
+                                    debt.total = (decimal)(last_debt.total + paid_temp);
+                                    debt.note = note;
+                                    debt.remaining = last_debt.remaining - paid_temp;
+                                    db.debts.Add(debt);
+
+                                    item.pay_debt += paid_temp;
+                                    db.Entry(item).State = EntityState.Modified;
+                                    db.SaveChanges();
+                                    paid_temp = 0;
+                                }
+                                else
+                                {
+                                    var last_debt = db.debts.Where(d => d.sale.customer_id == item.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
+                                    decimal remaining = (decimal)(item.total - item.prepayment - item.pay_debt);
+                                    debt debt = new debt();
+                                    debt.sale_id = item.id;
+                                    debt.created_by = User.Identity.GetUserId();
+                                    debt.created_at = create_at;
+                                    debt.paid = remaining;
+                                    debt.total = (decimal)(last_debt.total + remaining);
+                                    debt.note = note;
+                                    debt.remaining = last_debt.remaining - remaining;
+                                    db.debts.Add(debt);
+
+                                    item.pay_debt += remaining;
+                                    db.Entry(item).State = EntityState.Modified;
+                                    db.SaveChanges();
+                                    paid_temp -= remaining;
+                                }
+                            }
+
+                        }
+                    }
+                    
                 }
                 // Đối với trả nợ cho nhà cung cấp
                 else if (method == Constants.PAYING_SUPPLIER)

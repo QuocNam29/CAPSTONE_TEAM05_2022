@@ -175,6 +175,56 @@ namespace CAP_TEAM05_2022.Controllers
                     sale_Details.return_quantity += quality_OD;
                     db.Entry(sale_Details).State = EntityState.Modified;
                     sale.total -= price;
+                    if (sale.total < (sale.pay_debt + sale.prepayment))
+                    {
+                        decimal priceReturn = price;
+                        var last_customer_Debt = db.customer_debt.Where(d => d.customer_id == sale.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
+                        var last_debt = db.debts.Where(d => d.sale.customer_id == sale.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
+                        debt debt = new debt();
+                        debt.sale_id = sale.id;
+                        debt.created_by = User.Identity.GetUserId();
+                        debt.created_at = created_at;
+                        debt.paid = sale.total - sale.pay_debt - sale.prepayment;
+                        debt.total = (decimal)(last_debt.total + debt.paid);
+                        debt.remaining = last_debt.remaining - debt.paid;
+                        debt.return_sale_id = return_Sale.id;
+                        debt.note = "Doanh nghiệp hoàn tiền cho khách hàng do đổi trả hàng cho doanh nghiệp";
+                        db.debts.Add(debt);
+
+                        customer_debt customer_Debt = new customer_debt();
+                        customer_Debt.customer_id = sale.customer_id;
+                        customer_Debt.created_by = User.Identity.GetUserId();
+                        customer_Debt.created_at = created_at;
+                        customer_Debt.paid = sale.total - sale.pay_debt - sale.prepayment;
+                        customer_Debt.remaining = last_customer_Debt.remaining - customer_Debt.paid;
+                        customer_Debt.return_sale_id = return_Sale.id;
+                        customer_Debt.note = "Doanh nghiệp hoàn tiền cho khách hàng do đổi trả hàng cho doanh nghiệp";
+                        db.customer_debt.Add(customer_Debt);
+                        db.SaveChanges();
+                        while (priceReturn > 0)
+                        {
+                            if (sale.pay_debt > 0)
+                            {
+                                if (sale.pay_debt >= priceReturn)
+                                {
+                                    sale.pay_debt = (sale.total - sale.prepayment);
+                                    priceReturn = 0;
+                                }
+                                else
+                                {
+                                    priceReturn -= (decimal)sale.pay_debt;
+                                    sale.pay_debt = 0;
+                                }
+                            }
+                            else
+                            {
+                                sale.prepayment -= priceReturn;
+                                priceReturn = 0;
+                            }
+                        }
+                        db.Entry(sale).State = EntityState.Modified;
+
+                    }
                     db.Entry(sale).State = EntityState.Modified;
                     db.SaveChanges();
 
@@ -590,6 +640,56 @@ namespace CAP_TEAM05_2022.Controllers
                     sale_Details.return_quantity += quality_OD;
                     db.Entry(sale_Details).State = EntityState.Modified;
                     sale.total -= price_Total;
+                    if (sale.total < (sale.pay_debt + sale.prepayment))
+                    {
+                        decimal priceReturn = price_Total;
+                        var last_customer_Debt = db.customer_debt.Where(d => d.customer_id == sale.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
+                        var last_debt = db.debts.Where(d => d.sale.customer_id == sale.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
+                        debt debt = new debt();
+                        debt.sale_id = sale.id;
+                        debt.created_by = User.Identity.GetUserId();
+                        debt.created_at = created_at;
+                        debt.paid = sale.total - sale.pay_debt - sale.prepayment;
+                        debt.total = (decimal)(last_debt.total + debt.paid);
+                        debt.remaining = last_debt.remaining - debt.paid;
+                        debt.return_sale_id = return_Sale.id;
+                        debt.note = "Doanh nghiệp hoàn tiền cho khách hàng do đổi trả hàng cho doanh nghiệp";
+                        db.debts.Add(debt);
+
+                        customer_debt customer_Debt = new customer_debt();
+                        customer_Debt.customer_id = sale.customer_id;
+                        customer_Debt.created_by = User.Identity.GetUserId();
+                        customer_Debt.created_at = created_at;
+                        customer_Debt.paid = sale.total - sale.pay_debt - sale.prepayment;
+                        customer_Debt.remaining = last_customer_Debt.remaining - customer_Debt.paid;
+                        customer_Debt.return_sale_id = return_Sale.id;
+                        customer_Debt.note = "Doanh nghiệp hoàn tiền cho khách hàng do đổi trả hàng cho doanh nghiệp";
+                        db.customer_debt.Add(customer_Debt);
+                        db.SaveChanges();
+                        while (priceReturn > 0)
+                        {
+                            if (sale.pay_debt > 0)
+                            {
+                                if (sale.pay_debt >= priceReturn)
+                                {
+                                    sale.pay_debt = (sale.total - sale.prepayment);
+                                    priceReturn = 0;
+                                }
+                                else
+                                {
+                                    priceReturn -= (decimal)sale.pay_debt;
+                                    sale.pay_debt = 0;
+                                }
+                            }
+                            else
+                            {
+                                sale.prepayment -= priceReturn;
+                                priceReturn = 0;
+                            }
+                        }
+                        db.Entry(sale).State = EntityState.Modified;
+
+                    }
                     db.Entry(sale).State = EntityState.Modified;
                     db.SaveChanges();
 

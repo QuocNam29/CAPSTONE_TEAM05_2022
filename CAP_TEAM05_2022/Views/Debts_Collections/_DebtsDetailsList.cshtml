@@ -65,6 +65,7 @@
                                                     @(item.return_sale_id != null ? ("Khách hàng đổi trả sản phẩm (mã đổi trả : " + item.return_sale.code + ")") :"")
                                                     @(item.return_supplier_id != null ? ("Trả sản phẩm cho nhà cung cấp (mã hoàn trả : " + item.return_supplier.code +")" ) :"")
                                                     @(item.sale?.is_old_debt == true ? "Đơn nợ cũ"  :"")
+                                                    <div class="text-danger">@item.note</div>
                                                 </td>
                                             </tr>
                                         }

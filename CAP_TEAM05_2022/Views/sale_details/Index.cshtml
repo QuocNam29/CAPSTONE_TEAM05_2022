@@ -70,6 +70,9 @@
                                     @Html.AntiForgeryToken()
                                     <div class="col-md-3">
                                         <div class="form-group">
+                                            <label>
+                                                Tên khách hàng<span class="text-danger">*</span>
+                                            </label>
                                             <input type="hidden" id="customer_id" name="customer_id" class="form-control">
                                             <div class="position-relative">
                                                 <input type="text" placeholder="Chọn khách hàng" id="customer_name" name="customer_name" data-val="true" data-val-required="Vui lòng chọn khách hàng !" aria-autocomplete="list" class="form-control" onchange="UserCustomer()" required>
@@ -77,33 +80,39 @@
 
                                             </div> <!---->
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group KHVangLai">
                                             <div class="position-relative">
+                                                <label>
+                                                    Số điện thoại<span class="text-danger">*</span>
+                                                </label>
                                                 <input type="text" placeholder="Số điện thoại khách hàng" id="customer_phone" aria-autocomplete="list" onchange="UserCustomer_phone()" class="form-control" required>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="position-relative">
+                                                <label>
+                                                    Mã khách hàng
+                                                </label>
                                                 <input type="text" placeholder="Mã khách hàng" id="customer_code" disabled="disabled" class="form-control">
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
+                                        <div class="form-group KHVangLai">
                                             <div class="position-relative">
+                                                <div>
+                                                    <label id="count_sale_lable">Số lần mua hàng</label>
+                                                </div>
                                                 <div class="input-group">
-                                                    <div class="input-group-append">
-                                                        <span id="count_sale_lable" class="input-group-text">Số lần mua hàng:</span>
-                                                    </div>
                                                     <input type="text" placeholder="0" id="count_sale" disabled="disabled" class="form-control">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group KHVangLai">
                                             <div class="position-relative">
+                                                <div>
+                                                    <label id="debit_sum_lable">Tồn nợ </label>
+                                                </div>
                                                 <div class="input-group">
-                                                    <div class="input-group-append">
-                                                        <span id="debit_sum_lable" class="input-group-text">Tồn nợ</span>
-                                                    </div>
                                                     <input type="text" placeholder="0" id="debit_sum" disabled="disabled" class="form-control">
                                                 </div>
                                             </div>
@@ -111,8 +120,10 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
+                                            <label>
+                                                Chọn sản phẩm<span class="text-danger">*</span>
+                                            </label>
                                             <input type="hidden" id="cart_id" name="id" class="form-control">
-
                                             <input type="hidden" id="product_id" name="product_id" class="form-control">
                                             <div class="position-relative">
                                                 <input type="text" placeholder="Chọn sản phẩm" data-val="true" data-val-required="Vui lòng chọn sản phẩm !" id="product_name" name="product_name" aria-autocomplete="list" onchange="CheckProduct()" class="form-control" required>
@@ -123,20 +134,26 @@
 
                                         <div class="form-group">
                                             <div class="position-relative">
+                                                <label>
+                                                    Mã sản phẩm<span class="text-danger">*</span>
+                                                </label>
                                                 <input type="text" placeholder="Mã sản phẩm" disabled="disabled" id="product_code" class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="position-relative">
+                                                <label>
+                                                    Số lượng tồn
+                                                </label>
                                                 <input type="text" placeholder="Số lượng tồn" id="product_unit" disabled="disabled" class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="position-relative">
+                                                <div>
+                                                    <label id="basic-addon2">Giá bán (Tiền mặt):</label>
+                                                </div>
                                                 <div class="input-group">
-                                                    <div class="input-group-append">
-                                                        <span id="basic-addon2" class="input-group-text">Giá bán (Tiền mặt):</span>
-                                                    </div>
                                                     <input type="text" placeholder="Đơn giá bán" id="product_price" disabled="disabled" class="form-control">
                                                     <input type="text" placeholder="Đơn giá bán" hidden id="product_price_swap" disabled="disabled" class="form-control">
                                                 </div>
@@ -145,10 +162,10 @@
                                         </div>
                                         <div class="form-group">
                                             <div class="position-relative">
+                                                <div>
+                                                    <label id="basic-addon2">Giá bán (Ghi nợ):</label>
+                                                </div>
                                                 <div class="input-group">
-                                                    <div class="input-group-append">
-                                                        <span id="basic-addon2" class="input-group-text">Giá bán (Ghi nợ):</span>
-                                                    </div>
                                                     <input type="text" placeholder="Đơn giá bán" id="product_price_debt" disabled="disabled" class="form-control">
                                                     <input type="text" placeholder="Đơn giá bán" hidden id="product_price_swap_debt" disabled="disabled" class="form-control">
                                                 </div>
@@ -159,6 +176,9 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
+                                            <label>
+                                                Số lượng sản phẩm<span class="text-danger">*</span>
+                                            </label>
                                             <div class="position-relative">
                                                 <div class="input-group mb-3">
                                                     <input type="number" id="product_quantity" name="quantity" data-val="true" data-val-required="Vui lòng nhập số lượng !" onchange="SalesCalculation()" min="0" class="form-control" value="1" step="any" required>
@@ -176,32 +196,38 @@
 
                                         <div class="form-group">
                                             <div class="position-relative">
+                                                <div>
+                                                    <label id="basic-addon2">Thành tiền (Tiền mặt):</label>
+                                                </div>
                                                 <div class="input-group mb-3">
-                                                    <div class="input-group-append">
-                                                        <span id="basic-addon2" class="input-group-text">Thành tiền (Tiền mặt):</span>
-                                                    </div>
                                                     <input type="text" id="sum_price" placeholder="Tổng" disabled class="form-control Price">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="position-relative">
+                                                <div>
+                                                    <label id="basic-addon2">Thành tiền(Ghi nợ):</label>
+                                                </div>
                                                 <div class="input-group mb-3">
-                                                    <div class="input-group-append">
-                                                        <span id="basic-addon2" class="input-group-text">Thành tiền(Ghi nợ):</span>
-                                                    </div>
                                                     <input type="text" id="sum_price_debt" placeholder="Tổng" disabled="disabled" class="form-control">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="position-relative">
+                                                <label>
+                                                    Ghi chú
+                                                </label>
                                                 <input id="cart_note" name="note" placeholder="Ghi chú" class="form-control">
                                             </div>
                                             <!---->
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-3 ">
+                                        <label class="text-center">
+                                            Thao tác
+                                        </label>
                                         <input type="hidden" id="actionCart" value="1" />
 
                                         <button type="button" class="btn btn-primary btn-block" id="submit_addCart" onclick="ActionCart('@Constants.ADD_PRODUCT_TO_CART')">Thêm</button>
@@ -237,116 +263,7 @@
         </div>
     </div>
 </section>
-<div id="AddCustomer" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="AddGroupProductLabel" aria-hidden="true">
-    <div class="modal-dialog  modal-lg" role="document">
-        <form class="needs-validation AddCustomerSaleFrom" method="post" action="@Url.Action("AddCustomerSale", "customers")" novalidate>
-            <div class="modal-content">
-                <div class="modal-header bg-primary">
-                    <h5 id="customModalTitle" class="modal-title white">Thêm mới khách hàng</h5>
-                    <button type="button" data-dismiss="modal" aria-label="Close" class="close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>
-                                    Họ và tên<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    <input type="text" placeholder="Nhập họ tên" id="create_customer_name" name="customer_name" class="form-control" pattern="\S+.*" required>
-                                    <div class="invalid-feedback">
-                                        Vui lòng nhập họ và tên !
-                                    </div>
-                                </div>
 
-                                <!---->
-                            </div>
-                            <div class="form-group">
-                                <label>
-                                    Số điện thoại<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    <input type="text" placeholder="Nhập số điện thoại" id="sale_customer_phone" name="customer_phone" class="form-control" pattern="\S+.*" required>
-                                    <div class="invalid-feedback">
-                                        Vui lòng nhập số điện thoại !
-                                    </div>
-                                </div>
-                                <!---->
-                            </div>
-                            <div class="form-group">
-                                <label>Địa chỉ Email</label>
-                                <div class="position-relative">
-                                    <input type="email" placeholder="Nhập địa chỉ Email" id="customer_email" name="customer_email" class="form-control">
-                                </div>
-                                <!---->
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Ngày sinh</label>
-                                <div class="position-relative">
-                                    <input type="date" id="customers_birth" name="customers_birth" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Số tài khoản ngân hàng</label>
-                                <div class="position-relative">
-                                    <input type="text" placeholder="Nhập số tài khoản" id="customer_account" name="customer_account" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Tên ngân hàng</label>
-                                <div class="position-relative">
-                                    <input type="text" placeholder="Nhập tên ngân hàng" id="customer_bank" name="customer_bank" class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>
-                                    Nhóm khách hàng<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    @Html.DropDownList("customer_type", new SelectList(Constants.TypeCustomer, "Key", "Value.Item1"), "---- Chọn nhóm khách hàng ----", new { @class = "form-control", @id = "sale_customer_type", @required = "required" })
-                                    <div class="invalid-feedback">
-                                        Vui lòng chọn nhóm khách hàng !
-                                    </div>
-                                </div>
-                                <!---->
-                            </div>
-                            <div class="form-group">
-                                <label>
-                                    Địa chỉ<span class="text-danger">*</span>
-                                </label>
-                                <div class="position-relative">
-                                    <textarea id="customer_address" name="customer_address" placeholder="Nhập địa chỉ" rows="1" class="form-control" pattern="\S+.*" required></textarea>
-                                    <div class="invalid-feedback">
-                                        Vui lòng nhập đại chỉ !
-                                    </div>
-                                </div>
-                                <!---->
-                            </div>
-                            <div class="form-group">
-                                <label>Ghi chú</label>
-                                <div class="position-relative">
-                                    <textarea id="customer_note" name="customer_note" placeholder="Ghi chú" rows="1" class="form-control"></textarea>
-                                </div>
-                                <!---->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Huỷ bỏ</button>
-                    <button type="submit" class="btn btn-primary">Thêm mới</button>
-                </div>
-            </div>
-        </form>
-
-    </div>
-</div>
 <div id="dataContainer2">
 </div>
 @section scripts {
