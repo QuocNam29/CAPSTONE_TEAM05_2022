@@ -6,6 +6,7 @@
     var User = (user)ViewBag.User;
     Layout = null;
 }
+<link href="~/Template/assets/css/style.css" rel="stylesheet" />
 <div class="pcoded-content">
     <div class="row">
         <div class="col-md-12">
@@ -81,7 +82,7 @@
                                                 @item.price.ToString("N0") VNĐ
                                             </td>
                                             <td class="text-center">
-                                                @item.note 
+                                                @item.note
                                             </td>
                                         </tr>
                                     }
@@ -114,14 +115,14 @@
                                                             @Model.carts.Sum(x => x.price).ToString("N0") VNĐ
                                                         </span>
                                                     </b>
-                                                </div>                                             
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
                                 </tfoot>
                             </table>
                             <div class="card_footer">
-                                <p class="card__footer-desc">Tra cứu tại Website: <a href="https://cntttest.vanlanguni.edu.vn:18081/CP25Team05/LookUpOrder">https://cntttest.vanlanguni.edu.vn:18081/CP25Team05/LookUpOrder</a> - <span> Mã tra cứu:</span> xxx</p>
+                                <p class="card__footer-desc">Tra cứu tại Website: <a href="https://cntttest.vanlanguni.edu.vn:18081/CP25Team05/LookUpOrder">https://cntttest.vanlanguni.edu.vn:18081/CP25Team05/LookUpOrder</a> - <span> Mã tra cứu:</span> @Model.code</p>
                                 @* <p class="card__footer-desc card__footer-desc-ladi">(abc)</p>
                                     <p class="card__footer-desc card__footer-desc-ladi">(abc)</p>*@
                             </div>

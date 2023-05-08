@@ -219,11 +219,13 @@ namespace CAP_TEAM05_2022.Controllers
                             else
                             {
                                 sale.prepayment -= priceReturn;
+                                if (sale.prepayment < 0)
+                                {
+                                    sale.prepayment = 0;
+                                }
                                 priceReturn = 0;
                             }
                         }
-                        db.Entry(sale).State = EntityState.Modified;
-
                     }
                     db.Entry(sale).State = EntityState.Modified;
                     db.SaveChanges();
@@ -684,6 +686,10 @@ namespace CAP_TEAM05_2022.Controllers
                             else
                             {
                                 sale.prepayment -= priceReturn;
+                                if (sale.prepayment < 0)
+                                {
+                                    sale.prepayment = 0;
+                                }
                                 priceReturn = 0;
                             }
                         }
