@@ -36,7 +36,6 @@ namespace CAP_TEAM05_2022.Models
         public string remember_token { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }
-        public Nullable<System.DateTime> deleted_at { get; set; }
         public string asp_id { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }

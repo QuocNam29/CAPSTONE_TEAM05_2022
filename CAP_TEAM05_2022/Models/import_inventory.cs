@@ -29,7 +29,6 @@ namespace CAP_TEAM05_2022.Models
         public string created_by { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }
-        public Nullable<System.DateTime> deleted_at { get; set; }
         public int sold_swap { get; set; }
         public int quantity_remaining { get; set; }
         public Nullable<int> supplier_id { get; set; }

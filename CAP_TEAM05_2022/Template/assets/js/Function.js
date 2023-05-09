@@ -407,7 +407,6 @@ $('.Price').keydown(function (e) {
         let parts = $(this).val().split(".");
         let v = parts[0].replace(/(?!-)[^0-9.]/g, ""),
             dec = parts[1]
-        if (v != '-') {
             let calc_num = Number((dec !== undefined ? v + "." + dec : v));
             console.log(calc_num)
             // use this for numeric calculations
@@ -415,7 +414,6 @@ $('.Price').keydown(function (e) {
             let n = new Intl.NumberFormat('en-EN').format(v);
             n = dec !== undefined ? n + "." + dec : n;
             $(this).val(n);
-        }       
     })
 })
 

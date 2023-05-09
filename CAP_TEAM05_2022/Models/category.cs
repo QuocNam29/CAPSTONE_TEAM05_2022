@@ -27,11 +27,9 @@ namespace CAP_TEAM05_2022.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "Vui lòng nhập tên danh mục")]
         [StringLength(100, ErrorMessage = "Nhập tên danh mục phải dưới 100 ký tự.")]
         public string name { get; set; }
-        public string slug { get; set; }
         public int status { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }
-        public Nullable<System.DateTime> deleted_at { get; set; }
     
         public virtual user user { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

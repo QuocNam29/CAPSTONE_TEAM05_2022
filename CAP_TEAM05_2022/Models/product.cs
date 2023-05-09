@@ -48,7 +48,6 @@ namespace CAP_TEAM05_2022.Models
         public string created_by { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }
-        public Nullable<System.DateTime> deleted_at { get; set; }
         public string name_group { get; set; }
         public string name_category { get; set; }
         public string unit_swap { get; set; }

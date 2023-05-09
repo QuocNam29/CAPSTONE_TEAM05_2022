@@ -61,7 +61,6 @@ namespace CAP_TEAM05_2022.Controllers
                         category.status = Constants.SHOW_STATUS;
                         category.created_by = User.Identity.GetUserId();
                         category.created_at = DateTime.Now;
-                        category.slug = category.name;
                         category.code = "DM" + CodeRandom.RandomCode();
                         db.categories.Add(category);
                         db.SaveChanges();

@@ -790,7 +790,6 @@ namespace CAP_TEAM05_2022.Controllers
                     category.status = 1;
                     category.created_by = User.Identity.GetUserId();
                     category.created_at = currentDate;
-                    category.slug = import.name_category;
                     category.code = "DM" + CodeRandom.RandomCode();
                     db.categories.Add(category);
                 }
@@ -983,7 +982,6 @@ namespace CAP_TEAM05_2022.Controllers
                         category.status = 1;
                         category.created_by = User.Identity.GetUserId();
                         category.created_at = currentDate;
-                        category.slug = item.name_category;
                         category.code = "DM" + CodeRandom.RandomCode();
                         db.categories.Add(category);
                     }
