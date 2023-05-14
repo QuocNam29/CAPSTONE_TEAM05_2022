@@ -405,6 +405,7 @@ namespace CAP_TEAM05_2022.Controllers
                                || String.IsNullOrEmpty(row["Đơn giá bán nợ"].ToString()))
 
                             {
+                                Session["name_product"] = row["Tên sản phẩm"].ToString().Trim();
                                 Session["unit_product"] = null;
                             }
                             else
@@ -815,7 +816,7 @@ namespace CAP_TEAM05_2022.Controllers
                 product.unit = import.unit;
                 product.unit_swap = import.unit_swap;
                 product.category_id = check_category == null ? category.id : check_category.id;
-                product.supplier_id = check_supplier == null ? supplier.id : check_category.id;
+                product.supplier_id = check_supplier == null ? supplier.id : check_supplier.id;
                 product.created_by = User.Identity.GetUserId();
                 product.sell_price = import.sell_price;
                 product.sell_price_debt = import.sell_price_debt;
@@ -1041,7 +1042,7 @@ namespace CAP_TEAM05_2022.Controllers
                     inventory_Order.create_by = User.Identity.GetUserId();
                     inventory_Order.Total = product.purchase_price * product.quantity;
                     inventory_Order.state = Constants.PAYED_ORDER;
-                    inventory_Order.supplier_id = check_supplier == null ? supplier.id : check_category.id;
+                    inventory_Order.supplier_id = check_supplier == null ? supplier.id : check_supplier.id;
                     db.inventory_order.Add(inventory_Order);
 
                     import_inventory inventory = new import_inventory();
@@ -1055,7 +1056,7 @@ namespace CAP_TEAM05_2022.Controllers
                     inventory.quantity_remaining = 0;
                     inventory.created_by = User.Identity.GetUserId();
                     inventory.created_at = currentDate;
-                    inventory.supplier_id = check_supplier == null ? supplier.id : check_category.id;
+                    inventory.supplier_id = check_supplier == null ? supplier.id : check_supplier.id;
                     db.import_inventory.Add(inventory);
                     db.SaveChanges();
                     Product_list.RemoveAll(p => p.id == item.id);
