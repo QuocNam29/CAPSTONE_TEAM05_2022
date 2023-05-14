@@ -143,8 +143,8 @@ namespace CAP_TEAM05_2022.Controllers
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ExcelPackage ep = new ExcelPackage();
             var list_group = db.groups.ToList();
-            var list_category = db.categories.ToList();
-            var list_supplier = db.customers.Where(g => g.type == Constants.SUPPLIER).ToList();
+            var list_category = db.categories.Where(x=> x.status == Constants.SHOW_STATUS).ToList();
+            var list_supplier = db.customers.Where(g => g.type == Constants.SUPPLIER && g.status == Constants.SHOW_STATUS).ToList();
             ExcelWorksheet Sheet = ep.Workbook.Worksheets.Add("NhapSanPham");
             FormatExcel(Sheet, 3);
             Sheet.Cells["A1"].Value = "Tên sản phẩm";

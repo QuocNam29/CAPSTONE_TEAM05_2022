@@ -10,6 +10,12 @@ namespace CAP_TEAM05_2022
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                "categories",
+                "quan-ly-danh-muc",
+                new { controller = "categories", action = "Index" }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "sale_details", action = "Index", id = UrlParameter.Optional }

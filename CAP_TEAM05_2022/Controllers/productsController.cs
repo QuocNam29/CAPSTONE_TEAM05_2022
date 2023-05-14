@@ -22,17 +22,17 @@ namespace CAP_TEAM05_2022.Controllers
         // GET: products
         public ActionResult Index()
         {
-            ViewBag.CategoryId = new SelectList(db.categories, "Id", "Name");
-            ViewBag.SupplierId = new SelectList(db.customers.Where(x => x.type == Constants.SUPPLIER).ToList(), "Id", "Name");
+            ViewBag.CategoryId = new SelectList(db.categories.Where(x => x.status == Constants.SHOW_STATUS), "Id", "Name");
+            ViewBag.SupplierId = new SelectList(db.customers.Where(x => x.type == Constants.SUPPLIER && x.status == Constants.SHOW_STATUS).ToList(), "Id", "Name");
             return View();
 
         }
-        
+
         [HttpGet]
         public PartialViewResult _Form(int? id)
         {
-            ViewBag.CategoryId = new SelectList(db.categories, "Id", "Name");
-            ViewBag.SupplierId = db.customers.Where(x => x.type == Constants.SUPPLIER).ToList();
+            ViewBag.CategoryId = new SelectList(db.categories.Where(x => x.status == Constants.SHOW_STATUS), "Id", "Name");
+            ViewBag.SupplierId = db.customers.Where(x => x.type == Constants.SUPPLIER && x.status == Constants.SHOW_STATUS).ToList();
             if (id != null)
             {
                 product product = db.products.Find(id);
@@ -47,8 +47,8 @@ namespace CAP_TEAM05_2022.Controllers
         {
             product product = db.products.Find(id);
             ViewBag.isCreate = true;
-            ViewBag.CategoryId = new SelectList(db.categories, "Id", "Name");
-            ViewBag.SupplierId = new SelectList(db.customers.Where(x => x.type == Constants.SUPPLIER).ToList(), "Id", "Name");
+            ViewBag.CategoryId = new SelectList(db.categories.Where(x => x.status == Constants.SHOW_STATUS), "Id", "Name");
+            ViewBag.SupplierId = new SelectList(db.customers.Where(x => x.type == Constants.SUPPLIER && x.status == Constants.SHOW_STATUS).ToList(), "Id", "Name");
             return PartialView("_FormEdit", product);
         }
 
@@ -91,11 +91,11 @@ namespace CAP_TEAM05_2022.Controllers
                             decimal priceSwap = 0;
                             if (!String.IsNullOrEmpty(debt_price_swap))
                             {
-                                 debtPriceSwap = decimal.Parse(debt_price_swap.Replace(",", "")); //.Replace(".", ","));
+                                debtPriceSwap = decimal.Parse(debt_price_swap.Replace(",", "")); //.Replace(".", ","));
                             }
                             else
                             {
-                                 debtPriceSwap = debtPrice / product.quantity_swap;
+                                debtPriceSwap = debtPrice / product.quantity_swap;
                             }
                             if (!String.IsNullOrEmpty(price_swap))
                             {
@@ -280,7 +280,7 @@ namespace CAP_TEAM05_2022.Controllers
         }
 
         [HttpGet]
-        public ActionResult _ProductList( int? category_id, int? supplier_id)
+        public ActionResult _ProductList(int? category_id, int? supplier_id)
         {
             var links = from l in db.products
                         select l;
@@ -547,7 +547,7 @@ namespace CAP_TEAM05_2022.Controllers
             emp.quantity = product.quantity;
             emp.unit = product.unit;
             emp.unit_swap = product.unit_swap;
-            emp.name_category = isDebtPrice == 1 ? product.sell_price_debt.ToString("N0") :  product.sell_price.ToString("N0");
+            emp.name_category = isDebtPrice == 1 ? product.sell_price_debt.ToString("N0") : product.sell_price.ToString("N0");
             emp.note = "Số lượng tồn: " + product.quantity + product.unit;
             emp.note += "/" + product.quantity_swap + product.unit_swap;
             emp.note += " và " + product.quantity_remaning + product.unit_swap + " lẻ";
