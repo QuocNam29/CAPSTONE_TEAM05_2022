@@ -74,27 +74,7 @@ $(document).ready(function () {
         })*/
        
 //-------------------------Làm mới cart--------------------------------
-        $('#refresh_cart').on('click', function () {
-            GetList_Cart(-1);
-            $('#customer_code').val('');
-            $('#customer_phone').val('');
-            $('#customer_type').val('');
-            $('#count_sale').val('');
-            $('#product_quantity').val('1');
-            $('#debit_sum').val('');
-            $('#customer_name').val('');
-            $('#product_code').val('');
-            $('#product_unit').val('');
-            $('#product_price').val('');
-            $('#product_price_debt').val('');
-            $('#product_name').val('');
-            $('#sum_price').val('');
-            $('#sum_price_debt').val('');
-            $('#cart_note').val('');
-            $('#history_btn').hide();
-
-            form.classList.remove('was-validated');
-        })
+       
         $('#Cancel_Cart').on('click', function () {
             $('#product_code').val('');
             $('#product_unit').val('');

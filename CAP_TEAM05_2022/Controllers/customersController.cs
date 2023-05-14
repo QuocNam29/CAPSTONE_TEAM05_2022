@@ -332,7 +332,7 @@ namespace CAP_TEAM05_2022.Controllers
         public JsonResult GetSearchValue(string search)
         {
             var customers = (from customer in db.customers
-                             where customer.name.Contains(search) && customer.status != 3 && customer.type != Constants.SUPPLIER
+                             where customer.name.Contains(search) && customer.status == Constants.SHOW_STATUS && customer.type != Constants.SUPPLIER
 
                              select new
                              {
@@ -346,7 +346,7 @@ namespace CAP_TEAM05_2022.Controllers
         public JsonResult GetSearch_phoneValue(string search)
         {
             var customers = (from customer in db.customers
-                             where customer.phone.Contains(search) && customer.status != 3
+                             where customer.phone.Contains(search) && customer.status == Constants.SHOW_STATUS
                              select new
                              {
                                  label = customer.phone,

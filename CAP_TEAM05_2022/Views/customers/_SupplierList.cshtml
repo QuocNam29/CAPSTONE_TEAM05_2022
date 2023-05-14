@@ -13,8 +13,6 @@
             <th>Tên nhà cung cấp</th>
             <th>Email</th>
             <th>Điện thoại</th>
-            <th class="text-center">Tài khoản ngân hàng</th>
-            <th class="text-center">Số tài khoản</th>
             <th>Địa chỉ</th>
             <th class="text-center">Trạng thái</th>
             <th>Ghi chú</th>
@@ -33,12 +31,6 @@
                 <td>@item.name</td>
                 <td>@item.email</td>
                 <td>@item.phone</td>
-                <td class="text-center">
-                    @item.bank
-                </td>
-                <td class="text-center">
-                    @item.account_number
-                </td>
                 <td>@item.address</td>
                 <td class="text-center">
                     @if (item.status == Constants.SHOW_STATUS)

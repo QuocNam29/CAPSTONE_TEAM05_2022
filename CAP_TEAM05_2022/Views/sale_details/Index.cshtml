@@ -232,7 +232,7 @@
 
                                         <button type="button" class="btn btn-primary btn-block" id="submit_addCart" onclick="ActionCart('@Constants.ADD_PRODUCT_TO_CART')">Thêm</button>
                                         <button type="submit" hidden class="btn btn-primary btn-block" id="submit_Cart">Thêm</button>
-                                        <button type="button" class="btn btn-info btn-block" id="refresh_cart">
+                                        <button type="reset" class="btn btn-info btn-block" id="refresh_cart">
                                             Làm mới
                                         </button>
                                         <button type="button" class="btn btn-primary btn-block" id="submit_updateCart" onclick="ActionCart('@Constants.UPDATE_PRODUCT_TO_CART')" style="display: none;">Cập nhật</button>
@@ -519,7 +519,6 @@
                     $('#Customer').modal('show');
                 }
             });
-
-            }
+        }
     </script>
 }

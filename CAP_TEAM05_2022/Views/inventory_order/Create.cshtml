@@ -64,14 +64,16 @@
                                         <label class="floating-label" for="Text">Phương thức thanh toán <span class="text-danger">*</span></label>
                                         <div>
                                             <div class="form-check form-check-inline">
-                                                <input type="radio" class="form-control-lg" name="method" value="@Constants.PAYED_ORDER" onclick="Method1();" checked>
+                                                <input type="radio" class="form-control-lg form-check-input" name="method" value="@Constants.PAYED_ORDER" onclick="Method1();" required data-val="true" data-val-required="Vui lòng chọn phương thức thanh toán !">
                                                 <label class="form-check-label" for="Subject">Đã thanh toán</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input type="radio" class="form-control-lg" name="method" value="@Constants.DEBT_ORDER" onclick="Method2();">
+                                                <input type="radio" class="form-control-lg form-check-input" name="method" value="@Constants.DEBT_ORDER" onclick="Method2();" required data-val="true" data-val-required="Vui lòng chọn phương thức thanh toán !">
                                                 <label class="form-check-label" for="Subject">Ghi nợ</label>
                                             </div>
                                         </div>
+                                        @Html.ValidationMessage("method", "", new { @class = "text-danger" })
+
                                     </div>
                                 </div>
                                 <div class="col-sm-6 debt_method">

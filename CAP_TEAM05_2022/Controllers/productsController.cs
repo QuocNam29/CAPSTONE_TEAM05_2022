@@ -292,7 +292,7 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 links = links.Where(p => p.supplier_id == supplier_id);
             }
-            return PartialView(links.Where(c => c.status != 3).OrderByDescending(c => c.id));
+            return PartialView(links.OrderByDescending(c => c.id));
         }
 
         [HttpGet]
@@ -310,7 +310,7 @@ namespace CAP_TEAM05_2022.Controllers
             var links = from l in db.products
                         select l;
 
-            return PartialView(links.Where(c => c.status != 3).OrderByDescending(c => c.id));
+            return PartialView(links.OrderByDescending(c => c.id));
 
         }
         public ActionResult Create_Product(string name_product, string unit,
@@ -505,7 +505,7 @@ namespace CAP_TEAM05_2022.Controllers
         public JsonResult GetSearchValue(string search)
         {
             var product = (from Product in db.products
-                           where Product.name.StartsWith(search) && Product.status != 3
+                           where Product.name.StartsWith(search) && Product.status == Constants.SHOW_STATUS
                            select new
                            {
                                label = Product.name,

@@ -76,7 +76,7 @@ namespace CAP_TEAM05_2022.Controllers
                 Id = x.id,
                 Name = (x.category.name + " - " + x.name + " (" + x.unit + (x.unit_swap != null ? "/" + x.quantity_swap + x.unit_swap : "") + ")").ToString()
             });
-            ViewBag.Customer = new SelectList(db.customers.Where(c => c.type == Constants.SUPPLIER), "id", "name");
+            ViewBag.Customer = new SelectList(db.customers.Where(c => c.type == Constants.SUPPLIER && c.status == Constants.SHOW_STATUS), "id", "name");
             ViewBag.isCreate = true;
             return View();
         }
@@ -87,7 +87,7 @@ namespace CAP_TEAM05_2022.Controllers
                 Id = x.id,
                 Name = (x.category.name + " - " + x.name + " (" + x.unit + (x.unit_swap != null ? "/" + x.quantity_swap + x.unit_swap : "") + ")").ToString()
             });
-            ViewBag.Customer = new SelectList(db.customers.Where(c => c.type == Constants.SUPPLIER), "id", "name");
+            ViewBag.Customer = new SelectList(db.customers.Where(c => c.type == Constants.SUPPLIER && c.status == Constants.SHOW_STATUS), "id", "name");
             ViewBag.isCreate = true;
             return PartialView("CreateDetails");
         }
@@ -249,7 +249,7 @@ namespace CAP_TEAM05_2022.Controllers
                 Id = x.id,
                 Name = (x.category.name + " - " + x.name + " (" + x.unit + (x.unit_swap != null ? "/" + x.quantity_swap + x.unit_swap : "") + ")").ToString()
             });
-            ViewBag.Customer = new SelectList(db.customers.Where(c => c.type == Constants.SUPPLIER), "id", "name");
+            ViewBag.Customer = new SelectList(db.customers.Where(c => c.type == Constants.SUPPLIER && c.status == Constants.SHOW_STATUS), "id", "name");
             ViewBag.isCreate = true;
             return Json(new { status, message }, JsonRequestBehavior.AllowGet);
         }
