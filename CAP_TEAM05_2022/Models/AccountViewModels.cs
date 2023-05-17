@@ -65,7 +65,7 @@ namespace CAP_TEAM05_2022.Models
     public class RegisterViewModel
     {
         [Required(ErrorMessage = "Email không được bỏ trống !")]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "Email sai định dạng !")]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
@@ -83,7 +83,7 @@ namespace CAP_TEAM05_2022.Models
         [Required(ErrorMessage = "Vui lòng nhập số điện thoại !")]
         [Display(Name = "Phone Number")]
         [DataType(DataType.PhoneNumber)]
-        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Số điện thoạn không hợp lệ")]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Số điện thoạn không hợp lệ !")]
         public string PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập họ và tên !")]

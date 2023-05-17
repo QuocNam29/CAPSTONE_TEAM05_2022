@@ -385,15 +385,14 @@ function EditStatus(id) {
 $('.Price').keydown(function (e) {
     setTimeout(() => {
         let parts = $(this).val().split(".");
-        let v = parts[0].replace(/(?!-)[^0-9.]/g, ""),
+        let v = parts[0].replace(/\D/g, ""),
             dec = parts[1]
-            let calc_num = Number((dec !== undefined ? v + "." + dec : v));
-            console.log(calc_num)
-            // use this for numeric calculations
-            // console.log('number for calculations: ', calc_num);
-            let n = new Intl.NumberFormat('en-EN').format(v);
-            n = dec !== undefined ? n + "." + dec : n;
-            $(this).val(n);
+        let calc_num = Number((dec !== undefined ? v + "." + dec : v));
+        // use this for numeric calculations
+        // console.log('number for calculations: ', calc_num);
+        let n = new Intl.NumberFormat('en-EN').format(v);
+        n = dec !== undefined ? n + "." + dec : n;
+        $(this).val(n);
     })
 })
 

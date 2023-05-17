@@ -399,7 +399,7 @@
                 document.querySelector("#input_qualityProduct").disabled = false;
                 $("#priceProduct").val(data.name_category);
                 var input_qualityProduct = $('#input_qualityProduct').val();
-                document.getElementsByClassName('price_return')[0].innerHTML = "Sản phẩm muốn đổi: " + data.name_category.toLocaleString() + " x " + input_qualityProduct + " = " + (input_qualityProduct * data.name_category).toLocaleString();
+                document.getElementsByClassName('price_return')[0].innerHTML = "Sản phẩm muốn đổi: " + data.name_category.toLocaleString() + " x " + input_qualityProduct + " = " + (input_qualityProduct * data.name_category.replace(/\,/g, '').replace(/\./g, '')).toLocaleString();
                 var price_PCurrent = $('#price_PCurrent').val().replace(/\,/g, '').replace(/\./g, '');
                 var quality_OD = $('#quality_OD').val();
                 var priceProduct = $('#priceProduct').val().replace(/\,/g, '').replace(/\./g, '');

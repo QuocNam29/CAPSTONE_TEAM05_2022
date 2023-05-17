@@ -73,17 +73,19 @@ namespace CAP_TEAM05_2022.Controllers
                 return View(model);
             }
             AspNetUser aspNet = db.AspNetUsers.Where(s => s.Email == model.Email).FirstOrDefault();
-            if (aspNet.LockoutEnabled == false)
-            {
-                ModelState.AddModelError("", "Tài khoản của bạn đang bị khóa !");
-                return View(model);
-            }
+            
+            
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
+                    if (aspNet.LockoutEnabled == false)
+                    {
+                        ModelState.AddModelError("", "Tài khoản của bạn đang bị khóa !");
+                        return View(model);
+                    }
                     // Update redirect base on user role
                     var userAsp = await UserManager.FindAsync(model.Email, model.Password);
                     var roles = await UserManager.GetRolesAsync(userAsp.Id);
