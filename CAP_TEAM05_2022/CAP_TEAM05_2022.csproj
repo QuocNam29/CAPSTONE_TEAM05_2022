@@ -189,6 +189,7 @@
     <Compile Include="Controllers\cartsController.cs" />
     <Compile Include="Controllers\categoriesController.cs" />
     <Compile Include="Controllers\customersController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\Debts_CollectionsController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ExcelController.cs" />
@@ -300,6 +301,7 @@
     <Compile Include="Models\sp_helpdiagrams_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\StatisticsViewModel.cs" />
     <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -333,6 +335,13 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\apexchart\dist\apexcharts.amd.js" />
+    <Content Include="Scripts\apexchart\dist\apexcharts.amd.js.LICENSE.txt" />
+    <Content Include="Scripts\apexchart\dist\apexcharts.common.js" />
+    <Content Include="Scripts\apexchart\dist\apexcharts.css" />
+    <Content Include="Scripts\apexchart\dist\apexcharts.esm.js" />
+    <Content Include="Scripts\apexchart\dist\apexcharts.js" />
+    <Content Include="Scripts\apexchart\dist\apexcharts.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\bootstrap\variables.less" />
@@ -347,6 +356,45 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\FTPProfile.pubxml" />
+    <Content Include="Scripts\apexchart\dist\locales\ar.json" />
+    <Content Include="Scripts\apexchart\dist\locales\ca.json" />
+    <Content Include="Scripts\apexchart\dist\locales\cs.json" />
+    <Content Include="Scripts\apexchart\dist\locales\de.json" />
+    <Content Include="Scripts\apexchart\dist\locales\el.json" />
+    <Content Include="Scripts\apexchart\dist\locales\en.json" />
+    <Content Include="Scripts\apexchart\dist\locales\es.json" />
+    <Content Include="Scripts\apexchart\dist\locales\et.json" />
+    <Content Include="Scripts\apexchart\dist\locales\fa.json" />
+    <Content Include="Scripts\apexchart\dist\locales\fi.json" />
+    <Content Include="Scripts\apexchart\dist\locales\fr.json" />
+    <Content Include="Scripts\apexchart\dist\locales\he.json" />
+    <Content Include="Scripts\apexchart\dist\locales\hi.json" />
+    <Content Include="Scripts\apexchart\dist\locales\hr.json" />
+    <Content Include="Scripts\apexchart\dist\locales\hu.json" />
+    <Content Include="Scripts\apexchart\dist\locales\hy.json" />
+    <Content Include="Scripts\apexchart\dist\locales\id.json" />
+    <Content Include="Scripts\apexchart\dist\locales\it.json" />
+    <Content Include="Scripts\apexchart\dist\locales\ja.json" />
+    <Content Include="Scripts\apexchart\dist\locales\ka.json" />
+    <Content Include="Scripts\apexchart\dist\locales\ko.json" />
+    <Content Include="Scripts\apexchart\dist\locales\lt.json" />
+    <Content Include="Scripts\apexchart\dist\locales\lv.json" />
+    <Content Include="Scripts\apexchart\dist\locales\nb.json" />
+    <Content Include="Scripts\apexchart\dist\locales\nl.json" />
+    <Content Include="Scripts\apexchart\dist\locales\pl.json" />
+    <Content Include="Scripts\apexchart\dist\locales\pt-br.json" />
+    <Content Include="Scripts\apexchart\dist\locales\pt.json" />
+    <Content Include="Scripts\apexchart\dist\locales\rs.json" />
+    <Content Include="Scripts\apexchart\dist\locales\ru.json" />
+    <Content Include="Scripts\apexchart\dist\locales\se.json" />
+    <Content Include="Scripts\apexchart\dist\locales\sk.json" />
+    <Content Include="Scripts\apexchart\dist\locales\sl.json" />
+    <Content Include="Scripts\apexchart\dist\locales\sq.json" />
+    <Content Include="Scripts\apexchart\dist\locales\th.json" />
+    <Content Include="Scripts\apexchart\dist\locales\tr.json" />
+    <Content Include="Scripts\apexchart\dist\locales\ua.json" />
+    <Content Include="Scripts\apexchart\dist\locales\zh-cn.json" />
+    <Content Include="Scripts\apexchart\dist\locales\zh-tw.json" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\i18n\af.js" />
     <Content Include="Scripts\i18n\ar.js" />
@@ -731,6 +779,7 @@
     <Content Include="Views\AspNetUsers\_Form.cshtml" />
     <Content Include="Views\sale_details\_FormProduct.cshtml" />
     <Content Include="Views\sale_details\_FormCustomer.cshtml" />
+    <Content Include="Views\Dashboard\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

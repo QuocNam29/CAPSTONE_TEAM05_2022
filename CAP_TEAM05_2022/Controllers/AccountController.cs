@@ -84,6 +84,7 @@ namespace CAP_TEAM05_2022.Controllers
                     if (aspNet.LockoutEnabled == false)
                     {
                         ModelState.AddModelError("", "Tài khoản của bạn đang bị khóa !");
+                        AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
                         return View(model);
                     }
                     // Update redirect base on user role
