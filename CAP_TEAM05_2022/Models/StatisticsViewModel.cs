@@ -14,7 +14,7 @@ namespace CAP_TEAM05_2022.Models
 
 
         public int? Quantity { get; set; }
-        public double? Total { get; set; }
+        public decimal? TotalRevenue { get; set; }
         public int? State { get; set; }
         public int? CountSupplier { get; set; }
         public int? CountUser { get; set; }
@@ -31,7 +31,7 @@ namespace CAP_TEAM05_2022.Models
 
 
         public int[] CountArr1 { get; set; }
-        public int[] CountArr2 { get; set; }
+        public decimal[] CountArr2 { get; set; }
         public int[] CountArr3 { get; set; }
         public int[] CountArr4 { get; set; }
         public int[] CountArrLoan1 { get; set; }

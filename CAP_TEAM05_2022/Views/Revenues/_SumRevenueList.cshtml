@@ -15,20 +15,20 @@
                         <th class="text-center">Ngày giao dịch</th>
                         <th class="text-center">Số đơn hàng</th>
                         <th class="text-center">Tổng tiền</th>
-                        <th class="text-center"> </th>
+                        <th class="text-center">Lợi nhuận</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.GroupBy(x=> x.created_at.Value.Date))
+                    @foreach (var item in Model.GroupBy(x => x.created_at.Value.Date))
                     {
 
                         no1++;
-                    <tr class="click-hover" >
+                    <tr class="click-hover">
                         <td class="text-center">
                             @no1
                         </td>
                         <td class="text-center">
-                            <a href="@Url.Action("Index","Revenues",new { date_Start = item.Key, date_End =item.Key})">@String.Format("{0:dd-MM-yyyy}", item.Key)</a>
+                            <a href="@Url.Action("Index", "Revenues", new { date_Start = item.Key, date_End = item.Key })">@String.Format("{0:dd-MM-yyyy}", item.Key)</a>
                         </td>
                         <td class="text-center">
                             @Model.Where(x => x.created_at.Value.Date == item.Key).Count()
@@ -38,8 +38,31 @@
                         </td>
                         <td class="text-center">
                             
-                        </td>
+                            @{
+                                decimal nhapHang = 0;
+                                foreach (var item1 in Model.Where(x => x.created_at.Value.Date == item.Key))
+                                {
+                                    foreach (var item2 in item1.sale_details)
+                                    {
+                                        foreach (var item3 in item2.revenues)
+                                        {
+                                            if (item3.unit == item3.import_inventory.product.unit)
+                                            {
+                                                nhapHang += item3.quantity * item3.import_inventory.price_import;
+                                            }
+                                            else
+                                            {
+                                                nhapHang += item3.quantity * (decimal)(item3.import_inventory.price_import / item3.import_inventory.product.quantity_swap);
 
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                           @((Model.Where(x => x.created_at.Value.Date == item.Key).Sum(x => x.total) - nhapHang).ToString("N0")) VNĐ
+                            
+                        </td>
                     </tr>
                     }
                     @foreach (var item in Model)

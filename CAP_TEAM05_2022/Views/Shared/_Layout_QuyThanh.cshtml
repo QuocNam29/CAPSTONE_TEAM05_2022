@@ -48,163 +48,33 @@
                 </div>
                 @if (isAdmin)
                 {
-                    <ul class="nav pcoded-inner-navbar">
-                        <li class="nav-item pcoded-menu-caption">
-                            <label>Quản lý</label>
-                        </li>
-                        <li class="nav-item pcoded-hasmenu">
-                            <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-box"></i></span><span class="pcoded-mtext">Quản lý nhân sự</span></a>
-                            <ul class="pcoded-submenu">
-                                <li class="nav-item">
-                                    <a href="@Url.Action("Index","AspNetUsers")" class="nav-link">
-                                        <span class="pcoded-micon"><i class="feather icon-user"></i></span>
-                                        <span class="pcoded-mtext">Nhân viên</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="@Url.Action("Customers","customers")" class="nav-link">
-                                        <span class="pcoded-micon"><i class="feather icon-users"></i></span>
-                                        <span class="pcoded-mtext">Khách hàng</span>
-                                    </a>
-                                </li>
 
-                            </ul>
-                        </li>
-                        <li class="nav-item pcoded-hasmenu">
-                            <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-box"></i></span><span class="pcoded-mtext">Quản lý sản phẩm</span></a>
-                            <ul class="pcoded-submenu">
-                                <li class="nav-item">
-                                    <a href="@Url.Action("Suppliers","customers")" class="nav-link">
-                                        <span class="pcoded-micon"><i class="feather icon-grid"></i></span>
-                                        <span class="pcoded-mtext">Công ty</span>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item ">
-                                    <a href="@Url.Action("Index","categories")" class="nav-link">
-                                        <span class="pcoded-micon"><i class="feather icon-layout"></i></span>
-                                        <span class="pcoded-mtext">Danh mục</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="@Url.Action("Index","products")" class="nav-link">
-                                        <span class="pcoded-micon"><i class="feather icon-wind"></i></span>
-                                        <span class="pcoded-mtext">Sản phẩm</span>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </li>
-
-
-                        <li class="nav-item pcoded-menu-caption">
-                            <label>Kinh Doanh</label>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("Index","sale_details")" class="nav-link">
-                                <span class="pcoded-micon"><i class="feather icon-target"></i></span> <span class="pcoded-mtext">Bán hàng</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="@Url.Action("Index","sales")" class="nav-link">
-                                <span class="pcoded-micon"><i class="feather icon-inbox"></i></span> <span class="pcoded-mtext">Đơn hàng</span>
-                            </a>
-                        </li>
-                        <li class="nav-item pcoded-hasmenu">
-                            <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-box"></i></span><span class="pcoded-mtext">Quản lý hàng hóa</span></a>
-                            <ul class="pcoded-submenu">
-                                <li class="nav-item">
-                                    <a href="@Url.Action("Index","import_inventory")" class="nav-link">
-                                        <span class="pcoded-micon"><i class="feather icon-package"></i></span>
-                                        <span class="pcoded-mtext">Tồn kho</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="@Url.Action("Index","inventory_order")" class="nav-link">
-                                        <span class="pcoded-micon"><i class="feather icon-package"></i></span>
-                                        <span class="pcoded-mtext">Nhập hàng</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item pcoded-hasmenu">
-                            <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-box"></i></span><span class="pcoded-mtext">Báo cáo doanh thu</span></a>
-                            <ul class="pcoded-submenu">
-                                <li class="nav-item">
-                                    <a href="@Url.Action("Revenue","sales")" class="nav-link">
-                                        <span class="pcoded-micon"><i class="feather icon-clipboard"></i></span>
-                                        <span class="pcoded-mtext">Doanh thu chi tiết</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="@Url.Action("Index","Revenues")" class="nav-link">
-                                        <span class="pcoded-micon"><i class="feather icon-clipboard"></i></span>
-                                        <span class="pcoded-mtext">Báo cáo ngày/tháng</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="@Url.Action("SumRevenue","Revenues")" class="nav-link">
-                                        <span class="pcoded-micon"><i class="feather icon-clipboard"></i></span>
-                                        <span class="pcoded-mtext">Báo cáo tổng hợp</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item pcoded-menu-caption"><label>Tín năng</label></li>
-                        <li class="nav-item pcoded-hasmenu">
-                            <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-box"></i></span><span class="pcoded-mtext">Quản lý đổi trả</span></a>
-                            <ul class="pcoded-submenu">
-                                <li class="nav-item">
-                                    <a href="@Url.Action("Index","return_sale")" class="nav-link">
-                                        <span class="pcoded-micon"><i class="feather icon-repeat"></i></span> <span class="pcoded-mtext">Lịch sử đổi trả đơn hàng</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="@Url.Action("Index","return_supplier")" class="nav-link">
-                                        <span class="pcoded-micon"><i class="feather icon-repeat"></i></span> <span class="pcoded-mtext">Lịch sử đổi trả với công ty</span>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </li>
-                        <li class="nav-item pcoded-hasmenu">
-                            <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-box"></i></span><span class="pcoded-mtext">Quản lý công nợ</span></a>
-                            <ul class="pcoded-submenu">
-                                <li class="nav-item">
-                                    <a href="@Url.Action("OldDebtsCustomer","Debts_Collections")" class="nav-link">
-                                        <span class="pcoded-micon"><i class="feather icon-percent"></i></span> <span class="pcoded-mtext">Công nợ cũ với khách hàng</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="@Url.Action("OldDebtsSupplier","Debts_Collections")" class="nav-link">
-                                        <span class="pcoded-micon"><i class="feather icon-percent"></i></span> <span class="pcoded-mtext">Công nợ cũ với nhà cung cấp</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="@Url.Action("Index","Debts_Collections")" class="nav-link">
-                                        <span class="pcoded-micon"><i class="feather icon-percent"></i></span> <span class="pcoded-mtext">Công nợ với khách hàng</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="@Url.Action("DebtsSupplier","Debts_Collections")" class="nav-link">
-                                        <span class="pcoded-micon"><i class="feather icon-percent"></i></span> <span class="pcoded-mtext">Công nợ với công ty</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                }
-                else
-                {
             <ul class="nav pcoded-inner-navbar">
                 <li class="nav-item pcoded-menu-caption">
                     <label>Quản lý</label>
                 </li>
                 <li class="nav-item">
-                    <a href="@Url.Action("Customers","customers")" class="nav-link">
-                        <span class="pcoded-micon"><i class="feather icon-users"></i></span>
-                        <span class="pcoded-mtext">Khách hàng</span>
+                    <a href="@Url.Action("Index","Dashboard")" class="nav-link">
+                        <span class="pcoded-micon"><i class="feather icon-target"></i></span> <span class="pcoded-mtext">Phân tích thống kê</span>
                     </a>
+                </li>
+                <li class="nav-item pcoded-hasmenu">
+                    <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-box"></i></span><span class="pcoded-mtext">Quản lý nhân sự</span></a>
+                    <ul class="pcoded-submenu">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index","AspNetUsers")" class="nav-link">
+                                <span class="pcoded-micon"><i class="feather icon-user"></i></span>
+                                <span class="pcoded-mtext">Nhân viên</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Customers","customers")" class="nav-link">
+                                <span class="pcoded-micon"><i class="feather icon-users"></i></span>
+                                <span class="pcoded-mtext">Khách hàng</span>
+                            </a>
+                        </li>
+
+                    </ul>
                 </li>
                 <li class="nav-item pcoded-hasmenu">
                     <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-box"></i></span><span class="pcoded-mtext">Quản lý sản phẩm</span></a>
@@ -246,14 +116,46 @@
                         <span class="pcoded-micon"><i class="feather icon-inbox"></i></span> <span class="pcoded-mtext">Đơn hàng</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="@Url.Action("Index","import_inventory")" class="nav-link">
-                        <span class="pcoded-micon"><i class="feather icon-package"></i></span>
-                        <span class="pcoded-mtext">Tồn kho</span>
-                    </a>
+                <li class="nav-item pcoded-hasmenu">
+                    <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-box"></i></span><span class="pcoded-mtext">Quản lý hàng hóa</span></a>
+                    <ul class="pcoded-submenu">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index","import_inventory")" class="nav-link">
+                                <span class="pcoded-micon"><i class="feather icon-package"></i></span>
+                                <span class="pcoded-mtext">Tồn kho</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index","inventory_order")" class="nav-link">
+                                <span class="pcoded-micon"><i class="feather icon-package"></i></span>
+                                <span class="pcoded-mtext">Nhập hàng</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-                
-                
+                <li class="nav-item pcoded-hasmenu">
+                    <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-box"></i></span><span class="pcoded-mtext">Báo cáo doanh thu</span></a>
+                    <ul class="pcoded-submenu">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Revenue","sales")" class="nav-link">
+                                <span class="pcoded-micon"><i class="feather icon-clipboard"></i></span>
+                                <span class="pcoded-mtext">Doanh thu chi tiết</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index","Revenues")" class="nav-link">
+                                <span class="pcoded-micon"><i class="feather icon-clipboard"></i></span>
+                                <span class="pcoded-mtext">Báo cáo ngày/tháng</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("SumRevenue","Revenues")" class="nav-link">
+                                <span class="pcoded-micon"><i class="feather icon-clipboard"></i></span>
+                                <span class="pcoded-mtext">Báo cáo tổng hợp</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="nav-item pcoded-menu-caption"><label>Tín năng</label></li>
                 <li class="nav-item pcoded-hasmenu">
                     <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-box"></i></span><span class="pcoded-mtext">Quản lý đổi trả</span></a>
@@ -271,7 +173,111 @@
 
                     </ul>
                 </li>
+                <li class="nav-item pcoded-hasmenu">
+                    <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-box"></i></span><span class="pcoded-mtext">Quản lý công nợ</span></a>
+                    <ul class="pcoded-submenu">
+                        <li class="nav-item">
+                            <a href="@Url.Action("OldDebtsCustomer","Debts_Collections")" class="nav-link">
+                                <span class="pcoded-micon"><i class="feather icon-percent"></i></span> <span class="pcoded-mtext">Công nợ cũ với khách hàng</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("OldDebtsSupplier","Debts_Collections")" class="nav-link">
+                                <span class="pcoded-micon"><i class="feather icon-percent"></i></span> <span class="pcoded-mtext">Công nợ cũ với nhà cung cấp</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index","Debts_Collections")" class="nav-link">
+                                <span class="pcoded-micon"><i class="feather icon-percent"></i></span> <span class="pcoded-mtext">Công nợ với khách hàng</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("DebtsSupplier","Debts_Collections")" class="nav-link">
+                                <span class="pcoded-micon"><i class="feather icon-percent"></i></span> <span class="pcoded-mtext">Công nợ với công ty</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
+                }
+                else
+                {
+                    <ul class="nav pcoded-inner-navbar">
+                        <li class="nav-item pcoded-menu-caption">
+                            <label>Quản lý</label>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Customers","customers")" class="nav-link">
+                                <span class="pcoded-micon"><i class="feather icon-users"></i></span>
+                                <span class="pcoded-mtext">Khách hàng</span>
+                            </a>
+                        </li>
+                        <li class="nav-item pcoded-hasmenu">
+                            <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-box"></i></span><span class="pcoded-mtext">Quản lý sản phẩm</span></a>
+                            <ul class="pcoded-submenu">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Suppliers","customers")" class="nav-link">
+                                        <span class="pcoded-micon"><i class="feather icon-grid"></i></span>
+                                        <span class="pcoded-mtext">Công ty</span>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item ">
+                                    <a href="@Url.Action("Index","categories")" class="nav-link">
+                                        <span class="pcoded-micon"><i class="feather icon-layout"></i></span>
+                                        <span class="pcoded-mtext">Danh mục</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index","products")" class="nav-link">
+                                        <span class="pcoded-micon"><i class="feather icon-wind"></i></span>
+                                        <span class="pcoded-mtext">Sản phẩm</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+
+
+                        <li class="nav-item pcoded-menu-caption">
+                            <label>Kinh Doanh</label>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index","sale_details")" class="nav-link">
+                                <span class="pcoded-micon"><i class="feather icon-target"></i></span> <span class="pcoded-mtext">Bán hàng</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index","sales")" class="nav-link">
+                                <span class="pcoded-micon"><i class="feather icon-inbox"></i></span> <span class="pcoded-mtext">Đơn hàng</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index","import_inventory")" class="nav-link">
+                                <span class="pcoded-micon"><i class="feather icon-package"></i></span>
+                                <span class="pcoded-mtext">Tồn kho</span>
+                            </a>
+                        </li>
+
+
+                        <li class="nav-item pcoded-menu-caption"><label>Tín năng</label></li>
+                        <li class="nav-item pcoded-hasmenu">
+                            <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-box"></i></span><span class="pcoded-mtext">Quản lý đổi trả</span></a>
+                            <ul class="pcoded-submenu">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index","return_sale")" class="nav-link">
+                                        <span class="pcoded-micon"><i class="feather icon-repeat"></i></span> <span class="pcoded-mtext">Lịch sử đổi trả đơn hàng</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index","return_supplier")" class="nav-link">
+                                        <span class="pcoded-micon"><i class="feather icon-repeat"></i></span> <span class="pcoded-mtext">Lịch sử đổi trả với công ty</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+                    </ul>
                 }
 
             </div>
