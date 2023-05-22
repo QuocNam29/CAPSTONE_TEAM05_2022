@@ -123,6 +123,55 @@
     <script>
         $(document).ready(function () {
             var optionsChart1 = {
+                labels: ["Quản trị viên", "Nhân viên"],
+                series:  [@Model.CountAdmin, @Model.CountStaff],
+                chart: {
+                    type: 'pie',
+                    defaultLocale: 'en',
+                    locales: [{
+                        name: 'en',
+                        options: {
+                            toolbar: {
+                                "exportToSVG": "Tải về SVG",
+                                "exportToPNG": "Tải về Hình",
+                                "exportToCSV": "Tải về CSV",
+                                "menu": "Tùy chọn",
+                            }
+                        }
+                    }],
+                    toolbar: {
+                        show: true,
+                        offsetX: 0,
+                        offsetY: 0,
+                        tools: {
+                            download: true,
+                        },
+                        autoSelected: 'zoom'
+                    },
+                },
+                plotOptions: {
+                    pie: {
+                        customScale: 1,
+                        offsetX: 0,
+                        offsetY: 0,
+                    }
+                },
+                legend: {
+                    position: 'bottom'
+                },
+              
+                title: {
+                    text: 'Thống kê nhân sự',
+                    style: {
+                        fontSize: '20px',
+                        fontWeight: 'bold',
+                        fontFamily: 'Open Sans',
+                        color: '#263238'
+                    },
+                },
+
+            };
+            var optionsChart2 = {
                 plotOptions: {
                     pie: {
                         customScale: 1,
@@ -148,13 +197,13 @@
                                     offsetY: 16,
                                     //format value cho cho pie bất kỳ khi pie đó được hover
                                     formatter: function (val) {
-                                        return (val + ' nhân sự')
+                                        return (val + ' đơn hàng')
                                     }
                                 },
                                 total: {
                                     show: true,
                                     showAlways: false,
-                                    label: 'Nhân sự',
+                                    label: 'Đơn hàng',
                                     fontSize: '1.8rem',
                                     fontFamily: 'Open Sans',
                                     color: '#373d3f',
@@ -195,13 +244,13 @@
                     },
                     type: 'donut',
                 },
-                labels:  ["Quản trị viên","Nhân viên"],
-                series:  [@Model.CountAdmin, @Model.CountStaff],
+                labels: ['Đã thanh toán', 'Ghi nợ tiền mặt', 'Ghi nợ tiền ghi nợ'],
+                series:   @Html.Raw((Json.Encode(Model.CountArr1))),
                 legend: {
                     position: 'bottom'
                 },
                 title: {
-                    text: 'Thống kê theo nhân sự',
+                    text: 'Thống kê đơn hàng',
                     style: {
                         fontSize: '18px',
                         fontWeight: 'bold',
@@ -209,57 +258,8 @@
                         color: '#263238'
                     },
                 },
-
-
             };
-            var optionsChart2 = {
-                series: @Html.Raw((Json.Encode(Model.CountArr1))),
-                chart: {
-                    type: 'pie',
-                    defaultLocale: 'en',
-                    locales: [{
-                        name: 'en',
-                        options: {
-                            toolbar: {
-                                "exportToSVG": "Tải về SVG",
-                                "exportToPNG": "Tải về Hình",
-                                "exportToCSV": "Tải về CSV",
-                                "menu": "Tùy chọn",
-                            }
-                        }
-                    }],
-                    toolbar: {
-                        show: true,
-                        offsetX: 0,
-                        offsetY: 0,
-                        tools: {
-                            download: true,
-                        },
-                        autoSelected: 'zoom'
-                    },
-                },
-                plotOptions: {
-                    pie: {
-                        customScale: 1,
-                        offsetX: 0,
-                        offsetY: 0,
-                    }
-                },
-                legend: {
-                    position: 'bottom'
-                },
-                labels: ['Đã thanh toán', 'Ghi nợ tiền mặt', 'Ghi nợ tiền ghi nợ'],
-                title: {
-                    text: 'Thống kê đơn hàng',
-                    style: {
-                        fontSize: '20px',
-                        fontWeight: 'bold',
-                        fontFamily: 'Open Sans',
-                        color: '#263238'
-                    },
-                },
 
-            };
             var optionsChart3 = {
                 series: [{
                     name: 'Lợi nhuận',
@@ -312,7 +312,7 @@
                     },
                 }
             };
-           
+
 
             var optionsChart4 = {
                 series: [

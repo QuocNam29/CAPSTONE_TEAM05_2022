@@ -529,16 +529,7 @@ $('#URLExportExcel')
     .keypress();
 
 
-$('#btnExportExcel').click(function () {
-    /*group_id = $("#filter_GroupProduct").val();*/
-    category_id = $("#filter_Category").val();
-    if (/*group_id == null ||*/ category_id == null) {
-       
-    } else {
-       var URLExportExcel1 = URLExportExcel + /*"?group_id=" + group_id +*/ "&category_id=" + category_id;
-        window.location.href = URLExportExcel1;       
-    }
-})
+
 
 $('#btnExportExcel_Inventory').click(function () {
     var date_start = $("#filter_DateStart").val();

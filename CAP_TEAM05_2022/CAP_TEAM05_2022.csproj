@@ -631,6 +631,11 @@
     <Content Include="Template\assets\js\uikit.min.js" />
     <Content Include="Template\assets\js\vendor-all.js" />
     <Content Include="Template\assets\js\vendor-all.min.js" />
+    <Content Include="Template\web\css\style.css" />
+    <Content Include="Template\web\images\green.png" />
+    <Content Include="Template\web\images\img-auth-big.jpg" />
+    <Content Include="Template\web\images\logoTT.png" />
+    <Content Include="Template\web\images\t-icn.png" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -780,6 +785,7 @@
     <Content Include="Views\sale_details\_FormProduct.cshtml" />
     <Content Include="Views\sale_details\_FormCustomer.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
+    <Content Include="Template\web\images\Thumbs.db" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -300,6 +300,15 @@
                 alert("Something Went Wrong, Try Later");
             });
     }
+        $('#btnExportExcel').click(function () {
+            supplier_id = $("#filter_Supplier").val();
+            category_id = $("#filter_Category").val();
+            if (supplier_id == null || category_id == null) {
 
+            } else {
+                var URLExportExcel1 = '@Url.Action("ExportExcel", "Excel")' + "?supplier_id=" + supplier_id + "&category_id=" + category_id;
+                window.location.href = URLExportExcel1;
+            }
+        })
     </script>
 }

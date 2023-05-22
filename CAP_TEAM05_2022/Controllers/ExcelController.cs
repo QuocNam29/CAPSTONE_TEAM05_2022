@@ -63,24 +63,28 @@ namespace CAP_TEAM05_2022.Controllers
             Sheet.Cells["A4"].Value = "Điện thoại: 0854858818";
             Sheet.Cells["A1:H4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
         }
-        public void ExportExcel(int? category_id)
+        public void ExportExcel(int? supplier_id, int? category_id)
         {
             string nameFile = "SP_" + DateTime.Now + ".xlsx";
             var list = from l in db.products
                        where /*l.@group.status == Constants.SHOW_STATUS &&*/ l.category.status == Constants.SHOW_STATUS
                        select l;
-            if (category_id != -1)
+            if (category_id != null)
             {
                 list = list.Where(p => p.category_id == category_id);
             }
-            list = list.Where(c => c.status != 3).OrderByDescending(c => c.id);
+            if (supplier_id != null)
+            {
+                list = list.Where(p => p.supplier_id == supplier_id);
+            }
+            list = list.OrderByDescending(c => c.id);
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ExcelPackage ep = new ExcelPackage();
             ExcelWorksheet Sheet = ep.Workbook.Worksheets.Add("SanPham");
             FormatExcel(Sheet, 1);
             Sheet.Cells["A1"].Value = "Mã sản phẩm";
             Sheet.Cells["B1"].Value = "Tên sản phẩm";
-            Sheet.Cells["C1"].Value = "Nhóm hàng";
+            Sheet.Cells["C1"].Value = "Công ty";
             Sheet.Cells["D1"].Value = "Danh mục";
             Sheet.Cells["E1"].Value = "Số lượng tồn";
             Sheet.Cells["F1"].Value = "Số lượng tồn bán lẻ";
@@ -116,7 +120,7 @@ namespace CAP_TEAM05_2022.Controllers
                 }
                 Sheet.Cells[string.Format("A{0}", row)].Value = item.code;
                 Sheet.Cells[string.Format("B{0}", row)].Value = item.name;
-                Sheet.Cells[string.Format("C{0}", row)].Value = item.group.name;
+                Sheet.Cells[string.Format("C{0}", row)].Value = item.customer.name;
                 Sheet.Cells[string.Format("D{0}", row)].Value = item.category.name;
                 Sheet.Cells[string.Format("E{0}", row)].Value = quantity;
                 Sheet.Cells[string.Format("F{0}", row)].Value = quantity_swap;
