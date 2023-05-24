@@ -36,8 +36,8 @@
         <div class="navbar-wrapper  ">
             <div class="navbar-content scroll-div ">
                 <div class="">
-                    <div class="main-menu-header">
-                        <img src="@Url.Content("~/Template/assets/images/default-avatar.png")" alt="User-Profile-Image" class="img-radius">
+                    <div class="main-menu-header">                 
+                            <img src="@Url.Content("~/Template/assets/images/default-avatar.png")" alt="User-Profile-Image" class="img-radius">
                         <div class="user-details">
                             <span>@(Session["UserName"]!= null ? Session["UserName"].ToString() : User.Identity.Name)</span>
                             <div id="more-details">
@@ -283,15 +283,15 @@
             </div>
         </div>
     </nav>
-    <header class="navbar pcoded-header navbar-expand-lg navbar-light header-dark">
+    <header class="navbar pcoded-header navbar-expand-lg navbar-light header-white">
         <div class="m-header">
             <a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
             <!--<a href="#!" class="b-brand">-->
             <!-- ========   change your logo hear   ============ -->
             <!--<img src="@Url.Content("~/Template/assets/images/logoTT.png")" alt="" class="logo">
-                <img src="~/Template/assets/images/logo-icon.png" alt="" class="logo-thumb">
-            </a>-->
-            <a href="#" class="b-brand">
+                    <img src="~/Template/assets/images/logo-icon.png" alt="" class="logo-thumb">
+                </a>-->
+            <a href="@Url.Action("Index","Home")" class="b-brand">
                 <img src="@Url.Content("~/Template/assets/images/logoTT.png")" alt="" class="logo" style="width: 90%;padding: 7px;">
             </a>
 

@@ -483,9 +483,8 @@
     <Content Include="Template\assets\fonts\feather.svg" />
     <Content Include="Template\assets\fonts\Flaticon.svg" />
     <Content Include="Template\assets\fonts\pct.svg" />
-    <Content Include="Template\assets\images\auth\auth-logo-dark.png" />
-    <Content Include="Template\assets\images\auth\auth-logo.png" />
     <Content Include="Template\assets\images\auth\img-auth-big.jpg" />
+    <Content Include="Template\assets\images\banner-video.mp4" />
     <Content Include="Template\assets\images\browser\chrome.png" />
     <Content Include="Template\assets\images\browser\firefox.png" />
     <Content Include="Template\assets\images\browser\ie.png" />
@@ -512,6 +511,7 @@
     <Content Include="Template\assets\images\gallery-grid\masonry-8.jpg" />
     <Content Include="Template\assets\images\hover-effect\triangle.svg" />
     <Content Include="Template\assets\images\hover-effect\triangle2.svg" />
+    <Content Include="Template\assets\images\Image-sidebar.jpg" />
     <Content Include="Template\assets\images\in-progress-animate.svg" />
     <Content Include="Template\assets\images\light-box\l1.jpg" />
     <Content Include="Template\assets\images\light-box\l2.jpg" />
