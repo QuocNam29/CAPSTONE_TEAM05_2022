@@ -9,23 +9,25 @@
 }
 <style>
     table {
-        border: 1px solid black;
+        
     }
 
     th {
-        border: 1px solid black;
+        border: 1px solid #ccc;
     }
 
     td {
-        border: 1px solid black;
+        border: 1px solid #ccc;
+    }
+    .table-bill-header {
     }
 </style>
 @if (Model.Count() > 0)
 {
     <div class="card-body">
         <div class="table-responsive" id="dataContainer">
-            <table id="example" class="" style="border: 1px solid black;">
-                <thead>
+            <table id="example" class="table-bill">
+                <thead class="table-bill-header">
                     <tr>
                         <th class="text-center">STT</th>
                         <th class="text-center">Khách hàng</th>
