@@ -162,25 +162,41 @@ namespace CAP_TEAM05_2022.Controllers
             Sheet.Cells["I1"].Value = "Đơn giá bán";
             Sheet.Cells["J1"].Value = "Đơn giá bán nợ";
 
-            var validation_supplier = Sheet.Cells["B2:B999999"].DataValidation.AddListDataValidation();
-            validation_supplier.ShowErrorMessage = true;
-            validation_supplier.ErrorStyle = ExcelDataValidationWarningStyle.information;
-            validation_supplier.ErrorTitle = "Lỗi nhập nhà cung cấp";
-            validation_supplier.Error = "Nhà cung cấp này không có trong hệ thống, vui lòng chọn lại !";
+            ExcelWorksheet SheetCongTy = ep.Workbook.Worksheets.Add("CongTyCungCap");
+            int rowCongTy = 2;
+            SheetCongTy.Cells["A1"].Value = "Tên công ty cung cấp";
             foreach (var item in list_supplier)
             {
-                validation_supplier.Formula.Values.Add(item.name);
+                SheetCongTy.Cells[string.Format("A{0}", rowCongTy)].Value = item.name;
+                rowCongTy++;
             }
-
-            var validation_category = Sheet.Cells["C2:C999999"].DataValidation.AddListDataValidation();
-            validation_category.ShowErrorMessage = true;
-            validation_category.ErrorStyle = ExcelDataValidationWarningStyle.information;
-            validation_category.ErrorTitle = "Lỗi nhập danh mục";
-            validation_category.Error = "Danh mục này không có trong hệ thống, vui lòng chọn lại !";
+            for (int i = 2; i < 500; i++)
+            {
+                var validation_supplier = Sheet.Cells[string.Format("B{0}", i)].DataValidation.AddListDataValidation();
+                validation_supplier.ShowErrorMessage = true;
+                validation_supplier.ErrorStyle = ExcelDataValidationWarningStyle.information;
+                validation_supplier.ErrorTitle = "Lỗi nhập nhà cung cấp";
+                validation_supplier.Error = "Nhà cung cấp này không có trong hệ thống, vui lòng chọn lại !";
+                validation_supplier.Formula.ExcelFormula = string.Format("CongTyCungCap!A2:A{0}", rowCongTy - 1);
+            }
+            ExcelWorksheet SheetDanhMuc = ep.Workbook.Worksheets.Add("DanhMuc");
+            int rowDanhmuc = 2;
+            SheetDanhMuc.Cells["A1"].Value = "Tên danh mục";
             foreach (var item in list_category)
             {
-                validation_category.Formula.Values.Add(item.name);
+                SheetDanhMuc.Cells[string.Format("A{0}", rowDanhmuc)].Value = item.name;
+                rowDanhmuc++;
             }
+            for (int i = 2; i < 500; i++)
+            {
+                var validation_category = Sheet.Cells[string.Format("C{0}", i)].DataValidation.AddListDataValidation();
+                validation_category.ShowErrorMessage = true;
+                validation_category.ErrorStyle = ExcelDataValidationWarningStyle.information;
+                validation_category.ErrorTitle = "Lỗi nhập danh mục";
+                validation_category.Error = "Danh mục này không có trong hệ thống, vui lòng chọn lại !";
+                validation_category.Formula.ExcelFormula = string.Format("DanhMuc!A2:A{0}", rowDanhmuc - 1);
+            }
+            
             Sheet.Cells["A:AZ"].AutoFitColumns();
             Response.Clear();
             Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
@@ -429,12 +445,12 @@ namespace CAP_TEAM05_2022.Controllers
                                     var check_supplier = db.customers.Where(g => g.name == name_supplier && g.type == Constants.SUPPLIER).FirstOrDefault();
                                     var check_category = db.categories.Where(g => g.name == name_category).FirstOrDefault();
 
-                                    string unit_product = Session["unit_product"].ToString().Trim();
+                                    string unit_product = Session["unit_product"].ToString().Trim().ToLower();
                                     decimal sell_price_product = decimal.Parse(Session["sell_price_product"].ToString().Trim());
                                     decimal purchase_price_product = decimal.Parse(Session["purchase_price_product"].ToString().Trim());
                                     int quantity_product = int.Parse(Session["quantity_product"].ToString().Trim());
                                     int quantity_swap_product = int.Parse(Session["quantity_swap_product"].ToString().Trim());
-                                    string unit_swap_product = Session["unit_swap_product"].ToString().Trim();
+                                    string unit_swap_product = Session["unit_swap_product"].ToString().Trim().ToLower();
                                     decimal sell_debt_product = decimal.Parse(Session["sell_debt_product"].ToString().Trim());
 
                                     // kiểm tra nhóm hàng, danh mục, nhà cung cấp đã tồn tại chưa

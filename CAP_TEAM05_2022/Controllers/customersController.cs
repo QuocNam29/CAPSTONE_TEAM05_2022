@@ -120,13 +120,13 @@ namespace CAP_TEAM05_2022.Controllers
        
         public ActionResult _CustomerList()
         {
-            var links = db.customers.Where(x => x.type == Constants.CUSTOMER);
+            var links = db.customers.Where(x => x.type == Constants.CUSTOMER && x.id > 0);
             return PartialView(links.OrderByDescending(c => c.id));
         }
 
         public ActionResult _SupplierList()
         {
-            var links = db.customers.Where(x => x.type == Constants.SUPPLIER);
+            var links = db.customers.Where(x => x.type == Constants.SUPPLIER && x.id > 0);
             return PartialView(links.OrderByDescending(c => c.id));
         }
 
@@ -460,14 +460,15 @@ namespace CAP_TEAM05_2022.Controllers
             try
             {
                 customer customers = db.customers.Find(customer.id);
+                int type = customers.type;
                 db.customers.Remove(customers);
                 db.SaveChanges();
-                mess = "Xóa khách hàng thành công";
+                mess = "Xóa" + (type == Constants.CUSTOMER ? " khách hàng " : " công ty cung cấp ") + "thành công.";
             }
             catch
             {
                 status = false;
-                mess = "Khách hàng đã có đơn hàng !";
+                mess = "Dữ liệu đã được sử dụng cho chức năng khác (bán hàng, nhập kho...).";
             }
             return Json(new { status = status, message = mess }, JsonRequestBehavior.AllowGet);
         }

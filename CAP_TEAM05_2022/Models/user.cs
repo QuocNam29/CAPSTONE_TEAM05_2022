@@ -37,10 +37,8 @@ namespace CAP_TEAM05_2022.Models
         public string avatar { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập số điện thoại !")]
-        [StringLength(11, ErrorMessage = "Sai định dạng số điện thoại", MinimumLength = 11)]
-
+        [StringLength(10, ErrorMessage = "Sai định dạng số điện thoại", MinimumLength = 10)]
         public string phone { get; set; }
-
         [Required(ErrorMessage = "Vui lòng nhập địa chỉ !")]
         [StringLength(255, ErrorMessage = "Nhập địa chỉ phải dưới 255 ký tự.")]
         public string address { get; set; }

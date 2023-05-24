@@ -80,30 +80,47 @@
                                         <input type="text" value="@Model.sell_price.ToString("N0")" placeholder="Nhập giá tiền" id="product-price-sold" class="form-control Price"
                                                data-val="true" data-val-required="Vui lòng nhập đơn giá bán !" pattern="[0-9.,]+" data-type="number" name="Editsell_price" required>
                                         <div class="input-group-append">
-                                            <select id="UnitBy" class="input-group-text select-unit" name="unit" required data-val="true" data-val-required="Vui lòng đơn vị !">
-                                                <option disabled="disabled" value="" selected>Đơn vị</option>
-                                                <option data-name="bao" value="Bao">
-                                                    bao
-                                                </option>
-                                                <option data-name="chai" value="Chai">
-                                                    chai
-                                                </option>
-                                                <option data-name="can" value="Can">
-                                                    can
-                                                </option>
-                                                <option data-name="gói" value="Gói">
-                                                    gói
-                                                </option>
-                                                <option data-name="hộp" value="Hộp">
-                                                    hộp
-                                                </option>
-                                                <option data-name="xô" value="Xô">
-                                                    xô
-                                                </option>
-                                                <option data-name="lít" value="lít">
-                                                    lít
-                                                </option>
-                                            </select>
+                                            @if (checkSale || checkCart)
+                                            {
+                                                <select id="UnitBy" class="input-group-text select-unit" name="unit" required data-val="true" data-val-required="Vui lòng đơn vị !">
+                                                    <option disabled="disabled" value="">Đơn vị</option>
+                                                    <option data-name="lít" value="@Model.unit" selected>
+                                                        @Model.unit
+                                                    </option>
+                                                </select>
+                                            }
+
+                                            else
+                                            {
+                                                <select id="UnitBy" class="input-group-text select-unit" name="unit" required data-val="true" data-val-required="Vui lòng đơn vị !">
+                                                    <option disabled="disabled" value="" selected>Đơn vị</option>
+                                                    <option data-name="bao" value="bao">
+                                                        bao
+                                                    </option>
+                                                    <option data-name="chai" value="chai">
+                                                        chai
+                                                    </option>
+                                                    <option data-name="can" value="can">
+                                                        can
+                                                    </option>
+                                                    <option data-name="gói" value="gói">
+                                                        gói
+                                                    </option>
+                                                    <option data-name="hộp" value="hộp">
+                                                        hộp
+                                                    </option>
+                                                    <option data-name="xô" value="xô">
+                                                        xô
+                                                    </option>
+                                                    <option data-name="lít" value="lít">
+                                                        lít
+                                                    </option>
+                                                </select>
+                                                <script>
+                                                        $("#UnitBy").val('@Model.unit');
+                                                </script>
+                                            }
+
 
                                         </div>
                                     </div>
@@ -163,44 +180,55 @@
                                         <input type="number" @(checkSale || checkCart ? "readonly" : "") value="@Model.quantity_swap" name="quantity_swap" data-model="unit_swap_quantity" placeholder="Nhập số lượng"
                                                required data-val="true" data-val-required="Vui lòng nhập số lượng quy đổi !" id="unit-quantity-input" min="1" max="999999999999" aria-describedby="unit-quantity" class="form-control">
                                         <div class="input-group-append">
-                                            <select id="unitSwap" name="unit_swap" class="input-group-text select-unit" required data-val="true" data-val-required="Vui lòng đơn vị quy đổi !">
-                                                <option disabled="disabled" value="" selected>Đơn vị</option>
-                                                <optgroup label="Thể tích">
-                                                    <option data-name="lít" value="Lít">
-                                                        lít
+                                            @if (checkSale || checkCart)
+                                            {
+                                                <select id="unitSwap" name="unit_swap" class="input-group-text select-unit" required data-val="true" data-val-required="Vui lòng đơn vị quy đổi !">
+                                                    <option disabled="disabled" value="">Đơn vị</option>
+                                                    <option data-name="lít" value="@Model.unit_swap" selected>
+                                                        @Model.unit_swap
                                                     </option>
-                                                    <option data-name="ml" value="ml">
-                                                        ml
-                                                    </option>
-                                                </optgroup>
-                                                <optgroup label="Khối lượng">
-                                                    <option data-name="kg" value="Kg">
-                                                        Kg
-                                                    </option>
-                                                    <option data-name="gam" value="gam">
-                                                        Gam
-                                                    </option>
-                                                </optgroup>
-                                                <optgroup label="Khác">
-                                                    <option data-name="gói" value="Gói">
-                                                        Gói
-                                                    </option>
-                                                    <option data-name="viên" value="Viên">
-                                                        Viên
-                                                    </option>
-                                                </optgroup>
+                                                </select>
+                                            }
+                                            else
+                                            {
+                                                <select id="unitSwap" name="unit_swap" class="input-group-text select-unit" required data-val="true" data-val-required="Vui lòng đơn vị quy đổi !">
+                                                    <option disabled="disabled" value="" selected>Đơn vị</option>
+                                                    <optgroup label="Thể tích">
+                                                        <option data-name="lít" value="lít">
+                                                            lít
+                                                        </option>
+                                                        <option data-name="ml" value="ml">
+                                                            ml
+                                                        </option>
+                                                    </optgroup>
+                                                    <optgroup label="Khối lượng">
+                                                        <option data-name="kg" value="kg">
+                                                            kg
+                                                        </option>
+                                                        <option data-name="gam" value="gam">
+                                                            gam
+                                                        </option>
+                                                    </optgroup>
+                                                    <optgroup label="Khác">
+                                                        <option data-name="gói" value="gói">
+                                                            gói
+                                                        </option>
+                                                        <option data-name="viên" value="viên">
+                                                            viên
+                                                        </option>
+                                                    </optgroup>
 
-                                            </select>
+                                                </select>
+                                                <script>
+                                                    $("#unitSwap").val('@Model.unit_swap');
+                                                </script>
+                                            }
+
                                         </div>
                                     </div>
                                     @Html.ValidationMessage("quantity_swap", "", new { @class = "text-danger" })
                                     @Html.ValidationMessage("unit_swap", "", new { @class = "text-danger" })
-                                    @if (Model.unit_swap != null)
-                                    {
-                                        <script>
-                                            $("#unitSwap").val('@Model.unit_swap');
-                                        </script>
-                                    }
+
                                 </div>
                             </div>
                         </div>
@@ -218,8 +246,8 @@
                                 <label>
                                     Đơn giá bán ghi nợ  <span class="text-danger"> (đơn vị quy đổi)*</span>
                                 </label>
-                                <input type="text" name="Editdebt_price_swap" value="@Model.sell_price_debt_swap.ToString("N0")" placeholder="Nhập giá tiền" id="product-price-swap"class="form-control Price">
-                            </div> 
+                                <input type="text" name="Editdebt_price_swap" value="@Model.sell_price_debt_swap.ToString("N0")" placeholder="Nhập giá tiền" id="product-price-swap" class="form-control Price">
+                            </div>
                             @Html.ValidationMessage("Editdebt_price_swap", "", new { @class = "text-danger" })
                         </div>
 
@@ -273,7 +301,6 @@
                     }
         });
 
-    $("#UnitBy").val('@Model.unit');
     document.getElementsByClassName('UnitCurrent')[0].innerHTML = '@Model.unit';
 
             $("#UnitBy").change(function () {

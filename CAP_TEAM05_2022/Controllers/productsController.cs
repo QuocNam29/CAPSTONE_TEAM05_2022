@@ -529,6 +529,7 @@ namespace CAP_TEAM05_2022.Controllers
             emp.unit_swap = product.unit_swap;
             emp.sell_price = (int)product.sell_price;
             emp.sell_price_debt = (int)product.sell_price_debt;
+            emp.sell_price_debt_swap = (int)product.sell_price_debt_swap;
             emp.note = "Số lượng tồn: " + product.quantity + product.unit;
             emp.note += "/" + product.quantity_swap + product.unit_swap;
             emp.note += " và " + product.quantity_remaning + product.unit_swap + " lẻ";

@@ -906,6 +906,7 @@ function LoadDataProduct(id) {
             var s = ' <option value="' + response.unit + '" data-type="other" selected>' + response.unit + '</option>';
                 s += ' <option value="' + response.unit_swap + '" data-type="other">' + response.unit_swap + '</option>';
             $('#product_price_swap').val(response.sell_price_swap.toLocaleString());
+            $('#product_price_swap_debt').val(response.sell_price_debt_swap.toLocaleString());
             $("#unit_product_swap").html(s);
         }
     })
@@ -918,6 +919,12 @@ $("#unit_product_swap").change(function () {
     var sum_price = Number($('#product_price').val().replace(/\,/g, '').replace(/\./g, '')) * Number($('#product_quantity').val());
     $('#sum_price').val(sum_price.toLocaleString());
 
+    var product_price_debt = $('#product_price_debt').val();
+    var product_price_swap_debt = $('#product_price_swap_debt').val();
+    $('#product_price_debt').val(product_price_swap_debt);
+    $('#product_price_swap_debt').val(product_price_debt);
+    var sum_price_debt = Number($('#product_price_debt').val().replace(/\,/g, '').replace(/\./g, '')) * Number($('#product_quantity').val());
+    $('#sum_price_debt').val(sum_price_debt.toLocaleString());
 });
 //------------------------Payment / Debit-------------------------------------
 var URLCreateSale = "";
