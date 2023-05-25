@@ -124,6 +124,30 @@ namespace CAP_TEAM05_2022
             );
 
             routes.MapRoute(
+                "login",
+                "dang-nhap",
+                new { controller = "Account", action = "Login" }
+            );
+
+            routes.MapRoute(
+                "aspNetUsersEdit",
+                "thong-tin-ca-nhan",
+                new { controller = "AspNetUsers", action = "Edit" }
+            );
+
+            routes.MapRoute(
+               "manageChangePassword",
+               "doi-mat-khau",
+               new { controller = "Manage", action = "ChangePassword" }
+           );
+            
+            routes.MapRoute(
+               "dashboard",
+               "phan-tich-thong-ke",
+               new { controller = "Dashboard", action = "Index" }
+           );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "sale_details", action = "Index", id = UrlParameter.Optional }

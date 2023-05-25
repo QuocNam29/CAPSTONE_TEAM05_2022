@@ -38,6 +38,7 @@ namespace CAP_TEAM05_2022.Controllers
                                                     && s.created_at.Value.Month == to.Value.Month
                                                     && s.created_at.Value.Year == to.Value.Year)
                                                     && s.is_old_debt != true);
+
             data.TotalRevenue = 0;
             data.CountUser = user.Count;
             data.CountAdmin = user.Where(x => x.AspNetRoles.FirstOrDefault().Name == Constants.ADMIN_ROLE).ToList().Count;
@@ -53,13 +54,14 @@ namespace CAP_TEAM05_2022.Controllers
             int i = 0;
             data.ItemArr2 = new string[sales.GroupBy(x => DbFunctions.TruncateTime(x.created_at)).Count()];
             data.CountArr2 = new decimal[sales.GroupBy(x => DbFunctions.TruncateTime(x.created_at)).Count()];
+            data.CountArr3 = new int[sales.GroupBy(x => DbFunctions.TruncateTime(x.created_at)).Count()];
             foreach (var item in sales.GroupBy(x => DbFunctions.TruncateTime(x.created_at)))               
              {
                 data.ItemArr2[i] = ((DateTime)(item.Key)).ToString("dd/MM/yyyy");
-                
-                    decimal nhapHang = 0;
-                var hihi = sales.Where(x => DbFunctions.TruncateTime(x.created_at) == item.Key).ToList();
-                    foreach (var item1 in hihi)
+                data.CountArr3[i] = sales.Where(x => DbFunctions.TruncateTime(x.created_at) == item.Key).Count();
+                decimal nhapHang = 0;
+                var saleGroupBy = sales.Where(x => DbFunctions.TruncateTime(x.created_at) == item.Key).ToList();
+                    foreach (var item1 in saleGroupBy)
                     {
                         foreach (var item2 in item1.sale_details)
                         {
@@ -82,6 +84,7 @@ namespace CAP_TEAM05_2022.Controllers
                 data.TotalRevenue += data.CountArr2[i];
                i++;                
             }
+
             return View(data);
         }
     }

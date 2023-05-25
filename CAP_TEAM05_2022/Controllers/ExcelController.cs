@@ -364,8 +364,8 @@ namespace CAP_TEAM05_2022.Controllers
                                 dtExcelSchema = connExcel.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
 
                                 //Get the name of First Sheet.
-                                string sheetName = dtExcelSchema.Rows[0]["TABLE_NAME"].ToString();
-
+                                /*string sheetName = dtExcelSchema.Rows[0]["TABLE_NAME"].ToString();*/
+                                string sheetName = "NhapSanPham$";
                                 connExcel.Close();
 
                                 //Read Data from First Sheet.
@@ -416,7 +416,9 @@ namespace CAP_TEAM05_2022.Controllers
 
                             }
                             else if (
-                                  String.IsNullOrEmpty(row["Số lượng tồn"].ToString())
+                                 String.IsNullOrEmpty(row["Nhà cung cấp"].ToString().Trim())
+                               || String.IsNullOrEmpty(row["Danh mục"].ToString().Trim())
+                               ||  String.IsNullOrEmpty(row["Số lượng tồn"].ToString())
                                || String.IsNullOrEmpty(row["Đơn vị"].ToString())
                                || String.IsNullOrEmpty(row["Số lượng quy đổi"].ToString())
                                || String.IsNullOrEmpty(row["Đơn vị quy đổi"].ToString())
@@ -530,6 +532,7 @@ namespace CAP_TEAM05_2022.Controllers
 
                                             addRow++;
                                             product.status = 4;
+                                            product.id = row_excel;
                                             Product_list.Add(product);
                                         }
                                         //nếu sản phẩm đã tồn tại rồi thì lưu vào session

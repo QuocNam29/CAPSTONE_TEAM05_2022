@@ -259,7 +259,6 @@
                     },
                 },
             };
-
             var optionsChart3 = {
                 series: [{
                     name: 'Lợi nhuận',
@@ -312,17 +311,11 @@
                     },
                 }
             };
-
-
             var optionsChart4 = {
                 series: [
                     {
-                        name: "Thiết bị",
-                        data:  @Html.Raw((Json.Encode(Model.CountArrLoan1)))
-                    },
-                    {
-                        name: "Quân trang",
-                        data:  @Html.Raw((Json.Encode(Model.CountArrLoan2)))
+                        name: "Số đơn hàng",
+                        data:  @Html.Raw((Json.Encode(Model.CountArr3))),
                     }
                 ],
                 chart: {
@@ -361,7 +354,7 @@
                     size: 1
                 },
                 xaxis: {
-                    categories:  @Html.Raw((Json.Encode(Model.ItemArr3))),
+                    categories:  @Html.Raw((Json.Encode(Model.ItemArr2))),
                     title: {
                         text: 'Ngày'
                     }
@@ -375,7 +368,7 @@
                     offsetX: -5
                 },
                 title: {
-                    text: 'Thiết bị/Quân trang đã mượn',
+                    text: 'Thống kê đơn hàng',
                     style: {
                         fontSize: '20px',
                         fontWeight: 'bold',
