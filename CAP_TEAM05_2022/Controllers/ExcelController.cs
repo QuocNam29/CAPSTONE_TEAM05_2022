@@ -481,8 +481,8 @@ namespace CAP_TEAM05_2022.Controllers
                                             product.quantity = quantity_product;
                                             product.quantity_swap = quantity_swap_product;
                                             product.unit_swap = unit_swap_product;
-                                            product.sell_price_swap = (decimal)(sell_price_product / quantity_product);
-                                            product.sell_price_debt_swap = (decimal)(sell_debt_product / quantity_product);
+                                            product.sell_price_swap = (decimal)(sell_price_product / quantity_swap_product);
+                                            product.sell_price_debt_swap = (decimal)(sell_debt_product / quantity_swap_product);
                                             product.created_at = curentDate;
                                             product.code = "SP" + CodeRandom.RandomCode();
                                             product.name_category = name_category;
@@ -531,8 +531,7 @@ namespace CAP_TEAM05_2022.Controllers
                                             db.SaveChanges();
 
                                             addRow++;
-                                            product.status = 4;
-                                            product.id = row_excel;
+                                            product.status = 1;
                                             Product_list.Add(product);
                                         }
                                         //nếu sản phẩm đã tồn tại rồi thì lưu vào session
