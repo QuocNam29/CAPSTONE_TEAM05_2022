@@ -20,7 +20,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>
-                                    Nhóm hàng<span class="text-danger">*</span>
+                                    Công ty cung cấp<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
                                     @Html.DropDownListFor(model => model.supplier_id, (SelectList)ViewBag.SupplierId, "---- Chọn nhà cung cấp ----", new { @class = "form-control", @required = "required" })
@@ -43,7 +43,7 @@
                             <div class="form-group">
                                 <label>Số tiền nợ<span class="text-danger">*</span></label>
                                 <div class="position-relative">
-                                    <input type="text" name="debtPrice" placeholder="Nhập số tiền nợ" class="form-control Price" required>
+                                    <input type="search" name="debtPrice" placeholder="Nhập số tiền nợ" class="form-control Price" required>
                                 </div>
                             </div>
                         </div>
@@ -51,7 +51,7 @@
                             <div class="form-group">
                                 <label>Số tiền đã thah toán<span class="text-danger">*</span></label>
                                 <div class="position-relative">
-                                    <input type="text" name="paymentPrice" placeholder="Nhập số tiền thanh toán" class="form-control Price" required>
+                                    <input type="search" name="paymentPrice" placeholder="Nhập số tiền thanh toán" class="form-control Price" required>
                                 </div>
                             </div>
                         </div>

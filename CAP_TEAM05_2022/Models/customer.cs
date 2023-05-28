@@ -31,7 +31,7 @@ namespace CAP_TEAM05_2022.Models
         [Required(ErrorMessage = "Vui lòng nhập họ và tên !")]
         [StringLength(255, ErrorMessage = "Họ và tên tối đa 255 ký tự.")]
         public string name { get; set; }
-
+        [EmailAddress(ErrorMessage = "Email sai định dạng !")]
         [StringLength(255, ErrorMessage = "Email tối đa 255 ký tự")]
         public string email { get; set; }
 

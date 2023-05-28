@@ -40,7 +40,7 @@
                                     Tên sản phẩm<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập tên sản phẩm" } })
+                                    @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập tên sản phẩm", @type = "search" } })
                                     @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
                                 </div> <!---->
                             </div>
@@ -77,7 +77,7 @@
                                 </label>
                                 <div class="position-relative">
                                     <div class="input-group mb-3">
-                                        <input type="text" value="@Model.sell_price.ToString("N0")" placeholder="Nhập giá tiền" id="product-price-sold" class="form-control Price"
+                                        <input type="search" value="@Model.sell_price.ToString("N0")" placeholder="Nhập giá tiền" id="product-price-sold" class="form-control Price"
                                                data-val="true" data-val-required="Vui lòng nhập đơn giá bán !" pattern="[0-9.,]+" data-type="number" name="Editsell_price" required>
                                         <div class="input-group-append">
                                             @if (checkSale || checkCart)
@@ -136,7 +136,7 @@
                                     Đơn giá bán ghi nợ <span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input type="text" value="@Model.sell_price_debt.ToString("N0")" placeholder="Nhập giá tiền" id="product-price-debt" class="form-control Price"
+                                    <input type="search" value="@Model.sell_price_debt.ToString("N0")" placeholder="Nhập giá tiền" id="product-price-debt" class="form-control Price"
                                            data-val="true" data-val-required="Vui lòng nhập đơn giá bán ghi nợ !" pattern="[0-9.,]+" data-type="number" name="Editdebt_price" required>
                                     @Html.ValidationMessage("Editdebt_price", "", new { @class = "text-danger" })
                                 </div> <!---->
@@ -237,7 +237,7 @@
                                 <label>
                                     Đơn giá bán <span class="text-danger">(đơn vị quy đổi)*</span>
                                 </label>
-                                <input type="text" name="Editprice_swap" value="@Model.sell_price_swap.ToString("N0")" placeholder="Nhập giá tiền" id="product-price-swap" class="form-control Price">
+                                <input type="search" name="Editprice_swap" value="@Model.sell_price_swap.ToString("N0")" placeholder="Nhập giá tiền" id="product-price-swap" class="form-control Price">
                             </div>
                             @Html.ValidationMessage("Editprice_swap", "", new { @class = "text-danger" })
                         </div>
@@ -246,7 +246,7 @@
                                 <label>
                                     Đơn giá bán ghi nợ  <span class="text-danger"> (đơn vị quy đổi)*</span>
                                 </label>
-                                <input type="text" name="Editdebt_price_swap" value="@Model.sell_price_debt_swap.ToString("N0")" placeholder="Nhập giá tiền" id="product-price-swap" class="form-control Price">
+                                <input type="search" name="Editdebt_price_swap" value="@Model.sell_price_debt_swap.ToString("N0")" placeholder="Nhập giá tiền" id="product-price-swap" class="form-control Price">
                             </div>
                             @Html.ValidationMessage("Editdebt_price_swap", "", new { @class = "text-danger" })
                         </div>

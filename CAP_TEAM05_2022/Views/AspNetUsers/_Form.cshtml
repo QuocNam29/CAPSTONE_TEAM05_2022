@@ -28,7 +28,7 @@
                                 <div class="position-relative">
                                     @if (isCreate)
                                     {
-                                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập địa chỉ email" } })
+                                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập địa chỉ email", @type = "search" } })
                                         @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                                     }
                                     else
@@ -69,7 +69,7 @@
                                         Mật khẩu<span class="text-danger">*</span>
                                     </label>
                                     <div class="position-relative">
-                                        @Html.PasswordFor(model => model.Password, new { @class = "form-control", @placeholder = "Nhập mật khẩu" })
+                                        @Html.PasswordFor(model => model.Password, new { @class = "form-control", @placeholder = "Nhập mật khẩu"})
                                         @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
 
                                     </div>
@@ -98,12 +98,12 @@
                                 <div class="position-relative">
                                     @if (isCreate)
                                     {
-                                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new {@class = "form-control", @placeholder = "Nhập họ và tên" } })
+                                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new {@class = "form-control", @placeholder = "Nhập họ và tên", @type = "search" } })
                                         @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                                     }
                                     else
                                     {
-                                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @Value = aspNetUser.users.FirstOrDefault().name, @class = "form-control", @placeholder = "Nhập họ và tên" } })
+                                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @Value = aspNetUser.users.FirstOrDefault().name, @class = "form-control", @placeholder = "Nhập họ và tên", @type = "search" } })
                                         @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                                     }
 
@@ -119,12 +119,12 @@
                                 <div class="position-relative">
                                     @if (isCreate)
                                     {
-                                        @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập số điện thoại" } })
+                                        @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập số điện thoại", @type = "search" } })
                                         @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
                                     }
                                     else
                                     {
-                                        @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @Value = aspNetUser.PhoneNumber, @class = "form-control", @placeholder = "Nhập số điện thoại" } })
+                                        @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @Value = aspNetUser.PhoneNumber, @class = "form-control", @placeholder = "Nhập số điện thoại", @type = "search" } })
                                         @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
                                     }
 

@@ -27,7 +27,7 @@
                                     Tên sản phẩm<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập tên sản phẩm" } })
+                                    @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập tên sản phẩm", @type = "search" } })
                                     @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
                                 </div> <!---->
                             </div>
@@ -116,7 +116,7 @@
                                     Đơn giá nhập<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input type="text" placeholder="Nhập giá tiền" id="purchase_price" class="form-control Price"
+                                    <input type="search" placeholder="Nhập giá tiền" id="purchase_price" class="form-control Price"
                                            data-val="true" data-val-required="Vui lòng nhập đơn giá nhập !" pattern="[0-9.,]+" data-type="number" name="purchase_price" required>
                                     @Html.ValidationMessage("sell_price", "", new { @class = "text-danger" })
 
@@ -130,7 +130,7 @@
                                     Đơn giá bán<span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input type="text" placeholder="Nhập giá tiền" id="product-price-sold" class="form-control Price"
+                                    <input type="search" placeholder="Nhập giá tiền" id="product-price-sold" class="form-control Price"
                                            data-val="true" data-val-required="Vui lòng nhập đơn giá bán !" pattern="[0-9.,]+" data-type="number" name="sell_price" required>
                                     @Html.ValidationMessage("sell_price", "", new { @class = "text-danger" })
 
@@ -144,7 +144,7 @@
                                     Đơn giá bán ghi nợ <span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input type="text" placeholder="Nhập giá tiền" id="product-price-debt" class="form-control Price"
+                                    <input type="search" placeholder="Nhập giá tiền" id="product-price-debt" class="form-control Price"
                                            data-val="true" data-val-required="Vui lòng nhập đơn giá bán ghi nợ !" pattern="[0-9.,]+" data-type="number" name="debt_price" required>
                                     @Html.ValidationMessage("debt_price", "", new { @class = "text-danger" })
                                 </div> <!---->
@@ -227,7 +227,7 @@
                                 <label>
                                     Đơn giá bán <span class="text-danger">(đơn vị quy đổi)</span>
                                 </label>
-                                <input type="text" name="price_swap" placeholder="Nhập giá tiền" id="product-price-swap" class="form-control Price">
+                                <input type="search" name="price_swap" placeholder="Nhập giá tiền" id="product-price-swap" class="form-control Price">
                             </div>
                         </div>
                         <div class="col-md-3 swap">
@@ -235,7 +235,7 @@
                                 <label>
                                     Đơn giá bán ghi nợ <span class="text-danger">(đơn vị quy đổi)</span>
                                 </label>
-                                <input type="text" name="debt_price_swap" placeholder="Nhập giá tiền" id="product-price-swap" class="form-control Price">
+                                <input type="search" name="debt_price_swap" placeholder="Nhập giá tiền" id="product-price-swap" class="form-control Price">
                             </div>
                         </div>
 

@@ -25,7 +25,7 @@
                     }
                     <div class="col-12">
                         <label class="form-label">Tên danh mục</label><span class="text-danger">*</span>
-                        @Html.TextBoxFor(m => m.name, new { @class = "form-control", @placeholder = "Nhập tên danh mục" })
+                        @Html.TextBoxFor(m => m.name, new { @class = "form-control", @placeholder = "Nhập tên danh mục", @type="search" })
                         @Html.ValidationMessageFor(m => m.name, "", new { @class = "text-danger" })
                     </div>
                 </div>
