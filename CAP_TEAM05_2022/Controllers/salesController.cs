@@ -180,7 +180,7 @@ namespace CAP_TEAM05_2022.Controllers
 
                 var cart = db.carts.Where(c => c.customer_id == createSale.customer_id && c.user_id == userID).ToList();
                 sale sale = new sale();
-                sale.code = "MDH" + CodeRandom.RandomCode();
+                sale.code = $"MDH-{DateTime.Now:ddMMyyHHss}";
                 sale.customer_id = createSale.customer_id;
                 sale.method = createSale.method;
                 sale.prepayment = createSale.method == Constants.DEBT_ORDER ? prepayment : 0;
@@ -576,7 +576,7 @@ namespace CAP_TEAM05_2022.Controllers
                     item.updated_at = currentDate;
                     db.Entry(item).State = EntityState.Modified;
                 }
-                sale.total = sale_Details.Sum(x => x.price);
+                sale.total = sale_Details.Sum(x => x.price * x.sold);
                 db.Entry(sale).State = EntityState.Modified;
                 db.SaveChanges();
 

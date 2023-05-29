@@ -58,7 +58,7 @@
                             </i>
                         </span>
                     </button>
-                    @if (item.method == Constants.PAYED_ORDER)
+                    @if (item.method == Constants.PAYED_ORDER && item.customer_id != Constants.KHACH_VL)
                     {
                         <button title="Chuyển đổi hình thức đơn hàng" class="btn btn-danger" onclick="convertOrder('@item.id')">
                             <span class="pcoded-micon">

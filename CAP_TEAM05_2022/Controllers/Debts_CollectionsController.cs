@@ -73,7 +73,7 @@ namespace CAP_TEAM05_2022.Controllers
                     decimal payment = decimal.Parse(paymentPrice.Replace(",", "").Replace(".", ""));
                     decimal total = decimal.Parse(debtPrice.Replace(",", "").Replace(".", ""));
 
-                    inventory_order.code = "MNC" + CodeRandom.RandomCode();
+                    inventory_order.code = $"MNC-{DateTime.Now:ddMMyyHHss}";
                     inventory_order.update_at = currentDate;
                     inventory_order.create_by = User.Identity.GetUserId();
                     inventory_order.Total = total;
@@ -542,7 +542,7 @@ namespace CAP_TEAM05_2022.Controllers
                         prepayment = decimal.Parse(Repayment.Replace(",", "").Replace(".", ""));
                     }
                     sale sale = new sale();
-                    sale.code = "DHC" + CodeRandom.RandomCode();
+                    sale.code = $"DNC-{DateTime.Now:ddMMyyHHss}";
                     sale.customer_id = createSale.customer_id;
                     sale.method = Constants.DEBT_ORDER;
                     sale.prepayment = prepayment;

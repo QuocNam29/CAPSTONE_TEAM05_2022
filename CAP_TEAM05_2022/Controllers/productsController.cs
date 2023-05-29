@@ -114,7 +114,7 @@ namespace CAP_TEAM05_2022.Controllers
                             product.sell_price_debt_swap = debtPriceSwap;
                             product.purchase_price = purchasePrice;
                             product.created_at = currentDate;
-                            product.code = "SP" + CodeRandom.RandomCode();
+                            product.code = $"MSP-{DateTime.Now:ddMMyyHHss}";
                             product.supplier_id = SupplierDropdown;
                             db.products.Add(product);
 
@@ -135,7 +135,7 @@ namespace CAP_TEAM05_2022.Controllers
                             db.price_product.Add(price_Product_swap);
 
                             inventory_order inventory_Order = new inventory_order();
-                            inventory_Order.code = "MPN" + CodeRandom.RandomCode();
+                            inventory_Order.code = $"MPN-{DateTime.Now:ddMMyyHHss}";
                             inventory_Order.create_at = currentDate;
                             inventory_Order.update_at = currentDate;
                             inventory_Order.create_by = User.Identity.GetUserId();
@@ -351,7 +351,7 @@ namespace CAP_TEAM05_2022.Controllers
                         product.purchase_price = decimal.Parse(purchase_price.Replace(",", "").Replace(".", ""));
                         product.quantity = quantity;
                         product.created_at = DateTime.Now;
-                        product.code = "SP" + CodeRandom.RandomCode();
+                        product.code = $"MSP-{DateTime.Now:ddMMyyHHss}";
                         product.quantity_swap = quantity_swap;
                         product.unit_swap = unit_swap;
 
