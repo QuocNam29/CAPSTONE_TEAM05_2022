@@ -40,8 +40,10 @@
                                 <div class="col-md-8">
                                     <h4>Nợ cũ với khách hàng</h4>
                                 </div>
+
                                 <div class="col-md-4">
-                                    <a class="btn btn-primary float-right mb-3" href="@Url.Action("CreateOldDebtCustomer","Debts_Collections")">Tạo nợ cũ </a>
+                                    <button class="btn btn-info mb-3" onclick="createOldDebt()">Tạo nợ cũ </button>
+                                    <a class="btn btn-primary mb-3" href="@Url.Action("CreateOldDebtCustomer","Debts_Collections")">Tạo nợ cũ (có chi tiết) </a>
                                 </div>
                             </div>
                         </div>
@@ -69,6 +71,19 @@
             pagingType: 'full_numbers',
         });
     });
+         function GetList_OldDebtsCustomer() {
+            $.ajax({
+                url: '@Url.Action("_OldDebtsCustomerList", "Debts_Collections")',
+                data: {}
+            }).done(function (result) {
+                $('#dataContainer3').html(result);
+                $('#example').DataTable()
+            }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(textStatus)
+                console.log(errorThrown)
+                alert("Something Went Wrong, Try Later");
+            });
+        }
      function GetList_orderDetails(id, method) {
             $.ajax({
                 url: '@Url.Action("_OrderDetailsList", "sales")',
@@ -93,6 +108,24 @@
                 alert("Something Went Wrong, Try Later");
             });
     }
- 
+         function createOldDebt() {
+           if ($('#isCreate').val() != undefined && $('#isCreate').val() == @Constants.CREATE_FORM) {
+                $('#OldDebtCollectionModal').modal('show');
+
+            } else {
+            $.ajax({
+                url: '@Url.Action("_FormOldDebtCustomer", "Debts_Collections")',
+                type: 'GET',
+                data: {},
+                success: function (response) {
+                    // Add response in Modal body
+                    $('#dataContainer2').html(response);
+                    // Display Modal
+                    $('#OldDebtCollectionModal').modal('show');
+                }
+            });
+
+            }
+        }
     </script>
 }

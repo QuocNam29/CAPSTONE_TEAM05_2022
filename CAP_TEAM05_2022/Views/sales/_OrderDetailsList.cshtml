@@ -10,7 +10,7 @@
     List<return_sale> ReturnSale = ViewBag.ReturnSale;
 }
 
-<input type="hidden" id="isDebtPrice" value="@(Model.FirstOrDefault().sale.is_debt_price ? 1 :0)" />
+<input type="hidden" id="isDebtPrice" value="@(Order.is_debt_price ? 1 :0)" />
 <div id="detailModal" tabindex="-1" aria-labelledby="detailModalTitle" class="modal fade bd-example-modal-lg" style="display: none;" aria-hidden="true">
     <div role="document" class="modal-dialog modal-lg">
 
@@ -54,137 +54,149 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var item in Model)
+                                    @if (Model.Any())
                                     {
-                                        bool flat = true;
-                                        foreach (var check in ReturnSale)
+                                        foreach (var item in Model)
                                         {
-                                            if (item.product_id == check.return_details.FirstOrDefault().product_return_id
-                                                && item.sold == check.return_details.FirstOrDefault().quantity_return
-                                                && item.created_at == check.create_at)
+                                            bool flat = true;
+                                            foreach (var check in ReturnSale)
                                             {
-                                                flat = false;
+                                                if (item.product_id == check.return_details.FirstOrDefault().product_return_id
+                                                    && item.sold == check.return_details.FirstOrDefault().quantity_return
+                                                    && item.created_at == check.create_at)
+                                                {
+                                                    flat = false;
+                                                }
+
                                             }
-
-                                        }
-                                        if (flat)
-                                        {
-                                            no++;
-                                            <tr>
-                                                <td class="text-center">
-                                                    @no
-                                                </td>
-                                                <td class="text-center">
-                                                    @item.product.code
-                                                </td>
-                                                <td class="text-center">
-                                                    @item.product.name
-                                                </td>
-
-                                                <td class="text-center">
-                                                    @item.sold<span class="txt-unit"> @item.unit</span>
-                                                </td>
-
-                                                <td class="text-center">
-                                                    @String.Format("{0:0,00}", item.price)VNĐ/<span class="txt-unit">@item.unit</span>
-                                                </td>
-                                                <td class="text-center">
-                                                    @String.Format("{0:0,00}", item.price * item.sold) VNĐ
-                                                </td>
-                                                <td class="text-center">
-                                                    @item.note
-                                                </td>
-                                                <td class="text-center">
-                                                    @String.Format("{0:HH:mm - dd/MM/yyy}", item.created_at)
-                                                </td>
-                                            </tr>
-                                        }
-
-                                        foreach (var item1 in item.return_sale)
-                                        {
-                                            no++;
-                                            if (item1.method == Constants.PAYED_ORDER)
+                                            if (flat)
                                             {
+                                                no++;
                                                 <tr>
-                                                    <td class="text-center ">
-                                                        @no
-                                                    </td>
-                                                    <td class="text-center ">
-                                                        @item.product.code
-                                                    </td>
-                                                    <td class="text-center ">
-                                                        <div>
-                                                            <p class="text-danger">Sản phẩm cũ:</p>
-                                                            @(item1.return_details.FirstOrDefault().product.name )
-                                                            <hr>
-                                                            <p class="text-success">Sản phẩm mới:</p>
-                                                            @( item1.return_details.FirstOrDefault().product1.name )
-                                                        </div>
-                                                    </td>
-
-                                                    <td class="text-center ">
-                                                        <div>
-                                                            <p class="text-danger">Sản phẩm cũ:</p>
-                                                            <div class="text-danger">- @( item1.return_details.FirstOrDefault().quantity_current )<span class="txt-unit text-danger"> @(item1.return_details.FirstOrDefault().unit_current )</span></div>
-                                                            <hr>
-                                                            <p class="text-success">Sản phẩm mới:</p>
-                                                            <div>@( item1.return_details.FirstOrDefault().quantity_return)<span class="txt-unit"> @( item1.return_details.FirstOrDefault().unit_return)</span></div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="text-center ">
-                                                        <p class="text-danger">Sản phẩm cũ:</p>
-                                                        <div>@(((decimal)(item.price)).ToString("N0")) VNĐ / <span class="txt-unit">@item.product.unit</span></div>
-                                                        <hr>
-                                                        <p class="text-success">Sản phẩm mới:</p>
-                                                        <div>@(((decimal)(item1.return_details.FirstOrDefault().total_return / item1.return_details.FirstOrDefault().quantity_return)).ToString("N0") ) VNĐ / <span class="txt-unit"> @( item1.return_details.FirstOrDefault().unit_return)</span></div>
-
-                                                    </td>
                                                     <td class="text-center">
-                                                        <p class="text-danger">Sản phẩm cũ:</p>
-                                                        <div class="text-danger">- @(((decimal)(item1.return_details.Any() ? item1.return_details.FirstOrDefault().total_current : 0)).ToString("N0")) VNĐ</div>
-                                                        <hr>
-                                                        <p class="text-success">Sản phẩm mới:</p>
-                                                        <div>@(((decimal)(item1.return_details.Any() ? item1.return_details.FirstOrDefault().total_return : 0)).ToString("N0")) VNĐ</div>
-
-                                                    </td>
-                                                    <td class="text-center">
-                                                        Đổi sản phẩm
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @String.Format("{0:HH:mm - dd/MM/yyy}", item1.create_at)
-                                                    </td>
-                                                </tr>
-                                            }
-                                            else if (item1.method == Constants.DEBT_ORDER)
-                                            {
-                                                <tr>
-                                                    <td class="text-center ">
                                                         @no
                                                     </td>
                                                     <td class="text-center">
                                                         @item.product.code
                                                     </td>
-                                                    <td class="text-center ">
+                                                    <td class="text-center">
                                                         @item.product.name
                                                     </td>
-                                                    <td class="text-center text-danger">
-                                                        - @(item1.return_details.Any() ? item1.return_details.FirstOrDefault().quantity_current : 0) <span class="txt-unit text-danger"> @item.product.unit</span>
+
+                                                    <td class="text-center">
+                                                        @item.sold<span class="txt-unit"> @item.unit</span>
                                                     </td>
-                                                    <td class="text-center ">
-                                                        @(((decimal)(item.price)).ToString("N0")) VNĐ / <span class="txt-unit">@item.product.unit</span>
-                                                    </td>
-                                                    <td class="text-center text-danger">
-                                                        - @(((decimal)(item.price) * (item1.return_details.Any() ? item1.return_details.FirstOrDefault().quantity_current : 0)).ToString("N0")) VNĐ
-                                                    </td>
-                                                    <td class="text-center ">
-                                                        Trả sản phẩm
+
+                                                    <td class="text-center">
+                                                        @String.Format("{0:0,00}", item.price)VNĐ/<span class="txt-unit">@item.unit</span>
                                                     </td>
                                                     <td class="text-center">
-                                                        @String.Format("{0:HH:mm - dd/MM/yyy}", item1.create_at)
+                                                        @String.Format("{0:0,00}", item.price * item.sold) VNĐ
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @item.note
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @String.Format("{0:HH:mm - dd/MM/yyy}", item.created_at)
                                                     </td>
                                                 </tr>
                                             }
+
+                                            foreach (var item1 in item.return_sale)
+                                            {
+                                                no++;
+                                                if (item1.method == Constants.PAYED_ORDER)
+                                                {
+                                                    <tr>
+                                                        <td class="text-center ">
+                                                            @no
+                                                        </td>
+                                                        <td class="text-center ">
+                                                            @item.product.code
+                                                        </td>
+                                                        <td class="text-center ">
+                                                            <div>
+                                                                <p class="text-danger">Sản phẩm cũ:</p>
+                                                                @(item1.return_details.FirstOrDefault().product.name )
+                                                                <hr>
+                                                                <p class="text-success">Sản phẩm mới:</p>
+                                                                @( item1.return_details.FirstOrDefault().product1.name )
+                                                            </div>
+                                                        </td>
+
+                                                        <td class="text-center ">
+                                                            <div>
+                                                                <p class="text-danger">Sản phẩm cũ:</p>
+                                                                <div class="text-danger">- @( item1.return_details.FirstOrDefault().quantity_current )<span class="txt-unit text-danger"> @(item1.return_details.FirstOrDefault().unit_current )</span></div>
+                                                                <hr>
+                                                                <p class="text-success">Sản phẩm mới:</p>
+                                                                <div>@( item1.return_details.FirstOrDefault().quantity_return)<span class="txt-unit"> @( item1.return_details.FirstOrDefault().unit_return)</span></div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="text-center ">
+                                                            <p class="text-danger">Sản phẩm cũ:</p>
+                                                            <div>@(((decimal)(item.price)).ToString("N0")) VNĐ / <span class="txt-unit">@item.product.unit</span></div>
+                                                            <hr>
+                                                            <p class="text-success">Sản phẩm mới:</p>
+                                                            <div>@(((decimal)(item1.return_details.FirstOrDefault().total_return / item1.return_details.FirstOrDefault().quantity_return)).ToString("N0") ) VNĐ / <span class="txt-unit"> @( item1.return_details.FirstOrDefault().unit_return)</span></div>
+
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <p class="text-danger">Sản phẩm cũ:</p>
+                                                            <div class="text-danger">- @(((decimal)(item1.return_details.Any() ? item1.return_details.FirstOrDefault().total_current : 0)).ToString("N0")) VNĐ</div>
+                                                            <hr>
+                                                            <p class="text-success">Sản phẩm mới:</p>
+                                                            <div>@(((decimal)(item1.return_details.Any() ? item1.return_details.FirstOrDefault().total_return : 0)).ToString("N0")) VNĐ</div>
+
+                                                        </td>
+                                                        <td class="text-center">
+                                                            Đổi sản phẩm
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @String.Format("{0:HH:mm - dd/MM/yyy}", item1.create_at)
+                                                        </td>
+                                                    </tr>
+                                                }
+                                                else if (item1.method == Constants.DEBT_ORDER)
+                                                {
+                                                    <tr>
+                                                        <td class="text-center ">
+                                                            @no
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @item.product.code
+                                                        </td>
+                                                        <td class="text-center ">
+                                                            @item.product.name
+                                                        </td>
+                                                        <td class="text-center text-danger">
+                                                            - @(item1.return_details.Any() ? item1.return_details.FirstOrDefault().quantity_current : 0) <span class="txt-unit text-danger"> @item.product.unit</span>
+                                                        </td>
+                                                        <td class="text-center ">
+                                                            @(((decimal)(item.price)).ToString("N0")) VNĐ / <span class="txt-unit">@item.product.unit</span>
+                                                        </td>
+                                                        <td class="text-center text-danger">
+                                                            - @(((decimal)(item.price) * (item1.return_details.Any() ? item1.return_details.FirstOrDefault().quantity_current : 0)).ToString("N0")) VNĐ
+                                                        </td>
+                                                        <td class="text-center ">
+                                                            Trả sản phẩm
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @String.Format("{0:HH:mm - dd/MM/yyy}", item1.create_at)
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
                                         }
+
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="8" class="text-center">
+                                                <b>ĐƠN NỢ CŨ KHÔNG CÓ CHI TIẾT NỢ</b>
+                                            </td>
+                                        </tr>
                                     }
                                 </tbody>
                                 <tfoot>

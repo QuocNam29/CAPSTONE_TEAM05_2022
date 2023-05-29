@@ -152,7 +152,7 @@ namespace CAP_TEAM05_2022.Controllers
             ExcelWorksheet Sheet = ep.Workbook.Worksheets.Add("NhapSanPham");
             FormatExcel(Sheet, 3);
             Sheet.Cells["A1"].Value = "Tên sản phẩm";
-            Sheet.Cells["B1"].Value = "Nhà cung cấp";
+            Sheet.Cells["B1"].Value = "Công ty cung cấp";
             Sheet.Cells["C1"].Value = "Danh mục";
             Sheet.Cells["D1"].Value = "Số lượng tồn";
             Sheet.Cells["E1"].Value = "Đơn vị";
@@ -175,8 +175,8 @@ namespace CAP_TEAM05_2022.Controllers
                 var validation_supplier = Sheet.Cells[string.Format("B{0}", i)].DataValidation.AddListDataValidation();
                 validation_supplier.ShowErrorMessage = true;
                 validation_supplier.ErrorStyle = ExcelDataValidationWarningStyle.information;
-                validation_supplier.ErrorTitle = "Lỗi nhập nhà cung cấp";
-                validation_supplier.Error = "Nhà cung cấp này không có trong hệ thống, vui lòng chọn lại !";
+                validation_supplier.ErrorTitle = "Lỗi nhập công ty cung cấp";
+                validation_supplier.Error = "Công ty cung cấp này không có trong hệ thống, vui lòng chọn lại !";
                 validation_supplier.Formula.ExcelFormula = string.Format("CongTyCungCap!A2:A{0}", rowCongTy - 1);
             }
             ExcelWorksheet SheetDanhMuc = ep.Workbook.Worksheets.Add("DanhMuc");
@@ -393,7 +393,7 @@ namespace CAP_TEAM05_2022.Controllers
                         {
                             row_excel++;
                             if (!String.IsNullOrEmpty(row["Tên sản phẩm"].ToString().Trim())
-                               && !String.IsNullOrEmpty(row["Nhà cung cấp"].ToString().Trim())
+                               && !String.IsNullOrEmpty(row["Công ty cung cấp"].ToString().Trim())
                            && !String.IsNullOrEmpty(row["Danh mục"].ToString().Trim())
                            && !String.IsNullOrEmpty(row["Số lượng tồn"].ToString().Trim())
                             && !String.IsNullOrEmpty(row["Đơn vị"].ToString().Trim())
@@ -404,7 +404,7 @@ namespace CAP_TEAM05_2022.Controllers
                               && !String.IsNullOrEmpty(row["Đơn giá bán nợ"].ToString().Trim()))
                             {
                                 Session["name_product"] = row["Tên sản phẩm"].ToString().Trim();
-                                Session["supplier_product"] = row["Nhà cung cấp"].ToString().Trim();
+                                Session["supplier_product"] = row["Công ty cung cấp"].ToString().Trim();
                                 Session["category_product"] = row["Danh mục"].ToString().Trim();
                                 Session["quantity_product"] = row["Số lượng tồn"].ToString().Trim();
                                 Session["unit_product"] = row["Đơn vị"].ToString().Trim();
@@ -416,7 +416,7 @@ namespace CAP_TEAM05_2022.Controllers
 
                             }
                             else if (
-                                 String.IsNullOrEmpty(row["Nhà cung cấp"].ToString().Trim())
+                                 String.IsNullOrEmpty(row["Công ty cung cấp"].ToString().Trim())
                                || String.IsNullOrEmpty(row["Danh mục"].ToString().Trim())
                                ||  String.IsNullOrEmpty(row["Số lượng tồn"].ToString())
                                || String.IsNullOrEmpty(row["Đơn vị"].ToString())
@@ -455,7 +455,7 @@ namespace CAP_TEAM05_2022.Controllers
                                     string unit_swap_product = Session["unit_swap_product"].ToString().Trim().ToLower();
                                     decimal sell_debt_product = decimal.Parse(Session["sell_debt_product"].ToString().Trim());
 
-                                    // kiểm tra nhóm hàng, danh mục, nhà cung cấp đã tồn tại chưa
+                                    // kiểm tra nhóm hàng, danh mục, công ty cung cấp đã tồn tại chưa
                                     if (check_category != null && check_supplier != null)
                                     {
                                         //thực hiện nhập sản phẩm
@@ -768,7 +768,7 @@ namespace CAP_TEAM05_2022.Controllers
             Sheet_import.Cells["D1"].Value = "Số lương trả";
             Sheet_import.Cells["E1"].Value = "Đơn giá nhập";
             Sheet_import.Cells["F1"].Value = "Thành tiền";
-            Sheet_import.Cells["G1"].Value = "Nhà cung cấp";
+            Sheet_import.Cells["G1"].Value = "Công ty cung cấp";
             Sheet_import.Cells["H1"].Value = "Ngày nhập";
 
 

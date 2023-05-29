@@ -27,7 +27,7 @@ namespace CAP_TEAM05_2022.Helper
         /// </summary>
         public static readonly Dictionary<int, Tuple<string, string>> TypeCustomer = new Dictionary<int, Tuple<string, string>> {
             {CUSTOMER, new Tuple<string, string>("Khách hàng", "cus-simple") },
-            {SUPPLIER, new Tuple<string, string>("Nhà cung cấp", "cus-supplier") }
+            {SUPPLIER, new Tuple<string, string>("Công ty cung cấp", "cus-supplier") }
         };
 
         ///Trạng thái ẩn/hiện

@@ -55,8 +55,19 @@ namespace CAP_TEAM05_2022.Controllers
         {
             ViewBag.isCreate = false;
             ViewBag.SupplierId = new SelectList(db.customers.Where(x => x.type == Constants.SUPPLIER).ToList(), "id", "name");
+
             return PartialView("_FormOldDebt", new inventory_order());
         }
+
+        [HttpGet]
+        public PartialViewResult _FormOldDebtCustomer()
+        {
+            ViewBag.isCreate = false;
+            ViewBag.CustomerId = new SelectList(db.customers.Where(x => x.type == Constants.CUSTOMER && x.id > 0).ToList(), "id", "name");
+
+            return PartialView("_FormOldDebtCustomer", new sale());
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult OldDebt([Bind(Include = "id,code,supplier_id,create_at")] inventory_order inventory_order,
@@ -138,7 +149,102 @@ namespace CAP_TEAM05_2022.Controllers
                     }
                     db.SaveChanges();
 
-                    message = "Tạo thành công đơn nợ cũ với nhà cung cấp";
+                    message = "Tạo thành công đơn nợ cũ với công ty cung cấp";
+                    return Json(new { status, message }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception e)
+            {
+                status = false;
+                message = e.Message;
+            }
+            ViewBag.isCreate = true;
+            return Json(new { status, message }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult OldDebtCustomer([Bind(Include = "id,customer_id,created_at")] sale sale,
+                                   string debtPrice, string paymentPrice)
+        {
+            string message = "";
+            bool status = true;
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    DateTime currentDate = DateTime.Now;
+                    decimal payment = decimal.Parse(paymentPrice.Replace(",", "").Replace(".", ""));
+                    decimal total = decimal.Parse(debtPrice.Replace(",", "").Replace(".", ""));
+
+                    sale.code = $"DNC-{DateTime.Now:ddMMyyHHss}";
+                    sale.updated_at = currentDate;
+                    sale.created_by = User.Identity.GetUserId();
+                    sale.total = total;
+                    sale.method = Constants.DEBT_ORDER;
+                    sale.prepayment = payment;
+                    sale.pay_debt = 0;
+                    sale.status = Constants.SHOW_STATUS;
+                    sale.is_old_debt = true;
+                    if (sale.prepayment > sale.total)
+                    {
+                        message = "Số tiền trả trước đang lớn hơn tổng giá trị đơn nợ cũ !";
+                        status = false;
+                        return Json(new { status, message }, JsonRequestBehavior.AllowGet);
+                    }
+                    db.sales.Add(sale);
+                    var check_debt = db.debts.Where(d => d.sale.customer_id == sale.customer_id && d.sale_id != null).Count();
+                    if (check_debt > 0)
+                    {
+                        var last_debt = db.debts.Where(d => d.sale.customer_id == sale.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
+                        debt debt = new debt();
+                        debt.sale_id = sale.id;
+                        debt.paid = sale.prepayment;
+                        debt.created_at = currentDate;
+                        debt.created_by = User.Identity.GetUserId();
+                        debt.total = last_debt.total + sale.prepayment;
+                        debt.debt1 = sale.total;
+                        debt.remaining = last_debt.remaining + (sale.total - debt.paid);
+                        db.debts.Add(debt);
+
+                        var last_customer_Debt = db.customer_debt.Where(d => d.customer_id == sale.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
+
+                        customer_debt customer_Debt = new customer_debt();
+                        customer_Debt.sale_id = sale.id;
+                        customer_Debt.created_at = currentDate;
+                        customer_Debt.created_by = User.Identity.GetUserId();
+                        customer_Debt.customer_id = sale.customer_id;
+                        customer_Debt.debt = (sale.total - debt.paid);
+                        customer_Debt.remaining = last_debt.remaining + (sale.total - debt.paid);
+                        db.customer_debt.Add(customer_Debt);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        debt debt = new debt();
+                        debt.sale_id = sale.id;
+                        debt.paid = sale.prepayment;
+                        debt.created_at = currentDate;
+                        debt.created_by = User.Identity.GetUserId();
+                        debt.total = sale.prepayment;
+                        debt.debt1 = sale.total;
+                        debt.remaining = sale.total - debt.paid;
+                        db.debts.Add(debt);
+
+                        customer_debt customer_Debt = new customer_debt();
+                        customer_Debt.sale_id = sale.id;
+                        customer_Debt.created_at = currentDate;
+                        customer_Debt.created_by = User.Identity.GetUserId();
+                        customer_Debt.customer_id = sale.customer_id;
+                        customer_Debt.debt = sale.total - debt.paid;
+                        customer_Debt.remaining = sale.total - debt.paid;
+                        db.customer_debt.Add(customer_Debt);
+
+                        db.SaveChanges();
+                    }
+                    db.SaveChanges();
+
+                    message = "Tạo thành công đơn nợ cũ với khách hàng (không có chi tiết đơn hàng).";
                     return Json(new { status, message }, JsonRequestBehavior.AllowGet);
                 }
             }
@@ -340,10 +446,10 @@ namespace CAP_TEAM05_2022.Controllers
                     }
                     
                 }
-                // Đối với trả nợ cho nhà cung cấp
+                // Đối với trả nợ cho công ty cung cấp
                 else if (method == Constants.PAYING_SUPPLIER)
                 {
-                    // lấy danh sách đơn nợ của nhà cung cấp
+                    // lấy danh sách đơn nợ của công ty cung cấp
                     var inventory = db.inventory_order.Where(s => s.supplier_id == customer_id && s.Total != (s.payment - s.pay_debt) && s.state == Constants.DEBT_ORDER).ToList();
                     while (paid_temp > 0)
                     {

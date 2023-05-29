@@ -446,7 +446,7 @@ $.ajax({
     url: URLgetSupplier,
     data: "{}",
     success: function (data) {
-        var s = '<option value="" disabled="disabled" selected="selected">Chọn nhà cung cấp</option>';
+        var s = '<option value="" disabled="disabled" selected="selected">Chọn công ty cung cấp</option>';
         for (var i = 0; i < data.length; i++) {
             s += '<option value="' + data[i].supplierID + '">' + data[i].supplierName + '</option>';
         }
@@ -714,7 +714,7 @@ $('.AddCustomerSaleFrom').submit(function (e) {
                     } else if (data.customer.type == 2) {
                         $('#customer_type').val("Công ty (Khách mua sĩ)");
                     } else if (data.customer.type == 3) {
-                        $('#customer_type').val("Nhà cung cấp");
+                        $('#customer_type').val("Công ty cung cấp");
                     }
                     if ($("#total").val() != undefined) {
                         $("#payment_btn").show();
@@ -1342,7 +1342,7 @@ $('.ReturnForm').submit(function (e) {
         });
     }
 });
-//---------------------------------Trả sản phẩm cho nhà cung cấp------------------
+//---------------------------------Trả sản phẩm cho công ty cung cấp------------------
 function Get_exchangeSupplier(id, product_name, quantity_stock, supplier, price_product_stock) {
     $("#id_inventory").val(id);
     $("#productName_inventory").val(product_name);

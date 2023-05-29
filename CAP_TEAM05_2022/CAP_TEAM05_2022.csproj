@@ -786,6 +786,7 @@
     <Content Include="Views\sale_details\_FormCustomer.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
     <Content Include="Template\web\images\Thumbs.db" />
+    <Content Include="Views\Debts_Collections\_FormOldDebtCustomer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

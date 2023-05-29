@@ -1,0 +1,131 @@
+﻿@model CAP_TEAM05_2022.Models.sale
+@using Constants = CAP_TEAM05_2022.Helper.Constants;
+@{
+    bool isCreate = ViewBag.isCreate;
+
+}
+<link href="~/Content/css/custom-css.css" rel="stylesheet" />
+<input type="number" id="isCreate" value="@(isCreate ? Constants.CREATE_FORM : Constants.NOT_CREATE_FORM)" />
+<div class="modal fade" id="OldDebtCollectionModal" tabindex="-1">
+    <div class="modal-dialog  modal-lg" role="document">
+        <form class="OldDebtsForm" method="post" action="@Url.Action( "OldDebtCustomer" , "Debts_Collections")">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title" id="AddCategoryLabel">Tạo nợ cũ</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Khách hàng<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    @Html.DropDownListFor(model => model.customer_id, (SelectList)ViewBag.CustomerId, "---- Chọn khách hàng ----", new { @class = "form-control", @required = "required" })
+                                    @Html.ValidationMessageFor(m => m.customer_id, "", new { @class = "text-danger" })
+                                </div> <!---->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Ngày ghi nợ<span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <input class="form-control" type="datetime-local" name="created_at" required />
+                                    @Html.ValidationMessage("created_at", "", new { @class = "text-danger" })
+                                </div> <!---->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Số tiền nợ<span class="text-danger">*</span></label>
+                                <div class="position-relative">
+                                    <input type="search" name="debtPrice" placeholder="Nhập số tiền nợ" class="form-control Price" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Số tiền đã thah toán<span class="text-danger">*</span></label>
+                                <div class="position-relative">
+                                    <input type="search" name="paymentPrice" placeholder="Nhập số tiền thanh toán" class="form-control Price" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--Validation-->
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    $('.OldDebtsForm').submit(function (e) {
+        var form = $(this);
+        var _this = $(this);
+        var _form = _this.closest("form");
+        var isvalid = _form.valid()
+        // Check if form is valid then submit ajax
+        if (isvalid) {
+            e.preventDefault();
+            var url = form.attr('action');
+            $('.modal').modal('hide');
+            Swal.fire({
+                title: 'Bạn đã chắc chắn tạo nợ cũ ?',
+                text: "Bạn không thể hoàn nguyên nếu có thêm đơn nợ hoặc đang trong quá trình trả nợ !",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Xác nhận'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: form.serialize(),
+                        success: function (data) {
+                            // Hide bootstrap modal to prevent conflict
+                            $('.modal').modal('hide');
+
+                            if (data.status) {
+                                // Refresh table data
+                                Swal.fire('Thành công !', data.message, 'success')
+                                GetList_OldDebtsCustomer();
+                                form[0].reset();
+                                form.removeClass('was-validated');
+                            } else {
+                                Swal.fire('Lỗi !', data.message, 'error')
+                            }
+                        }
+                    });
+                } else {
+                    $('.modal').modal('show');
+
+                }
+            });
+        }
+    });
+    $('.Price').keydown(function (e) {
+        setTimeout(() => {
+            let parts = $(this).val().split(".");
+            let v = parts[0].replace(/\D/g, ""),
+                dec = parts[1]
+            let calc_num = Number((dec !== undefined ? v + "." + dec : v));
+            // use this for numeric calculations
+            // console.log('number for calculations: ', calc_num);
+            let n = new Intl.NumberFormat('en-EN').format(v);
+            n = dec !== undefined ? n + "." + dec : n;
+            $(this).val(n);
+        })
+    })
+</script>
+

@@ -40,7 +40,7 @@ namespace CAP_TEAM05_2022.Controllers
                 if (quantity > (inventory.quantity - inventory.sold - inventory.return_quantity))
                 {
                     status = false;
-                    message = "Số lượng sản phẩm " + inventory.product.name + " do nhà cung cấp  " + '"'
+                    message = "Số lượng sản phẩm " + inventory.product.name + " do công ty cung cấp  " + '"'
                         + inventory.customer.name + '"' + " cung cấp chỉ còn lại "
                         + (inventory.quantity - inventory.sold - inventory.return_quantity) + " " + inventory.product.unit;
                 }
@@ -154,7 +154,7 @@ namespace CAP_TEAM05_2022.Controllers
 
 
                     db.SaveChanges();
-                    message = "Tổng tiền thu lại từ nhà cung cấp là: " + (inventory.price_import * quantity).ToString("N0") + "VNĐ";
+                    message = "Tổng tiền thu lại từ công ty cung cấp là: " + (inventory.price_import * quantity).ToString("N0") + "VNĐ";
                 }
 
             }
