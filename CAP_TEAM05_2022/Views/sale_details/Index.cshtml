@@ -486,10 +486,11 @@
             var product_price_debt = Number($('#product_price_debt').val().replace(/\,/g, '').replace(/\./g, ''));
             var product_quantity = Number($('#product_quantity').val());
 
-            var sum_price = product_price * product_quantity;
+            var sum_price = Number((product_price * product_quantity).toFixed(0));
+            console.log(sum_price);
             $('#sum_price').val(sum_price.toLocaleString());
 
-            var sum_price_debt = product_price_debt * product_quantity;
+            var sum_price_debt = Number((product_price_debt * product_quantity).toFixed(0));
             $('#sum_price_debt').val(sum_price_debt.toLocaleString());
         }
 
