@@ -273,7 +273,26 @@
                 console.log(errorThrown)
                 alert("Something Went Wrong, Try Later");
             });
-    }
+        }
+
+        function convertOrder(id) {
+            $.ajax({
+                url: '@Url.Action("_OrderDetailsList", "sales")',
+                data: {
+                    order_id: id,
+                }
+            }).done(function (result) {
+                $('#dataContainer2').html(result);
+                $('#convertOrderModal.close').css('display', 'none');
+                $('#convertOrderModal').modal('show');
+
+            }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(textStatus)
+                console.log(errorThrown)
+                alert("Something Went Wrong, Try Later");
+            });
+        }
+
     function Get_ReturnProduct(id, isDebtPrice) {
         $('#productSelectModal.close').css('display', 'none');
         $('#productSelectModal').modal('hide');

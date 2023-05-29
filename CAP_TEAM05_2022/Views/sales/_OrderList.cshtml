@@ -54,11 +54,20 @@
                     </button>
                     <button title="Đổi trả" class="btn btn-success" onclick="GetList_orderDetails('@item.id', '@Constants.MODAL_RETURN')">
                         <span class="pcoded-micon">
-                            <i class="fas fa-retweet">
+                            <i class="fa fa-random">
                             </i>
                         </span>
                     </button>
-
+                    @if (item.method == Constants.PAYED_ORDER)
+                    {
+                        <button title="Chuyển đổi hình thức đơn hàng" class="btn btn-danger" onclick="convertOrder('@item.id')">
+                            <span class="pcoded-micon">
+                                <i class="fas fa-retweet">
+                                </i>
+                            </span>
+                        </button>
+                    }
+                    
                     <button title="In hoá đơn" class="btn btn-secondary" onclick="PrintOrder('@item.id')">
                         <span class="pcoded-micon">
                             <i class="fas fa-print">

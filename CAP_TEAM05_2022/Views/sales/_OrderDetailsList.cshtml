@@ -9,7 +9,8 @@
     var OldDebt = (customer_debt)ViewBag.OldDebt;
     List<return_sale> ReturnSale = ViewBag.ReturnSale;
 }
-<input type="hidden" id="isDebtPrice"   value="@(Model.FirstOrDefault().sale.is_debt_price ? 1 :0)" />
+
+<input type="hidden" id="isDebtPrice" value="@(Model.FirstOrDefault().sale.is_debt_price ? 1 :0)" />
 <div id="detailModal" tabindex="-1" aria-labelledby="detailModalTitle" class="modal fade bd-example-modal-lg" style="display: none;" aria-hidden="true">
     <div role="document" class="modal-dialog modal-lg">
 
@@ -276,7 +277,7 @@
                                                     Nợ cũ trước lúc @String.Format("{0:HH:mm - dd/MM/yyy}", Order.created_at) là : @(((decimal)OldDebt.remaining).ToString("N0")) VNĐ
                                                 </td>
                                             </tr>
-                                            
+
                                             <tr>
                                                 <td colspan="8" class="text-center">
                                                     <b>Như vậy tính đến @String.Format("{0:HH:mm - dd/MM/yyy}", Order.created_at), Quý khách hàng đã nợ doanh nghiệp Tấn Thành là : <u>@(((decimal)(OldDebt.remaining)).ToString("N0")) VNĐ</u></b>
@@ -360,7 +361,102 @@
         </form>
     </div>
 </div>
+<div id="convertOrderModal" tabindex="-1" role="dialog" aria-labelledby="productSelectModalTitle" aria-hidden="true" class="modal fade bd-example-modal-lg">
+    <div role="document" class="modal-dialog">
+        <form class="needs-validation ConvertOrderForm" method="post" action="@Url.Action("ConvertOrder", "sales")" novalidate>
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 id="productSelectModalTitle" class="modal-title white">Chuyển đổi đơn hàng @Order.code</h5>
+                    <button type="button" data-dismiss="modal" aria-label="Close" class="close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        @Html.AntiForgeryToken();
+                        <div class="col-md-12">
+                            <label class="form-label">
+                                Vui lòng chọn phương thức giá chuyển đổi ?<span class="text-danger">*</span>
+                            </label>
+                            <input type="hidden" name="idOrder" value="@Order.id" />
+                            <div class="mt-2">
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" class="form-check-input" name="methodPrice" value="@Constants.DEBT_METHOD_PRICE" required data-val="true" data-val-required="Vui lòng chọn phương thức giá !" />
+                                    <label class="form-check-label" for="methodPrice">
+                                        Chuyển đổi với giá ghi nợ
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" class="form-check-input" name="methodPrice" value="@Constants.CASH_METHOD_PRICE" required data-val="true" data-val-required="Vui lòng phương thức giá !" />
+                                    <label class="form-check-label" for="methodPrice">
+                                        Chuyển đổi với giá tiền mặt
+                                    </label>
+                                </div>
+                            </div>
+                            @Html.ValidationMessage("methodPrice", "", new { @class = "text-danger" })
 
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn  btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    $('.ConvertOrderForm').submit(function (e) {
+        var form = $(this);
+        var _this = $(this);
+        var _form = _this.closest("form");
+        var isvalid = _form.valid()
+        // Check if form is valid then submit ajax
+        if (isvalid) {
+            e.preventDefault();
+            var url = form.attr('action');
+            $('.modal').modal('hide');
+            Swal.fire({
+                title: 'Bạn chắc chắn sẽ chuyển đổi thành đơn ghi nợ ?',
+                text: "Bạn không thể hoàn nguyên nếu có sai sót sau khi chuyển đổi đơn hàng thành ghi nợ !",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Xác nhận'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: form.serialize(),
+                        success: function (data) {
+                            // Hide bootstrap modal to prevent conflict
+                            $('.modal').modal('hide');
+
+                            if (data.status) {
+                                // Refresh table data
+                                Swal.fire('Thành công !', data.message, 'success')
+                                var date_start = $("#sale_DateStart").val();
+                                var date_end = $("#sale_DateEnd").val();
+                                GetList_OrderList(date_start, date_end);
+                                form[0].reset();
+                                form.removeClass('was-validated');
+                            } else {
+                                Swal.fire('Lỗi !', data.message, 'error')
+                            }
+                        }
+                    });
+                } else {
+                    $('#convertOrderModal.close').css('display', 'none');
+                    $('#convertOrderModal').modal('show');
+                }
+            });
+           
+        }
+    });
+</script>
 <script type="text/javascript">
     $(document).ready(function () {
         $(".returnProduct_List").select2({

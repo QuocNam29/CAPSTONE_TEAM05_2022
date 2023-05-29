@@ -546,6 +546,106 @@ namespace CAP_TEAM05_2022.Controllers
             return Json(new { status, message }, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult ConvertOrder(int methodPrice, int idOrder)
+        {
+            string message = "";
+            bool status = true;
+            try
+            {
+                string userID = User.Identity.GetUserId();
+                DateTime currentDate = DateTime.Now;
+
+                var sale = db.sales.Find(idOrder);
+                sale.method = Constants.DEBT_ORDER;
+                if (methodPrice == Constants.DEBT_METHOD_PRICE)
+                {
+                    sale.is_debt_price = true;
+                }
+                else
+                {
+                    sale.is_debt_price = false;
+                }
+                sale.updated_at = currentDate;
+
+                var sale_Details = db.sale_details.Where(x => x.sale_id == idOrder).ToList();
+                foreach (var item in sale_Details)
+                {
+                    item.price = methodPrice == Constants.DEBT_METHOD_PRICE ? item.price_product.price_debt : item.price_product.price;
+                    item.updated_at = currentDate;
+                    db.Entry(item).State = EntityState.Modified;
+                }
+                sale.total = sale_Details.Sum(x => x.price);
+                db.Entry(sale).State = EntityState.Modified;
+                db.SaveChanges();
+
+                var check_debt = db.debts.Any(d => d.sale.customer_id == sale.customer_id && d.sale_id != null);
+                if (check_debt)
+                {
+                    var last_debt = db.debts.Where(d => d.sale.customer_id == sale.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
+                    debt debt = new debt();
+                    debt.sale_id = sale.id;
+                    debt.paid = sale.prepayment;
+                    debt.created_at = currentDate;
+                    debt.created_by = User.Identity.GetUserId();
+                    debt.total = last_debt.total + sale.prepayment;
+                    debt.debt1 = sale.total;
+                    debt.remaining = last_debt.remaining + (sale.total - debt.paid);
+                    debt.note = "Đơn nợ tạo do chuyển đổi phương thức thanh toán.";
+                    db.debts.Add(debt);
+
+                    var last_customer_Debt = db.customer_debt.Where(d => d.customer_id == sale.customer_id).OrderByDescending(o => o.id).FirstOrDefault();
+
+                    customer_debt customer_Debt = new customer_debt();
+                    customer_Debt.sale_id = sale.id;
+                    customer_Debt.created_at = currentDate;
+                    customer_Debt.created_by = User.Identity.GetUserId();
+                    customer_Debt.customer_id = sale.customer_id;
+                    customer_Debt.debt = (sale.total - debt.paid);
+                    customer_Debt.remaining = last_debt.remaining + (sale.total - debt.paid);
+                    customer_Debt.note = "Đơn nợ tạo do chuyển đổi phương thức thanh toán.";
+                    db.customer_debt.Add(customer_Debt);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    debt debt = new debt();
+                    debt.sale_id = sale.id;
+                    debt.paid = sale.prepayment;
+                    debt.created_at = currentDate;
+                    debt.created_by = User.Identity.GetUserId();
+                    debt.total = sale.prepayment;
+                    debt.debt1 = sale.total;
+                    debt.remaining = sale.total - debt.paid;
+                    debt.note = "Đơn nợ tạo do chuyển đổi phương thức thanh toán.";
+                    db.debts.Add(debt);
+
+                    customer_debt customer_Debt = new customer_debt();
+                    customer_Debt.sale_id = sale.id;
+                    customer_Debt.created_at = currentDate;
+                    customer_Debt.created_by = User.Identity.GetUserId();
+                    customer_Debt.customer_id = sale.customer_id;
+                    customer_Debt.debt = sale.total - debt.paid;
+                    customer_Debt.remaining = sale.total - debt.paid;
+                    customer_Debt.note = "Đơn nợ tạo do chuyển đổi phương thức thanh toán.";
+                    db.customer_debt.Add(customer_Debt);
+
+                    db.SaveChanges();
+                }
+
+                message = "Bạn đã chuyển đổi sang đơn ghi nợ thành công";
+
+            }
+            catch (Exception e)
+            {
+                message = e.Message;
+                status = false;
+            }
+
+            return Json(new { status, message }, JsonRequestBehavior.AllowGet);
+        }
+
 
         protected override void Dispose(bool disposing)
         {
