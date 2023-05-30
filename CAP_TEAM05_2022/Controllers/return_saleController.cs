@@ -50,7 +50,7 @@ namespace CAP_TEAM05_2022.Controllers
                     return_sale return_Sale = new return_sale();
                     return_Sale.saleDetails_id = sale_Details.id;
                     return_Sale.method = return_option;
-                    return_Sale.code = $"MTH-{DateTime.Now:ddMMyyHHss}";
+                    return_Sale.code = $"MTH-{DateTime.Now:ddMMyyHHmmssfff}";
                     return_Sale.create_at = created_at;
                     return_Sale.difference = price_PCurrent1 * quality_OD;
                     db.return_sale.Add(return_Sale);
@@ -498,7 +498,7 @@ namespace CAP_TEAM05_2022.Controllers
                     return_sale return_Sale = new return_sale();
                     return_Sale.saleDetails_id = sale_Details.id;
                     return_Sale.method = return_option;
-                    return_Sale.code = $"MDH-{DateTime.Now:ddMMyyHHss}"; ;
+                    return_Sale.code = $"MDH-{DateTime.Now:ddMMyyHHmmssfff}"; ;
                     return_Sale.create_at = created_at;
                     return_Sale.difference = (price_PCurrent1 * quality_OD) - total_return;
                     db.return_sale.Add(return_Sale);

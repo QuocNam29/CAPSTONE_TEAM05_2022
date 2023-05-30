@@ -57,7 +57,7 @@ namespace CAP_TEAM05_2022.Controllers
                         group.created_by = User.Identity.GetUserId();
                         group.created_at = DateTime.Now;
                         group.slug = group.name;
-                        group.code = $"M-{DateTime.Now:ddMMyyHHss}";
+                        group.code = $"M-{DateTime.Now:ddMMyyHHmmssfff}";
                         db.groups.Add(group);
                         db.SaveChanges();
                         message = "Tạo danh mục thành công";
@@ -131,7 +131,7 @@ namespace CAP_TEAM05_2022.Controllers
                     GroupProduct.status = Constants.SHOW_STATUS;
                     GroupProduct.created_at = DateTime.Now;
                     GroupProduct.slug = Add_name;
-                    GroupProduct.code = $"MNH-{DateTime.Now:ddMMyyHHss}";
+                    GroupProduct.code = $"MNH-{DateTime.Now:ddMMyyHHmmssfff}";
                     db.groups.Add(GroupProduct);
                     db.SaveChanges();
                     message = "Tạo nhóm hàng thành công";

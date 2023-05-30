@@ -180,7 +180,7 @@ namespace CAP_TEAM05_2022.Controllers
 
                 var cart = db.carts.Where(c => c.customer_id == createSale.customer_id && c.user_id == userID).ToList();
                 sale sale = new sale();
-                sale.code = $"MDH-{DateTime.Now:ddMMyyHHss}";
+                sale.code = $"MDH-{DateTime.Now:ddMMyyHHmmssfff}";
                 sale.customer_id = createSale.customer_id;
                 sale.method = createSale.method;
                 sale.prepayment = createSale.method == Constants.DEBT_ORDER ? prepayment : 0;

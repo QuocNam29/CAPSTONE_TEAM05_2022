@@ -49,7 +49,7 @@ namespace CAP_TEAM05_2022.Controllers
 
                     return_supplier return_Supplier = new return_supplier();
                     return_Supplier.inventory_id = id_inventory;
-                    return_Supplier.code = $"MTH-{DateTime.Now:ddMMyyHHss}";
+                    return_Supplier.code = $"MTH-{DateTime.Now:ddMMyyHHmmssfff}";
                     return_Supplier.quantity = quantity;
                     return_Supplier.note = note;
                     return_Supplier.cost_difference = inventory.price_import * quantity;

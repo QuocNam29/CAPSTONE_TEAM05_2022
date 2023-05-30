@@ -65,7 +65,7 @@ namespace CAP_TEAM05_2022.Controllers
                     }
                     else
                     {
-                        customer.code = $"MKH-{DateTime.Now:ddMMyyHHss}";
+                        customer.code = $"MKH-{DateTime.Now:ddMMyyHHmmssfff}";
                         customer.created_by = User.Identity.GetUserId();
                         customer.created_at = DateTime.Now;
                         customer.status = Constants.SHOW_STATUS;
@@ -149,7 +149,7 @@ namespace CAP_TEAM05_2022.Controllers
 
                     customer customer = new customer();
                     customer.name = customer_name;
-                    customer.code = $"MKH-{DateTime.Now:ddMMyyHHss}";
+                    customer.code = $"MKH-{DateTime.Now:ddMMyyHHmmssfff}";
                     customer.phone = customer_phone;
                     if (!String.IsNullOrWhiteSpace(customer_email))
                     {
@@ -402,7 +402,7 @@ namespace CAP_TEAM05_2022.Controllers
 
                     customer customer = new customer();
                     customer.name = customer_name;
-                    customer.code = $"MKH-{DateTime.Now:ddMMyyHHss}";
+                    customer.code = $"MKH-{DateTime.Now:ddMMyyHHmmssfff}";
                     customer.phone = customer_phone;
                     if (!String.IsNullOrWhiteSpace(customer_email))
                     {

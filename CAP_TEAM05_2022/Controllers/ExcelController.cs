@@ -484,7 +484,7 @@ namespace CAP_TEAM05_2022.Controllers
                                             product.sell_price_swap = (decimal)(sell_price_product / quantity_swap_product);
                                             product.sell_price_debt_swap = (decimal)(sell_debt_product / quantity_swap_product);
                                             product.created_at = curentDate;
-                                            product.code = $"MSP-{DateTime.Now:ddMMyyHHss}";
+                                            product.code = $"MSP-{DateTime.Now:ddMMyyHHmmssfff}";
                                             product.name_category = name_category;
                                             product.name_group = name_supplier;
                                             db.products.Add(product);
@@ -506,7 +506,7 @@ namespace CAP_TEAM05_2022.Controllers
                                             db.price_product.Add(price_Product_swap);
 
                                             inventory_order inventory_Order = new inventory_order();
-                                            inventory_Order.code = $"MPN-{DateTime.Now:ddMMyyHHss}";
+                                            inventory_Order.code = $"MPN-{DateTime.Now:ddMMyyHHmmssfff}";
                                             inventory_Order.create_at = curentDate;
                                             inventory_Order.update_at = curentDate;
                                             inventory_Order.create_by = User.Identity.GetUserId();
@@ -813,7 +813,7 @@ namespace CAP_TEAM05_2022.Controllers
                     category.status = 1;
                     category.created_by = User.Identity.GetUserId();
                     category.created_at = currentDate;
-                    category.code = $"MDM-{DateTime.Now:ddMMyyHHss}";
+                    category.code = $"MDM-{DateTime.Now:ddMMyyHHmmssfff}";
                     db.categories.Add(category);
                 }
 
@@ -827,7 +827,7 @@ namespace CAP_TEAM05_2022.Controllers
                     supplier.status = Constants.SHOW_STATUS;
                     supplier.created_by = User.Identity.GetUserId();
                     supplier.created_at = currentDate;
-                    supplier.code = $"MKH-{DateTime.Now:ddMMyyHHss}";
+                    supplier.code = $"MKH-{DateTime.Now:ddMMyyHHmmssfff}";
                     supplier.note = "Tạo do nhập file excel";
                     db.customers.Add(supplier);
                 }
@@ -846,7 +846,7 @@ namespace CAP_TEAM05_2022.Controllers
                 product.quantity = import.quantity;
                 product.quantity_swap = import.quantity_swap;
                 product.created_at = currentDate;
-                product.code = $"MSP-{DateTime.Now:ddMMyyHHss}";
+                product.code = $"MSP-{DateTime.Now:ddMMyyHHmmssfff}";
                 product.sell_price_swap = product.sell_price / product.quantity_swap;
                 product.sell_price_debt_swap = product.sell_price_debt / product.quantity_swap;
                 db.products.Add(product);
@@ -868,7 +868,7 @@ namespace CAP_TEAM05_2022.Controllers
                 db.price_product.Add(price_Product_swap);
 
                 inventory_order inventory_Order = new inventory_order();
-                inventory_Order.code = $"MPN-{DateTime.Now:ddMMyyHHss}";
+                inventory_Order.code = $"MPN-{DateTime.Now:ddMMyyHHmmssfff}";
                 inventory_Order.create_at = currentDate;
                 inventory_Order.update_at = currentDate;
                 inventory_Order.create_by = User.Identity.GetUserId();
@@ -950,7 +950,7 @@ namespace CAP_TEAM05_2022.Controllers
                 db.Entry(product).State = EntityState.Modified;
 
                 inventory_order inventory_Order = new inventory_order();
-                inventory_Order.code = $"MPN-{DateTime.Now:ddMMyyHHss}";
+                inventory_Order.code = $"MPN-{DateTime.Now:ddMMyyHHmmssfff}";
                 inventory_Order.create_at = currentDate;
                 inventory_Order.update_at = currentDate;
                 inventory_Order.create_by = User.Identity.GetUserId();
@@ -1005,7 +1005,7 @@ namespace CAP_TEAM05_2022.Controllers
                         category.status = 1;
                         category.created_by = User.Identity.GetUserId();
                         category.created_at = currentDate;
-                        category.code = $"MDM-{DateTime.Now:ddMMyyHHss}";
+                        category.code = $"MDM-{DateTime.Now:ddMMyyHHmmssfff}";
                         db.categories.Add(category);
                     }
                     customer supplier = new customer();
@@ -1018,7 +1018,7 @@ namespace CAP_TEAM05_2022.Controllers
                         supplier.status = Constants.SHOW_STATUS;
                         supplier.created_by = User.Identity.GetUserId();
                         supplier.created_at = currentDate;
-                        supplier.code = $"MKH-{DateTime.Now:ddMMyyHHss}";
+                        supplier.code = $"MKH-{DateTime.Now:ddMMyyHHmmssfff}";
                         supplier.note = "Tạo do nhập file excel";
                         db.customers.Add(supplier);
                     }
@@ -1036,7 +1036,7 @@ namespace CAP_TEAM05_2022.Controllers
                     product.quantity = item.quantity;
                     product.quantity_swap = item.quantity_swap;
                     product.created_at = currentDate;
-                    product.code = $"MSP-{DateTime.Now:ddMMyyHHss}";
+                    product.code = $"MSP-{DateTime.Now:ddMMyyHHmmssfff}";
                     product.sell_price_swap = product.sell_price / product.quantity_swap;
                     product.sell_price_debt_swap = product.sell_price_debt / product.quantity_swap;
                     db.products.Add(product);
@@ -1058,7 +1058,7 @@ namespace CAP_TEAM05_2022.Controllers
                     db.price_product.Add(price_Product_swap);
 
                     inventory_order inventory_Order = new inventory_order();
-                    inventory_Order.code = $"MPN-{DateTime.Now:ddMMyyHHss}";
+                    inventory_Order.code = $"MPN-{DateTime.Now:ddMMyyHHmmssfff}";
                     inventory_Order.create_at = currentDate;
                     inventory_Order.update_at = currentDate;
                     inventory_Order.create_by = User.Identity.GetUserId();
@@ -1144,7 +1144,7 @@ namespace CAP_TEAM05_2022.Controllers
                     db.Entry(product).State = EntityState.Modified;
 
                     inventory_order inventory_Order = new inventory_order();
-                    inventory_Order.code = $"MPN-{DateTime.Now:ddMMyyHHss}";
+                    inventory_Order.code = $"MPN-{DateTime.Now:ddMMyyHHmmssfff}";
                     inventory_Order.create_at = currentDate;
                     inventory_Order.update_at = currentDate;
                     inventory_Order.create_by = User.Identity.GetUserId();

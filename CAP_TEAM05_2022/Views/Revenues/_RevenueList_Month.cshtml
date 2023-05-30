@@ -93,33 +93,65 @@
     </div>
     <div class="car-body border-report">
         <div class="row">
-            <div class="col-md-9">
-            </div>
-            <div class="col-md-3">
+            <div class="col-md-10">
                 <div class="form-group">
                     <p class="mb-0">
-                        Tổng tiền bán được: <span><b>@Model.Sum(x => x.total).ToString("N0")VNĐ</b></span>
-                    </p>
-                </div>
-                <div class="form-group">
-                    <p class="mb-0">
-
-                        Tổng tiền nhập hàng: <span><b>@tongNhap.ToString("N0")VNĐ</b></span>
-                    </p>
-                </div>
-                <div class="form-group">
-                    <p class="mb-0">
-                        Còn nợ: <span class="text-danger"><b>@sumDebt.ToString("N0") VNĐ</b></span>
-                    </p>
-                </div>
-                <div class="form-group">
-                    <p class="mb-0">
-
-                        Lợi nhuận: <span class="text-@((Model.Sum(x => x.total) - tongNhap) >= 0 ? "success" : "danger")"><b>@((Model.Sum(x => x.total) - tongNhap).ToString("N0"))VNĐ</b></span>
+                        <b class="float-right">Tổng tiền bán được: </b>
                     </p>
                 </div>
             </div>
+            <div class="col-md-2 ">
+                <div class="form-group">
+                    <p class="mb-0">
+                        <span><b>@Model.Sum(x => x.total).ToString("N0") VNĐ</b></span>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <div class="form-group">
+                    <p class="mb-0">
+                        <b class="float-right"> Tổng tiền nhập hàng: </b>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-2 ">
+                <div class="form-group">
+                    <p class="mb-0">
+                        <span><b>@tongNhap.ToString("N0") VNĐ</b></span>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <div class="form-group">
+                    <p class="mb-0">
+                        <b class="float-right">  Còn nợ: </b>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-2 ">
+                <div class="form-group">
+                    <p class="mb-0">
+                        <span class="text-danger"><b>@sumDebt.ToString("N0") VNĐ</b></span>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <div class="form-group">
+                    <p class="mb-0">
+                        <b class="float-right">   Lợi nhuận: </b>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-2 ">
+                <div class="form-group">
+                    <p class="mb-0">
+                        <span class="text-@((Model.Sum(x => x.total) - tongNhap) >= 0 ? "success" : "danger")"><b>@((Model.Sum(x => x.total) - tongNhap).ToString("N0")) VNĐ</b></span>
+                    </p>
+                </div>
+            </div>
+
         </div>
+        
     </div>
 }
 else

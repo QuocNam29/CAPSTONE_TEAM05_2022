@@ -163,7 +163,7 @@ namespace CAP_TEAM05_2022.Controllers
                         db.Entry(product).State = EntityState.Modified;
                         i++;
                     }
-                    inventory_order.code = $"MPN-{DateTime.Now:ddMMyyHHss}";
+                    inventory_order.code = $"MPN-{DateTime.Now:ddMMyyHHmmssfff}";
                     inventory_order.create_at = currentDate;
                     inventory_order.update_at = currentDate;
                     inventory_order.create_by = User.Identity.GetUserId();
