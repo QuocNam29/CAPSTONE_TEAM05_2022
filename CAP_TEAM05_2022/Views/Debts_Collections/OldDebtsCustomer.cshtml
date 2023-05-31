@@ -36,14 +36,12 @@
                 <div id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" class="tab-pane fade active show">
                     <div class="card">
                         <div class="card-header">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <h4>Nợ cũ với khách hàng</h4>
-                                </div>
+                            <div class="card-wrap-header">
+                                <h4 class="card-header-title">Nợ cũ với khách hàng</h4>
 
-                                <div class="col-md-4">
-                                    <button class="btn btn-info mb-3" onclick="createOldDebt()">Tạo nợ cũ </button>
-                                    <a class="btn btn-primary mb-3" href="@Url.Action("CreateOldDebtCustomer","Debts_Collections")">Tạo nợ cũ (có chi tiết) </a>
+                                <div class="card-header-btn">
+                                    <button class="btn btn-info" onclick="createOldDebt()">Tạo nợ cũ </button>
+                                    <a class="btn btn-primary" href="@Url.Action("CreateOldDebtCustomer","Debts_Collections")">Tạo nợ cũ (có chi tiết) </a>
                                 </div>
                             </div>
                         </div>

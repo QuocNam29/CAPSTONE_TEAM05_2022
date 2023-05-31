@@ -476,6 +476,7 @@
     <Content Include="Template\assets\css\plugins\bootstrap.min.css" />
     <Content Include="Template\assets\css\plugins\perfect-scrollbar.css" />
     <Content Include="Template\assets\css\plugins\prism-coy.css" />
+    <Content Include="Template\assets\css\responsive.css" />
     <Content Include="Template\assets\css\style.css" />
     <Content Include="Template\assets\fonts\fa-brands-400.svg" />
     <Content Include="Template\assets\fonts\fa-regular-400.svg" />

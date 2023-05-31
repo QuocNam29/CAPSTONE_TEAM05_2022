@@ -38,7 +38,7 @@ namespace CAP_TEAM05_2022.Models
         [Required(ErrorMessage = "Vui lòng nhập số điện thoại !")]
         [Display(Name = "Phone Number")]
         [DataType(DataType.PhoneNumber)]
-        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Số điện thoạn không hợp lệ")]
+        /*[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Số điện thoại không hợp lệ")]*/
         public string phone { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập địa chỉ !")]

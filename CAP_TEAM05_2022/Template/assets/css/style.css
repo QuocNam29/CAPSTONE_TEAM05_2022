@@ -2710,6 +2710,7 @@ textarea.form-control {
     padding: 0.625rem 1.1875rem;
     font-size: 0.875rem;
     line-height: 1.5;
+    min-height: 43px;
     border-radius: 2px;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
@@ -3325,6 +3326,17 @@ input[type="button"].btn-block {
     .fade {
         transition: none;
     }
+}
+
+.card-header-title {
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.card-wrap-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .fade:not(.show) {
@@ -30473,8 +30485,20 @@ body {
 
 }
 
+.m-header .b-brand {
+    width: 145px;
+    overflow: hidden;
+}
+
+.mob-toggler i {
+    color: #fff;
+}
+
+
+
 .logo {
     width: 100%;
+    object-fit: cover;
 }
 
 .card__header {

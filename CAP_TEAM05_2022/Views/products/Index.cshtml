@@ -44,7 +44,7 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-md-6 mb-3">
+                                <div class="col-12 mb-3 nav-btn">
                                     <input type="text" hidden id="URLExportExcel" value="@Url.Action("ExportExcel", "Excel")" />
                                     <button type="button" class="btn btn-secondary" id="btnExportExcel">Xuất tệp Excel</button>
                                     <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#ImportModal">Nhập tệp Excel</button>
@@ -53,15 +53,15 @@
                                 
                             </div>
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-12 nav-control-item">
                                     @Html.DropDownList("filter_Category", (SelectList)ViewBag.CategoryId, "---- Xem tất cả danh mục sản phẩm ----", new { @class = "form-control custom-select", @id = "filter_Category" })
 
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-12 nav-control-item">
                                     @Html.DropDownList("filter_Supplier", (SelectList)ViewBag.SupplierId, "---- Xem tất cả công ty cung cấp ----", new { @class = "form-control custom-select", @id = "filter_Supplier" })
 
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-12 nav-control-item">
                                     <button type="button" class="btn btn-primary float-right ml-2" @* data-toggle="modal" data-target="#AddProduct"*@ onclick="createProduct(null, @Constants.CREATE_PRODUCT)">Tạo mới</button>
 
                                 </div>

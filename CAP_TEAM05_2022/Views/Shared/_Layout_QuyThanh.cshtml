@@ -21,6 +21,7 @@
     <link href="~/Template/assets/css/plugins/animate.min.css" rel="stylesheet" />
     <link href="~/Content/jquery-ui.css" rel="stylesheet" />
     <link href="~/Template/assets/css/flatpickr.css" rel="stylesheet" />
+    <link href="~/Template/assets/css/responsive.css" rel="stylesheet" />
     @RenderSection("style", required: false)
 
 </head>
@@ -39,7 +40,7 @@
                     <div class="main-menu-header">                 
                             <img src="@Url.Content("~/Template/assets/images/default-avatar.png")" alt="User-Profile-Image" class="img-radius">
                         <div class="user-details">
-                            <span>@(Session["UserName"]!= null ? Session["UserName"].ToString() : User.Identity.Name)</span>
+                            <span class="user-details-info">@(Session["UserName"]!= null ? Session["UserName"].ToString() : User.Identity.Name)</span>
                             <div id="more-details">
                                 @(User.IsInRole(Constants.ADMIN_ROLE) ? Constants.ADMIN_ROLE : Constants.STAFF_ROLE)
                             </div>
@@ -317,7 +318,7 @@
                     <img src="~/Template/assets/images/logo-icon.png" alt="" class="logo-thumb">
                 </a>-->
             <a href="@Url.Action("Index","Home")" class="b-brand">
-                <img src="@Url.Content("~/Template/assets/images/logoTT.png")" alt="" class="logo" style="width: 90%;padding: 7px;">
+                <img src="@Url.Content("~/Template/assets/images/logoTT.png")" alt="" class="logo">
             </a>
 
             <a href="#!" class="mob-toggler">
