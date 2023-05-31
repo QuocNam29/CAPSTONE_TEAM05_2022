@@ -43,6 +43,7 @@
                                                     <th class="text-center">Ngày giao dịch</th>
                                                     <th class="text-center">Tổng số hóa đơn</th>
                                                     <th class="text-center">Tổng tiền</th>
+                                                    <th class="text-center">Lợi nhuận</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -50,20 +51,47 @@
                                                 {
 
                                                     no1++;
-                                                    <tr class="click-hover">
-                                                        <td class="text-center">
-                                                            @no1
-                                                        </td>
-                                                        <td class="text-center">
-                                                            @String.Format("{0:dd-MM-yyyy}", item.Key)
-                                                        </td>
-                                                        <td class="text-center">
-                                                            @Model.Where(x => x.created_at.Value.Date == item.Key).Count()
-                                                        </td>
-                                                        <td class="text-center">
-                                                            @Model.Where(x => x.created_at.Value.Date == item.Key).Sum(x => x.total).ToString("N0") VNĐ
-                                                        </td>
-                                                    </tr>
+                                                <tr class="click-hover">
+                                                    <td class="text-center">
+                                                        @no1
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @String.Format("{0:dd-MM-yyyy}", item.Key)
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @Model.Where(x => x.created_at.Value.Date == item.Key).Count()
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @Model.Where(x => x.created_at.Value.Date == item.Key).Sum(x => x.total).ToString("N0") VNĐ
+                                                    </td>
+                                                    <td class="text-center">
+
+                                                        @{
+                                                            decimal nhapHang = 0;
+                                                            foreach (var item1 in Model.Where(x => x.created_at.Value.Date == item.Key))
+                                                            {
+                                                                foreach (var item2 in item1.sale_details)
+                                                                {
+                                                                    foreach (var item3 in item2.revenues)
+                                                                    {
+                                                                        if (item3.unit == item3.import_inventory.product.unit)
+                                                                        {
+                                                                            nhapHang += item3.quantity * item3.import_inventory.price_import;
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            nhapHang += item3.quantity * (decimal)(item3.import_inventory.price_import / item3.import_inventory.product.quantity_swap);
+
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+
+                                                        @((Model.Where(x => x.created_at.Value.Date == item.Key).Sum(x => x.total) - nhapHang).ToString("N0")) VNĐ
+
+                                                    </td>
+                                                </tr>
                                                 }
                                                 @foreach (var item in Model)
                                                 {

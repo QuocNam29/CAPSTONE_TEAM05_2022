@@ -72,30 +72,6 @@ $(document).ready(function () {
             }
 
         })*/
-       
-//-------------------------Làm mới cart--------------------------------
-       
-        $('#Cancel_Cart').on('click', function () {
-            $('#product_code').val('');
-            $('#product_unit').val('');
-            $('#product_price').val('');
-            $('#product_price_debt').val('');
-            $('#product_name').val('');
-            $('#cart_note').val('');
-            $('#product_quantity').val(1);
-            SalesCalculation();
-            document.querySelector("#customer_name").disabled = false;
-            document.querySelector("#product_name").disabled = false;
-            document.querySelector("#sum_price").disabled = true;
-            document.querySelector("#sum_price_debt").disabled = true;
-
-            $("#submit_addCart").show();
-            $("#refresh_cart").show();
-            $("#submit_updateCart").hide();
-            $("#Cancel_Cart").hide();
-            form.classList.remove('was-validated');
-        })
-       
 
     }, false);
 })
@@ -537,17 +513,7 @@ $('#btnExportExcel_Inventory').click(function () {
         var URLExportExcel1 = URLExportExcel + "?date_start=" + date_start + "&date_end=" + date_end;
         window.location.href = URLExportExcel1;
 })
-//-----------------------Export Excel Revenue-----------------------------------------
-
-$('#btnExportExcel_profit').click(function () { 
-    $('#URLExportExcel_profit')
-        .keypress(function () {
-            URLExportExcel_profit = $(this).val();
-        })
-        .keypress();
-    window.location.href = URLExportExcel_profit;
-})
-//----------------------FILTER INVENTORY PRODUCT------------------------------------------------
+//-----------------FILTER INVENTORY PRODUCT------------------------------------------------
 $('#URLInventoryList')
     .keypress(function () {
         URLInventoryList = $(this).val();
@@ -1332,6 +1298,9 @@ $('.ReturnForm').submit(function (e) {
 
                 if (data.status) {
                     // Refresh table data
+                    var date_start = $("#sale_DateStart").val();
+                    var date_end = $("#sale_DateEnd").val();
+                        GetList_OrderList(date_start, date_end);
                     Swal.fire('Thành công !', data.message, 'success');
                     form[0].reset();
                     form.removeClass('was-validated');

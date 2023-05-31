@@ -301,13 +301,15 @@
                             $("#payment_btn").show();
                             LoadDataProduct($('#product_id').val());
                             if ($('#actionCart').val() == @Constants.UPDATE_PRODUCT_TO_CART) {
-                                Swal.fire('Thành công !', 'Cập nhật giỏ hàng thành công !', 'success');
                                 $('#product_code').val('');
                                 $('#product_unit').val('');
                                 $('#product_price').val('');
                                 $('#product_price_debt').val('');
                                 $('#product_name').val('');
+                                $('#cart_note').val('');
+                                $('#product_quantity').val(1);
                                 SalesCalculation();
+                                Swal.fire('Thành công !', 'Cập nhật giỏ hàng thành công !', 'success');
                             } else {
                                 Swal.fire('Thành công !', 'Thêm giỏ hàng thành công !', 'success');
                             }
@@ -523,5 +525,25 @@
                 }
             });
         }
+        $('#Cancel_Cart').on('click', function () {
+            $('#product_code').val('');
+            $('#product_unit').val('');
+            $('#product_price').val('');
+            $('#product_price_debt').val('');
+            $('#product_name').val('');
+            $('#cart_note').val('');
+            $('#product_quantity').val(1);
+            SalesCalculation();
+            document.querySelector("#customer_name").disabled = false;
+            document.querySelector("#product_name").disabled = false;
+            document.querySelector("#sum_price").disabled = true;
+            document.querySelector("#sum_price_debt").disabled = true;
+
+            $("#submit_addCart").show();
+            $("#refresh_cart").show();
+            $("#submit_updateCart").hide();
+            $("#Cancel_Cart").hide();
+            form.classList.remove('was-validated');
+        })
     </script>
 }

@@ -177,15 +177,16 @@ namespace CAP_TEAM05_2022.Controllers
                 {
                     prepayment = decimal.Parse(payment.Replace(",", "").Replace(".", ""));
                 }
-
                 var cart = db.carts.Where(c => c.customer_id == createSale.customer_id && c.user_id == userID).ToList();
-                var latestOrder = db.sales.OrderByDescending(x=> x.id).FirstOrDefault(s=> s.created_at.Value.Day == currentDate.Day
-                                                    && s.created_at.Value.Month == currentDate.Month
-                                                    && s.created_at.Value.Year == currentDate.Year
+               
+                sale sale = new sale();
+                sale.created_at = createSale.created_at != null ? createSale.created_at : currentDate;
+                var latestOrder = db.sales.OrderByDescending(x => x.id).FirstOrDefault(s => s.created_at.Value.Day == sale.created_at.Value.Day
+                                                    && s.created_at.Value.Month == sale.created_at.Value.Month
+                                                    && s.created_at.Value.Year == sale.created_at.Value.Year
                                                     && !s.is_old_debt);
                 int OrderId = latestOrder != null ? int.Parse(latestOrder.code.Split('-').Last()) + 1 : 1;
-                sale sale = new sale();
-                sale.code = $"MDH-{DateTime.Now:ddMMyy}-{OrderId:D3}";
+                sale.code = $"MDH-{sale.created_at:ddMMyy}-{OrderId:D3}";
                 sale.customer_id = createSale.customer_id;
                 sale.method = createSale.method;
                 sale.prepayment = createSale.method == Constants.DEBT_ORDER ? prepayment : 0;
@@ -203,7 +204,6 @@ namespace CAP_TEAM05_2022.Controllers
                 sale.note = createSale.note;
                 sale.status = Constants.SHOW_STATUS;
                 sale.created_by = User.Identity.GetUserId();
-                sale.created_at = createSale.created_at != null ? createSale.created_at : currentDate;
                 if (sale.prepayment > sale.total)
                 {
                     status = false;
