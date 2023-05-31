@@ -57,7 +57,7 @@ namespace CAP_TEAM05_2022.Controllers
                         group.created_by = User.Identity.GetUserId();
                         group.created_at = DateTime.Now;
                         group.slug = group.name;
-                        group.code = $"M-{DateTime.Now:ddMMyyHHmmssfff}";
+                        group.code = $"MNH-{DateTime.Now:ddMMyyHHmmssfff}";
                         db.groups.Add(group);
                         db.SaveChanges();
                         message = "Tạo danh mục thành công";

@@ -46,10 +46,13 @@ namespace CAP_TEAM05_2022.Controllers
                 }
                 else
                 {
-
+                    var latestReturnSupplier = db.return_supplier.OrderByDescending(x => x.id).FirstOrDefault(s => s.created_at.Day == create_at.Day
+                                                    && s.created_at.Month == create_at.Month
+                                                    && s.created_at.Year == create_at.Year );
+                    int ReturnSupplierId = latestReturnSupplier != null ? int.Parse(latestReturnSupplier.code.Split('-').Last()) + 1 : 1;
                     return_supplier return_Supplier = new return_supplier();
                     return_Supplier.inventory_id = id_inventory;
-                    return_Supplier.code = $"MTH-{DateTime.Now:ddMMyyHHmmssfff}";
+                    return_Supplier.code = $"MTH-{DateTime.Now:ddMMyy}-{ReturnSupplierId:D3}";
                     return_Supplier.quantity = quantity;
                     return_Supplier.note = note;
                     return_Supplier.cost_difference = inventory.price_import * quantity;

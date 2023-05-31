@@ -46,11 +46,16 @@ namespace CAP_TEAM05_2022.Controllers
                 decimal price_PCurrent1 = decimal.Parse(price_PCurrent.Replace(",", "").Replace(".", ""));
                 if (return_option == Constants.RETURN_OPTION)
                 {
+                    var latestReturnSale = db.return_sale.OrderByDescending(x => x.id).FirstOrDefault(s => s.create_at.Day == created_at.Day
+                                                     && s.create_at.Month == created_at.Month
+                                                     && s.create_at.Year == created_at.Year);
+                    int ReturnSaleId = latestReturnSale != null ? int.Parse(latestReturnSale.code.Split('-').Last()) + 1 : 1;
+
                     //Tạo đơn đổi trả sản phẩm
                     return_sale return_Sale = new return_sale();
                     return_Sale.saleDetails_id = sale_Details.id;
                     return_Sale.method = return_option;
-                    return_Sale.code = $"MTH-{DateTime.Now:ddMMyyHHmmssfff}";
+                    return_Sale.code = $"MTH-{DateTime.Now:ddMMyy}-{ReturnSaleId:D3}";
                     return_Sale.create_at = created_at;
                     return_Sale.difference = price_PCurrent1 * quality_OD;
                     db.return_sale.Add(return_Sale);
@@ -495,10 +500,17 @@ namespace CAP_TEAM05_2022.Controllers
                     db.SaveChanges();
                     decimal total_return = 0;
                     total_return = (decimal)(sale_Details_return.price * input_qualityProduct);
+
+                    var latestReturnSale = db.return_sale.OrderByDescending(x => x.id).FirstOrDefault(s => s.create_at.Day == created_at.Day
+                                                    && s.create_at.Month == created_at.Month
+                                                    && s.create_at.Year == created_at.Year);
+                    int ReturnSaleId = latestReturnSale != null ? int.Parse(latestReturnSale.code.Split('-').Last()) + 1 : 1;
+
+                    //Tạo đơn đổi trả sản phẩm
                     return_sale return_Sale = new return_sale();
                     return_Sale.saleDetails_id = sale_Details.id;
                     return_Sale.method = return_option;
-                    return_Sale.code = $"MDH-{DateTime.Now:ddMMyyHHmmssfff}"; ;
+                    return_Sale.code = $"MTH-{DateTime.Now:ddMMyy}-{ReturnSaleId:D3}";            
                     return_Sale.create_at = created_at;
                     return_Sale.difference = (price_PCurrent1 * quality_OD) - total_return;
                     db.return_sale.Add(return_Sale);

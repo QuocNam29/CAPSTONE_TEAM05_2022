@@ -134,8 +134,13 @@ namespace CAP_TEAM05_2022.Controllers
                             price_Product_swap.unit = product.unit_swap;
                             db.price_product.Add(price_Product_swap);
 
+                            var latestInventoryOrder = db.inventory_order.OrderByDescending(x => x.id).FirstOrDefault(s => s.create_at.Day == currentDate.Day
+                                                                        && s.create_at.Month == currentDate.Month
+                                                                        && s.create_at.Year == currentDate.Year
+                                                                        && !s.is_old_debt);
+                            int InventoryOrderId = latestInventoryOrder != null ? int.Parse(latestInventoryOrder.code.Split('-').Last()) + 1 : 1;
                             inventory_order inventory_Order = new inventory_order();
-                            inventory_Order.code = $"MPN-{DateTime.Now:ddMMyyHHmmssfff}";
+                            inventory_Order.code = $"MPN-{DateTime.Now:ddMMyy}-{InventoryOrderId:D3}";
                             inventory_Order.create_at = currentDate;
                             inventory_Order.update_at = currentDate;
                             inventory_Order.create_by = User.Identity.GetUserId();

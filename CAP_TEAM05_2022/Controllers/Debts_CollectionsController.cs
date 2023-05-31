@@ -84,7 +84,13 @@ namespace CAP_TEAM05_2022.Controllers
                     decimal payment = decimal.Parse(paymentPrice.Replace(",", "").Replace(".", ""));
                     decimal total = decimal.Parse(debtPrice.Replace(",", "").Replace(".", ""));
 
-                    inventory_order.code = $"MNC-{DateTime.Now:ddMMyyHHmmssfff}";
+                    var latestInventoryOrder = db.inventory_order.OrderByDescending(x => x.id).FirstOrDefault(s => s.create_at.Day == currentDate.Day
+                        && s.create_at.Month == currentDate.Month
+                        && s.create_at.Year == currentDate.Year
+                        && s.is_old_debt);
+                    int InventoryOrderId = latestInventoryOrder != null ? int.Parse(latestInventoryOrder.code.Split('-').Last()) + 1 : 1;
+
+                    inventory_order.code = $"MNC-{DateTime.Now:ddMMyy}-{InventoryOrderId:D3}";
                     inventory_order.update_at = currentDate;
                     inventory_order.create_by = User.Identity.GetUserId();
                     inventory_order.Total = total;
@@ -176,8 +182,12 @@ namespace CAP_TEAM05_2022.Controllers
                     DateTime currentDate = DateTime.Now;
                     decimal payment = decimal.Parse(paymentPrice.Replace(",", "").Replace(".", ""));
                     decimal total = decimal.Parse(debtPrice.Replace(",", "").Replace(".", ""));
-
-                    sale.code = $"DNC-{DateTime.Now:ddMMyyHHmmssfff}";
+                    var latestOrder = db.sales.OrderByDescending(x => x.id).FirstOrDefault(s => s.created_at.Value.Day == currentDate.Day
+                                                    && s.created_at.Value.Month == currentDate.Month
+                                                    && s.created_at.Value.Year == currentDate.Year
+                                                    && s.is_old_debt);
+                    int OrderId = latestOrder != null ? int.Parse(latestOrder.code.Split('-').Last()) + 1 : 1;
+                    sale.code = $"DNC-{DateTime.Now:ddMMyy}-{OrderId:D3}";
                     sale.updated_at = currentDate;
                     sale.created_by = User.Identity.GetUserId();
                     sale.total = total;
@@ -647,8 +657,13 @@ namespace CAP_TEAM05_2022.Controllers
                     {
                         prepayment = decimal.Parse(Repayment.Replace(",", "").Replace(".", ""));
                     }
+                    var latestOrder = db.sales.OrderByDescending(x => x.id).FirstOrDefault(s => s.created_at.Value.Day == currentDate.Day
+                                                     && s.created_at.Value.Month == currentDate.Month
+                                                     && s.created_at.Value.Year == currentDate.Year
+                                                     && s.is_old_debt);
+                    int OrderId = latestOrder != null ? int.Parse(latestOrder.code.Split('-').Last()) + 1 : 1;
                     sale sale = new sale();
-                    sale.code = $"DNC-{DateTime.Now:ddMMyyHHmmssfff}";
+                    sale.code = $"DNC-{DateTime.Now:ddMMyy}-{OrderId:D3}";
                     sale.customer_id = createSale.customer_id;
                     sale.method = Constants.DEBT_ORDER;
                     sale.prepayment = prepayment;

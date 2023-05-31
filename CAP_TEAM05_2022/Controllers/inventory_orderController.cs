@@ -163,7 +163,13 @@ namespace CAP_TEAM05_2022.Controllers
                         db.Entry(product).State = EntityState.Modified;
                         i++;
                     }
-                    inventory_order.code = $"MPN-{DateTime.Now:ddMMyyHHmmssfff}";
+                    var latestInventoryOrder = db.inventory_order.OrderByDescending(x => x.id).FirstOrDefault(s => s.create_at.Day == currentDate.Day
+                         && s.create_at.Month == currentDate.Month
+                         && s.create_at.Year == currentDate.Year
+                         && !s.is_old_debt);
+                    int InventoryOrderId = latestInventoryOrder != null ? int.Parse(latestInventoryOrder.code.Split('-').Last()) + 1 : 1;
+
+                    inventory_order.code = $"MPN-{DateTime.Now:ddMMyy}-{InventoryOrderId:D3}";
                     inventory_order.create_at = currentDate;
                     inventory_order.update_at = currentDate;
                     inventory_order.create_by = User.Identity.GetUserId();

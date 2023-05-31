@@ -504,9 +504,13 @@ namespace CAP_TEAM05_2022.Controllers
                                             price_Product_swap.updated_at = curentDate;
                                             price_Product_swap.unit = product.unit_swap;
                                             db.price_product.Add(price_Product_swap);
-
+                                            DateTime currentDate = DateTime.Now;
+                                            var latestInventoryOrder = db.inventory_order.OrderByDescending(x => x.id).FirstOrDefault(s => s.create_at.Day == currentDate.Day
+                                                     && s.create_at.Month == currentDate.Month
+                                                     && s.create_at.Year == currentDate.Year);
+                                            int InventoryOrderId = latestInventoryOrder != null ? int.Parse(latestInventoryOrder.code.Split('-').Last()) + 1 : 1;
                                             inventory_order inventory_Order = new inventory_order();
-                                            inventory_Order.code = $"MPN-{DateTime.Now:ddMMyyHHmmssfff}";
+                                            inventory_Order.code = $"MPN-{DateTime.Now:ddMMyy}-{InventoryOrderId:D3}";
                                             inventory_Order.create_at = curentDate;
                                             inventory_Order.update_at = curentDate;
                                             inventory_Order.create_by = User.Identity.GetUserId();
@@ -827,7 +831,7 @@ namespace CAP_TEAM05_2022.Controllers
                     supplier.status = Constants.SHOW_STATUS;
                     supplier.created_by = User.Identity.GetUserId();
                     supplier.created_at = currentDate;
-                    supplier.code = $"MKH-{DateTime.Now:ddMMyyHHmmssfff}";
+                    supplier.code = $"MCT-{DateTime.Now:ddMMyyHHmmssfff}";
                     supplier.note = "Tạo do nhập file excel";
                     db.customers.Add(supplier);
                 }
@@ -867,8 +871,12 @@ namespace CAP_TEAM05_2022.Controllers
                 price_Product_swap.unit = product.unit_swap;
                 db.price_product.Add(price_Product_swap);
 
+                var latestInventoryOrder = db.inventory_order.OrderByDescending(x => x.id).FirstOrDefault(s => s.create_at.Day == currentDate.Day
+                         && s.create_at.Month == currentDate.Month
+                         && s.create_at.Year == currentDate.Year);
+                int InventoryOrderId = latestInventoryOrder != null ? int.Parse(latestInventoryOrder.code.Split('-').Last()) + 1 : 1;
                 inventory_order inventory_Order = new inventory_order();
-                inventory_Order.code = $"MPN-{DateTime.Now:ddMMyyHHmmssfff}";
+                inventory_Order.code = $"MPN-{DateTime.Now:ddMMyy}-{InventoryOrderId:D3}";
                 inventory_Order.create_at = currentDate;
                 inventory_Order.update_at = currentDate;
                 inventory_Order.create_by = User.Identity.GetUserId();
@@ -949,8 +957,12 @@ namespace CAP_TEAM05_2022.Controllers
                 product.sell_price_debt_swap = import.sell_price_debt_swap;
                 db.Entry(product).State = EntityState.Modified;
 
+                var latestInventoryOrder = db.inventory_order.OrderByDescending(x => x.id).FirstOrDefault(s => s.create_at.Day == currentDate.Day
+                         && s.create_at.Month == currentDate.Month
+                         && s.create_at.Year == currentDate.Year);
+                int InventoryOrderId = latestInventoryOrder != null ? int.Parse(latestInventoryOrder.code.Split('-').Last()) + 1 : 1;
                 inventory_order inventory_Order = new inventory_order();
-                inventory_Order.code = $"MPN-{DateTime.Now:ddMMyyHHmmssfff}";
+                inventory_Order.code = $"MPN-{DateTime.Now:ddMMyy}-{InventoryOrderId:D3}";
                 inventory_Order.create_at = currentDate;
                 inventory_Order.update_at = currentDate;
                 inventory_Order.create_by = User.Identity.GetUserId();
@@ -1018,7 +1030,7 @@ namespace CAP_TEAM05_2022.Controllers
                         supplier.status = Constants.SHOW_STATUS;
                         supplier.created_by = User.Identity.GetUserId();
                         supplier.created_at = currentDate;
-                        supplier.code = $"MKH-{DateTime.Now:ddMMyyHHmmssfff}";
+                        supplier.code = $"MCT-{DateTime.Now:ddMMyyHHmmssfff}";
                         supplier.note = "Tạo do nhập file excel";
                         db.customers.Add(supplier);
                     }
@@ -1057,8 +1069,12 @@ namespace CAP_TEAM05_2022.Controllers
                     price_Product_swap.unit = product.unit_swap;
                     db.price_product.Add(price_Product_swap);
 
+                    var latestInventoryOrder = db.inventory_order.OrderByDescending(x => x.id).FirstOrDefault(s => s.create_at.Day == currentDate.Day
+                             && s.create_at.Month == currentDate.Month
+                             && s.create_at.Year == currentDate.Year);
+                    int InventoryOrderId = latestInventoryOrder != null ? int.Parse(latestInventoryOrder.code.Split('-').Last()) + 1 : 1;
                     inventory_order inventory_Order = new inventory_order();
-                    inventory_Order.code = $"MPN-{DateTime.Now:ddMMyyHHmmssfff}";
+                    inventory_Order.code = $"MPN-{DateTime.Now:ddMMyy}-{InventoryOrderId:D3}";
                     inventory_Order.create_at = currentDate;
                     inventory_Order.update_at = currentDate;
                     inventory_Order.create_by = User.Identity.GetUserId();
@@ -1143,8 +1159,12 @@ namespace CAP_TEAM05_2022.Controllers
                     product.sell_price_debt_swap = item.sell_price_debt_swap;
                     db.Entry(product).State = EntityState.Modified;
 
+                    var latestInventoryOrder = db.inventory_order.OrderByDescending(x => x.id).FirstOrDefault(s => s.create_at.Day == currentDate.Day
+                             && s.create_at.Month == currentDate.Month
+                             && s.create_at.Year == currentDate.Year);
+                    int InventoryOrderId = latestInventoryOrder != null ? int.Parse(latestInventoryOrder.code.Split('-').Last()) + 1 : 1;
                     inventory_order inventory_Order = new inventory_order();
-                    inventory_Order.code = $"MPN-{DateTime.Now:ddMMyyHHmmssfff}";
+                    inventory_Order.code = $"MPN-{DateTime.Now:ddMMyy}-{InventoryOrderId:D3}";
                     inventory_Order.create_at = currentDate;
                     inventory_Order.update_at = currentDate;
                     inventory_Order.create_by = User.Identity.GetUserId();
@@ -1241,7 +1261,7 @@ namespace CAP_TEAM05_2022.Controllers
 
 
             Sheet.Cells["A11"].Value = "Khách hàng";
-            Sheet.Cells["B11"].Value = "Mã hóa đơn";
+            Sheet.Cells["B11"].Value = "Mã đơn hàng";
             Sheet.Cells["C11"].Value = "Ngày giao dịch";
             Sheet.Cells["D11"].Value = "Tổng hóa đơn";
             Sheet.Cells["E11"].Value = "Thanh toán";
@@ -1355,7 +1375,7 @@ namespace CAP_TEAM05_2022.Controllers
 
 
             Sheet.Cells["A11"].Value = "Khách hàng";
-            Sheet.Cells["B11"].Value = "Mã hóa đơn";
+            Sheet.Cells["B11"].Value = "Mã đơn hàng";
             Sheet.Cells["C11"].Value = "Ngày giao dịch";
             Sheet.Cells["D11"].Value = "Tổng hóa đơn";
             Sheet.Cells["E11"].Value = "Thanh toán";

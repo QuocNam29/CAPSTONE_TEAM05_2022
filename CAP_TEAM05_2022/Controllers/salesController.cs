@@ -179,8 +179,13 @@ namespace CAP_TEAM05_2022.Controllers
                 }
 
                 var cart = db.carts.Where(c => c.customer_id == createSale.customer_id && c.user_id == userID).ToList();
+                var latestOrder = db.sales.OrderByDescending(x=> x.id).FirstOrDefault(s=> s.created_at.Value.Day == currentDate.Day
+                                                    && s.created_at.Value.Month == currentDate.Month
+                                                    && s.created_at.Value.Year == currentDate.Year
+                                                    && !s.is_old_debt);
+                int OrderId = latestOrder != null ? int.Parse(latestOrder.code.Split('-').Last()) + 1 : 1;
                 sale sale = new sale();
-                sale.code = $"MDH-{DateTime.Now:ddMMyyHHmmssfff}";
+                sale.code = $"MDH-{DateTime.Now:ddMMyy}-{OrderId:D3}";
                 sale.customer_id = createSale.customer_id;
                 sale.method = createSale.method;
                 sale.prepayment = createSale.method == Constants.DEBT_ORDER ? prepayment : 0;
