@@ -1631,34 +1631,34 @@ namespace CAP_TEAM05_2022.Controllers
             Sheet.Cells["D8:D8"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
             Sheet.Cells["D8"].Value = String.Format("{0:dd-MM-yyyy}", date_End);
 
-            Sheet.Cells["C7"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-            Sheet.Cells["C7"].Value = "Tổng tiền bán được: ";
-            Sheet.Cells["D7"].Style.Font.Bold = true;
-            Sheet.Cells["D7"].Value = sales.Sum(x => x.total).ToString("N0") + " VNĐ";
-
-            Sheet.Cells["C8"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-            Sheet.Cells["C8"].Value = "Tổng tiền nhập hàng: ";
-            Sheet.Cells["D8"].Style.Font.Bold = true;
-            Sheet.Cells["D8"].Value = tongNhap.ToString("N0") + " VNĐ";
-
             Sheet.Cells["C9"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
-            Sheet.Cells["C9"].Value = "Lợi nhuận: ";
+            Sheet.Cells["C9"].Value = "Tổng tiền bán được: ";
             Sheet.Cells["D9"].Style.Font.Bold = true;
-            Sheet.Cells["D9"].Value = (sales.Sum(x => x.total) - tongNhap).ToString("N0") + " VNĐ";
+            Sheet.Cells["D9"].Value = sales.Sum(x => x.total).ToString("N0") + " VNĐ";
+
+            Sheet.Cells["C10"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+            Sheet.Cells["C10"].Value = "Tổng tiền nhập hàng: ";
+            Sheet.Cells["D10"].Style.Font.Bold = true;
+            Sheet.Cells["D10"].Value = tongNhap.ToString("N0") + " VNĐ";
+
+            Sheet.Cells["C11"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+            Sheet.Cells["C11"].Value = "Lợi nhuận: ";
+            Sheet.Cells["D11"].Style.Font.Bold = true;
+            Sheet.Cells["D11"].Value = (sales.Sum(x => x.total) - tongNhap).ToString("N0") + " VNĐ";
 
             Sheet.Cells.Style.WrapText = true;
             Sheet.Cells["A6:H6"].Merge = true;
             Sheet.Cells["A6:H6"].Style.Font.Bold = true;
             Sheet.Cells["A6:H6"].Style.Font.Size = 16;
-            Sheet.Cells["A6"].Value = "DANH SÁCH DOANH THU";
+            Sheet.Cells["A6"].Value = "DANH SÁCH DOANH THU TỔNG HỢP";
 
             int cell = 5;
-            int rowStart = 11;
+            int rowStart = 13;
             Sheet.Cells[string.Format("A{0}", rowStart)].Value = "STT";
-            Sheet.Cells[string.Format("B{0}", rowStart)].Value = "Lợi nhuận";
+            Sheet.Cells[string.Format("B{0}", rowStart)].Value =  "Ngày giao dịch";
             Sheet.Cells[string.Format("C{0}", rowStart)].Value = "Số đơn hàng";
             Sheet.Cells[string.Format("D{0}", rowStart)].Value = "Tổng tiền";
-            Sheet.Cells[string.Format("E{0}", rowStart)].Value = "Ngày giao dịch";
+            Sheet.Cells[string.Format("E{0}", rowStart)].Value = "Lợi nhuận";
 
             int modCell = cell;
             Sheet.Cells["A:AZ"].Style.WrapText = true;
@@ -1669,7 +1669,7 @@ namespace CAP_TEAM05_2022.Controllers
             Sheet.Cells[rowStart, 1, rowStart, modCell].Style.Font.Color.SetColor(Color.Black);
 
             int no = 1;
-            int row = 12;// dòng bắt đầu ghi dữ liệu
+            int row = 14;// dòng bắt đầu ghi dữ liệu
             foreach (var item in sales.GroupBy(x => EntityFunctions.TruncateTime(x.created_at)))
             {
                 decimal nhapHang = 0;
@@ -1695,10 +1695,10 @@ namespace CAP_TEAM05_2022.Controllers
                 }
 
                 Sheet.Cells[string.Format("A{0}", row)].Value = no;
-                Sheet.Cells[string.Format("B{0}", row)].Value = (sales.Where(x => EntityFunctions.TruncateTime(x.created_at) == item.Key).Sum(x => x.total) - nhapHang).ToString("N0") + " VNĐ";
+                Sheet.Cells[string.Format("B{0}", row)].Value = String.Format("{0:dd-MM-yyyy}", item.Key);
                 Sheet.Cells[string.Format("C{0}", row)].Value = sales.Where(x => EntityFunctions.TruncateTime(x.created_at) == item.Key).Count();
                 Sheet.Cells[string.Format("D{0}", row)].Value = sales.Where(x => EntityFunctions.TruncateTime(x.created_at) == item.Key).Sum(x => x.total).ToString("N0") + " VNĐ";
-                Sheet.Cells[string.Format("E{0}", row)].Value = String.Format("{0:dd-MM-yyyy}", item.Key);
+                Sheet.Cells[string.Format("E{0}", row)].Value =  (sales.Where(x => EntityFunctions.TruncateTime(x.created_at) == item.Key).Sum(x => x.total) - nhapHang).ToString("N0") + " VNĐ";
                 row++;
                 no++;
             }

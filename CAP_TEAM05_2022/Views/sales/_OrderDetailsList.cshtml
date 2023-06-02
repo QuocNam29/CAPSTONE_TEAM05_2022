@@ -326,8 +326,8 @@
                                     <thead>
                                         <tr>
                                             <th class="text-center">STT</th>
-                                            <th>Mã sản phẩm</th>
-                                            <th>Tên sản phẩm</th>
+                                            <th class="text-center">Mã sản phẩm</th>
+                                            <th class="text-center">Tên sản phẩm</th>
                                             <th class="text-center">Số lượng còn</th>
                                             <th class="text-center">Tổng tiền</th>
                                             <th>
@@ -493,7 +493,6 @@
     $(".returnProduct_List").on("change", function () {
         var ProductID = $(this).val();
         var isDebtPrice = $('#isDebtPrice').val();
-        console.log(isDebtPrice);
         $(".ProductID").val(ProductID);
         $.ajax({
             url: "@Url.Action("FindProduct_Select2", "products")",
