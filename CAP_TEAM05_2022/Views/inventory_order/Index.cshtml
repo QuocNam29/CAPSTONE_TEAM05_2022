@@ -4,7 +4,9 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
 }
-
+@section style {
+    <link href="~/Content/css/custom-css.css" rel="stylesheet" />
+}
 <section class="pcoded-main-container">
     <div class="pcoded-content">
         <div class="page-header">
@@ -57,8 +59,8 @@
 
                                         <a class="btn  btn-primary btn-block" href="@Url.Action("Create", "inventory_order")">Tạo đơn nhập</a>
                                     </div>
-                                    </div>
                                 </div>
+                            </div>
                             <div class="table-responsive" id="dataContainer3">
                                 @{ Html.RenderAction("_InventoryList", "inventory_order");}
 
@@ -147,4 +149,4 @@
             });
         }
     </script>
-    }
+}

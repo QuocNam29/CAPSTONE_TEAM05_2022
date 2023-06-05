@@ -1330,3 +1330,20 @@ function Get_exchangeSupplier(id, product_name, quantity_stock, supplier, price_
     $('#exchangeSupplierModal').modal('show');
        
 }
+
+//---------------------------------Chỉnh sửa thông tin sản phẩm cho công ty cung cấp------------------
+function Get_editImportProduct(id, product_name, quantity_stock, supplier, price_product_stock, quantity) {
+    $("#id_importProduct").val(id);
+    $("#productName_import").val(product_name);
+    $("#quantity_stock_import").val(quantity_stock);
+    $("#quantity_import").val(quantity);
+    $("#name_supplier_import").val(supplier);
+    $("#price_product_stock_import").val(price_product_stock.toLocaleString());
+
+    $('#productSelectModal.close').css('display', 'none');
+    $('#productSelectModal').modal('hide');
+
+    $('#editImportProductModal .close').css('display', 'none');
+    $('#editImportProductModal').modal('show');
+
+}
