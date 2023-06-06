@@ -174,14 +174,24 @@
                                     Nhập số tiền thu <span class="text-danger">*</span>
                                 </label>
                                 <div class="position-relative">
-                                    <input type="search" name="paid" placeholder="Nhập số tiền thu" class="form-control Price" data-val="true" data-val-required="Vui lòng nhập số tiền thu !" required>
+                                    <input type="search" name="paid" placeholder="Nhập số tiền thu" class="form-control Price" data-val="true" data-val-required="Vui lòng nhập số tiền thu nợ !" required>
                                     @Html.ValidationMessage("paid", "", new { @class = "text-danger" })
                                 </div>
                                 <!---->
                             </div>
                             <div class="form-group">
+                                <label>
+                                    Ngày thu nợ <span class="text-danger">*</span>
+                                </label>
+                                <div class="position-relative">
+                                    <input type="datetime-local" id="paid_datime" name="created_at" class="form-control" required data-val="true" data-val-required="Vui lòng nhập ngày thu nợ !" >
+                                    @Html.ValidationMessage("created_at", "", new { @class = "text-danger" })
+                                </div>
+                                <!---->
+                            </div>
+                            <div class="form-group">
                                 <label>Ghi chú</label>
-                                <textarea id="first-name-icon" name="note" placeholder="Ghi chú" rows="6" class="form-control"></textarea>
+                                <textarea id="first-name-icon" name="note" placeholder="Ghi chú" rows="3" class="form-control"></textarea>
                                 <!---->
                             </div>
                         </div>

@@ -336,14 +336,14 @@ namespace CAP_TEAM05_2022.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create_Debts(int customer_id, string paid, string note, int method)
+        public ActionResult Create_Debts(int customer_id, string paid, string note, int method, DateTime created_at)
         {
             string message = "";
             bool status = true;
             try
             {
                 decimal paid_temp = decimal.Parse(paid.Replace(",", "").Replace(".", ""));
-                DateTime create_at = DateTime.Now;
+                DateTime create_at = created_at;
                 var last_customer_Debt = db.customer_debt.Where(d => d.customer_id == customer_id).OrderByDescending(o => o.id).FirstOrDefault();
                 if (paid_temp > last_customer_Debt.remaining)
                 {

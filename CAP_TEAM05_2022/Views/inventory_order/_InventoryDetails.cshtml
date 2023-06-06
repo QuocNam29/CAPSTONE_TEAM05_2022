@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<CAP_TEAM05_2022.Models.import_inventory>
 @using CAP_TEAM05_2022.Models
+@using Constants = CAP_TEAM05_2022.Helper.Constants;
 
 @{
     int no = 0;
@@ -239,7 +240,10 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <button type="button" class="btn btn-danger" onclick="Get_exchangeSupplier('@item.id', '@item.product.name', '@(item.quantity-item.sold-item.return_quantity + " " + item.product.unit)', '@item.customer.name', '@item.price_import.ToString("N0")')">Trả sản phẩm</button>
-                                                    <button type="button" class="btn btn-info" onclick="Get_editImportProduct('@item.id', '@item.product.name', '@(item.sold+item.return_quantity + " " + item.product.unit)', '@item.customer.name', '@item.price_import.ToString("N0")', '@(item.quantity)')">Cập nhật</button>
+                                                    @if (Inventory.state == Constants.PAYED_ORDER)
+                                                    {
+                                                        <button type="button" class="btn btn-info" onclick="Get_editImportProduct('@item.id', '@item.product.name', '@(item.sold+item.return_quantity + " " + item.product.unit)', '@item.customer.name', '@item.price_import.ToString("N0")', '@(item.quantity)')">Cập nhật</button>
+                                                    }
 
                                                 </td>
 
@@ -477,7 +481,7 @@
         if (form[0].checkValidity()) {
             e.preventDefault();
             var url = form.attr('action');
-           
+
             $.ajax({
                 url: url,
                 type: 'POST',
