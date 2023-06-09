@@ -30,6 +30,8 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 to = (DateTime.Now);
             }
+            ViewBag.From = from;
+            ViewBag.To = to;
             var sales = db.sales.Include(s => s.customer).Include(s => s.user).Where(s => (s.created_at >= from && s.created_at <= to
                                                     || s.created_at.Value.Day == from.Value.Day
                                                     && s.created_at.Value.Month == from.Value.Month

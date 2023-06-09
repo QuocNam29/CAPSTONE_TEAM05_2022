@@ -4,6 +4,9 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout_QuyThanh.cshtml";
+    DateTime form = ViewBag.From;
+    DateTime to = ViewBag.To;
+
 }
 
 <div class="pcoded-main-container">
@@ -23,12 +26,54 @@
                     </div>
                 </div>
             </div>
+           
         </div>
         <!-- [ breadcrumb ] end -->
         <!-- [ Main Content ] start -->
         <div class="row">
+           
+            <div class="col-md-12 col-xl-12">
+                <form method="post" action="@Url.Action("Index", "Dashboard")">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row mb-3">
+
+                                <div class="row col-md-12">
+                                    <div class="col-md-4">
+                                        <div class="mx-datepicker">
+                                            <div class="mx-input-wrapper">
+                                                <input name="from" id="DateStart" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}", form)">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mx-datepicker">
+                                            <div class="mx-input-wrapper">
+                                                <input name="to" id="DateEnd" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}",to)">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="float-left">
+                                            <button type="submit" id="btn_Submit" class="btn btn-info">Lọc</button>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
             <!-- table card-1 start -->
             <div class="col-md-12 col-xl-12">
+
                 <div class="card flat-card">
                     <div class="row-table">
                         <div class="col-sm-3 card-body br">
@@ -113,7 +158,7 @@
                 </div>
             </div>
 
-           
+
         </div>
         <!-- [ Main Content ] end -->
     </div>
@@ -392,5 +437,26 @@
 
         })
 
+        $("#DateStart").change(function () {
+            var date_start = $("#DateStart").val();
+            var date_end = $("#DateEnd").val();
+            if (date_start <= date_end) {
+                document.querySelector("#btn_Submit").disabled = false;
+            } else {
+                Swal.fire('Lỗi', 'Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc !', 'error')
+                document.querySelector("#btn_Submit").disabled = true;
+            }
+
+        });
+        $("#DateEnd").change(function () {
+            var date_start = $("#DateStart").val();
+            var date_end = $("#DateEnd").val();
+            if (date_start <= date_end) {
+                document.querySelector("#btn_Submit").disabled = false;
+            } else {
+                Swal.fire('Lỗi', 'Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc !', 'error')
+                document.querySelector("#btn_Submit").disabled = true;
+            }
+        });
     </script>
 }

@@ -69,12 +69,21 @@
                                         Mật khẩu<span class="text-danger">*</span>
                                     </label>
                                     <div class="position-relative">
-                                        @Html.PasswordFor(model => model.Password, new { @class = "form-control", @placeholder = "Nhập mật khẩu"})
-                                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                        <div class="input-group mb-3">
+                                            @Html.PasswordFor(model => model.Password, new { @class = "form-control", @placeholder = "Nhập mật khẩu" })
+                                            <div class="input-group-append">
 
+                                                <span class="input-group-text" id="show_password">
+                                                    <i class="fa fa-eye" id="show_eye"></i>
+                                                    <i class="fa fa-eye-slash d-none" id="hide_eye"></i>
+                                                </span>
+                                            </div>
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+
+                                        </div>
+                                        <!---->
                                     </div>
-                                    <!---->
-                                </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
@@ -82,7 +91,15 @@
                                         Nhập Lại Mật khẩu<span class="text-danger">*</span>
                                     </label>
                                     <div class="position-relative">
-                                        @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control", @placeholder = "Nhập lại mật khẩu" })
+                                        <div class="input-group mb-3">
+                                            @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control", @placeholder = "Nhập lại mật khẩu" })
+                                            <div class="input-group-append">
+                                                <span class="input-group-text" id="show_password_confirm">
+                                                    <i class="fa fa-eye" id="show_eye"></i>
+                                                    <i class="fa fa-eye-slash d-none" id="hide_eye"></i>
+                                                </span>
+                                            </div>
+                                        </div>
                                         @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
 
                                     </div>
@@ -160,6 +177,7 @@
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 <script>
+       
     $('.UserForm').submit(function (e) {
         var form = $(this);
 
@@ -187,6 +205,31 @@
                 }
             });
         }
+    });
+
+    $(document).ready(function () {
+        $('#show_password').on('click', function () {
+            var passwordField = $('#Password');
+            var passwordFieldType = passwordField.attr('type');
+            if (passwordFieldType === 'password') {
+                passwordField.attr('type', 'text');
+                $(this).html('<i class="fa fa-eye-slash"></i>');
+            } else {
+                passwordField.attr('type', 'password');
+                $(this).html('<i class="fa fa-eye"></i>');
+            }
+        });
+        $('#show_password_confirm').on('click', function () {
+            var passwordField = $('#ConfirmPassword');
+            var passwordFieldType = passwordField.attr('type');
+            if (passwordFieldType === 'password') {
+                passwordField.attr('type', 'text');
+                $(this).html('<i class="fa fa-eye-slash"></i>');
+            } else {
+                passwordField.attr('type', 'password');
+                $(this).html('<i class="fa fa-eye"></i>');
+            }
+        });
     });
 </script>
 

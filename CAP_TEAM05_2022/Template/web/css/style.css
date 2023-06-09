@@ -89,6 +89,7 @@ body {
   line-height: 1.8em;
   color:#656262;
   margin: 20px 0px;
+  padding-left: 46px;
 }
 .content input[type="text"] {
   outline: none;

@@ -22,9 +22,9 @@ namespace CAP_TEAM05_2022
 
         private async Task ConfigSendGridasync(IdentityMessage message)
         {
-            var senderEmail = new MailAddress("bonsaigardenshop6@gmail.com", "Bonsai Garden");
+            var senderEmail = new MailAddress("phanbontanthanh123@gmail.com", "TanThanhWebsite");
             var receiverEmail = new MailAddress(message.Destination, "Receiver");
-            var password = "gsgusenjmphwqrcu";
+            var password = "hbuvwudneqtemvtj";
             var sub = message.Subject;
             var body = message.Body;
             var smtp = new SmtpClient

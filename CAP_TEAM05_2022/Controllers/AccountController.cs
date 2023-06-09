@@ -466,7 +466,7 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "categories");
+            return RedirectToAction("Index", "sale_details");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

@@ -138,7 +138,7 @@ namespace CAP_TEAM05_2022.Controllers
                             // Send confirmation email
                             string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                             var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code }, protocol: Request.Url.Scheme);
-                            await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                            await UserManager.SendEmailAsync(user.Id, "Xác nhận tài khoản", "Vui lòng xác nhận tài khoản bằng cách click  <a href=\"" + callbackUrl + "\">vào đây</a>");
                             message = "Thêm nhân viên thành công";
                         }
                         else
