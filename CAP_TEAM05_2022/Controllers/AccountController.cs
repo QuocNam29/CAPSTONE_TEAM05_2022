@@ -230,7 +230,7 @@ namespace CAP_TEAM05_2022.Controllers
                 // Send an email with this link
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                await UserManager.SendEmailAsync(user.Id, "Đặt lại mật khẩu", "Vui lòng đặt lại mật khẩu của bạn bằng cách nhấp <a href=\"" + callbackUrl + "\">vào đây</a>");
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 

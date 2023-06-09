@@ -97,20 +97,21 @@ namespace CAP_TEAM05_2022.Models
 
     public class ResetPasswordViewModel
     {
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "Email không được bỏ trống !")]
+        [EmailAddress(ErrorMessage = "Email sai định dạng !")]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [Required(ErrorMessage = "Vui lòng nhập mật khẩu !")]
+        [StringLength(100, ErrorMessage = "Mật khẩu phải chứa ít nhất 6 ký tự.", MinimumLength = 6)]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$", ErrorMessage = "Mật khẩu phải bao gồm 8 ký tự, chữ hoa, chữ thường, số và ký tự đặc biệt")]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Compare("Password", ErrorMessage = "Mật khẩu và mật khẩu xác nhận không khớp.")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }
@@ -118,7 +119,7 @@ namespace CAP_TEAM05_2022.Models
 
     public class ForgotPasswordViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Email không được bỏ trống !")]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
