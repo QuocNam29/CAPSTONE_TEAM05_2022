@@ -9,7 +9,7 @@ using System.Web;
 namespace CAP_TEAM05_2022.Controllers.Tests
 {
     [TestClass]
-    public class import_inventoryControllerTest
+    public class return_saleControllerTest
     {
         public class MockHttpSession : HttpSessionStateBase
         {
@@ -34,54 +34,53 @@ namespace CAP_TEAM05_2022.Controllers.Tests
             return validationResults;
         }
         [TestMethod()]
-        public void Check_False_If_quantity_Value_bigger_than_0_Test()
+        public void Check_False_If_code_Null_Test()
         {
             // Arrange
-            var controller = new import_inventoryController();
+            var controller = new return_saleController();
             var db = new CP25Team05Entities();
 
             // Act          
-            var model = new import_inventory()
+            var model = new return_sale()
             {
-                quantity = -2
+                code = null
             };
 
             // Assert
-            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Vui lòng nhập số lượng lớn hơn 0")).Count() > 0);
+            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Vui lòng nhập mã hoàn trả")).Count() > 0);
+        }
+        [TestMethod()]
+        public void Check_False_If_code_MoreThan_100_Characters_Test()
+        {
+            // Arrange
+            var controller = new return_saleController();
+            var db = new CP25Team05Entities();
+
+            // Act          
+            var model = new return_sale()
+            {
+                code = "11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
+            };
+
+            // Assert
+            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Mã hoàn trả phải dưới 100 ký tự.")).Count() > 0);
         }
 
         [TestMethod()]
-        public void Check_False_If_sold_Value_bigger_than_0_Test()
+        public void Check_False_If_method_Value_bigger_than_0__Test()
         {
             // Arrange
-            var controller = new import_inventoryController();
+            var controller = new return_saleController();
             var db = new CP25Team05Entities();
 
             // Act          
-            var model = new import_inventory()
+            var model = new return_sale()
             {
-                sold = -2
+                method = -2
             };
 
             // Assert
-            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Vui lòng nhập đơn giá bán phải lớn hơn 0")).Count() > 0);
-        }
-
-        [TestMethod()]
-        public void Check_False_If_Price_Value_bigger_than_0_Test()
-        {
-            // Arrange
-            var controller = new import_inventoryController();
-            var db = new CP25Team05Entities();
-
-            // Act          
-            var model = new import_inventory()
-            {
-                price_import = -2
-            };
-
-            // Assert
-            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Vui lòng nhập đơn giá nhập phải lớn hơn 0")).Count() > 0);
+            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Count() > 0).Count() > 0);
         }
     }
 }

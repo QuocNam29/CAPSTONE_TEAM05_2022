@@ -113,10 +113,16 @@
     <Compile Include="Controllers\customersControllerTest.cs" />
     <Compile Include="Controllers\groupsControllerTest.cs" />
     <Compile Include="Controllers\import_inventoryControllerTest.cs" />
+    <Compile Include="Controllers\inventory_orderController.cs" />
+    <Compile Include="Controllers\price_productControllerTest.cs" />
     <Compile Include="Controllers\productsControllerTest.cs" />
+    <Compile Include="Controllers\return_detailControllerTest.cs" />
+    <Compile Include="Controllers\return_saleControllerTest.cs" />
+    <Compile Include="Controllers\return_supplierControllerTest.cs" />
     <Compile Include="Controllers\revenueControllerTest.cs" />
     <Compile Include="Controllers\salesControllerTest.cs" />
     <Compile Include="Controllers\sale_detailsControllerTest.cs" />
+    <Compile Include="Controllers\userControllerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
   </ItemGroup>

@@ -57,11 +57,11 @@ namespace CAP_TEAM05_2022.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    bool check = db.customers.Where(c => c.phone == customer.phone).Any();
+                    bool check = db.customers.Where(c => c.phone == customer.phone || c.name == customer.name).Any();
                     if (check)
                     {
                         status = false;
-                        message = "Số điện thoại đã tồn tại";
+                        message = "Tên hoặc số điện thoại đã tồn tại";
                     }
                     else
                     {
@@ -102,7 +102,7 @@ namespace CAP_TEAM05_2022.Controllers
                 if (ModelState.IsValid)
                 {
 
-                    int check = db.customers.Where(c => c.phone == customer.phone && c.id != customer.id).Count();
+                    int check = db.customers.Where(c =>( c.phone == customer.phone || c.name == customer.name) && c.id != customer.id).Count();
                     if (check > 0)
                     {
                         status = false;

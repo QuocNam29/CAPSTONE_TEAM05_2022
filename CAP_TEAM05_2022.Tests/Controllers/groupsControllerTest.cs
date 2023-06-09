@@ -48,10 +48,10 @@ namespace CAP_TEAM05_2022.Controllers.Tests
             };
 
             // Assert
-            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Vui lòng nhập tên nhóm !")).Count() > 0);
+            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Vui lòng nhập tên nhóm hàng")).Count() > 0);
         }
         [TestMethod()]
-        public void Check_False_If_Name_MoreThan_255_Characters_Test()
+        public void Check_False_If_Name_MoreThan_100_Characters_Test()
         {
             // Arrange
             var controller = new groupsController();
@@ -64,7 +64,7 @@ namespace CAP_TEAM05_2022.Controllers.Tests
             };
 
             // Assert
-            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Name length must be between 1 and 255.")).Count() > 0);
+            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Tên nhóm hàng phải dưới 100 ký tự.")).Count() > 0);
         }
         [TestMethod()]
         public void Check_False_If_code_Null_Test()
@@ -80,10 +80,10 @@ namespace CAP_TEAM05_2022.Controllers.Tests
             };
 
             // Assert
-            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Group code cannot be empty !")).Count() > 0);
+            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Vui lòng nhập mã nhóm hàng")).Count() > 0);
         }
         [TestMethod()]
-        public void Check_False_If_Code_MoreThan_50_Characters_Test()
+        public void Check_False_If_Code_MoreThan_100_Characters_Test()
         {
             // Arrange
             var controller = new groupsController();
@@ -96,7 +96,25 @@ namespace CAP_TEAM05_2022.Controllers.Tests
             };
 
             // Assert
-            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Code length must be between 1 and 50.")).Count() > 0);
+            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Nhập mã nhóm hàng phải dưới 100 ký tự.")).Count() > 0);
         }
+
+        [TestMethod()]
+        public void Check_False_If_created_by_Null_Test()
+        {
+            // Arrange
+            var controller = new groupsController();
+            var db = new CP25Team05Entities();
+
+            // Act          
+            var model = new group()
+            {
+                created_by = null
+            };
+
+            // Assert
+            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Vui lòng chọn ngày tạo.")).Count() > 0);
+        }
+
     }
 }

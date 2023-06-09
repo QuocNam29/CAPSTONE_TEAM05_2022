@@ -60,7 +60,7 @@ namespace CAP_TEAM05_2022.Controllers
             Sheet.Cells["A2"].Value = "Địa chỉ: Tổ 20, ấp Tân Trung B, xã Tân Hưng, huyện Tân Châu, tỉnh Tây Ninh";
 
             Sheet.Cells["A3:H3"].Merge = true;
-            Sheet.Cells["A3"].Value = "Ngân Hàng: BIDV - 75210000089921 - TRAN QUOC NAM";
+            Sheet.Cells["A3"].Value = "Ngân Hàng: BIDV - 75210000089921 - TA VAN THANH";
 
             Sheet.Cells["A4:H4"].Merge = true;
             Sheet.Cells["A4"].Value = "Điện thoại: 0854858818";

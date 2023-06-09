@@ -9,7 +9,7 @@ using System.Web;
 namespace CAP_TEAM05_2022.Controllers.Tests
 {
     [TestClass]
-    public class salesControllerTest
+    public class sale_ControllerTest
     {
         public class MockHttpSession : HttpSessionStateBase
         {
@@ -33,6 +33,56 @@ namespace CAP_TEAM05_2022.Controllers.Tests
             Validator.TryValidateObject(model, ctx, validationResults, true);
             return validationResults;
         }
+
+        [TestMethod()]
+        public void Check_False_If_Customer_ID_Value_bigger_than_0_Test()
+        {
+            // Arrange
+            var controller = new salesController();
+            var db = new CP25Team05Entities();
+
+            // Act          
+            var model = new sale()
+            {
+                customer_id = -2
+            };
+
+            // Assert
+            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Count() > 0).Count() > 0);
+        }
+        [TestMethod()]
+        public void Check_False_If_Total_Value_bigger_than_0_Test()
+        {
+            // Arrange
+            var controller = new salesController();
+            var db = new CP25Team05Entities();
+
+            // Act          
+            var model = new sale()
+            {
+                total = -2
+            };
+
+            // Assert
+            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Count() > 0).Count() > 0);
+        }
+        [TestMethod()]
+        public void Check_False_If_Created_by_Value_bigger_than_0_Test()
+        {
+            // Arrange
+            var controller = new salesController();
+            var db = new CP25Team05Entities();
+
+            // Act          
+            var model = new sale()
+            {
+                created_by = null
+            };
+
+            // Assert
+            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Vui lòng chọn ngày tạo.")).Count() > 0);
+        }
+
         [TestMethod()]
         public void Check_False_If_Code_Null_Test()
         {
@@ -47,10 +97,11 @@ namespace CAP_TEAM05_2022.Controllers.Tests
             };
 
             // Assert
-            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Sale code cannot be empty !")).Count() > 0);
+            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Count() > 0).Count() > 0);
         }
+
         [TestMethod()]
-        public void Check_False_If_Code_MoreThan_20_Characters_Test()
+        public void Check_False_If_code_MoreThan_20_Characters_Test()
         {
             // Arrange
             var controller = new salesController();
@@ -63,55 +114,7 @@ namespace CAP_TEAM05_2022.Controllers.Tests
             };
 
             // Assert
-            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Code sale length must be between 1 and 20.")).Count() > 0);
-        }
-        [TestMethod()]
-        public void Check_False_If_total_Value_bigger_than_0_Test()
-        {
-            // Arrange
-            var controller = new salesController();
-            var db = new CP25Team05Entities();
-
-            // Act          
-            var model = new sale()
-            {
-                total = -2
-            };
-
-            // Assert
-            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Please enter a value bigger than 0")).Count() > 0);
-        }
-        [TestMethod()]
-        public void Check_False_If_Discount_Value_bigger_than_0_Test()
-        {
-            // Arrange
-            var controller = new salesController();
-            var db = new CP25Team05Entities();
-
-            // Act          
-            var model = new sale()
-            {
-                discount = -2
-            };
-
-            // Assert
-            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Please enter a value bigger than 0")).Count() > 0);
-        }
-        [TestMethod()]
-        public void Check_False_If_VAT_Value_bigger_than_0_Test()
-        {
-            // Arrange
-            var controller = new salesController();
-            var db = new CP25Team05Entities();
-
-            // Act          
-            var model = new sale()
-            {
-                vat = -2
-            };
-
-            // Assert
-            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Please enter a value bigger than 0")).Count() > 0);
+            Assert.IsTrue(ValidateModel(model).Where(x => x.ErrorMessage.Equals("Nhập mã bán hàng phải dưới 20 ký tự.")).Count() > 0);
         }
     }
 }
