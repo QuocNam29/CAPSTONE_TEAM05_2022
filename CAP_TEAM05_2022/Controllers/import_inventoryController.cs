@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using Constants = CAP_TEAM05_2022.Helper.Constants;
 
 
 namespace CAP_TEAM05_2022.Controllers
@@ -73,14 +74,48 @@ namespace CAP_TEAM05_2022.Controllers
                     db.Entry(inventory).State = EntityState.Modified;
 
                     inventory_order inventory_Order = db.inventory_order.Find(inventory.inventory_id);
-                    inventory_Order.Total = inventory_Order.import_inventory.Sum(x => (x.quantity - x.return_quantity) * x.price_import);
+                    decimal totalOld = inventory_Order.Total; // tổng đơn hàng cũ
+                    inventory_Order.Total = inventory_Order.import_inventory.Sum(x => (x.quantity - x.return_quantity) * x.price_import); // tổng đơn hàng mới
                     inventory_Order.update_at = create_at;
+                    decimal difference = totalOld - inventory_Order.Total ; // Chênh lệch giá tiền trước và sau
 
+                    if (inventory_Order.state == Constants.DEBT_ORDER)
+                    {
+                        if (inventory_Order.Total < inventory_Order.payment + inventory_Order.pay_debt)
+                        {
+                            status = false;
+                            message = "Giá trị của đơn nhập hàng này đã được thanh toán vượt quá tổng giá trị đơn hàng, vui lòng kiểm tra lại !";
+                            return Json(new { status, message }, JsonRequestBehavior.AllowGet);
+                        }
+                        else
+                        {
+                            inventory_Order.debt -= difference;
+                            var DebtList = db.debts.Where(x => x.inventory_order.supplier_id == inventory_Order.supplier_id && x.inventory_id >= inventory_Order.id).ToList();
+                            foreach (var debtItem in DebtList)
+                            {
+                                if (debtItem.inventory_id == inventory_Order.id && debtItem.debt1 != null)
+                                {
+                                    debtItem.debt1 -= difference;
+                                }
+                                debtItem.remaining -= difference;
+                            }
+                            var CustomerDebtList = db.customer_debt.Where(x => x.customer_id == inventory_Order.supplier_id).ToList();
+                            foreach (var debtItem in CustomerDebtList)
+                            {
+                                if (debtItem.inventory_id == inventory_Order.id && debtItem.debt != null)
+                                {
+                                    debtItem.debt -= difference;
+                                }
+                                debtItem.remaining -= difference;
+                            }
+                        }
+                    }
                     product product = db.products.Find(inventory.product_id);
                     product.quantity -= quantitychange;
                     db.Entry(product).State = EntityState.Modified;
                                     
                     db.Entry(inventory_Order).State = EntityState.Modified;
+
 
 
                     db.SaveChanges();

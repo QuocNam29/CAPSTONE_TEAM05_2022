@@ -191,7 +191,7 @@
         <form>
             <div class="modal-content">
                 <div class="modal-header bg-primary">
-                    <h5 id="productSelectModalTitle" class="modal-title white">Chọn sản phẩm đổi trả</h5>
+                    <h5 id="productSelectModalTitle" class="modal-title white">Sản phẩm đơn nhập hàng</h5>
                     <button type="button" data-dismiss="modal" aria-label="Close" class="close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -211,8 +211,6 @@
                                             <th class="text-center">Số lượng tồn</th>
                                             <th></th>
                                         </tr>
-
-
                                     </thead>
                                     <tbody>
                                         @foreach (var item in Model)
@@ -240,11 +238,7 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <button type="button" class="btn btn-danger" onclick="Get_exchangeSupplier('@item.id', '@item.product.name', '@(item.quantity-item.sold-item.return_quantity + " " + item.product.unit)', '@item.customer.name', '@item.price_import.ToString("N0")')">Trả sản phẩm</button>
-                                                    @if (Inventory.state == Constants.PAYED_ORDER)
-                                                    {
-                                                        <button type="button" class="btn btn-info" onclick="Get_editImportProduct('@item.id', '@item.product.name', '@(item.sold+item.return_quantity + " " + item.product.unit)', '@item.customer.name', '@item.price_import.ToString("N0")', '@(item.quantity)')">Cập nhật</button>
-                                                    }
-
+                                                    <button type="button" class="btn btn-info" onclick="Get_editImportProduct('@item.id', '@item.product.name', '@(item.sold+item.return_quantity + " " + item.product.unit)', '@item.customer.name', '@item.price_import.ToString("N0")', '@(item.quantity)')">Cập nhật</button>
                                                 </td>
 
                                             </tr>
