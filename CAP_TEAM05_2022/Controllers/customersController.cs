@@ -481,6 +481,24 @@ namespace CAP_TEAM05_2022.Controllers
             }
             return Json(new { status = status, message = mess }, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult GetSupplierList(string searchTerm)
+        {
+            var supplierList = db.customers.Where(x=> x.type == Constants.SUPPLIER).ToList();
+
+            if (searchTerm != null)
+            {
+                supplierList = db.customers.Where(x => x.name.Contains(searchTerm) && x.type == Constants.SUPPLIER).ToList();
+            }
+
+            var modifiedData = supplierList.Select(x => new
+            {
+                id = x.id,
+                text = x.name
+            });
+            return Json(modifiedData, JsonRequestBehavior.AllowGet);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

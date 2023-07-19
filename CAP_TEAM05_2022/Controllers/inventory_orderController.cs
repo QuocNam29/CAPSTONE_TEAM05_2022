@@ -39,7 +39,7 @@ namespace CAP_TEAM05_2022.Controllers
             }
             return PartialView(HistoryOrder.OrderByDescending(o => o.id).ToList());
         }
-        public ActionResult _InventoryList(DateTime? date_Start, DateTime? date_End)
+        public ActionResult _InventoryList(DateTime? date_Start, DateTime? date_End, int? supplierID)
         {
             if (date_Start == null)
             {
@@ -57,7 +57,10 @@ namespace CAP_TEAM05_2022.Controllers
                                                     || s.create_at.Day == date_End.Value.Day
                                                     && s.create_at.Month == date_End.Value.Month
                                                     && s.create_at.Year == date_End.Value.Year);
-
+            if (supplierID != null)
+            {
+                sales = sales.Where(x => x.supplier_id == supplierID);
+            }
             return PartialView(sales.OrderByDescending(c => c.id).ToList());
         }
         public ActionResult _InventoryDetails(int inventor_id)

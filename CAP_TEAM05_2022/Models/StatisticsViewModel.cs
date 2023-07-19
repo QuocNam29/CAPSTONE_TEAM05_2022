@@ -21,7 +21,7 @@ namespace CAP_TEAM05_2022.Models
         public int? CountAdmin { get; set; }
         public int? CountStaff { get; set; }
         public int? CountOrder { get; set; }
-        public double? SumCon1 { get; set; }
+        public int? CountCustomer { get; set; }
 
         public string[] ItemArr1 { get; set; }
         public string[] ItemArr2 { get; set; }
@@ -38,13 +38,5 @@ namespace CAP_TEAM05_2022.Models
         public int[] CountArrLoan2 { get; set; }
 
 
-        public DateTime? Date { get; set; }
-        public DateTime? Date2 { get; set; }
-        public DateTime[] DateArr1 { get; set; }
-
-
-        public dynamic DataPool1 { get; set; }
-        public dynamic DataPool2 { get; set; }
-        public dynamic DataPoo3 { get; set; }
     }
 }

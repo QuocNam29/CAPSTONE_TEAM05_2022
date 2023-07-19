@@ -6,6 +6,20 @@
 }
 @section style {
     <link href="~/Content/css/custom-css.css" rel="stylesheet" />
+    <link href="~/Content/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .select2-container--default .select2-results > .select2-results__options {
+            max-height: 300px
+        }
+
+        .select2-container .select2-selection--single, .select2-container--default .select2-selection--single .select2-selection__rendered, .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 45px;
+        }
+
+            .select2-container--default .select2-selection--single .select2-selection__rendered .select2-selection__clear {
+                line-height: 45px;
+            }
+    </style>
 }
 <section class="pcoded-main-container">
     <div class="pcoded-content">
@@ -38,7 +52,7 @@
                     <div class="card">
                         <div class="card-body table-border-style">
                             <div class="row mb-3">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="mx-datepicker">
                                         <div class="mx-input-wrapper">
                                             <input id="inventory_DateStart" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}", DateTime.Now.AddDays((-DateTime.Now.Day) + 1))">
@@ -46,7 +60,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="mx-datepicker">
                                         <div class="mx-input-wrapper">
                                             <input id="inventory_DateEnd" class="form-control custom-width flatpickr" value="@String.Format("{0:yyyy-MM-dd}",DateTime.Now.AddMonths(1).AddDays(-(DateTime.Now.Day)))">
@@ -54,7 +68,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
+                                    <div class="mx-datepicker">
+                                        <div class="mx-input-wrapper">
+                                            <select class="form-control supplier_List" id="supplier_id"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
                                     <div class="float-right">
 
                                         <a class="btn  btn-primary btn-block" href="@Url.Action("Create", "inventory_order")">Tạo đơn nhập</a>
@@ -80,17 +101,48 @@
 <div id="dataContainer2">
 </div>
 @section scripts {
-    <script>
+    <script type="text/javascript">
         $(document).ready(function () {
             $('#example').DataTable({
                 pagingType: 'full_numbers',
             });
+             $(".supplier_List").select2({
+                 placeholder: "Công ty cung cấp",
+                 allowClear: true,
+        ajax: {
+            url: "@Url.Action("GetSupplierList", "customers")",
+            dataType: "json",
+            data: function (params) {
+                return {
+                    searchTerm: params.term
+                };
+            },
+            processResults: function (data, params) {
+                return {
+                    results: data
+                };
+            }
+        }
+         });
         });
+
+        $(".supplier_List").on("change", function () {
+              var supplierID = $(this).val();
+              var date_start = $("#inventory_DateStart").val();
+              var date_end = $("#inventory_DateEnd").val();
+              if (date_start <= date_end) {
+                  GetList_Inventory(date_start, date_end, supplierID);
+              } else {
+                  Swal.fire('Lỗi', 'Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc !', 'error')
+              }
+       
+    });
         $("#inventory_DateStart").change(function () {
             var date_start = $("#inventory_DateStart").val();
             var date_end = $("#inventory_DateEnd").val();
+            var supplierID = $("#supplier_id").val();
             if (date_start <= date_end) {
-                GetList_Inventory(date_start, date_end);
+                GetList_Inventory(date_start, date_end, supplierID);
             } else {
                 Swal.fire('Lỗi', 'Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc !', 'error')
             }
@@ -99,20 +151,22 @@
         $("#inventory_DateEnd").change(function () {
             var date_start = $("#inventory_DateStart").val();
             var date_end = $("#inventory_DateEnd").val();
+            var supplierID = $("#supplier_id").val();
             if (date_start <= date_end) {
-                GetList_Inventory(date_start, date_end);
+                GetList_Inventory(date_start, date_end, supplierID);
             } else {
                 Swal.fire('Lỗi', 'Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc !', 'error')
             }
         });
 
-        function GetList_Inventory(date_start, date_end) {
+        function GetList_Inventory(date_start, date_end, supplierID) {
 
             $.ajax({
                 url: '@Url.Action("_InventoryList", "inventory_order")',
                 data: {
                     date_Start: date_start,
                     date_End: date_end,
+                    supplierID: supplierID,
                 }
             }).done(function (result) {
                 $('#dataContainer3').html(result);

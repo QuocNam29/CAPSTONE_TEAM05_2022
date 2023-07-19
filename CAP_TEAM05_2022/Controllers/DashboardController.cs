@@ -22,6 +22,8 @@ namespace CAP_TEAM05_2022.Controllers
                 && (!to.HasValue || DbFunctions.TruncateTime(x.created_at) <= DbFunctions.TruncateTime(to.Value))).ToList();
             var product = db.products.Where(x => x.status == Constants.SHOW_STATUS).ToList();
             var supplier = db.customers.Where(x => x.type == Constants.SUPPLIER).ToList();
+            var customer = db.customers.Where(x => x.type == Constants.CUSTOMER && x.id > 0).ToList();
+
             if (from == null)
             {
                 from = (DateTime.Now.AddMonths(-1));
@@ -52,6 +54,7 @@ namespace CAP_TEAM05_2022.Controllers
             data.CountArr1[1] = order.Where(x => x.method == Constants.DEBT_ORDER && x.is_debt_price == false).Count();
             data.CountArr1[2] = order.Where(x => x.method == Constants.DEBT_ORDER && x.is_debt_price == true).Count();
 
+            data.CountCustomer = customer.Count;
             data.CountSupplier = supplier.Count;
             int i = 0;
             data.ItemArr2 = new string[sales.GroupBy(x => DbFunctions.TruncateTime(x.created_at)).Count()];
