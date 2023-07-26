@@ -26,6 +26,7 @@ namespace CAP_TEAM05_2022.Models
         public string[] ItemArr1 { get; set; }
         public string[] ItemArr2 { get; set; }
         public string[] ItemArr3 { get; set; }
+        // tên khách hàng mua nhiều nhất
         public string[] ItemArr4 { get; set; }
         public string[] ItemArr5 { get; set; }
 
@@ -33,9 +34,9 @@ namespace CAP_TEAM05_2022.Models
         public int[] CountArr1 { get; set; }
         public decimal[] CountArr2 { get; set; }
         public int[] CountArr3 { get; set; }
-        public int[] CountArr4 { get; set; }
-        public int[] CountArrLoan1 { get; set; }
-        public int[] CountArrLoan2 { get; set; }
+        // lấy tiền những khách hàng mua nhiều nhất
+        public decimal[] CountArr4 { get; set; }
+
 
 
     }

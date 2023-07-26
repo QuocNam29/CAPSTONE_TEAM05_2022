@@ -26,12 +26,12 @@
                     </div>
                 </div>
             </div>
-           
+
         </div>
         <!-- [ breadcrumb ] end -->
         <!-- [ Main Content ] start -->
         <div class="row">
-           
+
             <div class="col-md-12 col-xl-12">
                 <form method="post" action="@Url.Action("Index", "Dashboard")">
 
@@ -158,6 +158,17 @@
                 </div>
             </div>
 
+            <div class="col-xl-12 col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        @Html.DropDownList("TopOption", new SelectList(Constants.TopOption, "Key", "Value"), new { @class = "form-control form-select TopOption" })
+                        <div class="row align-items-center" id="dataContainer">
+                            @{ Html.RenderAction("_TopCustomer", "Dashboard", new { from = form, to = to });}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
         <!-- [ Main Content ] end -->
@@ -204,7 +215,7 @@
                 legend: {
                     position: 'bottom'
                 },
-              
+
                 title: {
                     text: 'Thống kê nhân sự',
                     style: {
@@ -423,7 +434,6 @@
                 },
             };
 
-
             var chart = new ApexCharts(document.querySelector("#chart"), optionsChart1);
             chart.render();
             var chart2 = new ApexCharts(document.querySelector("#chart2"), optionsChart2);
@@ -458,5 +468,32 @@
                 document.querySelector("#btn_Submit").disabled = true;
             }
         });
+
+        $(".TopOption").change(function () {
+            var TopOption = $(this).val();
+            var date_start = $("#DateStart").val();
+            var date_end = $("#DateEnd").val();
+            GetTopCustomer(date_start, date_end, TopOption);
+        });
+
+        function GetTopCustomer(date_start, date_end, TopOption) {
+
+            $.ajax({
+                url: '@Url.Action("_TopCustomer", "Dashboard")',
+                data: {
+                    from: date_start,
+                    to: date_end,
+                    TopOption: TopOption,
+                }
+            }).done(function (result) {
+                $('#dataContainer').html(result);
+            }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(textStatus)
+                console.log(errorThrown)
+                alert("Something Went Wrong, Try Later");
+            });
+        }
+
+
     </script>
 }

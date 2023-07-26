@@ -19,6 +19,14 @@ namespace CAP_TEAM05_2022.Helper
             {STAFF_ACCOUNT, "Nhân viên" }
         };
 
+        public static readonly int TOP10 = 10;
+        public static readonly int TOP20 = 20;
+        public static readonly int TOP50 = 50;
+        public static readonly Dictionary<int, string> TopOption = new Dictionary<int, string> {
+            {TOP10, "Top 10"},
+            {TOP20, "Top 20" },
+            {TOP50, "Top 50" }
+        };
         /// <summary>
         /// Type Customer
         ///  </summary>

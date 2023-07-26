@@ -1,0 +1,66 @@
+﻿@model CAP_TEAM05_2022.Models.StatisticsViewModel
+@using Constants = CAP_TEAM05_2022.Helper.Constants;
+
+@{
+    Layout = null;
+    bool flat = ViewBag.Flat == false ? false : true;
+}
+<div class="col-md-12 m-3" id="chart5"></div>
+@{
+    if (flat == false)
+    {
+        <script src="~/Scripts/apexchart/dist/apexcharts.min.js"></script>
+    }
+
+<script>
+            var optionsChart5 = {
+                series: [{
+                    name: "Số tiền mua hàng",
+                    data:  @Html.Raw((Json.Encode(Model.CountArr4))),
+                }],
+                chart: {
+                    type: 'bar',
+                },
+                plotOptions: {
+                    bar: {
+                        borderRadius: 4,
+                        horizontal: true,
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                xaxis: {
+                    categories:@Html.Raw((Json.Encode(Model.ItemArr4))),
+                },
+                yaxis: {
+                    title: {
+                        text: 'Tên khách hàng',
+                    }
+                },
+                fill: {
+                    opacity: 1
+                },
+
+                tooltip: {
+                    y: {
+                        formatter: function (val) {
+                            return val + " VNĐ"
+                        }
+                    }
+                }, title: {
+                    text: 'Thông kê Khách hàng mua nhiều nhất',
+                    style: {
+                        fontSize: '20px',
+                        fontWeight: 'bold',
+                        fontFamily: 'Open Sans',
+                        color: '#263238'
+                    },
+                }
+            };
+            var chart5 = new ApexCharts(document.querySelector("#chart5"), optionsChart5);
+            chart5.render();
+</script>
+}
+
+

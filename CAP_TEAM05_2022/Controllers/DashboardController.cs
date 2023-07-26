@@ -23,7 +23,6 @@ namespace CAP_TEAM05_2022.Controllers
             var product = db.products.Where(x => x.status == Constants.SHOW_STATUS).ToList();
             var supplier = db.customers.Where(x => x.type == Constants.SUPPLIER).ToList();
             var customer = db.customers.Where(x => x.type == Constants.CUSTOMER && x.id > 0).ToList();
-
             if (from == null)
             {
                 from = (DateTime.Now.AddMonths(-1));
@@ -88,6 +87,76 @@ namespace CAP_TEAM05_2022.Controllers
                     data.CountArr2[i] = sales.Where(x => DbFunctions.TruncateTime(x.created_at) == item.Key).Sum(x => x.total) - nhapHang;
                 data.TotalRevenue += data.CountArr2[i];
                i++;                
+            }
+            var TopCustomer = customer.OrderByDescending(c => c.sales.Where(s => (s.created_at >= from && s.created_at <= to
+                                                               || s.created_at.Value.Day == from.Value.Day
+                                                               && s.created_at.Value.Month == from.Value.Month
+                                                               && s.created_at.Value.Year == from.Value.Year
+                                                               || s.created_at.Value.Day == to.Value.Day
+                                                               && s.created_at.Value.Month == to.Value.Month
+                                                               && s.created_at.Value.Year == to.Value.Year)
+                                                               && s.is_old_debt != true).Sum(y => y.total)).Take((10));
+            data.ItemArr4 = new string[10];
+            data.CountArr4 = new decimal[10];
+            int j = 0;
+            foreach (var item in TopCustomer)
+            {
+                data.ItemArr4[j] = item.name;
+                data.CountArr4[j] = item.sales.Where(s => (s.created_at >= from && s.created_at <= to
+                                                    || s.created_at.Value.Day == from.Value.Day
+                                                    && s.created_at.Value.Month == from.Value.Month
+                                                    && s.created_at.Value.Year == from.Value.Year
+                                                    || s.created_at.Value.Day == to.Value.Day
+                                                    && s.created_at.Value.Month == to.Value.Month
+                                                    && s.created_at.Value.Year == to.Value.Year)
+                                                    && s.is_old_debt != true).Sum(x => x.total);
+                j++;
+            }
+            return View(data);
+        }
+
+        public ActionResult _TopCustomer(DateTime? from, DateTime? to, int? TopOption)
+        {
+            var data = new StatisticsViewModel();
+
+            if (from == null)
+            {
+                from = (DateTime.Now.AddMonths(-1));
+            }
+            if (to == null)
+            {
+                to = (DateTime.Now);
+            }
+            if (TopOption == null)
+            {
+                TopOption = 10;
+                ViewBag.Flat = false;
+            }
+            var customer = db.customers.Where(x => x.type == Constants.CUSTOMER && x.id > 0).ToList();
+            var TopCustomer = customer.OrderByDescending(c => c.sales.Where(s => (s.created_at >= from && s.created_at <= to
+                                                    || s.created_at.Value.Day == from.Value.Day
+                                                    && s.created_at.Value.Month == from.Value.Month
+                                                    && s.created_at.Value.Year == from.Value.Year
+                                                    || s.created_at.Value.Day == to.Value.Day
+                                                    && s.created_at.Value.Month == to.Value.Month
+                                                    && s.created_at.Value.Year == to.Value.Year)
+                                                    && s.is_old_debt != true).Sum(y => y.total)).Take((int)TopOption);
+
+            data.ItemArr4 = new string[(int)TopOption];
+            data.CountArr4 = new decimal[(int)TopOption];
+            int j = 0;
+            foreach (var item in TopCustomer)
+            {
+                data.ItemArr4[j] = item.name;
+                data.CountArr4[j] = item.sales.Where(s => (s.created_at >= from && s.created_at <= to
+                                                    || s.created_at.Value.Day == from.Value.Day
+                                                    && s.created_at.Value.Month == from.Value.Month
+                                                    && s.created_at.Value.Year == from.Value.Year
+                                                    || s.created_at.Value.Day == to.Value.Day
+                                                    && s.created_at.Value.Month == to.Value.Month
+                                                    && s.created_at.Value.Year == to.Value.Year)
+                                                    && s.is_old_debt != true).Sum(x => x.total);
+                j++;
             }
 
             return View(data);
